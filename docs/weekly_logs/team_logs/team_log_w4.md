@@ -10,7 +10,7 @@ September 24 - October 1, 2023
 - Estimate milestone feature implementations
 - Discuss strengths and weaknesses of team
 - Divide features to team members
-    - Taking an Agile approach these assignments are open to change
+- Taking an Agile approach these assignments are open to change
 
 ## Features
 - No features to be implemented at this time
@@ -26,7 +26,7 @@ September 24 - October 1, 2023
     - brandonjmack (Brandon Mack)
     - jossw24 (Joss White)
 
-![Alt text](projboard.png)
+![Alt text](../img/projboard_w4.png)
 
 ## Test Report
 - No tests at this time

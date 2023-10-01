@@ -4,7 +4,7 @@
  - September 25 - October 1, 2023
 
 ### Task Types
-![Alt text](img/image.png)
+![Alt text](img/mack_w4.png)
 
 ### Weekly Goals
 - Get a solid overview of what we would like to accomplish in our app
