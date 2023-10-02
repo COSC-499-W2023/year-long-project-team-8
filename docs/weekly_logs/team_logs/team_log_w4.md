@@ -16,7 +16,7 @@ September 24 - October 1, 2023
 - No features to be implemented at this time
 
 ## Burnup Chart
- - (add when task is marked complete on board)
+ ![Alt text](../img/burnup.png)
 
 ## Project Board
 - This week's task is to complete the Project Plan
