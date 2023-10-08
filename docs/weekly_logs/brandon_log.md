@@ -65,6 +65,9 @@ October 1 - October 8, 2023
 -->
 - item#1 set up project environment
 - item#2 get figma up and running for design
+- item#3 create mockups in figma for ui/ux
+- item#4 begin paper prototyping
+- item#5 user testing
 
 ### Which Tasks Are Completed vs. In Progress
 <!--
@@ -73,7 +76,11 @@ October 1 - October 8, 2023
 ✓ x
 -->
 
-| Item # | Completed  | To Be Done |
-|:------:|:-----------|:-----------|
-| 1      | ✓          |            |
-| 2      | ✓          |            |
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    | ✓         |            |
+|   2    | ✓         |            |
+|   3    |           | ✓          |
+|   4    |           | ✓          |
+|   5    |           | ✓          |
+
