@@ -4,6 +4,7 @@
 <!-- 
 - start/end dates of the week
 -->
+October 1 - October 8, 2023
 
 
 ### Project Board
@@ -12,7 +13,7 @@
 -->
 https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
 <br>
-![alt-text]()
+![project_board_w5](../img/projboard_w5.png)
 
 ### Username Map
 <!-- 
@@ -23,40 +24,35 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Mackenzie Kudrenecky: mkudrenecky
 - Brandon Mack: brandonjmack
 
-
 ### Milestone Goals
 <!--
 - goals that are to be done
 -->
--
--
--
-
+- create figma accounts and get a group session set up
+- get the project environment set up
 
 ### Completed Tasks
 <!--
 - tasks that are completed
 -->
--
--
--
-
+- create figma accounts and get a group session set up
+- get the project environment set up
 
 ### In Progress Tasks
 <!--
 - tasks that are currently in progress
 -->
--
--
--
-
+- creating mockups for ui/ux
+- paper prototyping
+- user testing
 
 ### Burnup Chart
 <!-- 
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-https://github.com/orgs/COSC-499-W2023/projects/39/insights<br>
-![burnup-chart]()
+https://github.com/orgs/COSC-499-W2023/projects/39/insights
+<br>
+![burnup-chart](../img/burnup_w5.png)
 
 
 ### Test Report
@@ -65,6 +61,4 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights<br>
 
 - add screenshot(s) of test run summary 
 -->
-![test-report]()
-
-
+no coding this week so no testing
