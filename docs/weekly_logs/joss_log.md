@@ -27,7 +27,7 @@
  - October 1 - October 8, 2023
 
 ### Task Types
-![Alt text](img/week5_evaljoss.png)
+![Alt text](img/week_5_evaljoss.png)
 
 ### Weekly Goals
 - Set up tech stack. Figure out how to ste up a REST api backend using django and tie in a react native front end
@@ -42,5 +42,7 @@
 - Create a figma project for the team so we can start a mockup
 
 ### Features
-- Project Plan
+- Project Plan (complete)
+- Paper prototype/ Figma design (early stages)
+  
 
