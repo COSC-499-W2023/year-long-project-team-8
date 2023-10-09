@@ -21,3 +21,26 @@
 
 ### Features
 - Project Plan
+
+
+### Date Range
+ - October 1 - October 8, 2023
+
+### Task Types
+![Alt text](img/week5_evaljoss.png)
+
+### Weekly Goals
+- Set up tech stack. Figure out how to ste up a REST api backend using django and tie in a react native front end
+- Create a figma group and start thinking about project design.
+- Continue with project planning and idea communication
+
+#### Individual goals:
+- Contribute to team goals 
+- Work on projet plan with team
+- Tech stack set up on personal device
+- Discussing and refining features
+- Create a figma project for the team so we can start a mockup
+
+### Features
+- Project Plan
+
