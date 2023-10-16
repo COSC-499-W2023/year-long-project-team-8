@@ -5,6 +5,8 @@ if (loginForm) {
     loginForm.addEventListener('submit', handleLogin)
 }
 
+//  sample js to test backend consumption
+
 function handleLogin(event) {
     console.log(event)
     event.preventDefault()
