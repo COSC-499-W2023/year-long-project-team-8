@@ -16,7 +16,7 @@ print(auth_response.json())
 if auth_response.status_code == 200:
     token = auth_response.json()['token']
     headers = {
-        "Authorization": f"Bearer {token}"
+        "Authorization": f"Token {token}"
     }
     endpoint = "http://localhost:8000/api/products/" # will display product list when authorization is granted
 

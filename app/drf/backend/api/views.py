@@ -14,18 +14,11 @@ def api_home(request, *args, **kwaargs):
     
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        #instance = serializer.save()     # use this so save the data
+        instance = serializer.save()     # use this so save the data
         #print(instance)
         print(serializer.data)
         return Response(serializer.data)
     return Response({"invalid":"bad data"}, status=400)
-        # print(serializer.data)
-        # data = serializer.data
-        # return Response(data)
-    
-    # data = request.data
-    # instance = Product.objects.all().order_by("?").first()
-    # data ={}
-    # if instance:
-    #     data = ProductSerializer(instance).data
-    # return Response(data)
+
+
+
