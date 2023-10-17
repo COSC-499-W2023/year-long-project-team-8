@@ -19,7 +19,7 @@ import styles from "./LandingStyle";
 const backgroundImage = require("../../assets/wave.png");
 const { width } = Dimensions.get("window");
 
-const Landing = () => {
+const Landing = ({ navigation }) => {
   // Ref for the animated value for the translation along X-axis
   const translateXValue = useRef(new Animated.Value(width / 2)).current;
 
@@ -75,7 +75,7 @@ const Landing = () => {
               }}
             >
               {/* Login component */}
-              <Login onSwitch={animateToSignup} />
+              <Login onSwitch={animateToSignup} navigation={navigation} />
               {/* Signup component */}
               <Signup onSwitch={animateToLogin} />
             </Animated.View>
