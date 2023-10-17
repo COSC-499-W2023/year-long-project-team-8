@@ -15,7 +15,7 @@ class UserExistenceTest(TestCase):
         self.assertTrue(user_exists)
         
         
-class ProductDetailViewTest(APITestCase):
+class ProductDetailAPIViewTest(APITestCase):
    def setUp(self):
        # Create a test product
        self.product = Product.objects.create(title='Test Product')
