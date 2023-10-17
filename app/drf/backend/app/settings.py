@@ -69,6 +69,8 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS += [
         "http://localhost:8111",
         "https://localhost:8111",
+        "https://localhost:19006",
+        
     ]
 
 TEMPLATES = [
