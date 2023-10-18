@@ -7,6 +7,7 @@ const LandingStyles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "#fff3d7",
+    justifyContent: "center",
   },
   logoImage: {
     position: "absolute",
