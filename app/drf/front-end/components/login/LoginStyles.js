@@ -36,7 +36,8 @@ const LoginStyles = StyleSheet.create({
     shadowRadius: 3.84, // for iOS
   },
   input: {
-    fontSize: 12,
+    fontSize: 15,
+    flex: 1,
   },
   iconForm: {
     marginRight: 10,
