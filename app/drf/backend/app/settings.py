@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly" # permission class - remove for testing 'post' methods if not auth
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly" # permission class - comment out for testing 'post' methods
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
