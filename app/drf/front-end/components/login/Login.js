@@ -281,7 +281,6 @@ const Login = ({ onSwitch, navigation }) => {
               placeholder="PASSWORD"
               name="password"
               value={password}
-              s
               onChangeText={(text) => {
                 setPassword(text);
                 setPasswordError("");
