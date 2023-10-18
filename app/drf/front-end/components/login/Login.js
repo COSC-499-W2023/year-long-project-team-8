@@ -60,6 +60,7 @@ const Login = ({ onSwitch, navigation }) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
 
   // State variables for validation error messages
   const [emailError, setEmailError] = useState("");
@@ -120,10 +121,10 @@ const Login = ({ onSwitch, navigation }) => {
         })
         .then((authData) => {
           if (authData && authData.access) {
-            navigation.navigate("HomePage");
+            navigation.navigate("HomePage", { username: email });
             handleAuthData(authData, getProductList);
           } else {
-            console.error("Authentication failed.");
+            if (password && email) setAuthError("*Wrong email or password");
           }
         })
         .then((x) => {
@@ -205,6 +206,7 @@ const Login = ({ onSwitch, navigation }) => {
               setEmail(text);
               setEmailError("");
             }}
+            onFocus={() => setAuthError("")}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
@@ -224,6 +226,7 @@ const Login = ({ onSwitch, navigation }) => {
                 setPassword(text);
                 setPasswordError("");
               }}
+              onFocus={() => setAuthError("")}
               secureTextEntry={true}
               autoCapitalize="none"
               autoCorrect={false}
@@ -232,6 +235,7 @@ const Login = ({ onSwitch, navigation }) => {
             <View style={styles.pass}>
               {/* Display password validation errors */}
               <Text style={styles.errorText}>{passwordError}</Text>
+              <Text style={styles.errorText}>{authError}</Text>
               {/* Link to trigger forgotten password logic */}
               <Text
                 style={styles.forgotText}

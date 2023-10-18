@@ -113,7 +113,8 @@ const LoginStyles = StyleSheet.create({
     borderColor: "red",
   },
   errorText: {
-    color: "red",
+    color: "#D32F2F",
+    fontSize: 14,
     marginBottom: 10,
     marginTop: 0,
   },
