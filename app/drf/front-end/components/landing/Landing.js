@@ -59,9 +59,6 @@ const Landing = ({ navigation }) => {
             resizeMode="cover"
             style={styles.backgroundImage}
           >
-            {/* Application logo */}
-            <Image source={logo} resizeMode="cover" style={styles.logoImage} />
-
             {/* Animated container holding both Login and Signup */}
             <Animated.View
               style={{

@@ -1,122 +1,102 @@
-import { StyleSheet, Dimensions } from "react-native";
-
-const screenHeight = Dimensions.get("window").height;
-const screenWidth = Dimensions.get("window").width;
+import { StyleSheet } from "react-native";
 
 const LoginStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    overflow: "hidden",
-    paddingBottom: 10,
-    position: "relative",
   },
-  logoImage: {
-    position: "absolute",
-    top: screenHeight * 0.1,
-    left: (screenWidth - 350) / 2,
-    height: 200,
-    width: 350,
+  headerContainer: {
+    padding: 30,
+  },
+  headerText: {
+    fontSize: 40,
+    fontWeight: "700",
+    color: "black",
+  },
+  subHeaderText: {
+    fontSize: 20,
+    color: "grey",
+    marginTop: 10,
   },
   fields: {
-    width: screenWidth * 0.8,
-    alignSelf: "center",
-    marginBottom: 20,
-    marginTop: 200,
+    flex: 1,
+    paddingHorizontal: 30,
+    marginTop: 50,
   },
-  inputContainer: {
-    flexDirection: "column",
-  },
-  pass: {
+  inputWrapper: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  forgotText: {
-    color: "#5500EB",
-    fontWeight: "bold",
-    fontSize: 14,
-    marginTop: 5,
-    alignSelf: "flex-end",
+    marginTop: 20,
+    backgroundColor: "white",
+    elevation: 5,
+    padding: 15,
+    borderRadius: 20,
+    shadowColor: "#000", // for iOS
+    shadowOffset: { width: 0, height: 2 }, // for iOS
+    shadowOpacity: 0.25, // for iOS
+    shadowRadius: 3.84, // for iOS
   },
   input: {
-    height: 50,
-    width: "100%",
-    borderColor: "gray",
-    borderRadius: 5,
-    backgroundColor: "#fff",
-    marginBottom: 5,
+    fontSize: 12,
   },
-  button: {
-    width: "80%",
-    backgroundColor: "#ffa458",
-    paddingVertical: 15,
-    paddingHorizontal: 100,
-    borderRadius: 5,
-    alignItems: "center",
-    marginBottom: 20,
-    marginTop: 10,
-    elevation: 5,
-    boxShadow: "0px 2px 3.84px rgba(0, 0, 0, 0.25)",
-    alignSelf: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 20,
-  },
-  text: {
-    marginTop: 10,
-    marginBottom: 20,
-    textAlign: "center",
-    fontSize: 15,
-  },
-  signupContainer: {
-    marginRight: "10%",
-    marginTop: 20,
-    alignSelf: "flex-end",
-    flexDirection: "row",
-    width: 150,
-    alignItems: "center",
-    backgroundColor: "#E8B21A",
-    paddingVertical: 1,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    elevation: 5,
-    boxShadow: "0px 2px 3.84px rgba(0, 0, 0, 0.25)",
-  },
-  joinUsSection: {
-    flex: 0.8,
-    paddingVertical: 5,
-    paddingHorizontal: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  arrowSection: {
-    flex: 0.2,
-    paddingVertical: 5,
-    paddingHorizontal: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  signUpText: {
-    color: "white",
-    fontSize: 18,
-  },
-
-  backgroundImage: {
-    height: screenHeight,
-    width: screenWidth,
-    justifyContent: "center",
-    alignItems: "center",
+  iconForm: {
+    marginRight: 10,
   },
   inputError: {
     borderColor: "red",
   },
   errorText: {
-    color: "#D32F2F",
-    fontSize: 14,
-    marginBottom: 10,
-    marginTop: 0,
+    color: "red",
+    marginTop: 5,
+    fontSize: 12,
+  },
+  forgotPasswordContainer: {
+    position: "absolute",
+    right: 15,
+  },
+  forgotPasswordText: {
+    color: "orange",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  button: {
+    marginTop: 30,
+    alignSelf: "flex-end",
+    textAlign: "center",
+    width: "50%",
+    padding: 20,
+    borderRadius: 50,
+    elevation: 5, // for Android
+    shadowColor: "#000", // for iOS
+    shadowOffset: { width: 0, height: 2 }, // for iOS
+    shadowOpacity: 0.25, // for iOS
+    shadowRadius: 3.84, // for iOS
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    alignSelf: "center",
+    fontSize: 20,
+  },
+  arrow: {
+    marginLeft: 10,
+  },
+  signupContainer: {
+    alignSelf: "center",
+    marginTop: 100,
+  },
+  signupText: {
+    color: "#3F525C",
+    fontWeight: "bold",
+  },
+  signup: {
+    color: "#DB6D2A",
+    fontSize: 15,
+    fontWeight: "bold",
   },
 });
 
