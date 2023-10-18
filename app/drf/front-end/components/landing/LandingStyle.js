@@ -21,6 +21,7 @@ const LandingStyles = StyleSheet.create({
     width: screenWidth,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
 });
 

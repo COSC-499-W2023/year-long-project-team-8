@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StatusBar } from "react-native";
+import { StatusBar, SafeAreaView } from "react-native";
 import Landing from "./components/landing/Landing.js";
 import HomePage from "./components/homePage/HomePage.js";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,17 +9,20 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Landing"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="HomePage" component={HomePage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Landing"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Landing" component={Landing} />
+          <Stack.Screen name="HomePage" component={HomePage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 };
 
