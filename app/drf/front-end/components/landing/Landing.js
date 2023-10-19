@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import {
   ImageBackground,
-  Image,
   Animated,
   View,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 
 import Login from "../login/Login";
@@ -18,6 +18,7 @@ import styles from "./LandingStyle";
 // Background image and screen width constants
 const backgroundImage = require("../../assets/wave.png");
 const { width } = Dimensions.get("window");
+const { height } = Dimensions.get("screen");
 
 const Landing = ({ navigation }) => {
   // Ref for the animated value for the translation along X-axis
@@ -42,44 +43,51 @@ const Landing = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screen}>
-      {/* Component to avoid overlapping the keyboard */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        {/* Vertical scroll view to accommodate Login and Signup screens when keyboard is covering screen*/}
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flexGrow: 1 }}
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.screen}>
+        {/* Component to avoid overlapping the keyboard */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
         >
-          {/* Background image */}
-          <ImageBackground
-            source={backgroundImage}
-            resizeMode="cover"
-            style={styles.backgroundImage}
+          {/* Vertical scroll view to accommodate Login and Signup screens when keyboard is covering screen*/}
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flexGrow: 1 }}
+            centerContent={true}
           >
-            {/* Animated container holding both Login and Signup */}
-            <Animated.View
-              style={{
-                flexDirection: "row",
-                width: width * 2,
-                transform: [
-                  {
-                    translateX: translateXValue,
-                  },
-                ],
-              }}
+            {/* Background image */}
+            <ImageBackground
+              source={backgroundImage}
+              resizeMode="cover"
+              style={styles.backgroundImage}
             >
-              {/* Login component */}
-              <Login onSwitch={animateToSignup} navigation={navigation} />
-              {/* Signup component */}
-              <Signup onSwitch={animateToLogin} />
-            </Animated.View>
-          </ImageBackground>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+              {/* Animated container holding both Login and Signup */}
+              <Animated.View
+                style={{
+                  flexDirection: "row",
+                  width: width * 2,
+                  transform: [
+                    {
+                      translateX: translateXValue,
+                    },
+                  ],
+                }}
+              >
+                {/* Login component */}
+                <View style={{ width: width }}>
+                  <Login onSwitch={animateToSignup} navigation={navigation} />
+                </View>
+                {/* Signup component */}
+                <View style={{ width: width, height: height }}>
+                  <Signup onSwitch={animateToLogin} />
+                </View>
+              </Animated.View>
+            </ImageBackground>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </SafeAreaView>
   );
 };
 

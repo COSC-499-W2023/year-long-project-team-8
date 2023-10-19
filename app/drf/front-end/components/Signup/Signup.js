@@ -1,8 +1,17 @@
-import React, { useState } from "react";
-import { View, Text, SafeAreaView, Pressable, Animated } from "react-native";
-import { TextInput } from "react-native-paper";
-import styles from "./SignupStyles";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Pressable,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import * as Font from "expo-font";
+import styles from "../login/LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
+import ButtonSignup from "../landing/ButtonLanding.js";
 
 const Signup = ({ onSwitch }) => {
   // State for form fields
@@ -48,107 +57,176 @@ const Signup = ({ onSwitch }) => {
     }
   };
 
-  // Animation values
-  const scaleValue = new Animated.Value(1);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // Button press-in animation
-  const animatePressIn = () => {
-    Animated.timing(scaleValue, {
-      toValue: 0.95,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  // Button press-out animation
-  const animatePressOut = () => {
-    Animated.timing(scaleValue, {
-      toValue: 1,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
+  useEffect(() => {
+    const loadFont = async () => {
+      await Font.loadAsync({
+        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
+        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
+        textFont: require("../../assets/fonts/Inter-Medium.ttf"),
+      });
+      setFontLoaded(true);
+    };
+    loadFont();
+  }, []);
 
   return (
     <SafeAreaView style={styles.screen}>
-      {/* Input fields container */}
-      <View style={styles.fields}>
-        {/* Email input */}
-        <TextInput
-          style={[styles.input, emailError ? styles.inputError : null]}
-          label="Email"
-          name="email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            setEmailError("");
-          }}
-          inputMode="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          mode="outlined"
-        />
-        <Text style={styles.errorText}>{emailError}</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        {/* All container */}
+        <View style={styles.allContainer}>
+          <View style={styles.headerContainer}>
+            <Text
+              style={[
+                styles.headerText,
+                fontLoaded ? { fontFamily: "titleFont" } : {},
+              ]}
+            >
+              Sign Up
+            </Text>
+            <Text
+              style={[
+                styles.subHeaderText,
+                fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+              ]}
+            >
+              Please sign up to continue.
+            </Text>
+          </View>
+          <View style={styles.fields}>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="email"
+                size={20}
+                color="gray"
+                style={styles.iconForm}
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  emailError ? styles.inputError : null,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+                placeholder="EMAIL"
+                name="email"
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  setEmailError("");
+                }}
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect={false}
+                mode="outlined"
+              />
+            </View>
+            <Text
+              style={[
+                styles.errorText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              {emailError}
+            </Text>
 
-        {/* Password input */}
-        <TextInput
-          style={[styles.input, passwordError ? styles.inputError : null]}
-          label="Password"
-          name="password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError("");
-          }}
-          secureTextEntry={true}
-          autoCapitalize="none"
-          autoCorrect={false}
-          mode="outlined"
-        />
-        <Text style={styles.errorText}>{passwordError}</Text>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="lock"
+                size={20}
+                color="gray"
+                style={styles.iconForm}
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  passwordError ? styles.inputError : null,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+                placeholder="PASSWORD"
+                name="password"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setPasswordError("");
+                  setConfirmPasswordError("");
+                }}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                mode="outlined"
+              />
+            </View>
+            <Text
+              style={[
+                styles.errorText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              {passwordError}
+            </Text>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="lock"
+                size={20}
+                color="gray"
+                style={styles.iconForm}
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  passwordError ? styles.inputError : null,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+                placeholder="CONFIRM PASSWORD"
+                name="confirm-password"
+                value={confirmPassword}
+                onChangeText={(text) => {
+                  setConfirmPassword(text);
+                  setConfirmPasswordError("");
+                }}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                mode="outlined"
+              />
+            </View>
+            <Text
+              style={[
+                styles.errorText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              {confirmPasswordError}
+            </Text>
+            {/* Animated Signup button */}
+            <ButtonSignup title="SIGN UP" onPress={handleSignup} />
 
-        {/* Confirm password input */}
-        <TextInput
-          style={[
-            styles.input,
-            confirmPasswordError ? styles.inputError : null,
-          ]}
-          label="Confirm Password"
-          name="confirmPassword"
-          value={confirmPassword}
-          onChangeText={(text) => {
-            setConfirmPassword(text);
-            setConfirmPasswordError("");
-          }}
-          secureTextEntry={true}
-          autoCapitalize="none"
-          autoCorrect={false}
-          mode="outlined"
-        />
-        <Text style={styles.errorText}>{confirmPasswordError}</Text>
-      </View>
-
-      {/* Animated Signup button */}
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-        <Pressable
-          onPressIn={animatePressIn}
-          onPressOut={animatePressOut}
-          style={styles.button}
-          onPress={handleSignup}
-        >
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-      </Animated.View>
-
-      {/* Link to switch to login */}
-      <Pressable style={styles.loginContainer} onPress={onSwitch}>
-        <View style={styles.arrowSection}>
-          <MaterialIcons name="arrow-back" size={28} color="white" />
+            {/* Link to switch to login */}
+            <Pressable style={styles.signupContainer} onPress={onSwitch}>
+              <Text
+                style={[
+                  styles.signupText,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+              >
+                Already have an account?{" "}
+                <Text
+                  style={[
+                    styles.signup,
+                    fontLoaded ? { fontFamily: "textFont" } : {},
+                  ]}
+                >
+                  Sign in!
+                </Text>
+              </Text>
+            </Pressable>
+          </View>
         </View>
-        <View style={styles.joinUsSection}>
-          <Text style={styles.loginText}>Log in</Text>
-        </View>
-      </Pressable>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

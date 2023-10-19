@@ -3,6 +3,11 @@ import { StyleSheet } from "react-native";
 const LoginStyles = StyleSheet.create({
   screen: {
     flex: 1,
+    justifyContent: "center",
+  },
+  allContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   headerContainer: {
     padding: 30,
@@ -18,9 +23,7 @@ const LoginStyles = StyleSheet.create({
     marginTop: 10,
   },
   fields: {
-    flex: 1,
     paddingHorizontal: 30,
-    marginTop: 50,
   },
   inputWrapper: {
     flexDirection: "row",
@@ -42,13 +45,11 @@ const LoginStyles = StyleSheet.create({
   iconForm: {
     marginRight: 10,
   },
-  inputError: {
-    borderColor: "red",
-  },
+
   errorText: {
     color: "red",
     marginTop: 5,
-    fontSize: 12,
+    fontSize: 15,
   },
   forgotPasswordContainer: {
     position: "absolute",
@@ -59,36 +60,13 @@ const LoginStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
   },
-  button: {
-    marginTop: 30,
-    alignSelf: "flex-end",
-    textAlign: "center",
-    width: "50%",
-    padding: 20,
-    borderRadius: 50,
-    elevation: 5, // for Android
-    shadowColor: "#000", // for iOS
-    shadowOffset: { width: 0, height: 2 }, // for iOS
-    shadowOpacity: 0.25, // for iOS
-    shadowRadius: 3.84, // for iOS
-  },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    alignSelf: "center",
-    fontSize: 20,
-  },
   arrow: {
     marginLeft: 10,
   },
   signupContainer: {
     alignSelf: "center",
-    marginTop: 100,
+    marginTop: 50,
+    marginBottom: 10,
   },
   signupText: {
     color: "#3F525C",

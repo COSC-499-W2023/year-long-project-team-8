@@ -9,10 +9,12 @@ import {
   Platform,
   TextInput,
 } from "react-native";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Font from "expo-font";
 import styles from "./LoginStyles";
+import ButtonLogin from "../landing/ButtonLanding";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
@@ -61,11 +63,11 @@ const Login = ({ onSwitch, navigation }) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [authError, setAuthError] = useState("");
 
   // State variables for validation error messages
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [authError, setAuthError] = useState("");
 
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
@@ -168,27 +170,6 @@ const Login = ({ onSwitch, navigation }) => {
   //     })
   // };
 
-  // Initial value for button animation
-  const scaleValue = new Animated.Value(1);
-
-  // Animate button press-in effect (scale down)
-  const animatePressIn = () => {
-    Animated.timing(scaleValue, {
-      toValue: 0.95,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  // Animate button press-out effect (scale up)
-  const animatePressOut = () => {
-    Animated.timing(scaleValue, {
-      toValue: 1,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
-  };
-
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -209,150 +190,130 @@ const Login = ({ onSwitch, navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <View style={styles.headerContainer}>
-          <Text
-            style={[
-              styles.headerText,
-              fontLoaded ? { fontFamily: "customFont" } : {},
-            ]}
-          >
-            Login
-          </Text>
-          <Text
-            style={[
-              styles.subHeaderText,
-              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-            ]}
-          >
-            Please sign in to continue.
-          </Text>
-        </View>
-
-        <View style={styles.fields}>
-          <View style={styles.inputWrapper}>
-            <MaterialIcons
-              name="email"
-              size={20}
-              color="gray"
-              style={styles.iconForm}
-            />
-            <TextInput
-              style={[
-                styles.input,
-                emailError ? styles.inputError : null,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-              placeholder="EMAIL"
-              name="email"
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
-                setEmailError("");
-              }}
-              onFocus={() => setAuthError("")}
-              inputMode="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              mode="outlined"
-            />
-          </View>
-          <Text
-            style={[
-              styles.errorText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-          >
-            {emailError}
-          </Text>
-
-          <View style={styles.inputWrapper}>
-            <MaterialIcons
-              name="lock"
-              size={20}
-              color="gray"
-              style={styles.iconForm}
-            />
-            <TextInput
-              style={[
-                styles.input,
-                passwordError ? styles.inputError : null,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-              placeholder="PASSWORD"
-              name="password"
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                setPasswordError("");
-              }}
-              onFocus={() => setAuthError("")}
-              secureTextEntry={true}
-              autoCapitalize="none"
-              autoCorrect={false}
-              mode="outlined"
-            />
-            <Pressable style={styles.forgotPasswordContainer}>
-              <Text style={styles.forgotPasswordText}>Forgot?</Text>
-            </Pressable>
-          </View>
-          <Text
-            style={[
-              styles.errorText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-          >
-            {passwordError}
-          </Text>
-
-          <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-            <Pressable
-              onPress={handleLogin}
-              onPressIn={animatePressIn}
-              onPressOut={animatePressOut}
-            >
-              <LinearGradient
-                colors={["#F8B951", "#FCA63C"]}
-                style={styles.button}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <View style={styles.buttonContent}>
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      fontLoaded ? { fontFamily: "textFont" } : {},
-                    ]}
-                  >
-                    LOGIN
-                  </Text>
-                  <MaterialIcons
-                    name="arrow-forward-ios"
-                    size={20}
-                    color="white"
-                    style={styles.arrow}
-                  />
-                </View>
-              </LinearGradient>
-            </Pressable>
-          </Animated.View>
-          <Pressable style={styles.signupContainer} onPress={onSwitch}>
+        <View style={styles.allContainer}>
+          <View style={styles.headerContainer}>
             <Text
               style={[
-                styles.signupText,
+                styles.headerText,
+                fontLoaded ? { fontFamily: "titleFont" } : {},
+              ]}
+            >
+              Login
+            </Text>
+            <Text
+              style={[
+                styles.subHeaderText,
+                fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+              ]}
+            >
+              Please sign in to continue.
+            </Text>
+          </View>
+
+          <View style={styles.fields}>
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="email"
+                size={20}
+                color="gray"
+                style={styles.iconForm}
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  emailError ? styles.inputError : null,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+                placeholder="EMAIL"
+                name="email"
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  setEmailError("");
+                }}
+                onFocus={() => setAuthError("")}
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect={false}
+                mode="outlined"
+              />
+            </View>
+            <Text
+              style={[
+                styles.errorText,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
-              Don't have an account?{" "}
+              {emailError}
+            </Text>
+
+            <View style={styles.inputWrapper}>
+              <MaterialIcons
+                name="lock"
+                size={20}
+                color="gray"
+                style={styles.iconForm}
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  passwordError ? styles.inputError : null,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+                placeholder="PASSWORD"
+                name="password"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setPasswordError("");
+                }}
+                onFocus={() => setAuthError("")}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                mode="outlined"
+              />
+              <Pressable style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPasswordText}>Forgot?</Text>
+              </Pressable>
+            </View>
+            <Text
+              style={[
+                styles.errorText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              {passwordError}
+            </Text>
+            <Text
+              style={[
+                styles.errorText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              {authError}
+            </Text>
+
+            <ButtonLogin title="LOGIN" onPress={handleLogin} />
+            <Pressable style={styles.signupContainer} onPress={onSwitch}>
               <Text
                 style={[
-                  styles.signup,
+                  styles.signupText,
                   fontLoaded ? { fontFamily: "textFont" } : {},
                 ]}
               >
-                Sign up!
+                Don't have an account?{" "}
+                <Text
+                  style={[
+                    styles.signup,
+                    fontLoaded ? { fontFamily: "textFont" } : {},
+                  ]}
+                >
+                  Sign up!
+                </Text>
               </Text>
-            </Text>
-          </Pressable>
+            </Pressable>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
