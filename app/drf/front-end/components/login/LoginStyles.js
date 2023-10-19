@@ -42,14 +42,19 @@ const LoginStyles = StyleSheet.create({
     fontSize: 15,
     flex: 1,
   },
+  inputWrappererror: {
+    backgroundColor: "#ffd6d4",
+  },
+
   iconForm: {
     marginRight: 10,
   },
 
   errorText: {
-    color: "red",
-    marginTop: 5,
+    color: "#ff7770",
+    marginTop: 10,
     fontSize: 15,
+    marginLeft: 15,
   },
   forgotPasswordContainer: {
     position: "absolute",

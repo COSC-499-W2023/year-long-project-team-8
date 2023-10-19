@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from "react-native";
 import * as Font from "expo-font";
 import styles from "../login/LoginStyles";
@@ -26,11 +27,13 @@ const Signup = ({ onSwitch }) => {
   // Function to handle signup validation and submission
   const handleSignup = () => {
     let isValid = true;
+    Keyboard.dismiss();
+
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     // Validate email
     if (!email || !emailRegex.test(email)) {
-      setEmailError("*Invalid email");
+      setEmailError("Invalid email");
       isValid = false;
     } else {
       setEmailError("");
@@ -38,7 +41,7 @@ const Signup = ({ onSwitch }) => {
 
     // Validate password
     if (!password) {
-      setPasswordError("*Password required");
+      setPasswordError("Password required");
       isValid = false;
     } else {
       setPasswordError("");
@@ -46,7 +49,7 @@ const Signup = ({ onSwitch }) => {
 
     // Validate password confirmation
     if (password !== confirmPassword) {
-      setConfirmPasswordError("*Passwords do not match");
+      setConfirmPasswordError("Passwords do not match");
       isValid = false;
     } else {
       setConfirmPasswordError("");
@@ -72,162 +75,181 @@ const Signup = ({ onSwitch }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        {/* All container */}
-        <View style={styles.allContainer}>
-          <View style={styles.headerContainer}>
-            <Text
-              style={[
-                styles.headerText,
-                fontLoaded ? { fontFamily: "titleFont" } : {},
-              ]}
-            >
-              Sign Up
-            </Text>
-            <Text
-              style={[
-                styles.subHeaderText,
-                fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-              ]}
-            >
-              Please sign up to continue.
-            </Text>
-          </View>
-          <View style={styles.fields}>
-            <View style={styles.inputWrapper}>
-              <MaterialIcons
-                name="email"
-                size={20}
-                color="gray"
-                style={styles.iconForm}
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  emailError ? styles.inputError : null,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-                placeholder="EMAIL"
-                name="email"
-                value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  setEmailError("");
-                }}
-                inputMode="email"
-                autoCapitalize="none"
-                autoCorrect={false}
-                mode="outlined"
-              />
-            </View>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {emailError}
-            </Text>
-
-            <View style={styles.inputWrapper}>
-              <MaterialIcons
-                name="lock"
-                size={20}
-                color="gray"
-                style={styles.iconForm}
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  passwordError ? styles.inputError : null,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-                placeholder="PASSWORD"
-                name="password"
-                value={password}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  setPasswordError("");
-                  setConfirmPasswordError("");
-                }}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoCorrect={false}
-                mode="outlined"
-              />
-            </View>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {passwordError}
-            </Text>
-            <View style={styles.inputWrapper}>
-              <MaterialIcons
-                name="lock"
-                size={20}
-                color="gray"
-                style={styles.iconForm}
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  passwordError ? styles.inputError : null,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-                placeholder="CONFIRM PASSWORD"
-                name="confirm-password"
-                value={confirmPassword}
-                onChangeText={(text) => {
-                  setConfirmPassword(text);
-                  setConfirmPasswordError("");
-                }}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoCorrect={false}
-                mode="outlined"
-              />
-            </View>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {confirmPasswordError}
-            </Text>
-            {/* Animated Signup button */}
-            <ButtonSignup title="SIGN UP" onPress={handleSignup} />
-
-            {/* Link to switch to login */}
-            <Pressable style={styles.signupContainer} onPress={onSwitch}>
-              <Text
-                style={[
-                  styles.signupText,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-              >
-                Already have an account?{" "}
-                <Text
-                  style={[
-                    styles.signup,
-                    fontLoaded ? { fontFamily: "textFont" } : {},
-                  ]}
-                >
-                  Sign in!
-                </Text>
-              </Text>
-            </Pressable>
-          </View>
+    <View style={styles.screen}>
+      <View style={styles.headerContainer}>
+        <Text
+          style={[
+            styles.headerText,
+            fontLoaded ? { fontFamily: "titleFont" } : {},
+          ]}
+        >
+          Sign Up
+        </Text>
+        <Text
+          style={[
+            styles.subHeaderText,
+            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+          ]}
+        >
+          Please sign up to continue.
+        </Text>
+      </View>
+      <View style={styles.fields}>
+        <View
+          style={[
+            styles.inputWrapper,
+            emailError ? styles.inputWrappererror : null,
+          ]}
+        >
+          <MaterialIcons
+            name="email"
+            size={20}
+            color={emailError ? "#ff7770" : "gray"}
+            style={styles.iconForm}
+          />
+          <TextInput
+            style={[
+              styles.input,
+              emailError ? styles.inputError : null,
+              fontLoaded ? { fontFamily: "textFont" } : {},
+            ]}
+            placeholder="EMAIL"
+            name="email"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError("");
+            }}
+            onFocus={() => {
+              setEmailError("");
+            }}
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            mode="outlined"
+          />
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <Text
+          style={[
+            styles.errorText,
+            fontLoaded ? { fontFamily: "textFont" } : {},
+          ]}
+        >
+          {emailError}
+        </Text>
+
+        <View
+          style={[
+            styles.inputWrapper,
+            passwordError || confirmPasswordError
+              ? styles.inputWrappererror
+              : null,
+          ]}
+        >
+          <MaterialIcons
+            name="lock"
+            size={20}
+            color={passwordError || confirmPasswordError ? "#ff7770" : "gray"}
+            style={styles.iconForm}
+          />
+          <TextInput
+            style={[
+              styles.input,
+              passwordError || confirmPasswordError ? styles.inputError : null,
+              fontLoaded ? { fontFamily: "textFont" } : {},
+            ]}
+            placeholder="PASSWORD"
+            name="password"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              setPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            secureTextEntry={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            mode="outlined"
+          />
+        </View>
+        <Text
+          style={[
+            styles.errorText,
+            fontLoaded ? { fontFamily: "textFont" } : {},
+          ]}
+        >
+          {passwordError}
+        </Text>
+        <View
+          style={[
+            styles.inputWrapper,
+            confirmPasswordError ? styles.inputWrappererror : null,
+          ]}
+        >
+          <MaterialIcons
+            name="lock"
+            size={20}
+            color={confirmPasswordError ? "#ff7770" : "gray"}
+            style={styles.iconForm}
+          />
+          <TextInput
+            style={[
+              styles.input,
+              passwordError ? styles.inputError : null,
+              fontLoaded ? { fontFamily: "textFont" } : {},
+            ]}
+            placeholder="CONFIRM PASSWORD"
+            name="confirm-password"
+            value={confirmPassword}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setConfirmPasswordError("");
+            }}
+            secureTextEntry={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            mode="outlined"
+          />
+        </View>
+        <Text
+          style={[
+            styles.errorText,
+            fontLoaded ? { fontFamily: "textFont" } : {},
+          ]}
+        >
+          {confirmPasswordError}
+        </Text>
+        {/* Animated Signup button */}
+        <ButtonSignup title="SIGN UP" onPress={handleSignup} />
+
+        {/* Link to switch to login */}
+        <Pressable style={styles.signupContainer} onPress={onSwitch}>
+          <Text
+            style={[
+              styles.signupText,
+              fontLoaded ? { fontFamily: "textFont" } : {},
+            ]}
+          >
+            Already have an account?{" "}
+            <Text
+              style={[
+                styles.signup,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              Sign in!
+            </Text>
+          </Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };
 

@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Animated, Pressable, Text, View, StyleSheet } from "react-native";
+import {
+  Animated,
+  Pressable,
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import * as Font from "expo-font";
 
+const screenWidth = Dimensions.get("window").width;
+const translateValue = screenWidth * 0.5; // make this equal to half of the button's width so the shine fully translates across it
+
 const ButtonLogin = ({ title, onPress }) => {
-  // Initial value for button animation
   const scaleValue = new Animated.Value(1);
 
-  // Animate button press-in effect (scale down)
   const animatePressIn = () => {
     Animated.timing(scaleValue, {
       toValue: 0.95,
@@ -18,7 +26,6 @@ const ButtonLogin = ({ title, onPress }) => {
     }).start();
   };
 
-  // Animate button press-out effect (scale up)
   const animatePressOut = () => {
     Animated.timing(scaleValue, {
       toValue: 1,
@@ -28,6 +35,16 @@ const ButtonLogin = ({ title, onPress }) => {
   };
 
   const [fontLoaded, setFontLoaded] = useState(false);
+  const shinePosition = useRef(new Animated.Value(-1)).current; // -1 represents the initial offscreen position
+
+  const animateShine = () => {
+    shinePosition.setValue(-translateValue);
+    Animated.timing(shinePosition, {
+      toValue: screenWidth * 0.5 + translateValue,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  };
 
   useEffect(() => {
     const loadFont = async () => {
@@ -37,6 +54,10 @@ const ButtonLogin = ({ title, onPress }) => {
       setFontLoaded(true);
     };
     loadFont();
+  }, []);
+
+  useEffect(() => {
+    animateShine();
   }, []);
 
   return (
@@ -51,7 +72,7 @@ const ButtonLogin = ({ title, onPress }) => {
           onPress={onPress}
           onPressIn={animatePressIn}
           onPressOut={animatePressOut}
-          style={styles.buttonContent} // Apply the style directly here
+          style={styles.buttonContent}
         >
           <Text
             style={[
@@ -68,6 +89,20 @@ const ButtonLogin = ({ title, onPress }) => {
             style={styles.arrow}
           />
         </Pressable>
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            styles.shine,
+            {
+              transform: [
+                { translateX: shinePosition },
+                { perspective: 800 },
+                { scaleX: 2 },
+                { rotate: "45deg" },
+              ],
+            },
+          ]}
+        />
       </LinearGradient>
     </Animated.View>
   );
@@ -85,12 +120,21 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 }, // for iOS
     shadowOpacity: 0.25, // for iOS
     shadowRadius: 3.84, // for iOS
+    overflow: "hidden", // <<< Add this line
   },
   buttonContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    padding: 20, // Moved padding from 'button' to here
+    padding: 20,
+  },
+  shine: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "140%",
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
   },
   buttonText: {
     color: "white",
