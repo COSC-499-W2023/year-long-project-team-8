@@ -10,9 +10,9 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import Login from "../login/Login";
-import Signup from "../Signup/Signup.js";
-import logo from "../../assets/logo.png";
+import Login from "../loginSignup/Login";
+import Signup from "../loginSignup/Signup.js";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"; // Importing the library
 import styles from "./LandingStyle";
 
 // Background image and screen width constants
@@ -45,47 +45,37 @@ const Landing = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.screen}>
-        {/* Component to avoid overlapping the keyboard */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          scrollEnabled={true}
+          centerContent={true}
         >
-          {/* Vertical scroll view to accommodate Login and Signup screens when keyboard is covering screen*/}
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ flexGrow: 1 }}
-            centerContent={true}
+          <ImageBackground
+            source={backgroundImage}
+            resizeMode="cover"
+            style={styles.backgroundImage}
           >
-            {/* Background image */}
-            <ImageBackground
-              source={backgroundImage}
-              resizeMode="cover"
-              style={styles.backgroundImage}
+            <Animated.View
+              style={{
+                flexDirection: "row",
+                width: width * 2,
+                transform: [
+                  {
+                    translateX: translateXValue,
+                  },
+                ],
+              }}
             >
-              {/* Animated container holding both Login and Signup */}
-              <Animated.View
-                style={{
-                  flexDirection: "row",
-                  width: width * 2,
-                  transform: [
-                    {
-                      translateX: translateXValue,
-                    },
-                  ],
-                }}
-              >
-                {/* Login component */}
-                <View style={{ width: width }}>
-                  <Login onSwitch={animateToSignup} navigation={navigation} />
-                </View>
-                {/* Signup component */}
-                <View style={{ width: width, height: height }}>
-                  <Signup onSwitch={animateToLogin} />
-                </View>
-              </Animated.View>
-            </ImageBackground>
-          </ScrollView>
-        </KeyboardAvoidingView>
+              <View style={{ width: width }}>
+                <Login onSwitch={animateToSignup} navigation={navigation} />
+              </View>
+              <View style={{ width: width, height: height }}>
+                <Signup onSwitch={animateToLogin} />
+              </View>
+            </Animated.View>
+          </ImageBackground>
+        </KeyboardAwareScrollView>
       </View>
     </SafeAreaView>
   );

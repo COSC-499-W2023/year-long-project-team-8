@@ -9,13 +9,6 @@ const LandingStyles = StyleSheet.create({
     backgroundColor: "#fff3d7",
     justifyContent: "center",
   },
-  logoImage: {
-    position: "absolute",
-    top: screenHeight * 0.1,
-    left: (screenWidth - 350) / 2,
-    height: 200,
-    width: 350,
-  },
   backgroundImage: {
     flex: 1,
     height: screenHeight,

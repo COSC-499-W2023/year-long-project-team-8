@@ -2,19 +2,17 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   Pressable,
   KeyboardAvoidingView,
   Platform,
-  TextInput,
   Keyboard,
   ScrollView,
 } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
-import styles from "./LoginStyles";
-import ButtonLogin from "../landing/ButtonLanding";
+import LoginStyles from "./LoginStyles";
+import ButtonLogin from "./ButtonLanding";
+import InputField from "./InputField";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
@@ -187,11 +185,11 @@ const Login = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer}>
+    <View style={{ ...LoginStyles.screen, flex: 1, justifyContent: "center" }}>
+      <View style={LoginStyles.headerContainer}>
         <Text
           style={[
-            styles.headerText,
+            LoginStyles.headerText,
             fontLoaded ? { fontFamily: "titleFont" } : {},
           ]}
         >
@@ -199,7 +197,7 @@ const Login = ({ onSwitch, navigation }) => {
         </Text>
         <Text
           style={[
-            styles.subHeaderText,
+            LoginStyles.subHeaderText,
             fontLoaded ? { fontFamily: "subHeaderFont" } : {},
           ]}
         >
@@ -207,111 +205,65 @@ const Login = ({ onSwitch, navigation }) => {
         </Text>
       </View>
 
-      <View style={styles.fields}>
-        <View
-          style={[
-            styles.inputWrapper,
-            authError || emailError ? styles.inputWrappererror : null,
-          ]}
-        >
-          <MaterialIcons
-            name="email"
-            size={20}
-            color={authError || emailError ? "#ff7770" : "gray"}
-            style={styles.iconForm}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              authError || emailError ? styles.inputError : null,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-            placeholder="EMAIL"
-            name="email"
-            value={email}
-            onChangeText={(text) => {
-              setEmail(text);
-              setEmailError("");
-              setAuthError("");
-            }}
-            onFocus={() => {
-              setAuthError("");
-              setEmailError("");
-            }}
-            inputMode="email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            mode="outlined"
-          />
-        </View>
-        <Text
-          style={[
-            styles.errorText,
-            fontLoaded ? { fontFamily: "textFont" } : {},
-          ]}
-        >
-          {emailError}
-        </Text>
-        <View
-          style={[
-            styles.inputWrapper,
-            authError || passwordError ? styles.inputWrappererror : null,
-          ]}
-        >
-          <MaterialIcons
-            name="lock"
-            size={20}
-            color={authError || passwordError ? "#ff7770" : "gray"}
-            style={styles.iconForm}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              authError || passwordError ? styles.inputError : null,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-            placeholder="PASSWORD"
-            name="password"
-            value={password}
-            onChangeText={(text) => {
-              setPassword(text);
-              setPasswordError("");
-              setAuthError("");
-            }}
-            onFocus={() => {
-              setAuthError("");
-              setPasswordError("");
-            }}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            autoCorrect={false}
-            mode="outlined"
-          />
-          <Pressable style={styles.forgotPasswordContainer}>
-            <Text style={styles.forgotPasswordText}>Forgot?</Text>
-          </Pressable>
-        </View>
-        <Text
-          style={[
-            styles.errorText,
-            fontLoaded ? { fontFamily: "textFont" } : {},
-          ]}
-        >
-          {passwordError || authError}
-        </Text>
+      <View style={LoginStyles.fields}>
+        <InputField
+          icon="email"
+          placeholder="email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError("");
+            setAuthError("");
+          }}
+          onFocus={() => {
+            setAuthError("");
+            setEmailError("");
+          }}
+          errorText={emailError}
+          inputMode="email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          name="email"
+        />
+
+        <InputField
+          icon="lock"
+          placeholder="password"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+            setPasswordError("");
+            setAuthError("");
+          }}
+          onFocus={() => {
+            setAuthError("");
+            setPasswordError("");
+          }}
+          secureTextEntry={true}
+          autoCapitalize="none"
+          autoCorrect={false}
+          name="password"
+          rightComponent={
+            <Pressable style={LoginStyles.forgotPasswordContainer}>
+              <Text style={LoginStyles.forgotPasswordText}>Forgot?</Text>
+            </Pressable>
+          }
+          errorText={passwordError || authError}
+        />
 
         <ButtonLogin title="LOGIN" onPress={handleLogin} />
-        <Pressable style={styles.signupContainer} onPress={onSwitch}>
+
+        <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
           <Text
             style={[
-              styles.signupText,
+              LoginStyles.signupText,
               fontLoaded ? { fontFamily: "textFont" } : {},
             ]}
           >
             Don't have an account?{" "}
             <Text
               style={[
-                styles.signup,
+                LoginStyles.signup,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
