@@ -32,15 +32,6 @@ const InputStyles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 15,
   },
-  forgotPasswordContainer: {
-    position: "absolute",
-    right: 15,
-  },
-  forgotPasswordText: {
-    color: "orange",
-    fontWeight: "bold",
-    fontSize: 15,
-  },
 });
 
 export default InputStyles;

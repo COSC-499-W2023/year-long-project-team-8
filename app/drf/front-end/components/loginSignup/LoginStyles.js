@@ -26,11 +26,11 @@ const LoginStyles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   forgotPasswordContainer: {
-    position: "absolute",
-    right: 15,
+    marginTop: 20,
+    marginLeft: 15,
   },
   forgotPasswordText: {
-    color: "orange",
+    color: "#DB6D2A",
     fontWeight: "bold",
     fontSize: 15,
   },

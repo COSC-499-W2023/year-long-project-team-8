@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Pressable,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from "react-native";
+import { View, Text, Pressable, Keyboard } from "react-native";
 import * as Font from "expo-font";
 import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";

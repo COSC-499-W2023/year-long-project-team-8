@@ -8,6 +8,7 @@ import {
   Keyboard,
   ScrollView,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
@@ -66,6 +67,9 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
+
+  //State variable for show password
+  const [showPassword, setShowPassword] = useState(false);
 
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
@@ -239,17 +243,26 @@ const Login = ({ onSwitch, navigation }) => {
             setAuthError("");
             setPasswordError("");
           }}
-          secureTextEntry={true}
+          secureTextEntry={!showPassword}
           autoCapitalize="none"
           autoCorrect={false}
           name="password"
           rightComponent={
-            <Pressable style={LoginStyles.forgotPasswordContainer}>
-              <Text style={LoginStyles.forgotPasswordText}>Forgot?</Text>
-            </Pressable>
+            <>
+              <Pressable onPress={() => setShowPassword(!showPassword)}>
+                <MaterialIcons
+                  name={showPassword ? "visibility" : "visibility-off"}
+                  size={25}
+                  color="gray"
+                />
+              </Pressable>
+            </>
           }
           errorText={passwordError || authError}
         />
+        <Pressable style={LoginStyles.forgotPasswordContainer}>
+          <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
+        </Pressable>
 
         <ButtonLogin title="LOGIN" onPress={handleLogin} />
 
