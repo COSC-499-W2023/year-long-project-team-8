@@ -2,19 +2,18 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   Pressable,
-  Animated,
   KeyboardAvoidingView,
   Platform,
-  TextInput,
+  Keyboard,
+  ScrollView,
 } from "react-native";
-
 import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+
 import * as Font from "expo-font";
-import styles from "./LoginStyles";
-import ButtonLogin from "../landing/ButtonLanding";
+import LoginStyles from "./LoginStyles";
+import ButtonLogin from "./ButtonLanding";
+import InputField from "./InputField";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
@@ -69,12 +68,16 @@ const Login = ({ onSwitch, navigation }) => {
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
 
+  //State variable for show password
+  const [showPassword, setShowPassword] = useState(false);
+
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
   // Function to handle login upon button press
   const handleLogin = () => {
     let isValid = true;
+    Keyboard.dismiss();
 
     // Regex pattern to validate email address format
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -89,7 +92,7 @@ const Login = ({ onSwitch, navigation }) => {
 
     // Check if password is provided
     if (!password) {
-      setPasswordError("*Password required");
+      setPasswordError("Password required");
       isValid = false;
     } else {
       setPasswordError("");
@@ -127,7 +130,7 @@ const Login = ({ onSwitch, navigation }) => {
             navigation.navigate("HomePage", { username: email });
             handleAuthData(authData, getProductList);
           } else {
-            if (password && email) setAuthError("*Wrong email or password");
+            if (password && email) setAuthError("Wrong email or password");
           }
         })
         .then((x) => {
@@ -135,6 +138,7 @@ const Login = ({ onSwitch, navigation }) => {
         })
         .catch((err) => {
           console.log("err", err);
+          setAuthError("Wrong email or password");
         });
     }
   };
@@ -185,138 +189,103 @@ const Login = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <View style={styles.allContainer}>
-          <View style={styles.headerContainer}>
-            <Text
-              style={[
-                styles.headerText,
-                fontLoaded ? { fontFamily: "titleFont" } : {},
-              ]}
-            >
-              Login
-            </Text>
-            <Text
-              style={[
-                styles.subHeaderText,
-                fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-              ]}
-            >
-              Please sign in to continue.
-            </Text>
-          </View>
+    <View style={{ ...LoginStyles.screen, flex: 1, justifyContent: "center" }}>
+      <View style={LoginStyles.headerContainer}>
+        <Text
+          style={[
+            LoginStyles.headerText,
+            fontLoaded ? { fontFamily: "titleFont" } : {},
+          ]}
+        >
+          Login
+        </Text>
+        <Text
+          style={[
+            LoginStyles.subHeaderText,
+            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+          ]}
+        >
+          Please sign in to continue.
+        </Text>
+      </View>
 
-          <View style={styles.fields}>
-            <View style={styles.inputWrapper}>
-              <MaterialIcons
-                name="email"
-                size={20}
-                color="gray"
-                style={styles.iconForm}
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  emailError ? styles.inputError : null,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-                placeholder="EMAIL"
-                name="email"
-                value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  setEmailError("");
-                }}
-                onFocus={() => setAuthError("")}
-                inputMode="email"
-                autoCapitalize="none"
-                autoCorrect={false}
-                mode="outlined"
-              />
-            </View>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {emailError}
-            </Text>
+      <View style={LoginStyles.fields}>
+        <InputField
+          icon="email"
+          placeholder="email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError("");
+            setAuthError("");
+          }}
+          onFocus={() => {
+            setAuthError("");
+            setEmailError("");
+          }}
+          errorText={emailError}
+          inputMode="email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          name="email"
+        />
 
-            <View style={styles.inputWrapper}>
-              <MaterialIcons
-                name="lock"
-                size={20}
-                color="gray"
-                style={styles.iconForm}
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  passwordError ? styles.inputError : null,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-                placeholder="PASSWORD"
-                name="password"
-                value={password}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  setPasswordError("");
-                }}
-                onFocus={() => setAuthError("")}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoCorrect={false}
-                mode="outlined"
-              />
-              <Pressable style={styles.forgotPasswordContainer}>
-                <Text style={styles.forgotPasswordText}>Forgot?</Text>
+        <InputField
+          icon="lock"
+          placeholder="password"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+            setPasswordError("");
+            setAuthError("");
+          }}
+          onFocus={() => {
+            setAuthError("");
+            setPasswordError("");
+          }}
+          secureTextEntry={!showPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+          name="password"
+          rightComponent={
+            <>
+              <Pressable onPress={() => setShowPassword(!showPassword)}>
+                <MaterialIcons
+                  name={showPassword ? "visibility" : "visibility-off"}
+                  size={25}
+                  color="gray"
+                />
               </Pressable>
-            </View>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {passwordError}
-            </Text>
-            <Text
-              style={[
-                styles.errorText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
-            >
-              {authError}
-            </Text>
+            </>
+          }
+          errorText={passwordError || authError}
+        />
+        <Pressable style={LoginStyles.forgotPasswordContainer}>
+          <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
+        </Pressable>
 
-            <ButtonLogin title="LOGIN" onPress={handleLogin} />
-            <Pressable style={styles.signupContainer} onPress={onSwitch}>
-              <Text
-                style={[
-                  styles.signupText,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
-              >
-                Don't have an account?{" "}
-                <Text
-                  style={[
-                    styles.signup,
-                    fontLoaded ? { fontFamily: "textFont" } : {},
-                  ]}
-                >
-                  Sign up!
-                </Text>
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <ButtonLogin title="LOGIN" onPress={handleLogin} />
+
+        <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
+          <Text
+            style={[
+              LoginStyles.signupText,
+              fontLoaded ? { fontFamily: "textFont" } : {},
+            ]}
+          >
+            Don't have an account?{" "}
+            <Text
+              style={[
+                LoginStyles.signup,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              Sign up!
+            </Text>
+          </Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };
 

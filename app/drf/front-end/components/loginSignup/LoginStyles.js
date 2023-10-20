@@ -25,38 +25,13 @@ const LoginStyles = StyleSheet.create({
   fields: {
     paddingHorizontal: 30,
   },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 20,
-    backgroundColor: "white",
-    elevation: 5,
-    padding: 15,
-    borderRadius: 20,
-    shadowColor: "#000", // for iOS
-    shadowOffset: { width: 0, height: 2 }, // for iOS
-    shadowOpacity: 0.25, // for iOS
-    shadowRadius: 3.84, // for iOS
-  },
-  input: {
-    fontSize: 15,
-    flex: 1,
-  },
-  iconForm: {
-    marginRight: 10,
-  },
-
-  errorText: {
-    color: "red",
-    marginTop: 5,
-    fontSize: 15,
-  },
   forgotPasswordContainer: {
-    position: "absolute",
-    right: 15,
+    alignItems: "flex-start",
+    marginTop: 10,
+    marginLeft: 15,
   },
   forgotPasswordText: {
-    color: "orange",
+    color: "#732E00",
     fontWeight: "bold",
     fontSize: 15,
   },
@@ -65,16 +40,16 @@ const LoginStyles = StyleSheet.create({
   },
   signupContainer: {
     alignSelf: "center",
-    marginTop: 50,
-    marginBottom: 10,
+    marginTop: 60,
   },
   signupText: {
     color: "#3F525C",
     fontWeight: "bold",
+    fontSize: 16,
   },
   signup: {
     color: "#DB6D2A",
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: "bold",
   },
 });
