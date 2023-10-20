@@ -19,17 +19,12 @@ const InputField = ({
 }) => {
   return (
     <View>
-      <View
-        style={[
-          InputStyles.inputWrapper,
-          errorText ? InputStyles.inputWrappererror : null,
-        ]}
-      >
+      <View style={[InputStyles.inputWrapper]}>
         {icon && (
           <MaterialIcons
             name={icon}
             size={20}
-            color={errorText ? "#ff7770" : "gray"}
+            color={errorText ? "red" : "gray"}
             style={InputStyles.iconForm}
           />
         )}
@@ -44,6 +39,7 @@ const InputField = ({
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           name={name}
+          underlineColorAndroid="transparent"
         />
         {rightComponent}
       </View>

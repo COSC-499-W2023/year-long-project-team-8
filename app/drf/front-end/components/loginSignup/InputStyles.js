@@ -4,7 +4,7 @@ const InputStyles = StyleSheet.create({
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 15,
     backgroundColor: "white",
     elevation: 5,
     padding: 15,
@@ -18,16 +18,12 @@ const InputStyles = StyleSheet.create({
     fontSize: 15,
     flex: 1,
   },
-  inputWrappererror: {
-    backgroundColor: "#ffd6d4",
-  },
 
   iconForm: {
     marginRight: 10,
   },
-
   errorText: {
-    color: "#ff7770",
+    color: "red",
     marginTop: 10,
     fontSize: 15,
     marginLeft: 15,

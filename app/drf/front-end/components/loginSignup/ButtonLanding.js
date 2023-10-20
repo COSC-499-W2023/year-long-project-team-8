@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignSelf: "flex-end",
     textAlign: "center",
-    width: "50%",
     borderRadius: 50,
     elevation: 5, // for Android
     shadowColor: "#000", // for iOS

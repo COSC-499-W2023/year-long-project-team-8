@@ -26,11 +26,12 @@ const LoginStyles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   forgotPasswordContainer: {
-    marginTop: 20,
+    alignItems: "flex-start",
+    marginTop: 10,
     marginLeft: 15,
   },
   forgotPasswordText: {
-    color: "#DB6D2A",
+    color: "#732E00",
     fontWeight: "bold",
     fontSize: 15,
   },
@@ -39,16 +40,16 @@ const LoginStyles = StyleSheet.create({
   },
   signupContainer: {
     alignSelf: "center",
-    marginTop: 50,
-    marginBottom: 10,
+    marginTop: 60,
   },
   signupText: {
     color: "#3F525C",
     fontWeight: "bold",
+    fontSize: 16,
   },
   signup: {
     color: "#DB6D2A",
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: "bold",
   },
 });

@@ -5,16 +5,20 @@ import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
+import PasswordStrengthBar from "./PasswordStrengthBar";
+import ChecklistModal from "./ChecklistModal";
 
 const Signup = ({ onSwitch }) => {
   // State for form fields
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   // State for form field errors
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [signupEmailError, setSignupEmailError] = useState("");
+  const [signupPasswordError, setSignupPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
 
   // Function to handle signup validation and submission
   const handleSignup = () => {
@@ -24,23 +28,23 @@ const Signup = ({ onSwitch }) => {
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     // Validate email
-    if (!email || !emailRegex.test(email)) {
-      setEmailError("Invalid email");
+    if (!signupEmail || !emailRegex.test(signupEmail)) {
+      setSignupEmailError("Invalid email");
       isValid = false;
     } else {
-      setEmailError("");
+      setSignupEmailError("");
     }
 
     // Validate password
-    if (!password) {
-      setPasswordError("Password required");
+    if (!signupPassword) {
+      setSignupPasswordError("Password required");
       isValid = false;
     } else {
-      setPasswordError("");
+      setSignupPasswordError("");
     }
 
     // Validate password confirmation
-    if (password !== confirmPassword) {
+    if (signupPassword !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       isValid = false;
     } else {
@@ -91,40 +95,57 @@ const Signup = ({ onSwitch }) => {
         <InputField
           icon="email"
           placeholder="email"
-          value={email}
+          value={signupEmail}
           onChangeText={(text) => {
-            setEmail(text);
-            setEmailError("");
+            setSignupEmail(text);
+            setSignupEmailError("");
           }}
           onFocus={() => {
-            setEmailError("");
+            setSignupEmailError("");
           }}
           inputMode="email"
           autoCapitalize="none"
           autoCorrect={false}
           name="email"
-          errorText={emailError}
+          errorText={signupEmailError}
         />
 
         <InputField
           icon="lock"
           placeholder="password"
-          value={password}
+          value={signupPassword}
           onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError("");
+            setSignupPassword(text);
+            setSignupPasswordError("");
             setConfirmPasswordError("");
           }}
           onFocus={() => {
-            setPasswordError("");
+            setSignupPasswordError("");
             setConfirmPasswordError("");
           }}
-          secureTextEntry={true}
+          secureTextEntry={!showPassword}
           autoCapitalize="none"
           autoCorrect={false}
           name="password"
-          errorText={passwordError}
+          rightComponent={
+            <View style={{ flexDirection: "row" }}>
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={{ marginRight: 10 }}
+              >
+                <MaterialIcons
+                  name={showPassword ? "visibility" : "visibility-off"}
+                  size={25}
+                  color="gray"
+                />
+              </Pressable>
+              <ChecklistModal password={signupPassword} />
+            </View>
+          }
+          errorText={signupPasswordError}
         />
+
+        <PasswordStrengthBar password={signupPassword} />
 
         <InputField
           icon="lock"
@@ -137,10 +158,10 @@ const Signup = ({ onSwitch }) => {
           onFocus={() => {
             setConfirmPasswordError("");
           }}
-          secureTextEntry={true}
           autoCapitalize="none"
+          secureTextEntry={true}
           autoCorrect={false}
-          name="confirm-password"
+          name="confirmPassword"
           errorText={confirmPasswordError}
         />
 
