@@ -82,13 +82,13 @@ const Login = ({ onSwitch, navigation }) => {
     // Regex pattern to validate email address format
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    // Validate email format
-    // if (!email || !emailRegex.test(email)) {
-    //   setEmailError("*Invalid email");
-    //   isValid = false;
-    // } else {
-    //   setEmailError("");
-    // }
+   // Validate email format
+    if (!email || !emailRegex.test(email)) {
+      setEmailError("*Invalid email");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
 
     // Check if password is provided
     if (!password) {
@@ -106,7 +106,7 @@ const Login = ({ onSwitch, navigation }) => {
 
       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
       let bodyObj = {
-        username: email,
+        email: email,
         password: password,
       };
 
@@ -127,7 +127,7 @@ const Login = ({ onSwitch, navigation }) => {
         })
         .then((authData) => {
           if (authData && authData.access) {
-            navigation.navigate("HomePage", { username: email });
+            navigation.navigate("HomePage", { email: email });
             handleAuthData(authData, getProductList);
           } else {
             if (password && email) setAuthError("Wrong email or password");

@@ -8,6 +8,8 @@ import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
+const baseEndpoint = "http://localhost:8000/api";
+const signUpEndpoint = `${baseEndpoint}/users/`;
 const Signup = ({ onSwitch }) => {
   // State for form fields
   const [signupEmail, setSignupEmail] = useState("");
@@ -53,6 +55,31 @@ const Signup = ({ onSwitch }) => {
 
     if (isValid) {
       // TODO: back-end signup logic
+      let bodyObj = {
+        email: signupEmail,
+        password: signupPassword,
+      };
+       // need to pass the data as JSON for our API to deal with
+       const bodyStr = JSON.stringify(bodyObj);
+       console.log(bodyStr);
+       const options = {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: bodyStr,
+       };
+       fetch(signUpEndpoint, options) //  Promise
+         .then((response) => {
+           console.log(response);
+           return response.json();
+         })
+         .then((x) => {
+           console.log(x);
+         })
+         .catch((err) => {
+           console.log("err", err);
+         });
     }
   };
 

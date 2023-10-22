@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     # third party packages
     "corsheaders",
     "rest_framework",
-    "rest_framework.authtoken",
+     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     # internal apps
     "api",
     'products',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
