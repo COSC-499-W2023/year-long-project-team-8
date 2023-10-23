@@ -97,6 +97,10 @@ no coding this week so no testing
 
 
 
+## Work Period
+<!-- 
+- start/end dates of the week
+-->
 October 9 - October 22, 2023
 
 
@@ -106,7 +110,7 @@ October 9 - October 22, 2023
 -->
 https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
 <br>
-![project_board_w5](../img/projboard_w5.png)
+![project_board_w6](../img/projboard_w6.png)
 
 ### Username Map
 <!-- 
@@ -121,23 +125,41 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 <!--
 - goals that are to be done
 -->
-- Work through connecting our DJANGO REST framework backend to our React Native front-end.
-- get the project environment set up
+- Finish environment setup on our machines
+- Create Django Rest Framework back-end setup
+- Create React Native front-end setup
+- Create UI design on Figma for login and sign up page
+- Implement UI desgin on React Native
+- Implement some basic password security on the front-end (strength, hide/show)
+- Add dynamic UI to login/sign up page
+- Modify basic React Native App to consume REST Api.
+- Authentication and registration (front-end)
+- Authentication and registration (back-end)
 
 ### Completed Tasks
 <!--
 - tasks that are completed
 -->
-- create figma accounts and get a group session set up
-- get the project environment set up
+- Finish environment setup on our machines
+- Create Django Rest Framework back-end setup
+- Create React Native front-end setup
+- Create UI design on Figma for login and sign up page
+- Implement UI desgin on React Native
+- Implement some basic password security on the front-end (strength, hide/show)
+- Add dynamic UI to login/sign up page
+- Modify basic React Native App to consume REST Api.
+- Authentication and registration (front-end)
+- Authentication and registration (back-end)
 
 ### In Progress Tasks
 <!--
 - tasks that are currently in progress
 -->
-- creating mockups for ui/ux
-- paper prototyping
-- user testing
+- UI improvenets
+- Sign-up/registration
+- more user testing
+- Database management
+- Learning frameworks and researching map tools for react native
 
 ### Burnup Chart
 <!-- 
@@ -145,7 +167,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 https://github.com/orgs/COSC-499-W2023/projects/39/insights
 <br>
-![burnup-chart](../img/burnup_w5.png)
+![burnup-chart](../img/burnup_w6.png)
 
 
 ### Test Report
