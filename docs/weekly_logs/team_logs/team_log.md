@@ -108,7 +108,6 @@ October 9 - October 22, 2023
 <!-- 
 - screenshot of the projects board
 -->
-https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
 <br>
 ![project_board_w6](../img/projboard_w6.png)
 
@@ -165,8 +164,6 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 <!-- 
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-https://github.com/orgs/COSC-499-W2023/projects/39/insights
-<br>
 ![burnup-chart](../img/burnup_w6.png)
 
 
@@ -176,4 +173,5 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 
 - add screenshot(s) of test run summary 
 -->
-no coding this week so no testing
+Have been testing for authentication
+Tests:
