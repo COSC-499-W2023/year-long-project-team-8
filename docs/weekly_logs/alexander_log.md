@@ -55,3 +55,34 @@
 |   3    |           | ✓          |
 |   4    |           | ✓          |
 |   5    |           | ✓          |
+
+### Work Period
+ - October 9 - 22, 2023
+
+### Task Types
+![Alt text](img/ar_w6.png)
+
+### Recap of Students Goals
+
+- Design Login and Signup in Figma
+- Do the front end for login and signup 
+- Do a simple homepage to check if validation is working
+- Keep communicating 
+
+### Student Tasks on Project Board
+
+- item#1 create mockups in figma for ui/ux
+- item#2 paper prototyping
+- item#3 front-end design for login/signup page using react native
+- item#4 create homepage
+- item#5 user testing
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           | ✓          |
+|   2    | ✓         |            |
+|   3    | ✓         |            |
+|   4    |           | ✓          |
+|   5    |           | ✓          |
