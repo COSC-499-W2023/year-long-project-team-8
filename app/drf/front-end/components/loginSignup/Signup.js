@@ -10,7 +10,8 @@ import ChecklistModal from "./ChecklistModal";
 
 const baseEndpoint = "http://localhost:8000/api";
 const signUpEndpoint = `${baseEndpoint}/users/`;
-const Signup = ({ onSwitch }) => {
+
+const Signup = ({ onSwitch, navigation }) => {
   // State for form fields
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -59,27 +60,28 @@ const Signup = ({ onSwitch }) => {
         email: signupEmail,
         password: signupPassword,
       };
-       // need to pass the data as JSON for our API to deal with
-       const bodyStr = JSON.stringify(bodyObj);
-       console.log(bodyStr);
-       const options = {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: bodyStr,
-       };
-       fetch(signUpEndpoint, options) //  Promise
-         .then((response) => {
-           console.log(response);
-           return response.json();
-         })
-         .then((x) => {
-           console.log(x);
-         })
-         .catch((err) => {
-           console.log("err", err);
-         });
+      // need to pass the data as JSON for our API to deal with
+      const bodyStr = JSON.stringify(bodyObj);
+      console.log(bodyStr);
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: bodyStr,
+      };
+      fetch(signUpEndpoint, options) //  Promise
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((x) => {
+          console.log(x);
+          navigation.navigate("Tabs", { message: "Welcome!" });
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
     }
   };
 

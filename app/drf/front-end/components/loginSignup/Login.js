@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  ScrollView,
-} from "react-native";
+import { View, Text, Pressable, Keyboard } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import * as Font from "expo-font";
@@ -82,7 +74,7 @@ const Login = ({ onSwitch, navigation }) => {
     // Regex pattern to validate email address format
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-   // Validate email format
+    // Validate email format
     if (!email || !emailRegex.test(email)) {
       setEmailError("*Invalid email");
       isValid = false;
@@ -127,7 +119,7 @@ const Login = ({ onSwitch, navigation }) => {
         })
         .then((authData) => {
           if (authData && authData.access) {
-            navigation.navigate("HomePage", { email: email });
+            navigation.navigate("Tabs", { message: "Welcome Back!" });
             handleAuthData(authData, getProductList);
           } else {
             if (password && email) setAuthError("Wrong email or password");
