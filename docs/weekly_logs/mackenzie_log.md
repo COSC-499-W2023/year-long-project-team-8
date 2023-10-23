@@ -70,3 +70,58 @@
 |   3    |           | ✓          |
 |   4    |           | ✓          |
 |   5    |           | ✓          |
+
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 9 - 22, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![Alt text](img/mk_w6.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Launch the backend in Django Rest Framework
+- Create an API to authenticate users
+- Create an API to create users
+- Create a 'product' model to get an idea how we will store and display data
+- Extend Django's built in User model class to have it fit our needs (ongoing)
+- Refactor Django and JWT token authentication based on username to email
+- Connect the front and back end -> run django and react servers and have the API consumed by the user interface
+- Unit testing
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item 31 - user model unit tests
+- item 32 - product view unit test
+- item 33 - user views unit tests
+- item 34 - create custom user model
+- item 35 - token authentication api
+- item 38 - create product model and views
+- item 39 - user model views (crud)
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 31      |      ✓      |            |
+| 32      |      ✓      |            |
+| 33      |      ✓     |            |
+| 34      |      ✓     |            |
+| 35      |      ✓      |            |
+| 38      |      ✓      |            |
+| 39      |      ✓      |            |
