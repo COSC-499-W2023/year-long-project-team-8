@@ -41,7 +41,7 @@ const Profile = () => (
 // Main Bottom Tabs Component
 function BottomTabs({ route }) {
   // Welcome message passed from navegation
-  const { message } = route.params;
+  //const { message } = route.params;
 
   // Configure and render the tab navigator
   return (
@@ -50,7 +50,6 @@ function BottomTabs({ route }) {
       tabBarPosition="bottom"
       screenOptions={{
         headerShown: false,
-        swipeEnabled: true,
         tabBarStyle: styles.tabBar,
         tabBarActiveTintColor: "#F8B951",
         tabBarInactiveTintColor: "gray",
@@ -61,7 +60,7 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Home"
         component={HomePage}
-        initialParams={{ message: message }}
+        //initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -78,7 +77,7 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Browse"
         component={Browse}
-        initialParams={{ message: message }}
+        //initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -96,7 +95,7 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="add"
         component={Add}
-        initialParams={{ message: message }}
+        //  initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -113,7 +112,7 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Chat"
         component={Chat}
-        initialParams={{ message: message }}
+        // initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -130,7 +129,7 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        initialParams={{ message: message }}
+        // initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -157,6 +156,8 @@ const styles = StyleSheet.create({
   tabBar: {
     height: 60,
     backgroundColor: "white",
+    borderTopWidth: 0.5,
+    borderTopColor: "#d1d1d1",
   },
   iconContainer: {
     justifyContent: "center",
