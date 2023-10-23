@@ -7,7 +7,7 @@ from getpass import getpass
 # note this is for token authenticaion, not JWT - configure "DEFAULT_AUTHENTICATION_CLASSES" to token
 
 auth_endpoint = "http://localhost:8000/api/auth/" 
-username = input("What is your username?\n")
+username = input("What is your email?\n")
 password = getpass("What is your password?\n")
 
 auth_response = requests.post(auth_endpoint, json={'username': username, 'password': password}) 

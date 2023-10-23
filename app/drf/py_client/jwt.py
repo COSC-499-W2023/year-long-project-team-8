@@ -94,9 +94,9 @@ class JWTClient:
         collection process.
         """
         endpoint = f"{self.base_endpoint}/token/" 
-        username = input("What is your username?\n")
+        email = input("What is your email?\n")
         password = getpass("What is your password?\n")
-        r = requests.post(endpoint, json={'username': username, 'password': password}) 
+        r = requests.post(endpoint, json={'email': email, 'password': password}) 
         if r.status_code != 200:
             raise Exception(f"Access not granted: {r.text}")
         print('access granted')
