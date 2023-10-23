@@ -3,9 +3,6 @@ import {
   ImageBackground,
   Animated,
   View,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
   Dimensions,
   SafeAreaView,
 } from "react-native";
@@ -71,7 +68,7 @@ const Landing = ({ navigation }) => {
                 <Login onSwitch={animateToSignup} navigation={navigation} />
               </View>
               <View style={{ width: width, height: height }}>
-                <Signup onSwitch={animateToLogin} />
+                <Signup onSwitch={animateToLogin} navigation={navigation} />
               </View>
             </Animated.View>
           </ImageBackground>

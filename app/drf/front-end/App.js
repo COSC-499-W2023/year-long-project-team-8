@@ -1,9 +1,9 @@
 import React from "react";
 import { StatusBar, SafeAreaView } from "react-native";
 import Landing from "./components/landing/Landing.js";
-import HomePage from "./components/homePage/HomePage.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import BottomTabs from "./components/tabs/BottomTabs.js";
 
 const Stack = createStackNavigator();
 
@@ -19,7 +19,7 @@ const App = () => {
           }}
         >
           <Stack.Screen name="Landing" component={Landing} />
-          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="Tabs" component={BottomTabs} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
