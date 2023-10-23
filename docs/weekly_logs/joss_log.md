@@ -46,3 +46,39 @@
 - Paper prototype/ Figma design (early stages)
   
 
+### Work Period
+ - October 9 - October 22, 2023
+
+### Individual Peer Evaluation
+![Alt text](img/week_6_evaljoss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Work to catch up on teammates progress and learn Django Rest Framework
+- Work towards team goals
+- Work on Mac with backend setup
+- Research into suitable map API
+- Work on sign up and login page
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#1 Configure our Django authentication portal with React Native Login/Signup page
+- item#2 Create user authentication login/signup using the Django authentication library
+- item#3 User testing
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |     ✓      |
+|   2    | ✓         |            |
+|   3    |           | ✓          |

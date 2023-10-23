@@ -94,3 +94,89 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 - add screenshot(s) of test run summary 
 -->
 no coding this week so no testing
+
+
+
+## Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 9 - October 22, 2023
+
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+<br>
+![project_board_w6](../img/projboard_w6.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Finish environment setup on our machines
+- Create Django Rest Framework back-end setup
+- Create React Native front-end setup
+- Create UI design on Figma for login and sign up page
+- Implement UI desgin on React Native
+- Implement some basic password security on the front-end (strength, hide/show)
+- Add dynamic UI to login/sign up page
+- Modify basic React Native App to consume REST Api.
+- Authentication and registration (front-end)
+- Authentication and registration (back-end)
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Finish environment setup on our machines
+- Create Django Rest Framework back-end setup
+- Create React Native front-end setup
+- Create UI design on Figma for login and sign up page
+- Implement UI desgin on React Native
+- Implement some basic password security on the front-end (strength, hide/show)
+- Add dynamic UI to login/sign up page
+- Modify basic React Native App to consume REST Api.
+- Authentication and registration (front-end)
+- Authentication and registration (back-end)
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- UI improvenets
+- Sign-up/registration
+- more user testing
+- Database management
+- Learning frameworks and researching map tools for react native
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+![burnup-chart](../img/burnup_w6.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+We have created tests for several endpoints in our API and model instances. Link below to a detailed test report.
+
+![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
+
+Link to test report: https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+

@@ -84,3 +84,41 @@ October 1 - October 8, 2023
 |   4    |           | ✓          |
 |   5    |           | ✓          |
 
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 8 - October 23, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![week6 eval](img/bm_w6.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Complete profile figma page
+- Implement the profile page code
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- 1. Profile page 
+- 2. UI/UX design
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 1      |            |      ✓      |
+| 2      |     ✓       |            |
+
