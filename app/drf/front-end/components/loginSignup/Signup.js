@@ -9,6 +9,7 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
 const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "http://206.87.22.184:8000/api";
 const signUpEndpoint = `${baseEndpoint}/users/`;
 const Signup = ({ onSwitch }) => {
   // State for form fields

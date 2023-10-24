@@ -1,12 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 
-const HomePage = ({ route }) => {
-  const { username } = route.params;
+const HomePage = ({ route , navigation}) => {
+  const { email } = route.params;
+
+  const navigateToProfile = () => {
+    navigation.navigate("ProfilePage", { email: email});
+
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome, {username}!</Text>
+      <Text style={styles.title}>Welcome, {email}!</Text>
+      <Button title="View Profile" onPress={navigateToProfile} />
     </View>
   );
 };
