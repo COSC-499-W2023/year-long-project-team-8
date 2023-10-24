@@ -31,7 +31,7 @@ const LoginStyles = StyleSheet.create({
     marginLeft: 15,
   },
   forgotPasswordText: {
-    color: "#732E00",
+    color: "#3b3a3a",
     fontWeight: "bold",
     fontSize: 15,
   },

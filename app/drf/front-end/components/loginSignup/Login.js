@@ -8,8 +8,8 @@ import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
 
 // base endpoint
-//const baseEndpoint = "http://localhost:8000/api";
-const baseEndpoint = "Your IP ADDRESS/API";
+const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "ip/api";
 
 // Login component for user authentication (original)
 // const Login = ({ onSwitch }) => {

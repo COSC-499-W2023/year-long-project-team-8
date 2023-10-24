@@ -8,8 +8,8 @@ import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
-//const baseEndpoint = "http://localhost:8000/api";
-const baseEndpoint = "Your IP ADDRESS/API";
+const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "ip/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 

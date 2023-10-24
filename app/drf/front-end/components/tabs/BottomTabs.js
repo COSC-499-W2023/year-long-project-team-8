@@ -51,7 +51,8 @@ function BottomTabs({ route }) {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: "#F8B951",
+        swipeEnabled: false,
+        tabBarActiveTintColor: "#FCA63C",
         tabBarInactiveTintColor: "gray",
         tabBarIndicatorStyle: { backgroundColor: "transparent" },
         tabBarPressColor: "transparent",
@@ -67,7 +68,7 @@ function BottomTabs({ route }) {
             <View style={styles.iconContainer}>
               <Ionicons
                 name="home"
-                color={focused ? "#F8B951" : "gray"}
+                color={focused ? "#FCA63C" : "gray"}
                 size={25}
               />
             </View>
@@ -84,7 +85,7 @@ function BottomTabs({ route }) {
             <View style={styles.iconContainer}>
               <Ionicons
                 name="search"
-                color={focused ? "#F8B951" : "gray"}
+                color={focused ? "#FCA63C" : "gray"}
                 size={25}
               />
             </View>
@@ -102,7 +103,7 @@ function BottomTabs({ route }) {
             <View style={styles.iconContainer}>
               <Ionicons
                 name="add-circle-outline"
-                color={focused ? "#F8B951" : "gray"}
+                color={focused ? "#FCA63C" : "gray"}
                 size={25}
               />
             </View>
@@ -119,7 +120,7 @@ function BottomTabs({ route }) {
             <View style={styles.iconContainer}>
               <Ionicons
                 name="chatbubbles"
-                color={focused ? "#F8B951" : "gray"}
+                color={focused ? "#FCA63C" : "gray"}
                 size={25}
               />
             </View>
@@ -136,7 +137,7 @@ function BottomTabs({ route }) {
             <View style={styles.iconContainer}>
               <Ionicons
                 name="person-circle-outline"
-                color={focused ? "#F8B951" : "gray"}
+                color={focused ? "#FCA63C" : "gray"}
                 size={25}
               />
             </View>
