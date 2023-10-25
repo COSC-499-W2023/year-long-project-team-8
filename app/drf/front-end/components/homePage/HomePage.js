@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import Navbar from "../navBar/NavBar";
-import { Avatar, Button, Card, Icon } from "react-native-paper";
+import { Card } from "react-native-paper";
 
 const categoryIcons = {
   Vegetarian: require("../../assets/icons/vegetarian.png"),

@@ -15,7 +15,7 @@ import * as Font from "expo-font";
 const screenWidth = Dimensions.get("window").width;
 const translateValue = screenWidth * 0.5; // make this equal to half of the button's width so the shine fully translates across it
 
-const ButtonLogin = ({ title, onPress }) => {
+const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
   const scaleValue = new Animated.Value(1);
 
   const animatePressIn = () => {
@@ -72,7 +72,7 @@ const ButtonLogin = ({ title, onPress }) => {
           onPress={onPress}
           onPressIn={animatePressIn}
           onPressOut={animatePressOut}
-          style={styles.buttonContent}
+          style={[styles.buttonContent, style]}
         >
           <Text
             style={[
@@ -82,12 +82,14 @@ const ButtonLogin = ({ title, onPress }) => {
           >
             {title}
           </Text>
-          <MaterialIcons
-            name="arrow-forward-ios"
-            size={20}
-            color="white"
-            style={styles.arrow}
-          />
+          {showIcon && (
+            <MaterialIcons
+              name="arrow-forward-ios"
+              size={20}
+              color="white"
+              style={styles.arrow}
+            />
+          )}
         </Pressable>
         <Animated.View
           pointerEvents="none"
@@ -145,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonLogin;
+export default ButtonLanding;

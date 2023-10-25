@@ -40,9 +40,6 @@ const Profile = () => (
 
 // Main Bottom Tabs Component
 function BottomTabs({ route }) {
-  // Welcome message passed from navegation
-  //const { message } = route.params;
-
   // Configure and render the tab navigator
   return (
     <Tab.Navigator
@@ -61,7 +58,6 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Home"
         component={HomePage}
-        //initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -78,7 +74,6 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Browse"
         component={Browse}
-        //initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -96,7 +91,6 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="add"
         component={Add}
-        //  initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -113,7 +107,6 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Chat"
         component={Chat}
-        // initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (
@@ -130,7 +123,6 @@ function BottomTabs({ route }) {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        // initialParams={{ message: message }}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, size }) => (

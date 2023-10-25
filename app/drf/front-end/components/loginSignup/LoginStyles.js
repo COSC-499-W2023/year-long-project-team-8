@@ -13,9 +13,9 @@ const LoginStyles = StyleSheet.create({
     padding: 30,
   },
   headerText: {
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: "700",
-    color: "black",
+    color: "#FCA63C",
   },
   subHeaderText: {
     fontSize: 20,
@@ -34,6 +34,7 @@ const LoginStyles = StyleSheet.create({
     color: "#3b3a3a",
     fontWeight: "bold",
     fontSize: 15,
+    opacity: 0.7,
   },
   arrow: {
     marginLeft: 10,

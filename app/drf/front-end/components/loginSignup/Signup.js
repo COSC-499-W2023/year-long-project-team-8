@@ -8,8 +8,8 @@ import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
-const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "ip/api";
+//const baseEndpoint = "http://localhost:8000/api";
+const baseEndpoint = "http://192.168.1.67:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -79,7 +79,7 @@ const Signup = ({ onSwitch, navigation }) => {
         })
         .then((x) => {
           //  console.log(x);
-          navigation.navigate("Tabs", { message: "Welcome!" });
+          navigation.navigate("Details");
         })
         .catch((err) => {
           //  console.log("err", err);
@@ -118,7 +118,7 @@ const Signup = ({ onSwitch, navigation }) => {
             fontLoaded ? { fontFamily: "subHeaderFont" } : {},
           ]}
         >
-          Please sign up to continue.
+          Create and account and join the community!
         </Text>
       </View>
 
