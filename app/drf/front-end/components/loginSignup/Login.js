@@ -9,6 +9,7 @@ import InputField from "./InputField";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "IPADDRESS/api";
 
 // Login component for user authentication (original)
 // const Login = ({ onSwitch }) => {
@@ -76,7 +77,7 @@ const Login = ({ onSwitch, navigation }) => {
 
     // Validate email format
     if (!email || !emailRegex.test(email)) {
-      setEmailError("*Invalid email");
+      setEmailError("Invalid email");
       isValid = false;
     } else {
       setEmailError("");
@@ -93,8 +94,8 @@ const Login = ({ onSwitch, navigation }) => {
     // If the provided email and password are valid, add login logic
     if (isValid) {
       // TODO: Implement back-end login logic here
-      console.log(email);
-      console.log(password);
+      //console.log(email);
+      //console.log(password);
 
       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
       let bodyObj = {
@@ -104,7 +105,7 @@ const Login = ({ onSwitch, navigation }) => {
 
       // need to pass the data as JSON for our API to deal with
       const bodyStr = JSON.stringify(bodyObj);
-      console.log(bodyStr);
+      //console.log(bodyStr);
       const options = {
         method: "POST",
         headers: {
@@ -114,22 +115,22 @@ const Login = ({ onSwitch, navigation }) => {
       };
       fetch(loginEndpoint, options) //  Promise
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           return response.json();
         })
         .then((authData) => {
           if (authData && authData.access) {
-            navigation.navigate("Tabs", { message: "Welcome Back!" });
+            navigation.navigate("Tabs");
             handleAuthData(authData, getProductList);
           } else {
             if (password && email) setAuthError("Wrong email or password");
           }
         })
         .then((x) => {
-          console.log(x);
+          // console.log(x);
         })
         .catch((err) => {
-          console.log("err", err);
+          // console.log("err", err);
           setAuthError("Wrong email or password");
         });
     }
@@ -197,7 +198,7 @@ const Login = ({ onSwitch, navigation }) => {
             fontLoaded ? { fontFamily: "subHeaderFont" } : {},
           ]}
         >
-          Please sign in to continue.
+          Hungry or emptying space in the fridge?
         </Text>
       </View>
 

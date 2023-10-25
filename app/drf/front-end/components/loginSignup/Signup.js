@@ -9,6 +9,8 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
 const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "IPADDRESS/api";
+
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
 const Signup = ({ onSwitch, navigation }) => {
@@ -62,7 +64,7 @@ const Signup = ({ onSwitch, navigation }) => {
       };
       // need to pass the data as JSON for our API to deal with
       const bodyStr = JSON.stringify(bodyObj);
-      console.log(bodyStr);
+      //console.log(bodyStr);
       const options = {
         method: "POST",
         headers: {
@@ -72,15 +74,15 @@ const Signup = ({ onSwitch, navigation }) => {
       };
       fetch(signUpEndpoint, options) //  Promise
         .then((response) => {
-          console.log(response);
+          //  console.log(response);
           return response.json();
         })
         .then((x) => {
-          console.log(x);
-          navigation.navigate("Tabs", { message: "Welcome!" });
+          //  console.log(x);
+          navigation.navigate("Details");
         })
         .catch((err) => {
-          console.log("err", err);
+          //  console.log("err", err);
         });
     }
   };
@@ -116,7 +118,7 @@ const Signup = ({ onSwitch, navigation }) => {
             fontLoaded ? { fontFamily: "subHeaderFont" } : {},
           ]}
         >
-          Please sign up to continue.
+          Create and account and join the community!
         </Text>
       </View>
 
