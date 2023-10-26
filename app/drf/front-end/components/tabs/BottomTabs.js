@@ -48,9 +48,10 @@ function BottomTabs({ route }) {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
+        tabBarLabelStyle: styles.label,
         swipeEnabled: false,
         tabBarActiveTintColor: "#FCA63C",
-        tabBarInactiveTintColor: "gray",
+        tabBarInactiveTintColor: "black",
         tabBarIndicatorStyle: { backgroundColor: "transparent" },
         tabBarPressColor: "transparent",
       }}
@@ -59,12 +60,12 @@ function BottomTabs({ route }) {
         name="Home"
         component={HomePage}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Home",
           tabBarIcon: ({ focused, size }) => (
             <View style={styles.iconContainer}>
               <Ionicons
                 name="home"
-                color={focused ? "#FCA63C" : "gray"}
+                color={focused ? "#FCA63C" : "#4a4642"}
                 size={25}
               />
             </View>
@@ -75,12 +76,12 @@ function BottomTabs({ route }) {
         name="Browse"
         component={Browse}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Browse",
           tabBarIcon: ({ focused, size }) => (
             <View style={styles.iconContainer}>
               <Ionicons
                 name="search"
-                color={focused ? "#FCA63C" : "gray"}
+                color={focused ? "#FCA63C" : "#4a4642"}
                 size={25}
               />
             </View>
@@ -92,12 +93,12 @@ function BottomTabs({ route }) {
         name="add"
         component={Add}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Add",
           tabBarIcon: ({ focused, size }) => (
             <View style={styles.iconContainer}>
               <Ionicons
                 name="add-circle-outline"
-                color={focused ? "#FCA63C" : "gray"}
+                color={focused ? "#FCA63C" : "#4a4642"}
                 size={25}
               />
             </View>
@@ -108,12 +109,12 @@ function BottomTabs({ route }) {
         name="Chat"
         component={Chat}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Chat",
           tabBarIcon: ({ focused, size }) => (
             <View style={styles.iconContainer}>
               <Ionicons
                 name="chatbubbles"
-                color={focused ? "#FCA63C" : "gray"}
+                color={focused ? "#FCA63C" : "#4a4642"}
                 size={25}
               />
             </View>
@@ -124,12 +125,12 @@ function BottomTabs({ route }) {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ focused, size }) => (
             <View style={styles.iconContainer}>
               <Ionicons
                 name="person-circle-outline"
-                color={focused ? "#FCA63C" : "gray"}
+                color={focused ? "#FCA63C" : "#4a4642"}
                 size={25}
               />
             </View>
@@ -147,10 +148,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabBar: {
-    height: 60,
+    height: 65,
     backgroundColor: "white",
     borderTopWidth: 0.5,
     borderTopColor: "#d1d1d1",
+    paddingBottom: 5,
+  },
+  label: {
+    fontSize: 12,
+    textTransform: "none",
   },
   iconContainer: {
     justifyContent: "center",

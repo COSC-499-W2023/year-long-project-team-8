@@ -49,6 +49,8 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
+        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
+        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
         textFont: require("../../assets/fonts/Inter-Medium.ttf"),
       });
       setFontLoaded(true);

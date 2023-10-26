@@ -10,46 +10,134 @@ import {
 } from "react-native";
 import Navbar from "../navBar/NavBar";
 import { Card } from "react-native-paper";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+map = require("../../assets/icons/map.png");
 
 const categoryIcons = {
-  Vegetarian: require("../../assets/icons/vegetarian.png"),
-  Meat: require("../../assets/icons/meat.png"),
-  Desserts: require("../../assets/icons/dessert.png"),
   Italian: require("../../assets/icons/italian.png"),
+  Vegan: require("../../assets/icons/vegetarian.png"),
+  Meat: require("../../assets/icons/meat.png"),
   Asian: require("../../assets/icons/asian.png"),
   Mexican: require("../../assets/icons/mexican.png"),
+  Produce: require("../../assets/icons/produce.png"),
+  Desserts: require("../../assets/icons/dessert.png"),
+  Canned: require("../../assets/icons/canned.png"),
 };
 
 const foodListings = [
-  { dish: "Pasta Carbonara", name: "Aisha", date: "3 hours ago" },
-  { dish: "Veggie Pizza", name: "Daniel", date: "5 hours ago" },
-  { dish: "Grilled Chicken", name: "Olga", date: "1 hours ago" },
-  { dish: "Vegan Burrito", name: "Giovanni", date: "8 hours ago" },
-  { dish: "Cheeseburger", name: "Linh", date: "4 hours ago" },
-  { dish: "Rice Noodles", name: "Esmeralda", date: "5 hours ago" },
-  { dish: "BBQ Ribs", name: "Haruki", date: "7 hours ago" },
-  { dish: "Salmon Salad", name: "Kwame", date: "1 day ago" },
-  { dish: "Vegan Sushi", name: "Francesca" },
-  { dish: "Spaghetti Bolognese", name: "Ananya", date: "1 day ago" },
-  { dish: "Lobster Bisque", name: "Michael", date: "1 day ago" },
-  { dish: "Mushroom Risotto", name: "Pierre", date: "1 day ago" },
+  {
+    dish: "Pasta Carbonara",
+    name: "Aisha",
+    date: "3 hours ago",
+    image: require("../../assets/images/dummyImages/Pasta.jpg"),
+  },
+  {
+    dish: "Veggie Pizza",
+    name: "Daniel",
+    date: "5 hours ago",
+    image: require("../../assets/images/dummyImages/Pizza.webp"),
+  },
+  {
+    dish: "Grilled Chicken",
+    name: "Olga",
+    date: "1 hours ago",
+    image: require("../../assets/images/dummyImages/Chicken.jpg"),
+  },
+  {
+    dish: "Vegan Burrito",
+    name: "Giovanni",
+    date: "8 hours ago",
+    image: require("../../assets/images/dummyImages/Burrito.jpg"),
+  },
+  {
+    dish: "Cheeseburger",
+    name: "Linh",
+    date: "4 hours ago",
+    image: require("../../assets/images/dummyImages/Cheeseburger.jpg"),
+  },
+  {
+    dish: "Rice Noodles",
+    name: "Esmeralda",
+    date: "5 hours ago",
+    image: require("../../assets/images/dummyImages/Ricenoodles.webp"),
+  },
+  {
+    dish: "BBQ Ribs",
+    name: "Haruki",
+    date: "7 hours ago",
+    image: require("../../assets/images/dummyImages/Bbqribs.jpg"),
+  },
+  {
+    dish: "Salmon Salad",
+    name: "Kwame",
+    date: "1 day ago",
+    image: require("../../assets/images/dummyImages/Salmonsalad.jpeg"),
+  },
+  {
+    dish: "Vegan Sushi",
+    name: "Francesca",
+    image: require("../../assets/images/dummyImages/VeganSushi.jpg"),
+  },
+  {
+    dish: "Spaghetti Bolognese",
+    name: "Ananya",
+    date: "1 day ago",
+    image: require("../../assets/images/dummyImages/Spaghettibolognese.jpg"),
+  },
+  {
+    dish: "Lobster Bisque",
+    name: "Michael",
+    date: "1 day ago",
+    image: require("../../assets/images/dummyImages/LobsterBisque.png"),
+  },
+  {
+    dish: "Mushroom Risotto",
+    name: "Pierre",
+    date: "1 day ago",
+    image: require("../../assets/images/dummyImages/MushroomRisotto.jpg"),
+  },
 ];
 
-const foodImage = require("../../assets/images/foodPlaceholder.webp");
+const handleMapPress = () => {
+  console.log("Map icon pressed!");
+  // Add your logic for the map icon press here.
+};
 
 const HomePage = () => {
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const onChangeSearch = (query) => setSearchQuery(query);
   return (
     <View style={styles.container}>
       <Navbar />
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
-          <View style={styles.searchBarContainer}>
-            <TextInput
-              placeholder="Search for leftovers..."
-              style={styles.searchBar}
-              placeholderTextColor="#aaa"
-            />
+          <View style={styles.searchRowContainer}>
+            <View style={styles.customSearchBar}>
+              <Ionicons
+                name="ios-search"
+                size={20}
+                color="#aaa"
+                style={styles.searchIcon}
+              />
+              <TextInput
+                placeholder="Search"
+                onChangeText={onChangeSearch}
+                value={searchQuery}
+                style={styles.customTextInput}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={handleMapPress}
+              style={styles.mapIconContainer}
+            >
+              <Image source={map} style={styles.iconImage} />
+            </TouchableOpacity>
           </View>
+
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -72,27 +160,25 @@ const HomePage = () => {
               <Card key={listing.dish} style={styles.card}>
                 <TouchableOpacity
                   onPress={() => {
-                    // Handle card press here
                     console.log("Card pressed:", listing.dish);
                   }}
                   key={listing.dish}
                 >
                   <View style={styles.imageContainer}>
-                    <Card.Cover source={foodImage} style={styles.cardImage} />
-                    <View style={styles.overlayTextContainer}>
-                      <Text style={styles.dateTextOverlay}>
-                        {listing.date || "Just now"}
-                      </Text>
-                      <Text style={styles.distanceTextOverlay}>
-                        {`${3 + idx} Km`}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.cardTitle}>
-                    <Card.Title
-                      title={`${listing.dish} - By ${listing.name}`}
-                      titleStyle={{ textAlign: "center" }}
+                    <Card.Cover
+                      source={listing.image}
+                      style={styles.cardImage}
                     />
+                  </View>
+                  <Text style={styles.cardTitle}>{listing.dish}</Text>
+                  <View style={styles.nameAndRatingContainer}>
+                    <Text style={styles.byName}>By {listing.name}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.datePosted}>
+                      {listing.date || "Just now"}
+                    </Text>
+                    <Text style={styles.distanceText}>{`${3 + idx} Km`}</Text>
                   </View>
                 </TouchableOpacity>
               </Card>
@@ -107,22 +193,46 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   scrollContainer: {
     flex: 1,
   },
-  searchBarContainer: {
-    paddingLeft: 10,
+  searchRowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+  },
+  customSearchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    height: 40,
+    borderRadius: 50,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+    paddingHorizontal: 10,
+    flex: 1,
+    marginRight: 5,
+  },
+
+  searchIcon: {
+    marginRight: 10,
+  },
+
+  customTextInput: {
+    flex: 1,
+    fontSize: 16,
+    lineHeight: 40,
+  },
+  MapIcon: {
     paddingRight: 10,
   },
-  searchBar: {
-    height: 40,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    backgroundColor: "#ffff",
-    marginVertical: 10,
-    fontSize: 16,
-    paddingLeft: 20,
+  mapIconContainer: {
+    marginLeft: 10,
   },
   categoryScroll: {
     flexDirection: "row",
@@ -131,21 +241,20 @@ const styles = StyleSheet.create({
   categoryContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: 80,
+    paddingHorizontal: 10,
   },
   categoryButton: {
     backgroundColor: "transparent",
     borderRadius: 50,
-    width: 80,
-    height: 60,
+    width: 50,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 15,
     paddingVertical: 10,
   },
   iconImage: {
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
   },
   categoryText: {
     fontWeight: "600",
@@ -159,49 +268,60 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   card: {
-    marginVertical: 5,
-    borderRadius: 8,
+    marginVertical: 8,
+    borderRadius: 5,
+    backgroundColor: "#fff",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     elevation: 5,
   },
   cardImage: {
-    borderRadius: 0,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    width: "100%",
   },
   cardTitle: {
-    fontSize: 16,
     fontWeight: "bold",
-    padding: 5,
-    textAlign: "center",
+    fontSize: 18,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    color: "black",
   },
-  imageContainer: {
-    position: "relative",
-  },
-  overlayTextContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  nameAndRatingContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  dateTextOverlay: {
-    fontSize: 14,
-    color: "white",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    paddingHorizontal: 5,
-    paddingVertical: 2,
+    alignItems: "baseline",
   },
 
-  distanceTextOverlay: {
+  rating: {
+    fontSize: 16,
+    color: "grey",
+  },
+  star: {
+    alignSelf: "center",
+  },
+  distanceText: {
+    position: "absolute",
     fontSize: 14,
-    color: "white",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    paddingHorizontal: 5,
-    paddingVertical: 2,
+    color: "grey",
+    right: 2,
+    paddingRight: 10,
+  },
+  byName: {
+    fontSize: 16,
+    color: "grey",
+    marginTop: 0,
+    paddingLeft: 10,
+  },
+  datePosted: {
+    fontSize: 14,
+    color: "grey",
+    marginTop: 5,
+    paddingLeft: 10,
+    paddingBottom: 10,
   },
 });
 

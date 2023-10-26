@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import * as Font from "expo-font";
 import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,7 +17,7 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "IPADDRESS/api";
+//const baseEndpoint = "http://ip:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -102,122 +110,134 @@ const Signup = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer}>
-        <Text
-          style={[
-            styles.headerText,
-            fontLoaded ? { fontFamily: "titleFont" } : {},
-          ]}
-        >
-          Sign Up
-        </Text>
-        <Text
-          style={[
-            styles.subHeaderText,
-            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-          ]}
-        >
-          Create and account and join the community!
-        </Text>
-      </View>
-
-      <View style={styles.fields}>
-        <InputField
-          icon="email"
-          placeholder="email"
-          value={signupEmail}
-          onChangeText={(text) => {
-            setSignupEmail(text);
-            setSignupEmailError("");
-          }}
-          onFocus={() => {
-            setSignupEmailError("");
-          }}
-          inputMode="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="email"
-          errorText={signupEmailError}
-        />
-
-        <InputField
-          icon="lock"
-          placeholder="password"
-          value={signupPassword}
-          onChangeText={(text) => {
-            setSignupPassword(text);
-            setSignupPasswordError("");
-            setConfirmPasswordError("");
-          }}
-          onFocus={() => {
-            setSignupPasswordError("");
-            setConfirmPasswordError("");
-          }}
-          secureTextEntry={!showPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          rightComponent={
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                style={{ marginRight: 10 }}
-              >
-                <MaterialIcons
-                  name={showPassword ? "visibility" : "visibility-off"}
-                  size={25}
-                  color="gray"
-                />
-              </Pressable>
-              <ChecklistModal password={signupPassword} />
-            </View>
-          }
-          errorText={signupPasswordError}
-        />
-
-        <PasswordStrengthBar password={signupPassword} />
-
-        <InputField
-          icon="lock"
-          placeholder="confirm password"
-          value={confirmPassword}
-          onChangeText={(text) => {
-            setConfirmPassword(text);
-            setConfirmPasswordError("");
-          }}
-          onFocus={() => {
-            setConfirmPasswordError("");
-          }}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          autoCorrect={false}
-          name="confirmPassword"
-          errorText={confirmPasswordError}
-        />
-
-        <ButtonSignup title="SIGN UP" onPress={handleSignup} />
-
-        <Pressable style={styles.signupContainer} onPress={onSwitch}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, paddingTop: 50 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.headerContainer}>
           <Text
             style={[
-              styles.signupText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
+              styles.headerText,
+              fontLoaded ? { fontFamily: "titleFont" } : {},
             ]}
           >
-            Already have an account?{" "}
+            Sign Up
+          </Text>
+          <Text
+            style={[
+              styles.subHeaderText,
+              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+            ]}
+          >
+            Create and account and join the community!
+          </Text>
+        </View>
+
+        <View style={styles.fields}>
+          <InputField
+            icon="email"
+            placeholder="email"
+            value={signupEmail}
+            onChangeText={(text) => {
+              setSignupEmail(text);
+              setSignupEmailError("");
+            }}
+            onFocus={() => {
+              setSignupEmailError("");
+            }}
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="email"
+            errorText={signupEmailError}
+          />
+
+          <InputField
+            icon="lock"
+            placeholder="password"
+            value={signupPassword}
+            onChangeText={(text) => {
+              setSignupPassword(text);
+              setSignupPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setSignupPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            rightComponent={
+              <View style={{ flexDirection: "row" }}>
+                <Pressable
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={{ marginRight: 10 }}
+                  testID="password-visibility-icon"
+                >
+                  <MaterialIcons
+                    name={showPassword ? "visibility" : "visibility-off"}
+                    size={25}
+                    color="gray"
+                  />
+                </Pressable>
+                <ChecklistModal password={signupPassword} />
+              </View>
+            }
+            errorText={signupPasswordError}
+          />
+
+          <PasswordStrengthBar password={signupPassword} />
+
+          <InputField
+            icon="lock"
+            placeholder="confirm password"
+            value={confirmPassword}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setConfirmPasswordError("");
+            }}
+            autoCapitalize="none"
+            secureTextEntry={true}
+            autoCorrect={false}
+            name="confirmPassword"
+            errorText={confirmPasswordError}
+          />
+
+          <ButtonSignup title="SIGN UP" onPress={handleSignup} />
+
+          <Pressable style={styles.signupContainer} onPress={onSwitch}>
             <Text
               style={[
-                styles.signup,
+                styles.signupText,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
-              Sign in!
+              Already have an account?{" "}
+              <Text
+                style={[
+                  styles.signup,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+              >
+                Sign in!
+              </Text>
             </Text>
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

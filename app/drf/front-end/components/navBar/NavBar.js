@@ -1,14 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+logo = require("../../assets/logo.png");
 const Navbar = () => {
   return (
     <View style={styles.navbar}>
-      <Text style={styles.appName}>Our Logo</Text>
+      <Image source={logo} style={styles.appName} resizeMode="contain" />
       <View style={styles.iconGroup}>
         <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="menu-outline" size={25} color="grey" />
+          <Ionicons name="menu-outline" size={25} color="orange" />
         </TouchableOpacity>
       </View>
     </View>
@@ -27,9 +28,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#d1d1d1",
   },
   appName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+    width: 185, // set as per your need
+    resizeMode: "contain",
   },
   iconGroup: {
     flexDirection: "row",

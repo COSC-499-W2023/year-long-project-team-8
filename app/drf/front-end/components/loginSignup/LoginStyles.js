@@ -15,7 +15,7 @@ const LoginStyles = StyleSheet.create({
   headerText: {
     fontSize: 50,
     fontWeight: "700",
-    color: "#FCA63C",
+    color: "#1f1f1f",
   },
   subHeaderText: {
     fontSize: 20,
