@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
 import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
@@ -9,7 +16,7 @@ import InputField from "./InputField";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "IPADDRESS/api";
+//const baseEndpoint = "http://ip:8000/api";
 
 // Login component for user authentication (original)
 // const Login = ({ onSwitch }) => {
@@ -130,8 +137,7 @@ const Login = ({ onSwitch, navigation }) => {
           // console.log(x);
         })
         .catch((err) => {
-          // console.log("err", err);
-          setAuthError("Wrong email or password");
+          console.log("err", err);
         });
     }
   };
@@ -182,103 +188,116 @@ const Login = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <View style={{ ...LoginStyles.screen, flex: 1, justifyContent: "center" }}>
-      <View style={LoginStyles.headerContainer}>
-        <Text
-          style={[
-            LoginStyles.headerText,
-            fontLoaded ? { fontFamily: "titleFont" } : {},
-          ]}
-        >
-          Login
-        </Text>
-        <Text
-          style={[
-            LoginStyles.subHeaderText,
-            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-          ]}
-        >
-          Hungry or emptying space in the fridge?
-        </Text>
-      </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1, paddingTop: 30 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={LoginStyles.headerContainer}>
+          <Text
+            style={[
+              LoginStyles.headerText,
+              fontLoaded ? { fontFamily: "titleFont" } : {},
+            ]}
+          >
+            Login
+          </Text>
+          <Text
+            style={[
+              LoginStyles.subHeaderText,
+              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+            ]}
+          >
+            Hungry or emptying space in the fridge?
+          </Text>
+        </View>
 
-      <View style={LoginStyles.fields}>
-        <InputField
-          icon="email"
-          placeholder="email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            setEmailError("");
-            setAuthError("");
-          }}
-          onFocus={() => {
-            setAuthError("");
-            setEmailError("");
-          }}
-          errorText={emailError}
-          inputMode="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="email"
-        />
+        <View style={LoginStyles.fields}>
+          <InputField
+            icon={"email"}
+            placeholder="email"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError("");
+              setAuthError("");
+            }}
+            onFocus={() => {
+              setAuthError("");
+              setEmailError("");
+            }}
+            errorText={emailError}
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="email"
+          />
 
-        <InputField
-          icon="lock"
-          placeholder="password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError("");
-            setAuthError("");
-          }}
-          onFocus={() => {
-            setAuthError("");
-            setPasswordError("");
-          }}
-          secureTextEntry={!showPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          rightComponent={
-            <>
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
+          <InputField
+            icon={"lock"}
+            placeholder="password"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              setPasswordError("");
+              setAuthError("");
+            }}
+            onFocus={() => {
+              setAuthError("");
+              setPasswordError("");
+            }}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            rightComponent={
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={{ marginRight: 10 }}
+                testID="password-visibility-icon"
+              >
                 <MaterialIcons
                   name={showPassword ? "visibility" : "visibility-off"}
                   size={25}
                   color="gray"
                 />
               </Pressable>
-            </>
-          }
-          errorText={passwordError || authError}
-        />
-        <Pressable style={LoginStyles.forgotPasswordContainer}>
-          <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-        </Pressable>
+            }
+            errorText={passwordError || authError}
+          />
+          <Pressable style={LoginStyles.forgotPasswordContainer}>
+            <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
+          </Pressable>
 
-        <ButtonLogin title="LOGIN" onPress={handleLogin} />
+          <ButtonLogin title="LOGIN" onPress={handleLogin} />
 
-        <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
-          <Text
-            style={[
-              LoginStyles.signupText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-          >
-            Don't have an account?{" "}
+          <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
               style={[
-                LoginStyles.signup,
+                LoginStyles.signupText,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
-              Sign up!
+              Don't have an account?{" "}
+              <Text
+                style={[
+                  LoginStyles.signup,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+              >
+                Sign up!
+              </Text>
             </Text>
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
