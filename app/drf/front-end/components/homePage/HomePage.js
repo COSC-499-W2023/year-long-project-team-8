@@ -13,7 +13,6 @@ import Listing from "./Listing";
 import { useScrollToTop } from "@react-navigation/native";
 import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
-import { MaterialIcons } from "@expo/vector-icons";
 
 const map = require("../../assets/icons/map.png");
 
@@ -139,25 +138,40 @@ const foodListings = [
 ];
 
 const handleMapPress = () => {
+  //TODO
   console.log("Map icon pressed!");
 };
 
+// Cateogry Items
 const items = [{ label: "Date" }, { label: "Distance" }, { label: "Rating" }];
 
 const HomePage = () => {
+  // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
+
+  // State to hold selected food categories
   const [selectedCategories, setSelectedCategories] = React.useState([]);
+
+  // Ref to the ScrollView for managing scroll actions
   const scrollRef = useRef(null);
+
+  // State for managing how the food listings are sorted (by Date, Distance, or Rating)
   const [sortOption, setSortOption] = useState("Date");
 
+  // Function to update search query
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  // React Navigation's method to scroll the ScrollView to top
   useScrollToTop(scrollRef);
 
+  // Function to manually scroll the ScrollView to top
   const handleScrollToTop = () => {
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
+  // Function to handle the selection of food categories
   const handleCategoryPress = (category) => {
+    // If the category is already selected, remove it; else add it
     if (selectedCategories.includes(category)) {
       setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
     } else {
@@ -165,10 +179,13 @@ const HomePage = () => {
     }
   };
 
+  // Function to check if a category is selected
   const isCategorySelected = (category) =>
     selectedCategories.includes(category);
 
+  // Function to check if a category matches the search query
   const isCategoryMatching = (categories, query) => {
+    // Check if the categories variable is an array or not
     if (!Array.isArray(categories)) {
       return categories.toLowerCase().includes(query.toLowerCase());
     }
@@ -177,6 +194,7 @@ const HomePage = () => {
     );
   };
 
+  // Filtering the food listings based on search query and selected categories
   const filteredListings = foodListings.filter((listing) => {
     const isDishMatching = listing.dish
       .toLowerCase()
@@ -194,6 +212,8 @@ const HomePage = () => {
       (!selectedCategories.length || isListingCategorySelected)
     );
   });
+
+  // Sorting the filtered listings based on the selected sort option
   if (sortOption === "Date") {
     filteredListings.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
@@ -207,7 +227,9 @@ const HomePage = () => {
   }
 
   return (
+    // Container to ensure content is displayed within safe areas of the device
     <SafeAreaView style={styles.container}>
+      {/* Custom Navigation bar with sort options */}
       <Navbar
         items={items}
         dropdown={true}
@@ -215,17 +237,23 @@ const HomePage = () => {
         iconLabel={"Sort By"}
         onSelect={(selectedSort) => setSortOption(selectedSort)}
       />
+
+      {/* Main content container */}
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
         ref={scrollRef}
       >
+        {/* Container for search bar and map icon */}
         <View style={styles.content}>
           <View style={styles.searchRowContainer}>
+            {/* Search input for user queries */}
             <SearchBar
               searchQuery={searchQuery}
               onChangeSearch={onChangeSearch}
             />
+
+            {/* Button to invoke map actions */}
             <TouchableOpacity
               onPress={handleMapPress}
               style={styles.mapIconContainer}
@@ -234,11 +262,13 @@ const HomePage = () => {
             </TouchableOpacity>
           </View>
 
+          {/* Horizontal scroller for selecting food categories */}
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={styles.categoryScroll}
           >
+            {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
                 <TouchableOpacity
@@ -255,6 +285,8 @@ const HomePage = () => {
                     style={styles.iconImage}
                   />
                 </TouchableOpacity>
+
+                {/* Label for the category icon */}
                 <Text
                   style={[
                     styles.categoryText,
@@ -268,12 +300,16 @@ const HomePage = () => {
               </View>
             ))}
           </ScrollView>
+
+          {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
+            {/* Checking if there are listings to display */}
             {filteredListings.length ? (
               filteredListings.map((listing, idx) => (
                 <Listing key={listing.dish} listing={listing} idx={idx} />
               ))
             ) : (
+              // Displaying message if no matching listings are found
               <Text style={styles.noMatchesText}>
                 Nothing like that for now...
               </Text>
@@ -281,6 +317,8 @@ const HomePage = () => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Floating button to scroll the content to the top */}
       <FloatingButton onButtonPress={handleScrollToTop} />
     </SafeAreaView>
   );

@@ -14,7 +14,7 @@ const App = () => {
       <StatusBar />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Landing"
+          initialRouteName="Tabs"
           screenOptions={{
             headerShown: false,
           }}

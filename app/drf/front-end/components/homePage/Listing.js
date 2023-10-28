@@ -3,22 +3,31 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 
+// Component to represent a single food listing
 const Listing = ({ listing, idx }) => {
   return (
+    // Card component from 'react-native-paper' to visually represent the listing
     <Card key={listing.dish} style={styles.card}>
+      {/* Touchable area to interact with the listing */}
       <TouchableOpacity
         onPress={() => {
           console.log("Card pressed:", listing.dish);
         }}
         key={listing.dish}
       >
+        {/* Container for the food image */}
         <View style={styles.imageContainer}>
           <Card.Cover source={listing.image} style={styles.cardImage} />
         </View>
+
+        {/* Name of the dish */}
         <Text style={styles.cardTitle}>{listing.dish}</Text>
+
+        {/* Container for the dish creator's name and rating */}
         <View style={styles.nameAndRatingContainer}>
           <Text style={styles.byName}>By {listing.name}</Text>
-          {/* Displaying rating star and rating value */}
+
+          {/* Icon from 'MaterialIcons' to represent star rating */}
           <MaterialIcons
             name="star"
             size={16}
@@ -27,6 +36,8 @@ const Listing = ({ listing, idx }) => {
           />
           <Text style={styles.rating}>{listing.rating}</Text>
         </View>
+
+        {/* Container for the date when the listing was posted and distance info */}
         <View>
           <Text style={styles.datePosted}>{listing.date || "Just now"}</Text>
           <Text style={styles.distanceText}>{listing.distance}</Text>

@@ -2,9 +2,12 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Searchbar } from "react-native-paper";
 
+// Component for a search bar input
 const SearchBar = ({ searchQuery, onChangeSearch }) => {
   return (
+    // Container for the search bar
     <View style={styles.searchContainer}>
+      {/* The actual search bar input, taking in the current search value and callback for changes */}
       <Searchbar
         style={styles.customSearchBar}
         placeholder="Search..."

@@ -1,3 +1,4 @@
+// Import required modules and components
 import React, { useState, useRef } from "react";
 import {
   View,
@@ -9,17 +10,23 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+// Dropdown component
 const Dropdown = ({ items, iconName, label, onSelect }) => {
+  // State to control dropdown visibility
   const [isOpen, setIsOpen] = useState(false);
+
+  // Array of animation values for each dropdown item
   const animations = items.map(() => useRef(new Animated.Value(0)).current);
 
+  // Function to handle opening and closing of the dropdown
   const toggleDropdown = (shouldOpen) => {
     if (!shouldOpen) {
-      // If shouldOpen is false, we close the dropdown
+      // If the dropdown is not required to be open, close it
       animations
         .slice()
         .reverse()
         .forEach((animation, index) => {
+          // Animate each item to hide
           Animated.timing(animation, {
             toValue: 0,
             duration: 300,
@@ -28,12 +35,15 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
             delay: index * 100,
           }).start();
         });
+      // Set state to close dropdown after animation
       setTimeout(() => {
         setIsOpen(false);
       }, 300 + animations.length * 100);
     } else {
+      // Otherwise, open the dropdown
       setIsOpen(true);
       animations.forEach((animation, index) => {
+        // Animate each item to show
         Animated.timing(animation, {
           toValue: 1,
           duration: 300,
@@ -47,6 +57,7 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
 
   return (
     <View style={styles.container}>
+      {/* Dropdown button */}
       <TouchableOpacity
         onPress={() => toggleDropdown(!isOpen)}
         style={{ flexDirection: "row", alignItems: "center" }}
@@ -61,6 +72,7 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
           />
         )}
       </TouchableOpacity>
+      {/* Render dropdown items if the dropdown is open */}
       {isOpen && (
         <View style={styles.dropdown}>
           {items.map((item, index) => (
@@ -98,6 +110,7 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
   );
 };
 
+// Styles for the Dropdown component
 const styles = StyleSheet.create({
   container: {
     position: "relative",
@@ -140,4 +153,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// Export the Dropdown component for use in other files
 export default Dropdown;
