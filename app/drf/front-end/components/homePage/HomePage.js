@@ -12,7 +12,7 @@ import Navbar from "../navBar/NavBar";
 import { Card } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-map = require("../../assets/icons/map.png");
+const map = require("../../assets/icons/map.png");
 
 const categoryIcons = {
   Italian: require("../../assets/icons/italian.png"),
