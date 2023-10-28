@@ -25,6 +25,7 @@ describe("Signup Component", () => {
     expect(loginText).toHaveStyle({ fontFamily: "titleFont" });
     expect(subHeaderText).toHaveStyle({ fontFamily: "subHeaderFont" });
   });
+
   it("updates the email, password, and confirm password state when input changes", async () => {
     const { getByPlaceholderText } = render(<Signup />);
     const emailInput = getByPlaceholderText("EMAIL");

@@ -17,7 +17,7 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://ip:8000/api";
+//const baseEndpoint = "http://IPADDRESS:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 

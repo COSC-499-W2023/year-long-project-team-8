@@ -16,7 +16,7 @@ import InputField from "./InputField";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://ip:8000/api";
+//const baseEndpoint = "http://IPADDRESS:8000/api";
 
 // Login component for user authentication (original)
 // const Login = ({ onSwitch }) => {

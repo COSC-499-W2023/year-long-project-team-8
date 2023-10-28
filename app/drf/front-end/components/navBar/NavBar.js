@@ -1,16 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, Image } from "react-native";
+import Dropdown from "../dropdown/Dropdown";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Icon } from "react-native-paper";
 
-logo = require("../../assets/logo.png");
-const Navbar = () => {
+const logo = require("../../assets/logo.png");
+
+const Navbar = ({ items, dropdown = false, iconName, iconLabel, onSelect }) => {
   return (
     <View style={styles.navbar}>
       <Image source={logo} style={styles.appName} resizeMode="contain" />
-      <View style={styles.iconGroup}>
-        <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="menu-outline" size={25} color="orange" />
-        </TouchableOpacity>
+      <View style={styles.dropdown}>
+        {dropdown && (
+          <Dropdown
+            items={items}
+            iconName={iconName}
+            label={iconLabel}
+            onSelect={onSelect}
+          />
+        )}
       </View>
     </View>
   );
@@ -26,16 +34,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderBottomWidth: 0.5,
     borderBottomColor: "#d1d1d1",
+    zIndex: 10,
   },
   appName: {
-    width: 185, // set as per your need
+    width: 185,
     resizeMode: "contain",
   },
-  iconGroup: {
-    flexDirection: "row",
-  },
-  iconButton: {
-    marginLeft: 15,
+  dropdown: {
+    marginRight: 10,
   },
 });
 

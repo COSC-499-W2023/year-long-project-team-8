@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, SafeAreaView } from "react-native";
+import { StatusBar, SafeAreaView, View } from "react-native";
 import Landing from "./components/landing/Landing.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
         <Stack.Navigator
@@ -24,7 +24,7 @@ const App = () => {
           <Stack.Screen name="Tabs" component={BottomTabs} />
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaView>
+    </View>
   );
 };
 
