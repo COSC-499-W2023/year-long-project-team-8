@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabs from "./components/tabs/BottomTabs.js";
 import Details from "./components/loginSignup/Details.js";
+import { AuthProvider } from './context/AuthContext'
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,7 @@ const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
+      <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Landing"
@@ -24,6 +26,7 @@ const App = () => {
           <Stack.Screen name="Tabs" component={BottomTabs} />
         </Stack.Navigator>
       </NavigationContainer>
+      </AuthProvider>
     </SafeAreaView>
   );
 };

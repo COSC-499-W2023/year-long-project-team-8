@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { View, Text, Pressable, Keyboard } from "react-native";
 import * as Font from "expo-font";
 import styles from "./LoginStyles";
@@ -7,9 +7,10 @@ import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
+import AuthContext from '../../context/AuthContext'
 
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "IPADDRESS/api";
+
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -24,6 +25,8 @@ const Signup = ({ onSwitch, navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
   const handleSignup = () => {
@@ -72,20 +75,26 @@ const Signup = ({ onSwitch, navigation }) => {
         },
         body: bodyStr,
       };
-      fetch(signUpEndpoint, options) //  Promise
-        .then((response) => {
-          //  console.log(response);
-          return response.json();
-        })
-        .then((x) => {
-          //  console.log(x);
-          navigation.navigate("Details");
-        })
-        .catch((err) => {
-          //  console.log("err", err);
-        });
-    }
-  };
+      fetch(signUpEndpoint, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Signup failed");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        // Successful signup - login in user and set tokens
+        loginUser(signupEmail, signupPassword); // Use the correct password
+        navigation.navigate("Details");
+      })
+      .catch((error) => {
+        // Handle signup error
+        console.error("Signup error:", error);
+        // Display an error message to the user
+        // You can update your state with an error message to show to the user.
+      });
+  }
+};
 
   const [fontLoaded, setFontLoaded] = useState(false);
 

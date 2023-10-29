@@ -25,6 +25,8 @@ const Details = ({ navigation }) => {
 
   const backgroundImage = require("../../assets/wave.png");
 
+ 
+
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
