@@ -14,11 +14,12 @@ import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
 
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Details = ({ navigation, route}) => {
+const Details = ({ navigation}) => {
   //Setting accessToken and userId parameters passed from SignUp component
-  const accessToken = route.params?.accessToken;
-  const userId = route.params?.userId;
+  //const accessToken = route.params?.accessToken;
+  //const userId = route.params?.userId;
   
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -78,9 +79,11 @@ const Details = ({ navigation, route}) => {
     }
   };
 
-  //setting userUpdateEndpoint for userId
-  const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
   const handleUpdate = async () => {
+    const userId = await AsyncStorage.getItem('user_id');
+    const accessToken = await AsyncStorage.getItem('access_token');
+    //setting userUpdateEndpoint for userId
+    const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
     //PATCH request, passing accessToken to Auth header and content body
     try {
       const response = await fetch(userUpdateEndpoint, {
@@ -102,7 +105,7 @@ const Details = ({ navigation, route}) => {
 
       const data = await response.json();
       console.log('User profile updated:', data);
-      navigation.navigate("Tabs", { userId, accessToken: accessToken });
+      navigation.navigate("Tabs");
     } catch (error) {
       console.error('Error updating user profile:', error.message);
     }
