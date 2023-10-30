@@ -27,8 +27,7 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
       </AuthProvider>
-    </SafeAreaView>
-</View>
+    </View>
 
   );
 };
