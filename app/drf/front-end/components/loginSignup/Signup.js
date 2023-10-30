@@ -19,7 +19,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const baseEndpoint = "http://localhost:8000/api";
-const verifyTokenEndpoint = "http://localhost:8000/api/token/verify/";
 const tokenEndpoint = "http://localhost:8000/api/token/";
 //const baseEndpoint = "http://ip:8000/api";
 
@@ -101,19 +100,30 @@ const Signup = ({ onSwitch, navigation }) => {
         if (!tokenResponse.ok) {
           throw new Error("Error fetching token");
         }
-  
+        //Retrieving token data for user
         const tokenData = await tokenResponse.json();
         const receivedToken = tokenData.access;
+        
+        //Parsing respone to get userId
+        const userData = await createUserResponse.json();
+        const userId = extractUserIdFromUrl(userData.url);
   
         // Store the token and navigate to the Details screen
+        AsyncStorage.setItem('user_id', userId.toString());
         AsyncStorage.setItem('access_token', receivedToken);
-        console.log("Access token stored in AsyncStorage:", receivedToken);
-        navigation.navigate("Details", { accessToken: receivedToken });
+        navigation.navigate("Details", { userId, accessToken: receivedToken });
       } catch (error) {
         console.log("Error during signup:", error);
       }
     }
   };
+
+  // Function to extract userId from the URL
+  const extractUserIdFromUrl = (url) => {
+  const idRegex = /\/users\/(\d+)\//;
+  const match = url.match(idRegex);
+  return match && match[1] ? parseInt(match[1], 10) : null;
+};
 
   const [fontLoaded, setFontLoaded] = useState(false);
 

@@ -16,8 +16,11 @@ import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 
 const Details = ({ navigation, route}) => {
+  //Setting accessToken and userId parameters passed from SignUp component
   const accessToken = route.params?.accessToken;
-  console.log("Details screen received props:", accessToken);
+  const userId = route.params?.userId;
+  
+  //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const [firstname, setFirstName] = useState("");
@@ -70,67 +73,42 @@ const Details = ({ navigation, route}) => {
     }
 
     if (valid) {
-      //TODO: BACKEND LOGIC
-      updateUserDetails();
+      //Calling backend logic function
+      handleUpdate();
     }
   };
-  
-  const verifyTokenEndpoint = "http://localhost:8000/api/token/verify/";
-  const updateUserDetails = () => {
-    //back-end update logic here
-  
-  let bodyObj = {
-    firstname: firstname,
-    lastname: lastname,
-    phone: phone,
+
+  //setting userUpdateEndpoint for userId
+  const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
+  const handleUpdate = async () => {
+    //PATCH request, passing accessToken to Auth header and content body
+    try {
+      const response = await fetch(userUpdateEndpoint, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          phone,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('User profile updated:', data);
+      navigation.navigate("Tabs", { userId, accessToken: accessToken });
+    } catch (error) {
+      console.error('Error updating user profile:', error.message);
+    }
   };
 
-  const bodyStr = JSON.stringify(bodyObj);
-
-  fetch(verifyTokenEndpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({token: accessToken}),
-  })
-    .then((verificationResponse) => verificationResponse.json())
-    .then((verificationResult) => {
-      if (verificationResult && verificationResult.token_type === "access") {
-        // Token is valid, proceed with the update
-        const updateEndpoint = "http://localhost:8000/api/users/"; // Replace with your actual update endpoint
-        const updateOptions = {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: bodyStr,
-        };
-
-        return fetch(updateEndpoint, updateOptions);
-      } else {
-        // Handle invalid token
-        // CURRENT EXECUTION BREAKPOINT
-        console.log("Invalid update endpoint");
-      }
-    })
-    .then((updateResponse) => updateResponse.json())
-    .then((updatedUserData) => {
-      // Handle the response from the update request
-      if (updatedUserData && updatedUserData.id) {
-        console.log("User details updated:", updatedUserData);
-        navigation.navigate("Tabs");
-      } else {
-        console.log("Update failed:", updatedUserData);
-      }
-    })
-    .catch((error) => {
-      console.log("Error during update:", error);
-    });
-};
-
+  //Frontend validation
   function formatPhoneNumber(text) {
     const phoneNumber = new AsYouType().input(text);
     return phoneNumber;
