@@ -15,9 +15,13 @@ import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://IPADDRESS:8000/api";
+
+const tokenEndpoint = "http://localhost:8000/api/token/";
+//const baseEndpoint = "http://ip:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -34,7 +38,7 @@ const Signup = ({ onSwitch, navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Function to handle signup validation and submission
-  const handleSignup = () => {
+  const handleSignup = async () => {
     let isValid = true;
     Keyboard.dismiss();
 
@@ -65,35 +69,62 @@ const Signup = ({ onSwitch, navigation }) => {
     }
 
     if (isValid) {
-      // TODO: back-end signup logic
-      let bodyObj = {
-        email: signupEmail,
-        password: signupPassword,
-      };
-      // need to pass the data as JSON for our API to deal with
-      const bodyStr = JSON.stringify(bodyObj);
-      //console.log(bodyStr);
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: bodyStr,
-      };
-      fetch(signUpEndpoint, options) //  Promise
-        .then((response) => {
-          //  console.log(response);
-          return response.json();
-        })
-        .then((x) => {
-          //  console.log(x);
-          navigation.navigate("Details");
-        })
-        .catch((err) => {
-          //  console.log("err", err);
+      try {
+        // Create user account
+        const createUserResponse = await fetch(signUpEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+          }),
         });
+  
+        if (!createUserResponse.ok) {
+          throw new Error("Error creating user account");
+        }
+  
+        // Fetch token for the created user
+        const tokenResponse = await fetch(tokenEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+          }),
+        });
+  
+        if (!tokenResponse.ok) {
+          throw new Error("Error fetching token");
+        }
+        //Retrieving token data for user
+        const tokenData = await tokenResponse.json();
+        const receivedToken = tokenData.access;
+        
+        //Parsing respone to get userId
+        const userData = await createUserResponse.json();
+        const userId = extractUserIdFromUrl(userData.url);
+  
+        // Store the token and navigate to the Details screen
+        AsyncStorage.setItem('user_id', userId.toString());
+        AsyncStorage.setItem('access_token', receivedToken);
+        navigation.navigate("Details", { userId, accessToken: receivedToken });
+      } catch (error) {
+        console.log("Error during signup:", error);
+      }
     }
   };
+
+  // Function to extract userId from the URL
+  const extractUserIdFromUrl = (url) => {
+  const idRegex = /\/users\/(\d+)\//;
+  const match = url.match(idRegex);
+  return match && match[1] ? parseInt(match[1], 10) : null;
+};
 
   const [fontLoaded, setFontLoaded] = useState(false);
 

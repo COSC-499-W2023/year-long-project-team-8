@@ -15,7 +15,12 @@ import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 
-const Details = ({ navigation }) => {
+const Details = ({ navigation, route}) => {
+  //Setting accessToken and userId parameters passed from SignUp component
+  const accessToken = route.params?.accessToken;
+  const userId = route.params?.userId;
+  
+  //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const [firstname, setFirstName] = useState("");
@@ -68,11 +73,42 @@ const Details = ({ navigation }) => {
     }
 
     if (valid) {
-      //TODO: BACKEND LOGIC
-      navigation.navigate("Tabs");
+      //Calling backend logic function
+      handleUpdate();
     }
   };
 
+  //setting userUpdateEndpoint for userId
+  const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
+  const handleUpdate = async () => {
+    //PATCH request, passing accessToken to Auth header and content body
+    try {
+      const response = await fetch(userUpdateEndpoint, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          phone,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('User profile updated:', data);
+      navigation.navigate("Tabs", { userId, accessToken: accessToken });
+    } catch (error) {
+      console.error('Error updating user profile:', error.message);
+    }
+  };
+
+  //Frontend validation
   function formatPhoneNumber(text) {
     const phoneNumber = new AsYouType().input(text);
     return phoneNumber;
