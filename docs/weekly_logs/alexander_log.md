@@ -86,3 +86,33 @@
 |   3    | ✓         |            |
 |   4    |           | ✓          |
 |   5    |           | ✓          |
+
+### Work Period
+ - October 23 - 29, 2023
+
+### Task Types
+![Alt text](img/ar_w8.png)
+
+### Recap of Students Goals
+
+- Finish login and signup front end
+- Add details page
+- Do a prototype for the homepage 
+- Unit testing for login and signup
+- Tab navegation  
+
+### Student Tasks on Project Board
+
+- #1 login/signup testing front end 
+- #2 tab navegation
+- #3 homepage prototype
+- #4 Details page front end
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    | ✓         |           |
+|   2    |           |  ✓         |
+|   3    | ✓         |            |
+|   4    | ✓         |           |

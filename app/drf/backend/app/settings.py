@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    #ip
+     ]
 
 
 # Application definition
@@ -71,7 +73,7 @@ if DEBUG:
         "http://localhost:8111",
         "https://localhost:8111",
         "http://localhost:19006",
-        
+        #ip:8000"
     ]
 
 TEMPLATES = [
@@ -162,6 +164,6 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ["Bearer"],
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30),  # minutes=5 in launch
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=1),  # days=1
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=30),  # minutes=5 in launch
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=30),  # days=1
 }

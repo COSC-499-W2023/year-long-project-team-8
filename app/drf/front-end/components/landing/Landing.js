@@ -3,9 +3,6 @@ import {
   ImageBackground,
   Animated,
   View,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
   Dimensions,
   SafeAreaView,
 } from "react-native";
@@ -43,7 +40,7 @@ const Landing = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={styles.screen}>
         <KeyboardAwareScrollView
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -71,13 +68,13 @@ const Landing = ({ navigation }) => {
                 <Login onSwitch={animateToSignup} navigation={navigation} />
               </View>
               <View style={{ width: width, height: height }}>
-                <Signup onSwitch={animateToLogin} />
+                <Signup onSwitch={animateToLogin} navigation={navigation} />
               </View>
             </Animated.View>
           </ImageBackground>
         </KeyboardAwareScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

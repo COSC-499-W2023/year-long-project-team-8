@@ -74,7 +74,7 @@ class UserViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, "updated@example.com")
-
+      
 # delete user test not working - 404 forbidden error, haven't solved
     # def test_delete_user_authenticated(self):
     #     # Log in the user

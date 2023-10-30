@@ -82,3 +82,46 @@
 |   1    |           |     ✓      |
 |   2    | ✓         |            |
 |   3    |           | ✓          |
+
+
+### Work Period
+ - October 23 - October 29, 2023
+
+### Individual Peer Evaluation
+![Alt text](img/week_7_evaljoss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Continue progress towards the user profile
+- Refine token and session logic in backend
+- Establish suitable routing on the Front-end
+- Refactor sign in code with Mac
+- research map api 
+  
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#16 Configure our Django authentication portal with React Native Login/Signup page
+- item#14 Create user authentication login/signup using the Django authentication library
+- item#43 Update user model for profile information
+- item#57 Update Django View and Serializer for for User
+- item#56 Implement user details page
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    | ✓         |            |
+|   3    |    ✓         |        |
+|   4    |      ✓       |         |
+|   5    |      ✓      |          |
