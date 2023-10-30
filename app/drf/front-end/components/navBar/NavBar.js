@@ -4,6 +4,7 @@ import Dropdown from "../dropdown/Dropdown";
 
 const logo = require("../../assets/logo.png");
 
+
 // Navbar component to render the application's navigation bar.
 // It can optionally display a dropdown based on the provided items.
 const Navbar = ({ items, dropdown = false, iconName, iconLabel, onSelect }) => {
