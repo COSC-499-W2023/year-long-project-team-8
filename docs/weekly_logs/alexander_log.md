@@ -91,7 +91,7 @@
  - October 23 - 29, 2023
 
 ### Task Types
-![Alt text](img/ar_w7.png)
+![Alt text](img/ar_w8.png)
 
 ### Recap of Students Goals
 
