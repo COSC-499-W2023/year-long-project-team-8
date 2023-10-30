@@ -239,7 +239,7 @@ October 23 - October 29, 2023
 <!-- 
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-![Alt text](../img/burnup_w8.png.png)
+![Alt text](../img/burnup_w8.png)
 
 ### Test Report
 <!-- 
