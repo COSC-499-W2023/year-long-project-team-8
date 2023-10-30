@@ -176,6 +176,8 @@ October 9 - October 22, 2023
 We have created tests for several endpoints in our API and model instances. Link below to a detailed test report.
 
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
+![Alt text](../img/FE_tests_w8.png)
+
 
 Link to test report: https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
 
