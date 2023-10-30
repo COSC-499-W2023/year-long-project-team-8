@@ -1,5 +1,14 @@
-import React, { useState, useEffect, useContext} from "react";
-import { View, Text, Pressable, Keyboard } from "react-native";
+
+import React, { useState, useEffect, userContext } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import * as Font from "expo-font";
 import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -7,10 +16,13 @@ import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../context/AuthContext'
 
 const baseEndpoint = "http://localhost:8000/api";
 
+const tokenEndpoint = "http://localhost:8000/api/token/";
+//const baseEndpoint = "http://ip:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -29,7 +41,7 @@ const Signup = ({ onSwitch, navigation }) => {
  // const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
-  const handleSignup = () => {
+  const handleSignup = async () => {
     let isValid = true;
     Keyboard.dismiss();
 
@@ -60,40 +72,61 @@ const Signup = ({ onSwitch, navigation }) => {
     }
 
     if (isValid) {
-      // TODO: back-end signup logic
-      let bodyObj = {
-        email: signupEmail,
-        password: signupPassword,
-      };
-      // need to pass the data as JSON for our API to deal with
-      const bodyStr = JSON.stringify(bodyObj);
-      //console.log(bodyStr);
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: bodyStr,
-      };
-      fetch(signUpEndpoint, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Signup failed");
+      try {
+        // Create user account
+        const createUserResponse = await fetch(signUpEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+          }),
+        });
+  
+        if (!createUserResponse.ok) {
+          throw new Error("Error creating user account");
         }
-        return response.json();
-      })
-      .then((responseData) => {
-        // Successful signup - login in user and set tokens
-        //loginUser(signupEmail, signupPassword); // Use the correct password
+  
+        // Fetch token for the created user
+        const tokenResponse = await fetch(tokenEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+          }),
+        });
+  
+        if (!tokenResponse.ok) {
+          throw new Error("Error fetching token");
+        }
+        //Retrieving token data for user
+        const tokenData = await tokenResponse.json();
+        const receivedToken = tokenData.access;
+        
+        //Parsing respone to get userId
+        const userData = await createUserResponse.json();
+        const userId = extractUserIdFromUrl(userData.url);
+  
+        // Store the token and navigate to the Details screen
+        AsyncStorage.setItem('user_id', userId.toString());
+        AsyncStorage.setItem('access_token', receivedToken);
         navigation.navigate("Details");
-      })
-      .catch((error) => {
-        // Handle signup error
-        console.error("Signup error:", error);
-        // Display an error message to the user
-        // You can update your state with an error message to show to the user.
-      });
-  }
+      } catch (error) {
+        console.log("Error during signup:", error);
+      }
+    }
+  };
+
+  // Function to extract userId from the URL
+  const extractUserIdFromUrl = (url) => {
+  const idRegex = /\/users\/(\d+)\//;
+  const match = url.match(idRegex);
+  return match && match[1] ? parseInt(match[1], 10) : null;
 };
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -111,122 +144,134 @@ const Signup = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer}>
-        <Text
-          style={[
-            styles.headerText,
-            fontLoaded ? { fontFamily: "titleFont" } : {},
-          ]}
-        >
-          Sign Up
-        </Text>
-        <Text
-          style={[
-            styles.subHeaderText,
-            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-          ]}
-        >
-          Create and account and join the community!
-        </Text>
-      </View>
-
-      <View style={styles.fields}>
-        <InputField
-          icon="email"
-          placeholder="email"
-          value={signupEmail}
-          onChangeText={(text) => {
-            setSignupEmail(text);
-            setSignupEmailError("");
-          }}
-          onFocus={() => {
-            setSignupEmailError("");
-          }}
-          inputMode="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="email"
-          errorText={signupEmailError}
-        />
-
-        <InputField
-          icon="lock"
-          placeholder="password"
-          value={signupPassword}
-          onChangeText={(text) => {
-            setSignupPassword(text);
-            setSignupPasswordError("");
-            setConfirmPasswordError("");
-          }}
-          onFocus={() => {
-            setSignupPasswordError("");
-            setConfirmPasswordError("");
-          }}
-          secureTextEntry={!showPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          rightComponent={
-            <View style={{ flexDirection: "row" }}>
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                style={{ marginRight: 10 }}
-              >
-                <MaterialIcons
-                  name={showPassword ? "visibility" : "visibility-off"}
-                  size={25}
-                  color="gray"
-                />
-              </Pressable>
-              <ChecklistModal password={signupPassword} />
-            </View>
-          }
-          errorText={signupPasswordError}
-        />
-
-        <PasswordStrengthBar password={signupPassword} />
-
-        <InputField
-          icon="lock"
-          placeholder="confirm password"
-          value={confirmPassword}
-          onChangeText={(text) => {
-            setConfirmPassword(text);
-            setConfirmPasswordError("");
-          }}
-          onFocus={() => {
-            setConfirmPasswordError("");
-          }}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          autoCorrect={false}
-          name="confirmPassword"
-          errorText={confirmPasswordError}
-        />
-
-        <ButtonSignup title="SIGN UP" onPress={handleSignup} />
-
-        <Pressable style={styles.signupContainer} onPress={onSwitch}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, paddingTop: 50 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.headerContainer}>
           <Text
             style={[
-              styles.signupText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
+              styles.headerText,
+              fontLoaded ? { fontFamily: "titleFont" } : {},
             ]}
           >
-            Already have an account?{" "}
+            Sign Up
+          </Text>
+          <Text
+            style={[
+              styles.subHeaderText,
+              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+            ]}
+          >
+            Create and account and join the community!
+          </Text>
+        </View>
+
+        <View style={styles.fields}>
+          <InputField
+            icon="email"
+            placeholder="email"
+            value={signupEmail}
+            onChangeText={(text) => {
+              setSignupEmail(text);
+              setSignupEmailError("");
+            }}
+            onFocus={() => {
+              setSignupEmailError("");
+            }}
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="email"
+            errorText={signupEmailError}
+          />
+
+          <InputField
+            icon="lock"
+            placeholder="password"
+            value={signupPassword}
+            onChangeText={(text) => {
+              setSignupPassword(text);
+              setSignupPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setSignupPasswordError("");
+              setConfirmPasswordError("");
+            }}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            rightComponent={
+              <View style={{ flexDirection: "row" }}>
+                <Pressable
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={{ marginRight: 10 }}
+                  testID="password-visibility-icon"
+                >
+                  <MaterialIcons
+                    name={showPassword ? "visibility" : "visibility-off"}
+                    size={25}
+                    color="gray"
+                  />
+                </Pressable>
+                <ChecklistModal password={signupPassword} />
+              </View>
+            }
+            errorText={signupPasswordError}
+          />
+
+          <PasswordStrengthBar password={signupPassword} />
+
+          <InputField
+            icon="lock"
+            placeholder="confirm password"
+            value={confirmPassword}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              setConfirmPasswordError("");
+            }}
+            onFocus={() => {
+              setConfirmPasswordError("");
+            }}
+            autoCapitalize="none"
+            secureTextEntry={true}
+            autoCorrect={false}
+            name="confirmPassword"
+            errorText={confirmPasswordError}
+          />
+
+          <ButtonSignup title="SIGN UP" onPress={handleSignup} />
+
+          <Pressable style={styles.signupContainer} onPress={onSwitch}>
             <Text
               style={[
-                styles.signup,
+                styles.signupText,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
-              Sign in!
+              Already have an account?{" "}
+              <Text
+                style={[
+                  styles.signup,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+              >
+                Sign in!
+              </Text>
             </Text>
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

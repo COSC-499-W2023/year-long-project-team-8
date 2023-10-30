@@ -1,5 +1,6 @@
+
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -70,101 +71,104 @@ let getProducts = async() =>{
 }
   // Configure and render the tab navigator
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      tabBarPosition="bottom"
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: styles.tabBar,
-        swipeEnabled: false,
-        tabBarActiveTintColor: "#FCA63C",
-        tabBarInactiveTintColor: "gray",
-        tabBarIndicatorStyle: { backgroundColor: "transparent" },
-        tabBarPressColor: "transparent",
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomePage}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ focused, size }) => (
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="home"
-                color={focused ? "#FCA63C" : "gray"}
-                size={25}
-              />
-            </View>
-          ),
+    <SafeAreaView style={{ flex: 1 }}>
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBarPosition="bottom"
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: styles.tabBar,
+          tabBarLabelStyle: styles.label,
+          swipeEnabled: false,
+          tabBarActiveTintColor: "#FCA63C",
+          tabBarInactiveTintColor: "black",
+          tabBarIndicatorStyle: { backgroundColor: "transparent" },
+          tabBarPressColor: "transparent",
         }}
-      />
-      <Tab.Screen
-        name="Browse"
-        component={Browse}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ focused, size }) => (
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="search"
-                color={focused ? "#FCA63C" : "gray"}
-                size={25}
-              />
-            </View>
-          ),
-        }}
-      />
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomePage}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ focused, size }) => (
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name="home"
+                  color={focused ? "#FCA63C" : "#4a4642"}
+                  size={25}
+                />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Browse"
+          component={Browse}
+          options={{
+            tabBarLabel: "Browse",
+            tabBarIcon: ({ focused, size }) => (
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name="search"
+                  color={focused ? "#FCA63C" : "#4a4642"}
+                  size={25}
+                />
+              </View>
+            ),
+          }}
+        />
 
-      <Tab.Screen
-        name="add"
-        component={Add}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ focused, size }) => (
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="add-circle-outline"
-                color={focused ? "#FCA63C" : "gray"}
-                size={25}
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Chat"
-        component={Chat}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ focused, size }) => (
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="chatbubbles"
-                color={focused ? "#FCA63C" : "gray"}
-                size={25}
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: "",
-          tabBarIcon: ({ focused, size }) => (
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="person-circle-outline"
-                color={focused ? "#FCA63C" : "gray"}
-                size={25}
-              />
-            </View>
-          ),
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="add"
+          component={Add}
+          options={{
+            tabBarLabel: "Add",
+            tabBarIcon: ({ focused, size }) => (
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name="add-circle-outline"
+                  color={focused ? "#FCA63C" : "#4a4642"}
+                  size={25}
+                />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Chat"
+          component={Chat}
+          options={{
+            tabBarLabel: "Chat",
+            tabBarIcon: ({ focused, size }) => (
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name="chatbubbles"
+                  color={focused ? "#FCA63C" : "#4a4642"}
+                  size={25}
+                />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ focused, size }) => (
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name="person-circle-outline"
+                  color={focused ? "#FCA63C" : "#4a4642"}
+                  size={25}
+                />
+              </View>
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 }
 
@@ -175,10 +179,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabBar: {
-    height: 60,
+    height: 65,
     backgroundColor: "white",
     borderTopWidth: 0.5,
     borderTopColor: "#d1d1d1",
+    paddingBottom: 5,
+  },
+  label: {
+    fontSize: 12,
+    textTransform: "none",
   },
   iconContainer: {
     justifyContent: "center",

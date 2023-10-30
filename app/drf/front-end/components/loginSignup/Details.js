@@ -5,14 +5,23 @@ import {
   Pressable,
   ImageBackground,
   StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import * as Font from "expo-font";
 import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
 
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Details = ({ navigation }) => {
+const Details = ({ navigation}) => {
+  //Setting accessToken and userId parameters passed from SignUp component
+  //const accessToken = route.params?.accessToken;
+  //const userId = route.params?.userId;
+  
+  //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const [firstname, setFirstName] = useState("");
@@ -67,11 +76,44 @@ const Details = ({ navigation }) => {
     }
 
     if (valid) {
-      //TODO: BACKEND LOGIC
-      navigation.navigate("Tabs");
+      //Calling backend logic function
+      handleUpdate();
     }
   };
 
+  const handleUpdate = async () => {
+    const userId = await AsyncStorage.getItem('user_id');
+    const accessToken = await AsyncStorage.getItem('access_token');
+    //setting userUpdateEndpoint for userId
+    const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
+    //PATCH request, passing accessToken to Auth header and content body
+    try {
+      const response = await fetch(userUpdateEndpoint, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          phone,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('User profile updated:', data);
+      navigation.navigate("Tabs");
+    } catch (error) {
+      console.error('Error updating user profile:', error.message);
+    }
+  };
+
+  //Frontend validation
   function formatPhoneNumber(text) {
     const phoneNumber = new AsYouType().input(text);
     return phoneNumber;
@@ -83,108 +125,121 @@ const Details = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground
-      source={backgroundImage}
-      resizeMode="cover"
-      style={DetailStyles.screen}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={DetailStyles.headerContainer}>
-        <Text
-          style={[
-            DetailStyles.headerText,
-            fontLoaded ? { fontFamily: "titleFont" } : {},
-          ]}
-        >
-          Welcome!
-        </Text>
-        <Text
-          style={[
-            DetailStyles.subHeaderText,
-            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-          ]}
-        >
-          Add your name and phone number to improve your experience.
-        </Text>
-      </View>
-
-      <View style={DetailStyles.fields}>
-        <InputField
-          icon="person"
-          placeholder="First Name"
-          value={firstname}
-          onChangeText={(text) => {
-            setFirstName(text);
-            setFirstNameError("");
-          }}
-          onFocus={() => {
-            setFirstNameError("");
-          }}
-          errorText={firstNameError}
-          autoCapitalize="words"
-          autoCorrect={false}
-          name="firstname"
-        />
-        <InputField
-          icon="person"
-          placeholder="Last Name"
-          value={lastname}
-          onChangeText={(text) => {
-            setLastName(text);
-            setLastNameError("");
-          }}
-          onFocus={() => {
-            setLastNameError("");
-          }}
-          errorText={lastNameError}
-          autoCapitalize="words"
-          autoCorrect={false}
-          name="lastname"
-        />
-        <InputField
-          icon="phone"
-          placeholder="+(1) 235 234 8912"
-          value={phone}
-          onChangeText={(text) => {
-            let formattedText = formatPhoneNumber(text);
-            setPhone(formattedText);
-
-            if (!isValidPhoneNumber(formattedText)) {
-              setPhoneError("Invalid phone number");
-            } else {
-              setPhoneError("");
-            }
-          }}
-          onFocus={() => {
-            setPhoneError("");
-          }}
-          errorText={phoneError}
-          keyboardType="numeric"
-          autoCorrect={false}
-          name="phone"
-        />
-        <View style={DetailStyles.saveContainer}>
-          <ButtonLanding
-            title="SAVE"
-            onPress={handleHome}
-            showIcon={false}
-            style={DetailStyles.saveButton}
-          />
-        </View>
-      </View>
-      <Pressable
-        style={DetailStyles.skipContainer}
-        onPress={() => navigation.navigate("Tabs")}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+        keyboardShouldPersistTaps="handled"
       >
-        <Text
-          style={[
-            DetailStyles.skipText,
-            fontLoaded ? { fontFamily: "textFont" } : {},
-          ]}
+        <ImageBackground
+          source={backgroundImage}
+          resizeMode="cover"
+          style={DetailStyles.screen}
         >
-          SKIP
-        </Text>
-      </Pressable>
-    </ImageBackground>
+          <View style={DetailStyles.headerContainer}>
+            <Text
+              style={[
+                DetailStyles.headerText,
+                fontLoaded ? { fontFamily: "titleFont" } : {},
+              ]}
+            >
+              Welcome!
+            </Text>
+            <Text
+              style={[
+                DetailStyles.subHeaderText,
+                fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+              ]}
+            >
+              Add your name and phone number to improve your experience.
+            </Text>
+          </View>
+
+          <View style={DetailStyles.fields}>
+            <InputField
+              icon="person"
+              placeholder="First Name"
+              value={firstname}
+              onChangeText={(text) => {
+                setFirstName(text);
+                setFirstNameError("");
+              }}
+              onFocus={() => {
+                setFirstNameError("");
+              }}
+              errorText={firstNameError}
+              autoCapitalize="words"
+              autoCorrect={false}
+              name="firstname"
+            />
+            <InputField
+              icon="person"
+              placeholder="Last Name"
+              value={lastname}
+              onChangeText={(text) => {
+                setLastName(text);
+                setLastNameError("");
+              }}
+              onFocus={() => {
+                setLastNameError("");
+              }}
+              errorText={lastNameError}
+              autoCapitalize="words"
+              autoCorrect={false}
+              name="lastname"
+            />
+            <InputField
+              icon="phone"
+              placeholder="+(1) 235 234 8912"
+              value={phone}
+              onChangeText={(text) => {
+                let formattedText = formatPhoneNumber(text);
+                setPhone(formattedText);
+
+                if (!isValidPhoneNumber(formattedText)) {
+                  setPhoneError("Invalid phone number");
+                } else {
+                  setPhoneError("");
+                }
+              }}
+              onFocus={() => {
+                setPhoneError("");
+              }}
+              errorText={phoneError}
+              keyboardType="numeric"
+              autoCorrect={false}
+              name="phone"
+            />
+            <View style={DetailStyles.saveContainer}>
+              <ButtonLanding
+                title="SAVE"
+                onPress={handleHome}
+                showIcon={false}
+                style={DetailStyles.saveButton}
+              />
+            </View>
+          </View>
+          <Pressable
+            style={DetailStyles.skipContainer}
+            onPress={() => navigation.navigate("Tabs")}
+          >
+            <Text
+              style={[
+                DetailStyles.skipText,
+                fontLoaded ? { fontFamily: "textFont" } : {},
+              ]}
+            >
+              SKIP
+            </Text>
+          </Pressable>
+        </ImageBackground>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

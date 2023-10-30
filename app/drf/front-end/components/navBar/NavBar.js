@@ -1,15 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, Image } from "react-native";
+import Dropdown from "../dropdown/Dropdown";
 
-const Navbar = () => {
+const logo = require("../../assets/logo.png");
+
+
+// Navbar component to render the application's navigation bar.
+// It can optionally display a dropdown based on the provided items.
+const Navbar = ({ items, dropdown = false, iconName, iconLabel, onSelect }) => {
   return (
     <View style={styles.navbar}>
-      <Text style={styles.appName}>Our Logo</Text>
-      <View style={styles.iconGroup}>
-        <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="menu-outline" size={25} color="grey" />
-        </TouchableOpacity>
+      {/* Display the logo or brand image of the application.*/}
+      <Image source={logo} style={styles.appName} resizeMode="contain" />
+      <View style={styles.dropdown}>
+        {/* Conditionally render the Dropdown component if the 'dropdown' prop is true.*/}
+        {dropdown && (
+          <Dropdown
+            items={items}
+            iconName={iconName}
+            label={iconLabel}
+            onSelect={onSelect}
+          />
+        )}
       </View>
     </View>
   );
@@ -25,17 +37,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderBottomWidth: 0.5,
     borderBottomColor: "#d1d1d1",
+    zIndex: 10,
   },
   appName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+    width: 185,
+    resizeMode: "contain",
   },
-  iconGroup: {
-    flexDirection: "row",
-  },
-  iconButton: {
-    marginLeft: 15,
+  dropdown: {
+    marginRight: 10,
   },
 });
 

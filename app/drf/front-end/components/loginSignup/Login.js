@@ -1,17 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Pressable, Keyboard } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
 import AuthContext from '../../context/AuthContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "http://IPADDRESS:8000/api";
 
 
 // Login component for user authentication (original)
@@ -87,21 +96,49 @@ const Login = ({ onSwitch, navigation }) => {
   //   // Regex pattern to validate email address format
   //   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  //   // Validate email format
-  //   if (!email || !emailRegex.test(email)) {
-  //     setEmailError("Invalid email");
-  //     isValid = false;
-  //   } else {
-  //     setEmailError("");
-  //   }
+    // If the provided email and password are valid, add login logic
+    if (isValid) {
+      // TODO: Implement back-end login logic here
+      //console.log(email);
+      //console.log(password);
 
-  //   // Check if password is provided
-  //   if (!password) {
-  //     setPasswordError("Password required");
-  //     isValid = false;
-  //   } else {
-  //     setPasswordError("");
-  //   }
+      // here we are taking in the email field as username as this is the way authentication is used (username/pass)
+      let bodyObj = {
+        email: email,
+        password: password,
+      };
+
+      // need to pass the data as JSON for our API to deal with
+      const bodyStr = JSON.stringify(bodyObj);
+      //console.log(bodyStr);
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: bodyStr,
+      };
+      fetch(loginEndpoint, options) //  Promise
+        .then((response) => {
+          // console.log(response);
+          return response.json();
+        })
+        .then((authData) => {
+          if (authData && authData.access) {
+            navigation.navigate("Tabs");
+            handleAuthData(authData, getProductList);
+          } else {
+            if (password && email) setAuthError("Wrong email or password");
+          }
+        })
+        .then((x) => {
+          // console.log(x);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
+  };
 
   //   // If the provided email and password are valid, add login logic
   //   if (isValid) {
@@ -163,104 +200,117 @@ const Login = ({ onSwitch, navigation }) => {
   }, []);
 
   return (
-    <View style={{ ...LoginStyles.screen, flex: 1, justifyContent: "center" }}>
-      <View style={LoginStyles.headerContainer}>
-        <Text
-          style={[
-            LoginStyles.headerText,
-            fontLoaded ? { fontFamily: "titleFont" } : {},
-          ]}
-        >
-          Login
-        </Text>
-        <Text
-          style={[
-            LoginStyles.subHeaderText,
-            fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-          ]}
-        >
-          Hungry or emptying space in the fridge?
-        </Text>
-      </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1, paddingTop: 30 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={LoginStyles.headerContainer}>
+          <Text
+            style={[
+              LoginStyles.headerText,
+              fontLoaded ? { fontFamily: "titleFont" } : {},
+            ]}
+          >
+            Login
+          </Text>
+          <Text
+            style={[
+              LoginStyles.subHeaderText,
+              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
+            ]}
+          >
+            Hungry or emptying space in the fridge?
+          </Text>
+        </View>
 
-      <View style={LoginStyles.fields}>
-        <InputField
-          icon="email"
-          placeholder="email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            setEmailError("");
-            setAuthError("");
-          }}
-          onFocus={() => {
-            setAuthError("");
-            setEmailError("");
-          }}
-          errorText={emailError}
-          inputMode="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="email"
-        />
+        <View style={LoginStyles.fields}>
+          <InputField
+            icon={"email"}
+            placeholder="email"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError("");
+              setAuthError("");
+            }}
+            onFocus={() => {
+              setAuthError("");
+              setEmailError("");
+            }}
+            errorText={emailError}
+            inputMode="email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="email"
+          />
 
-        <InputField
-          icon="lock"
-          placeholder="password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError("");
-            setAuthError("");
-          }}
-          onFocus={() => {
-            setAuthError("");
-            setPasswordError("");
-          }}
-          secureTextEntry={!showPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-          name="password"
-          rightComponent={
-            <>
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
+          <InputField
+            icon={"lock"}
+            placeholder="password"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              setPasswordError("");
+              setAuthError("");
+            }}
+            onFocus={() => {
+              setAuthError("");
+              setPasswordError("");
+            }}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+            name="password"
+            rightComponent={
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={{ marginRight: 10 }}
+                testID="password-visibility-icon"
+              >
                 <MaterialIcons
                   name={showPassword ? "visibility" : "visibility-off"}
                   size={25}
                   color="gray"
                 />
               </Pressable>
-            </>
-          }
-          errorText={passwordError || authError}
-        />
-        <Pressable style={LoginStyles.forgotPasswordContainer}>
-          <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-        </Pressable>
+            }
+            errorText={passwordError || authError}
+          />
+          <Pressable style={LoginStyles.forgotPasswordContainer}>
+            <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
+          </Pressable>
 
         {/* <ButtonLogin title="LOGIN" onPress={handleLogin} /> */}
         <ButtonLogin title="LOGIN" onPress={login} />
 
-        <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
-          <Text
-            style={[
-              LoginStyles.signupText,
-              fontLoaded ? { fontFamily: "textFont" } : {},
-            ]}
-          >
-            Don't have an account?{" "}
+          <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
               style={[
-                LoginStyles.signup,
+                LoginStyles.signupText,
                 fontLoaded ? { fontFamily: "textFont" } : {},
               ]}
             >
-              Sign up!
+              Don't have an account?{" "}
+              <Text
+                style={[
+                  LoginStyles.signup,
+                  fontLoaded ? { fontFamily: "textFont" } : {},
+                ]}
+              >
+                Sign up!
+              </Text>
             </Text>
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

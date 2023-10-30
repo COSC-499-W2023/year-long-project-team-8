@@ -12,12 +12,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import * as Font from "expo-font";
 
+// Get the width of the current device's screen
 const screenWidth = Dimensions.get("window").width;
-const translateValue = screenWidth * 0.5; // make this equal to half of the button's width so the shine fully translates across it
+// Calculate the translation value as half of the screen width, intended for the shine animation
+const translateValue = screenWidth * 0.5;
 
+// Animated button component with a shiny effect for landing pages
 const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
+  // Initial scaling value for the button's press-in animation
   const scaleValue = new Animated.Value(1);
 
+  // Animation function for when the button is pressed in
   const animatePressIn = () => {
     Animated.timing(scaleValue, {
       toValue: 0.95,
@@ -26,6 +31,7 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
     }).start();
   };
 
+  // Animation function for when the button is released
   const animatePressOut = () => {
     Animated.timing(scaleValue, {
       toValue: 1,
@@ -34,9 +40,13 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
     }).start();
   };
 
+  // State to track if the custom font has loaded
   const [fontLoaded, setFontLoaded] = useState(false);
-  const shinePosition = useRef(new Animated.Value(-1)).current; // -1 represents the initial offscreen position
 
+  // Reference for the position of the shine effect
+  const shinePosition = useRef(new Animated.Value(-1)).current;
+
+  // Animation function for the shine effect
   const animateShine = () => {
     shinePosition.setValue(-translateValue);
     Animated.timing(shinePosition, {
@@ -46,9 +56,12 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
     }).start();
   };
 
+  // Effect to load custom fonts when the component mounts
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
+        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
+        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
         textFont: require("../../assets/fonts/Inter-Medium.ttf"),
       });
       setFontLoaded(true);
@@ -56,6 +69,7 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
     loadFont();
   }, []);
 
+  // Effect to initiate the shine animation when the component mounts
   useEffect(() => {
     animateShine();
   }, []);
@@ -117,11 +131,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 50,
     elevation: 5, // for Android
-    shadowColor: "#000", // for iOS
-    shadowOffset: { width: 0, height: 2 }, // for iOS
-    shadowOpacity: 0.25, // for iOS
-    shadowRadius: 3.84, // for iOS
-    overflow: "hidden", // <<< Add this line
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    overflow: "hidden",
   },
   buttonContent: {
     flexDirection: "row",

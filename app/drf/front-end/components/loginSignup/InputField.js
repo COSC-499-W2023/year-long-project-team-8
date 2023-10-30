@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TextInput, Text } from "react-native";
+import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
 import InputStyles from "./InputStyles";
 
@@ -46,6 +47,21 @@ const InputField = ({
       {errorText && <Text style={InputStyles.errorText}>{errorText}</Text>}
     </View>
   );
+};
+
+InputField.propTypes = {
+  icon: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  onFocus: PropTypes.func,
+  errorText: PropTypes.string,
+  secureTextEntry: PropTypes.bool,
+  inputMode: PropTypes.string,
+  autoCapitalize: PropTypes.string,
+  autoCorrect: PropTypes.bool,
+  name: PropTypes.string,
+  rightComponent: PropTypes.node,
 };
 
 export default InputField;

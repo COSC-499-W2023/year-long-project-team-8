@@ -6,7 +6,7 @@ const screenWidth = Dimensions.get("window").width;
 const LandingStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff3d7",
+    backgroundColor: "white",
     justifyContent: "center",
   },
   backgroundImage: {

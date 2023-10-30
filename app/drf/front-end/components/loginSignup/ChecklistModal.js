@@ -38,10 +38,10 @@ const ChecklistModal = ({ password }) => {
 const modalStyles = StyleSheet.create({
   bottomModal: {
     justifyContent: "flex-end",
-    margin: 0, // Remove default margins to fully align at the bottom
+    margin: 0,
   },
   modalView: {
-    width: "100%", // Use full width
+    width: "100%",
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

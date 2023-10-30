@@ -1,6 +1,7 @@
 from rest_framework import permissions
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
+from rest_framework.permissions import BasePermission
  
 from django.db import models
  
@@ -33,3 +34,15 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_staff
         else:
             return False
+class IsSelfOrReadOnly(BasePermission):
+    """
+    Custom permission to only allow users to edit their own details.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Allow GET, HEAD, and OPTIONS requests.
+        if request.method in ["GET", "HEAD", "OPTIONS"]:
+            return True
+
+        # Check if the user making the request is the same as the user being updated.
+        return obj == request.user
