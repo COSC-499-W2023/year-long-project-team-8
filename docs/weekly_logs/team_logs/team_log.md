@@ -213,6 +213,8 @@ October 23 - October 29, 2023
 - Implement email based authentication
 - Upgrade backend security with permissions/authentication
 - Refactor User Details view API
+- Profile Page
+- User details page
 
 ### Completed Tasks
 <!--
@@ -221,6 +223,9 @@ October 23 - October 29, 2023
 - JWT token authentication for API calls 
 - User model refactor
 - User details page API
+- User Details page
+- Profile page
+- User details API 
 
 
 ### In Progress Tasks
@@ -234,7 +239,7 @@ October 23 - October 29, 2023
 <!-- 
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-
+![Alt text](../img/burnup_w8.png.png)
 
 ### Test Report
 <!-- 
