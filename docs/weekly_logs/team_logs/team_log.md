@@ -243,7 +243,7 @@ October 23 - October 29, 2023
 - add screenshot(s) of test run summary 
 -->
 We have created tests for several endpoints in our API and model instances. Link below to a detailed test report.
-![Alt text](../img/backend_tests_w8.png.png)
+![Alt text](../img/backend_tests_w8.png)
 
 Link to test report: https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
 
