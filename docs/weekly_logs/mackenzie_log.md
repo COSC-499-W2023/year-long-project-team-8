@@ -125,3 +125,45 @@ October 9 - 22, 2023
 | 35      |      ✓      |            |
 | 38      |      ✓      |            |
 | 39      |      ✓      |            |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 23 - 29, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![Alt text](img/mk_w8.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Refine authorization
+- Refactor API for jwt token authorizatoin
+- Manage authentication in front end using Context
+- Use context to manage state
+- Implement logout and redirects if user is not authenticated
+- Learn some front end (React Native) workflows
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item 49 - handle authentication in the front end
+- task is ongoing but have made some solid progress. A few issues to debug
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 49      |            |      ✓      |
