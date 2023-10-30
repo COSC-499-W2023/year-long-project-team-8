@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@react-navigation/native": "^6.1.8",
-    "@react-navigation/stack": "^6.3.18"
+    "@react-navigation/stack": "^6.3.18",
+    "expo": "latest",
+    "react-native-web": "^0.19.9"
   }
 }

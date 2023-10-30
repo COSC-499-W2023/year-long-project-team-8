@@ -85,10 +85,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "grey",
   },
-  nameAndRatingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   distanceText: {
     position: "absolute",
     fontSize: 14,

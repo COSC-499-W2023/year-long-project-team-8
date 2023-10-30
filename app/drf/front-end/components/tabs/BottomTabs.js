@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
+import Profile from "../profilePage/profilePage.js"
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
@@ -32,11 +33,6 @@ const Add = () => (
 );
 
 // Screen for Profile
-const Profile = () => (
-  <View style={styles.content}>
-    <Text style={styles.title}>Dummy Profile</Text>
-  </View>
-);
 
 // Main Bottom Tabs Component
 function BottomTabs({ route }) {
