@@ -70,8 +70,8 @@ const Login = ({ onSwitch, navigation }) => {
   const { loginUser } = useContext(AuthContext);
 
   // new login call from AuthContext - can refactor to include the front end validation
-  const login = () => {
-    loginUser(email, password)
+  const login = async () => {
+    await loginUser(email, password); // loginUser should return a Promise
     navigation.navigate("Tabs");
   };
 

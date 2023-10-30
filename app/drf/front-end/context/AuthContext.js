@@ -8,30 +8,32 @@ const baseEndpoint = "http://localhost:8000/api";
 
 const AuthContext = createContext();
 
-export default AuthContext;
-
 export const AuthProvider = ({children}) => {
-    // let [authTokens, setAuthTokens] = useState(()=> AsyncStorage.getItem('authTokens') ? JSON.parse(AsyncStorage.getItem('authTokens')) : null)
-    // let [user, setUser] = useState(()=> AsyncStorage.getItem('authTokens') ? jwtDecode(AsyncStorage.getItem('authTokens')) : null)
-    // let [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [authTokens, setAuthTokens] = useState(null);
-    // const [access, setAccessToken] =useState(null);
-    // const [refresh, setRefreshToken] =useState(null);
-    const [loading, setLoading] = useState(true);
+    const [access, setAccessToken] =useState(null);
+    const [refresh, setRefreshToken] =useState(null);
+    const [loading, setLoading] = useState(false);
     
     const loadAuthData = async () => {
       try {
         const authTokensData = await AsyncStorage.getItem('authTokens');
         if (authTokensData) {
-          const authTokensJSON = JSON.parse(authTokensData);
+          const authTokensJSON = await JSON.parse(authTokensData);
           const tokenString = JSON.stringify(authTokensData);
           console.log('Token to be saved:', authTokensJSON);
           console.log('Token string:', tokenString);
           setAuthTokens(authTokensJSON);
           //setAuthTokens(tokenString);
-          setUser(jwtDecode(tokenString));
-          console.log(user)
+          // need to refine decoding to properly set user
+          const decodedToken = jwtDecode(tokenString);
+          console.log("decoded token: ", decodedToken);
+          const userId = decodedToken.user_id;
+          const userEmail = decodedToken.email;
+          console.log('User ID:', userId);
+          console.log('User email:', userEmail);
+          setUserId(userId);
         } else {
           setAuthTokens(null);
           setUser(null);
@@ -60,7 +62,7 @@ export const AuthProvider = ({children}) => {
 
         if(response.status === 200){
             setAuthTokens(data)
-            setUser(jwtDecode(data.access))
+            setUser(jwtDecode(data.access).user_id)
             AsyncStorage.setItem('authTokens', JSON.stringify(data))
             AsyncStorage.setItem('access', JSON.stringify(data.access))
             AsyncStorage.setItem('refresh', JSON.stringify(data.access))
@@ -140,4 +142,5 @@ export const AuthProvider = ({children}) => {
         </AuthContext.Provider>
     )
 }
+export default AuthContext;
 

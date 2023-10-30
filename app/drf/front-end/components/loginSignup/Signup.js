@@ -26,7 +26,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { loginUser } = useContext(AuthContext);
+ // const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
   const handleSignup = () => {
@@ -84,7 +84,7 @@ const Signup = ({ onSwitch, navigation }) => {
       })
       .then((responseData) => {
         // Successful signup - login in user and set tokens
-        loginUser(signupEmail, signupPassword); // Use the correct password
+        //loginUser(signupEmail, signupPassword); // Use the correct password
         navigation.navigate("Details");
       })
       .catch((error) => {
