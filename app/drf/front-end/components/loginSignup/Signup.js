@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const baseEndpoint = "http://localhost:8000/api";
+
 const tokenEndpoint = "http://localhost:8000/api/token/";
 //const baseEndpoint = "http://ip:8000/api";
 

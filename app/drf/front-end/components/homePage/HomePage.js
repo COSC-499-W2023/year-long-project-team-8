@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from "react-native";
 import Navbar from "../navBar/NavBar";
-import { Card } from "react-native-paper";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Listing from "./Listing";
+import { useScrollToTop } from "@react-navigation/native";
+import FloatingButton from "./FloattingButton";
+import SearchBar from "./SearchBar";
 
 const map = require("../../assets/icons/map.png");
 
@@ -31,162 +33,294 @@ const foodListings = [
     name: "Aisha",
     date: "3 hours ago",
     image: require("../../assets/images/dummyImages/Pasta.jpg"),
+    category: "Italian",
+    distance: "1km",
+    rating: 4.5,
   },
   {
     dish: "Veggie Pizza",
     name: "Daniel",
     date: "5 hours ago",
     image: require("../../assets/images/dummyImages/Pizza.webp"),
+    category: "Italian",
+    distance: "2km",
+    rating: 3.5,
   },
   {
     dish: "Grilled Chicken",
     name: "Olga",
     date: "1 hours ago",
     image: require("../../assets/images/dummyImages/Chicken.jpg"),
+    category: "Meat",
+    distance: "4km",
+    rating: 5,
   },
   {
     dish: "Vegan Burrito",
     name: "Giovanni",
     date: "8 hours ago",
     image: require("../../assets/images/dummyImages/Burrito.jpg"),
+    category: ["Mexican", "Vegan"],
+    distance: "6km",
+    rating: 3,
   },
   {
     dish: "Cheeseburger",
     name: "Linh",
     date: "4 hours ago",
     image: require("../../assets/images/dummyImages/Cheeseburger.jpg"),
+    category: "Meat",
+    distance: "9km",
+    rating: 1.5,
   },
   {
     dish: "Rice Noodles",
     name: "Esmeralda",
     date: "5 hours ago",
     image: require("../../assets/images/dummyImages/Ricenoodles.webp"),
+    category: "Asian",
+    distance: "9km",
+    rating: 2.5,
   },
   {
     dish: "BBQ Ribs",
     name: "Haruki",
     date: "7 hours ago",
     image: require("../../assets/images/dummyImages/Bbqribs.jpg"),
+    category: "Meat",
+    distance: "11km",
+    rating: 4.7,
   },
   {
     dish: "Salmon Salad",
     name: "Kwame",
     date: "1 day ago",
     image: require("../../assets/images/dummyImages/Salmonsalad.jpeg"),
+    category: "Meat",
+    distance: "8km",
+    rating: 4.9,
   },
   {
     dish: "Vegan Sushi",
     name: "Francesca",
     image: require("../../assets/images/dummyImages/VeganSushi.jpg"),
+    category: ["Asian", "Vegan"],
+    distance: "10km",
+    rating: 3.9,
   },
   {
     dish: "Spaghetti Bolognese",
     name: "Ananya",
     date: "1 day ago",
     image: require("../../assets/images/dummyImages/Spaghettibolognese.jpg"),
+    category: ["Italian", "Meat"],
+    distance: "12km",
+    rating: 1.8,
   },
   {
     dish: "Lobster Bisque",
     name: "Michael",
     date: "1 day ago",
     image: require("../../assets/images/dummyImages/LobsterBisque.png"),
+    category: "Seafood",
+    distance: "1km",
+    rating: 1.8,
   },
   {
     dish: "Mushroom Risotto",
     name: "Pierre",
     date: "1 day ago",
     image: require("../../assets/images/dummyImages/MushroomRisotto.jpg"),
+    category: ["Italian"],
+    distance: "8km",
+    rating: 4.5,
   },
 ];
 
 const handleMapPress = () => {
+  //TODO
   console.log("Map icon pressed!");
-  // Add your logic for the map icon press here.
 };
 
+// Cateogry Items
+const items = [{ label: "Date" }, { label: "Distance" }, { label: "Rating" }];
+
 const HomePage = () => {
+  // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
+
+  // State to hold selected food categories
+  const [selectedCategories, setSelectedCategories] = React.useState([]);
+
+  // Ref to the ScrollView for managing scroll actions
+  const scrollRef = useRef(null);
+
+  // State for managing how the food listings are sorted (by Date, Distance, or Rating)
+  const [sortOption, setSortOption] = useState("Date");
+
+  // Function to update search query
   const onChangeSearch = (query) => setSearchQuery(query);
+
+  // React Navigation's method to scroll the ScrollView to top
+  useScrollToTop(scrollRef);
+
+  // Function to manually scroll the ScrollView to top
+  const handleScrollToTop = () => {
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Function to handle the selection of food categories
+  const handleCategoryPress = (category) => {
+    // If the category is already selected, remove it; else add it
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
+    } else {
+      setSelectedCategories((prev) => [...prev, category]);
+    }
+  };
+
+  // Function to check if a category is selected
+  const isCategorySelected = (category) =>
+    selectedCategories.includes(category);
+
+  // Function to check if a category matches the search query
+  const isCategoryMatching = (categories, query) => {
+    // Check if the categories variable is an array or not
+    if (!Array.isArray(categories)) {
+      return categories.toLowerCase().includes(query.toLowerCase());
+    }
+    return categories.some((category) =>
+      category.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  // Filtering the food listings based on search query and selected categories
+  const filteredListings = foodListings.filter((listing) => {
+    const isDishMatching = listing.dish
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const isCategoryMatchingSearch = isCategoryMatching(
+      listing.category,
+      searchQuery
+    );
+    const isListingCategorySelected = selectedCategories.some((cat) =>
+      isCategoryMatching(listing.category, cat)
+    );
+
+    return (
+      (isDishMatching || isCategoryMatchingSearch) &&
+      (!selectedCategories.length || isListingCategorySelected)
+    );
+  });
+
+  // Sorting the filtered listings based on the selected sort option
+  if (sortOption === "Date") {
+    filteredListings.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+  } else if (sortOption === "Distance") {
+    filteredListings.sort(
+      (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+    );
+  } else if (sortOption === "Rating") {
+    filteredListings.sort((a, b) => b.rating - a.rating);
+  }
+
   return (
-    <View style={styles.container}>
-      <Navbar />
+    // Container to ensure content is displayed within safe areas of the device
+    <SafeAreaView style={styles.container}>
+      {/* Custom Navigation bar with sort options */}
+      <Navbar
+        items={items}
+        dropdown={true}
+        iconName="sort"
+        iconLabel={"Sort By"}
+        onSelect={(selectedSort) => setSortOption(selectedSort)}
+      />
+
+      {/* Main content container */}
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
+        ref={scrollRef}
       >
+        {/* Container for search bar and map icon */}
         <View style={styles.content}>
           <View style={styles.searchRowContainer}>
-            <View style={styles.customSearchBar}>
-              <Ionicons
-                name="ios-search"
-                size={20}
-                color="#aaa"
-                style={styles.searchIcon}
-              />
-              <TextInput
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-                style={styles.customTextInput}
-              />
-            </View>
+            {/* Search input for user queries */}
+            <SearchBar
+              searchQuery={searchQuery}
+              onChangeSearch={onChangeSearch}
+            />
+
+            {/* Button to invoke map actions */}
             <TouchableOpacity
               onPress={handleMapPress}
               style={styles.mapIconContainer}
             >
-              <Image source={map} style={styles.iconImage} />
+              <Image source={map} style={styles.mapIconImage} />
             </TouchableOpacity>
           </View>
 
+          {/* Horizontal scroller for selecting food categories */}
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={styles.categoryScroll}
           >
+            {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
-                <TouchableOpacity style={styles.categoryButton}>
+                <TouchableOpacity
+                  style={[
+                    styles.categoryButton,
+                    isCategorySelected(category)
+                      ? styles.categorySelected
+                      : null,
+                  ]}
+                  onPress={() => handleCategoryPress(category)}
+                >
                   <Image
                     source={categoryIcons[category]}
                     style={styles.iconImage}
                   />
                 </TouchableOpacity>
-                <Text style={styles.categoryText}>{category}</Text>
+
+                {/* Label for the category icon */}
+                <Text
+                  style={[
+                    styles.categoryText,
+                    isCategorySelected(category)
+                      ? styles.categoryTextSelected
+                      : null,
+                  ]}
+                >
+                  {category}
+                </Text>
               </View>
             ))}
           </ScrollView>
+
+          {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {foodListings.map((listing, idx) => (
-              <Card key={listing.dish} style={styles.card}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("Card pressed:", listing.dish);
-                  }}
-                  key={listing.dish}
-                >
-                  <View style={styles.imageContainer}>
-                    <Card.Cover
-                      source={listing.image}
-                      style={styles.cardImage}
-                    />
-                  </View>
-                  <Text style={styles.cardTitle}>{listing.dish}</Text>
-                  <View style={styles.nameAndRatingContainer}>
-                    <Text style={styles.byName}>By {listing.name}</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.datePosted}>
-                      {listing.date || "Just now"}
-                    </Text>
-                    <Text style={styles.distanceText}>{`${3 + idx} Km`}</Text>
-                  </View>
-                </TouchableOpacity>
-              </Card>
-            ))}
+            {/* Checking if there are listings to display */}
+            {filteredListings.length ? (
+              filteredListings.map((listing, idx) => (
+                <Listing key={listing.dish} listing={listing} idx={idx} />
+              ))
+            ) : (
+              // Displaying message if no matching listings are found
+              <Text style={styles.noMatchesText}>
+                Nothing like that for now...
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>
-    </View>
+
+      {/* Floating button to scroll the content to the top */}
+      <FloatingButton onButtonPress={handleScrollToTop} />
+    </SafeAreaView>
   );
 };
 
@@ -194,6 +328,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    zIndex: 1,
   },
   scrollContainer: {
     flex: 1,
@@ -204,35 +339,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  customSearchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    height: 40,
-    borderRadius: 50,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-    paddingHorizontal: 10,
-    flex: 1,
-    marginRight: 5,
-  },
-
-  searchIcon: {
-    marginRight: 10,
-  },
-
-  customTextInput: {
-    flex: 1,
-    fontSize: 16,
-    lineHeight: 40,
-  },
-  MapIcon: {
-    paddingRight: 10,
-  },
   mapIconContainer: {
     marginLeft: 10,
+  },
+  mapIconImage: {
+    width: 47,
+    height: 47,
   },
   categoryScroll: {
     flexDirection: "row",
@@ -250,7 +362,9 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
+  },
+  categorySelected: {
+    backgroundColor: "rgba(252,166,60,0.2) ",
   },
   iconImage: {
     width: 40,
@@ -261,67 +375,22 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 12,
   },
+  categoryTextSelected: {
+    fontWeight: "600",
+    color: "rgba(252,166,60,0.8)",
+    fontSize: 12,
+  },
   listingsContainer: {
     paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
   },
-  card: {
-    marginVertical: 8,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  cardImage: {
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    width: "100%",
-  },
-  cardTitle: {
-    fontWeight: "bold",
-    fontSize: 18,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    color: "black",
-  },
-  nameAndRatingContainer: {
-    flexDirection: "row",
-    alignItems: "baseline",
-  },
-
-  rating: {
-    fontSize: 16,
+  noMatchesText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 20,
     color: "grey",
-  },
-  star: {
-    alignSelf: "center",
-  },
-  distanceText: {
-    position: "absolute",
-    fontSize: 14,
-    color: "grey",
-    right: 2,
-    paddingRight: 10,
-  },
-  byName: {
-    fontSize: 16,
-    color: "grey",
-    marginTop: 0,
-    paddingLeft: 10,
-  },
-  datePosted: {
-    fontSize: 14,
-    color: "grey",
-    marginTop: 5,
-    paddingLeft: 10,
-    paddingBottom: 10,
   },
 });
 

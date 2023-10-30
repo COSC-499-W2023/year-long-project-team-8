@@ -40,7 +40,7 @@ const Landing = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={styles.screen}>
         <KeyboardAwareScrollView
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -74,7 +74,7 @@ const Landing = ({ navigation }) => {
           </ImageBackground>
         </KeyboardAwareScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
