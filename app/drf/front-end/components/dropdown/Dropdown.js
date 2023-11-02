@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flexDirection: "row",
     justifyContent: "flex-end",
+    zIndex: 1000, // <-- added this line
   },
   iconStyle: {
     width: 25,
@@ -134,10 +135,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   item: {
-    backgroundColor: "#de8900",
-    padding: 20,
-    marginTop: 10,
-    borderRadius: 50,
+    backgroundColor: "#FCA63C",
+    padding: 15,
+    marginTop: 15,
+    borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

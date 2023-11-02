@@ -2,19 +2,20 @@ import React, { useRef, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
+  Modal,
   ScrollView,
   TouchableOpacity,
   Image,
   SafeAreaView,
 } from "react-native";
-import Navbar from "../navBar/NavBar";
 import Listing from "./Listing";
 import { useScrollToTop } from "@react-navigation/native";
 import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
-
+import FilterModal from "./FilterModal";
+import styles from "./HomeStyle";
 const map = require("../../assets/icons/map.png");
+const filterIcon = require("../../assets/icons/filter.png");
 
 const categoryIcons = {
   Italian: require("../../assets/icons/italian.png"),
@@ -142,21 +143,31 @@ const handleMapPress = () => {
   console.log("Map icon pressed!");
 };
 
-// Cateogry Items
-const items = [{ label: "Date" }, { label: "Distance" }, { label: "Rating" }];
-
 const HomePage = () => {
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
 
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState("");
+
   // State to hold selected food categories
   const [selectedCategories, setSelectedCategories] = React.useState([]);
 
+  //State to hold if modal is opened
+
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+
+  // Function to open the filter modal
+  const openFilterModal = () => {
+    setIsFilterModalVisible(true);
+  };
+
+  // Function to close the filter modal
+  const closeFilterModal = () => {
+    setIsFilterModalVisible(false);
+  };
+
   // Ref to the ScrollView for managing scroll actions
   const scrollRef = useRef(null);
-
-  // State for managing how the food listings are sorted (by Date, Distance, or Rating)
-  const [sortOption, setSortOption] = useState("Date");
 
   // Function to update search query
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -194,7 +205,7 @@ const HomePage = () => {
     );
   };
 
-  // Filtering the food listings based on search query and selected categories
+  // Filtering the food listings based on search query, selected categories, distance, rating, and time frame
   const filteredListings = foodListings.filter((listing) => {
     const isDishMatching = listing.dish
       .toLowerCase()
@@ -213,16 +224,16 @@ const HomePage = () => {
     );
   });
 
-  // Sorting the filtered listings based on the selected sort option
-  if (sortOption === "Date") {
+  // Sorting the filtered listings based on the selectedDropdownValue
+  if (selectedDropdownValue === "Date") {
     filteredListings.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
-  } else if (sortOption === "Distance") {
+  } else if (selectedDropdownValue === "Distance") {
     filteredListings.sort(
       (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
     );
-  } else if (sortOption === "Rating") {
+  } else if (selectedDropdownValue === "Rating") {
     filteredListings.sort((a, b) => b.rating - a.rating);
   }
 
@@ -230,13 +241,6 @@ const HomePage = () => {
     // Container to ensure content is displayed within safe areas of the device
     <SafeAreaView style={styles.container}>
       {/* Custom Navigation bar with sort options */}
-      <Navbar
-        items={items}
-        dropdown={true}
-        iconName="sort"
-        iconLabel={"Sort By"}
-        onSelect={(selectedSort) => setSortOption(selectedSort)}
-      />
 
       {/* Main content container */}
       <ScrollView
@@ -301,6 +305,55 @@ const HomePage = () => {
             ))}
           </ScrollView>
 
+          <View style={styles.filterAllContainer}>
+            <TouchableOpacity
+              style={styles.mainFilter}
+              onPress={openFilterModal}
+            >
+              <Image source={filterIcon} style={styles.filterIcon} />
+              <Text style={styles.filterText}>Filter</Text>
+            </TouchableOpacity>
+            <ScrollView
+              horizontal
+              style={styles.filterContainer}
+              showsHorizontalScrollIndicator={false}
+            >
+              {/* Wrap each View in a TouchableOpacity to make it a button */}
+              <TouchableOpacity
+                style={styles.filter}
+                onPress={() => {
+                  /* Handle Distance filter press */
+                }}
+              >
+                <Text style={styles.filterText}>Distance</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.filter}
+                onPress={() => {
+                  /* Handle Rating filter press */
+                }}
+              >
+                <Text style={styles.filterText}>Rating</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.filter}
+                onPress={() => {
+                  /* Handle Date filter press */
+                }}
+              >
+                <Text style={styles.filterText}>Date</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.filter}
+                onPress={() => {
+                  /* Handle Allergies filter press */
+                }}
+              >
+                <Text style={styles.filterText}>Allergies</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
             {/* Checking if there are listings to display */}
@@ -320,78 +373,13 @@ const HomePage = () => {
 
       {/* Floating button to scroll the content to the top */}
       <FloatingButton onButtonPress={handleScrollToTop} />
+      <FilterModal
+        isVisible={isFilterModalVisible}
+        onClose={closeFilterModal}
+        // pass any other props needed for filtering
+      />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    zIndex: 1,
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  searchRowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-  },
-  mapIconContainer: {
-    marginLeft: 10,
-  },
-  mapIconImage: {
-    width: 47,
-    height: 47,
-  },
-  categoryScroll: {
-    flexDirection: "row",
-    marginVertical: 5,
-  },
-  categoryContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-  categoryButton: {
-    backgroundColor: "transparent",
-    borderRadius: 50,
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  categorySelected: {
-    backgroundColor: "rgba(252,166,60,0.2) ",
-  },
-  iconImage: {
-    width: 40,
-    height: 40,
-  },
-  categoryText: {
-    fontWeight: "600",
-    color: "black",
-    fontSize: 12,
-  },
-  categoryTextSelected: {
-    fontWeight: "600",
-    color: "rgba(252,166,60,0.8)",
-    fontSize: 12,
-  },
-  listingsContainer: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-  },
-  noMatchesText: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: 20,
-    color: "grey",
-  },
-});
 
 export default HomePage;

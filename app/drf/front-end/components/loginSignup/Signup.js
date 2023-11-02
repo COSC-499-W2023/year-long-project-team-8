@@ -15,13 +15,12 @@ import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+//const baseEndpoint = "http://localhost:8000/api";
 
-const baseEndpoint = "http://localhost:8000/api";
-
-const tokenEndpoint = "http://localhost:8000/api/token/";
-//const baseEndpoint = "http://ip:8000/api";
+const tokenEndpoint = "http://192.168.1.67:8000/api/token/";
+const baseEndpoint = "http://192.168.1.67:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
@@ -81,11 +80,11 @@ const Signup = ({ onSwitch, navigation }) => {
             password: signupPassword,
           }),
         });
-  
+
         if (!createUserResponse.ok) {
           throw new Error("Error creating user account");
         }
-  
+
         // Fetch token for the created user
         const tokenResponse = await fetch(tokenEndpoint, {
           method: "POST",
@@ -97,21 +96,21 @@ const Signup = ({ onSwitch, navigation }) => {
             password: signupPassword,
           }),
         });
-  
+
         if (!tokenResponse.ok) {
           throw new Error("Error fetching token");
         }
         //Retrieving token data for user
         const tokenData = await tokenResponse.json();
         const receivedToken = tokenData.access;
-        
+
         //Parsing respone to get userId
         const userData = await createUserResponse.json();
         const userId = extractUserIdFromUrl(userData.url);
-  
+
         // Store the token and navigate to the Details screen
-        AsyncStorage.setItem('user_id', userId.toString());
-        AsyncStorage.setItem('access_token', receivedToken);
+        AsyncStorage.setItem("user_id", userId.toString());
+        AsyncStorage.setItem("access_token", receivedToken);
         navigation.navigate("Details", { userId, accessToken: receivedToken });
       } catch (error) {
         console.log("Error during signup:", error);
@@ -121,10 +120,10 @@ const Signup = ({ onSwitch, navigation }) => {
 
   // Function to extract userId from the URL
   const extractUserIdFromUrl = (url) => {
-  const idRegex = /\/users\/(\d+)\//;
-  const match = url.match(idRegex);
-  return match && match[1] ? parseInt(match[1], 10) : null;
-};
+    const idRegex = /\/users\/(\d+)\//;
+    const match = url.match(idRegex);
+    return match && match[1] ? parseInt(match[1], 10) : null;
+  };
 
   const [fontLoaded, setFontLoaded] = useState(false);
 

@@ -15,11 +15,11 @@ import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 
-const Details = ({ navigation, route}) => {
+const Details = ({ navigation, route }) => {
   //Setting accessToken and userId parameters passed from SignUp component
   const accessToken = route.params?.accessToken;
   const userId = route.params?.userId;
-  
+
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -79,14 +79,14 @@ const Details = ({ navigation, route}) => {
   };
 
   //setting userUpdateEndpoint for userId
-  const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
+  const userUpdateEndpoint = `http://192.168.1.67:8081/api/users/${userId}/`;
   const handleUpdate = async () => {
     //PATCH request, passing accessToken to Auth header and content body
     try {
       const response = await fetch(userUpdateEndpoint, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
@@ -101,10 +101,10 @@ const Details = ({ navigation, route}) => {
       }
 
       const data = await response.json();
-      console.log('User profile updated:', data);
+      console.log("User profile updated:", data);
       navigation.navigate("Tabs", { userId, accessToken: accessToken });
     } catch (error) {
-      console.error('Error updating user profile:', error.message);
+      console.error("Error updating user profile:", error.message);
     }
   };
 
@@ -221,7 +221,7 @@ const Details = ({ navigation, route}) => {
           </View>
           <Pressable
             style={DetailStyles.skipContainer}
-            onPress={() => navigation.navigate("Tabs")}
+            onPress={() => navigation.navigate("MainApp")}
           >
             <Text
               style={[

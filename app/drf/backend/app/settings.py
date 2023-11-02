@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    #ip
+    "192.168.1.67"
      ]
 
 
@@ -73,7 +73,7 @@ if DEBUG:
         "http://localhost:8111",
         "https://localhost:8111",
         "http://localhost:19006",
-        #ip:8000"
+        "http://192.168.1.67:8000"
     ]
 
 TEMPLATES = [
