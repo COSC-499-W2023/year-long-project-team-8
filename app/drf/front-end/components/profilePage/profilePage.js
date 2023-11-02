@@ -1,8 +1,24 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import styles from './profilePageStyles'; // Make sure you import your styles correctly
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  } from 'react-native';
+import styles from './profilePageStyles';
+import StarRating from './ratingIcons';
 
 const ProfilePage = () => {
+
+  {/* star rating system */}
+  const [rating, setRating] = useState(3.5);
+
+  const handleStarPress = (newRating) => {
+    setRating(newRating);
+  }
+
+  {/* main function */}
   return (
     <View style={styles.container}>
       {/* holds the background image */}
@@ -22,7 +38,7 @@ const ProfilePage = () => {
       {/* star rating system */}
       {/*TODO: change the star style and allow them to be half stars*/}
       <View style={styles.ratingContainer}>
-        <Text style={styles.star}>⭐⭐⭐⭐⭐</Text>
+        <StarRating rating={rating}/>
       </View>
 
       {/* main container golding the profile information */}

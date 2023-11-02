@@ -21,14 +21,10 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     alignItems: 'center',
-  },
-  star: {
-    fontSize: 24,
-    marginTop: -30,
-    bottom: 100,
+    bottom: 120,
   },
   profileContainer: {
-    marginTop: -65,
+    marginTop: -90,
     alignItems: 'center',
   },
   profilePicture: {
