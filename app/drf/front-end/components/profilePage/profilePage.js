@@ -1,87 +1,97 @@
 import React from 'react';
-import { View, Text, Image, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
-import loginStyles from './profilePageStyles.js';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import styles from './profilePageStyles'; // Make sure you import your styles correctly
 
 const ProfilePage = () => {
   return (
-    <SafeAreaView style={loginStyles.safeArea}>
-      <View style={loginStyles.background}>
-        <View style={loginStyles.topHalf} />
-        <View style={loginStyles.bottomHalf} />
-        <View style={loginStyles.profilePictureContainer}>
-          <Text style={loginStyles.profileTag}> Profile </Text>
-          <View style={loginStyles.profileIconContainer}>
+    <View style={styles.container}>
+      {/* holds the background image */}
+      <Image
+        source={require('../../assets/images/profilePage/background.png')}
+        style={styles.headerImage}
+      />
+      {/* settings button */}
+      {/* TODO: make the settings button clickable and actually do something */}
+      <TouchableOpacity style={styles.settingsButton}>
+        {/* settings button image */}
+        <Image
+          source={require('../../assets/images/profilePage/settings.png')}
+          style={styles.settingsIcon}
+        />
+      </TouchableOpacity>
+      {/* star rating system */}
+      {/*TODO: change the star style and allow them to be half stars*/}
+      <View style={styles.ratingContainer}>
+        <Text style={styles.star}>⭐⭐⭐⭐⭐</Text>
+      </View>
 
-            <View>
+      {/* main container golding the profile information */}
+      <View style={styles.profileContainer}>
+        {/* profile picture */}
+        <Image
+          source={require('../../assets/images/profilePage/pfp.png')}
+          style={styles.profilePicture}
+        />
+        {/* users name */}
+        <Text style={styles.name}>Brandon Mack</Text>
 
-                <Image
-                  style={[loginStyles.profileIcons, {top: 30}]}
-                  source={require('../../assets/images/profilePage/fork.png')}
-                />
-                <Image
-                    style={[loginStyles.profileIcons, {top: 42.5, right: 82.5}]}
-                    source={require('../../assets/images/profilePage/pizza.png')}
-                />
-                <Image
-                  style={[loginStyles.profileIcons, {top: 55, right: 165 }]}
-                  source={require('../../assets/images/profilePage/hamburger.png')}
-                />
-            </View>
-            <View>
-              <Image
-                style={[loginStyles.profileIcons, { left: 170, bottom: 90 }]}
-                source={require('../../assets/images/profilePage/chinese-food.png')}
-              />
-              <Image
-                style={[loginStyles.profileIcons, { left: 92.5, bottom: 77.5 }]}
-                source={require('../../assets/images/profilePage/kebab.png')}
-              />
-            </View>
-            </View>
+        {/* users location */}
+        <View style={styles.locationContainer}>
           <Image
-            style={loginStyles.profilePicture}
-            source={require('../../assets/images/profilePage/pfp.png')}
+            source={require('../../assets/images/profilePage/location.png')}
+            style={styles.locationIcon}
           />
-        </View>
-        <View style={loginStyles.mainContainer}>
-          <Text style={loginStyles.userText}> Brandon Mack </Text>
-          <View style={loginStyles.locContainer}>
-            <Image
-              style={loginStyles.locPng}
-              source={require('../../assets/images/profilePage/location.png')}
-            />
-            <Text style={loginStyles.userLocation}> Kelowna, BC </Text>
-          </View>
-          <View style={loginStyles.contactInfoContainer}>
-            <View style={loginStyles.contactPngContainer}>
-              <Image style={loginStyles.emailPng} source={require('../../assets/images/profilePage/email.png')} />
-              <Image style={loginStyles.phonePng} source={require('../../assets/images/profilePage/telephone.png')} />
-            </View>
-            <View style={loginStyles.contactTextContainer}>
-              <Text style={loginStyles.email}> testuser@testuser.com </Text>
-              <Text style={loginStyles.phone}> +1 (111) 111 - 1111</Text>
-            </View>
-          </View>
-          <View style={loginStyles.postContainer}>
-            <View style={[loginStyles.post, {right: 28}]}>
-            <Text> sample post </Text>
-            </View>
-            <View style={loginStyles.post}>
-              <Text> sample post </Text>
-            </View>
-            <View style={[loginStyles.post, {left: 28}]}>
-              <Text> sample post </Text>
-            </View>
-          </View>
-            <TouchableOpacity style={loginStyles.button}>
-              <Text style={loginStyles.buttonText}> Edit Profile</Text>
-            </TouchableOpacity>
+          <Text style={styles.location}>Kelowna, BC</Text>
         </View>
       </View>
-    </SafeAreaView>
+
+      {/* container that holds all the recent posts */}
+      <View style={styles.centeredPostsContainer}>
+        <Text style={styles.recentPostsText}>Recent Posts</Text>
+        {/* scrollview allows users to horizontally scroll the recent posts (max will be 10) */}
+        {/* TODO: change this to an array that can show the most recent posts by a user */}
+        <ScrollView
+          horizontal
+          style={styles.postsContainer}
+          showsHorizontalScrollIndicator={false}
+        >
+          {/* containers where the actual posts are located */}
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+          <View style={styles.postContainer}>
+            <View style={styles.post}>
+            </View>
+          </View>
+        </ScrollView>
+        {/* view all button */}
+        {/* TODO: make this button actually take the user to a page where all of their posts are */}
+        <TouchableOpacity style={styles.viewAllButton}>
+          <Text style={styles.viewAllButtonText}>View All</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 

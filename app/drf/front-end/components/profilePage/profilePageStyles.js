@@ -10,138 +10,121 @@ export const colors = {
   darkGray: '#222222',
 };
 
-const loginStyles = StyleSheet.create({
-  safeArea: {
+const styles = StyleSheet.create({
+    container: {
     flex: 1,
-    height: windowHeight,
+    backgroundColor: 'white',
   },
-  background: {
-    flex: 1,
-    flexDirection: 'column',
+  headerImage: {
+    height: '30%',
+    width: '100%',
   },
-  topHalf: {
-    flex: 2.5,
-    backgroundColor: colors.darkGray,
-  },
-  bottomHalf: {
-    flex: 7,
-    backgroundColor: colors.lightOrange,
-  },
-  profilePictureContainer: {
-    position: 'absolute',
-    width: windowWidth,
+  ratingContainer: {
     alignItems: 'center',
   },
-  profileTag: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: colors.lightOrange,
-    top: -5,
+  star: {
+    fontSize: 24,
+    marginTop: -30,
+    bottom: 100,
+  },
+  profileContainer: {
+    marginTop: -65,
+    alignItems: 'center',
   },
   profilePicture: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderColor: 'white',
-    borderWidth: 3,
-    top: 85,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 2,
+    borderColor: 'black',
   },
-  profileIconContainer: {
-    position: 'absolute',
-  },
-  profileIcons: {
-    width: 40,
-    height: 40,
-    opacity: 0.25,
-  },
-  mainContainer: {
-    position: 'absolute',
-    top: '40%',
-    width: windowWidth,
-    alignItems: 'center',
-  },
-  userText: {
-    fontSize: 25,
+  name: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'black',
-    bottom: '6%',
+    marginTop: 15,
   },
-  locContainer: {
+  locationContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  locationIcon: {
+    width: 20, // Adjust the width and height as needed
+    height: 20,
+    marginRight: 2,
+  },
+  location: {
+    fontSize: 16,
+    color: 'gray',
+    marginLeft: 2,
+  },
+  contactContainer: {
+    marginTop: 30,
+  },
+  contactRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    bottom: 10,
   },
-  userLocation: {
-    fontSize: 15,
-    color: 'white',
-    fontWeight: 'bold',
+  contactIcon: {
+    width: 20, // Adjust the width and height as needed
+    height: 20,
+    marginRight: 5,
   },
-  locPng: {
-    height: 15,
-    width: 15,
+  contactText: {
+    fontSize: 18,
+    marginLeft: 5,
   },
-  contactInfoContainer: {
-    alignItems: 'center',
+  settingsButton: {
+    position: 'absolute',
+    top: 20, // Adjust the top value as needed
+    right: 20, // Adjust the right value as needed
+  },
+  settingsIcon: {
+    width: 30, // Adjust the width and height as needed
+    height: 30,
+  },
+  centeredPostsContainer: {
+    flex: 1,
+  },
+  postsContainer: {
     flexDirection: 'row',
-
-  },
-  contactPngContainer: {
-    top: 24,
-    right: '5%'
-  },
-  emailPng: {
-
-  },
-  phonePng: {
-    top: 18,
-  },
-  contactTextContainer: {
-    top: 20,
-    left: '15%'
-  },
-  email: {
-    fontSize: 20,
-    color: 'black',
-  },
-  phone: {
-    fontSize: 20,
-    color: 'black',
-    top: 25,
   },
   postContainer: {
-    height: 120,
-    width: windowWidth + 5,
-    top: 75,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
-    borderColor: 'black',
-    borderWidth: 1,
-
   },
   post: {
-    height: 90,
-    width: 90,
-    borderRadius: 100,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.2,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: 'black',
+    backgroundColor: 'lightgray',
+    margin: 6.5,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 104,
-    height: 55,
-    width: 250,
-    borderRadius: 50,
-    backgroundColor: '#404040'
-  },
-  buttonText: {
+    recentPostsText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
+    textAlign: 'center',
+      top: 30,
+      fontWeight: 'bold',
   },
-
+  viewAllButton: {
+    backgroundColor: colors.mediumOrange,
+    borderRadius: 8,
+    width: 120,
+    padding: 10,
+    bottom: 25,
+    alignSelf: 'center',
+  },
+  viewAllButtonText: {
+    color: 'white',
+    fontSize: 16,
+    alignSelf: 'center',
+    fontWeight: "bold",
+  },
 });
 
-export default loginStyles;
+export default styles;
