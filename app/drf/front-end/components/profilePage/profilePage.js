@@ -11,6 +11,8 @@ import StarRating from './ratingIcons';
 
 const ProfilePage = () => {
 
+
+
   {/* star rating system */}
   const [rating, setRating] = useState(3.5);
 
@@ -36,12 +38,11 @@ const ProfilePage = () => {
         />
       </TouchableOpacity>
       {/* star rating system */}
-      {/*TODO: change the star style and allow them to be half stars*/}
       <View style={styles.ratingContainer}>
         <StarRating rating={rating}/>
       </View>
 
-      {/* main container golding the profile information */}
+      {/* main container holding the profile information */}
       <View style={styles.profileContainer}>
         {/* profile picture */}
         <Image
@@ -72,10 +73,6 @@ const ProfilePage = () => {
           showsHorizontalScrollIndicator={false}
         >
           {/* containers where the actual posts are located */}
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
           <View style={styles.postContainer}>
             <View style={styles.post}>
             </View>

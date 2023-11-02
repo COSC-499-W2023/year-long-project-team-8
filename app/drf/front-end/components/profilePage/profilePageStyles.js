@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   locationIcon: {
-    width: 20, // Adjust the width and height as needed
+    width: 20,
     height: 20,
     marginRight: 2,
   },
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contactIcon: {
-    width: 20, // Adjust the width and height as needed
+    width: 20,
     height: 20,
     marginRight: 5,
   },
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
   },
   settingsButton: {
     position: 'absolute',
-    top: 20, // Adjust the top value as needed
-    right: 20, // Adjust the right value as needed
+    top: 20,
+    right: 20,
   },
   settingsIcon: {
-    width: 30, // Adjust the width and height as needed
+    width: 30,
     height: 30,
   },
   centeredPostsContainer: {
