@@ -79,28 +79,31 @@ export const AuthProvider = ({children}) => {
         setUser(null)
         AsyncStorage.removeItem('authTokens')
         AsyncStorage.removeItem('access')
+        AsyncStorage.removeItem('access_token')
         AsyncStorage.removeItem('refresh')
-        navigation.navigate('Landing');
+        AsyncStorage.removeItem('user_id')
+       // navigation.navigate('Landing');
         // history.push('/login')
     }
 
 
     let updateToken = async ()=> {
-      console.log('Request Payload:', JSON.stringify({'refresh':authTokens?.refresh}));
         let response = await fetch(`${baseEndpoint}/token/refresh/`, {
             method:'POST',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                //'Authorization': `Bearer ${authTokens.refresh}`
             },
             body:JSON.stringify({'refresh':authTokens?.refresh})
         })
+        console.log('Request Payload:', JSON.stringify({'refresh':authTokens?.refresh}));
         console.log(response);
 
         let data = await response.json()
         
         if (response.status === 200){
             setAuthTokens(data)
-            setUser(jwtDecode(data.access))
+            setUser(jwtDecode(data.access).user_id)
             AsyncStorage.setItem('authTokens', JSON.stringify(data))
         }else{
             logoutUser()
@@ -122,16 +125,16 @@ export const AuthProvider = ({children}) => {
     useEffect(()=> {
 
         if(loading){
-           //updateToken()
+           updateToken()
         }
 
-        let fourMinutes = 1000 * 60 * 4
+        let thirtyMin = 1000 * 60 * 30
 
         let interval =  setInterval(()=> {
             if(authTokens){
-                //updateToken()
+                 updateToken()
             }
-        }, fourMinutes)
+        }, thirtyMin) 
         return ()=> clearInterval(interval)
 
     }, [authTokens, loading])
