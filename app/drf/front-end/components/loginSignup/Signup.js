@@ -115,7 +115,7 @@ const Signup = ({ onSwitch, navigation }) => {
         // Store the token and navigate to the Details screen
         AsyncStorage.setItem('user_id', userId.toString());
         AsyncStorage.setItem('access_token', receivedToken);
-        AsyncStorage.setItem('authTokens', tokenData);
+        AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
         navigation.navigate("Details");
       } catch (error) {
         console.log("Error during signup:", error);
