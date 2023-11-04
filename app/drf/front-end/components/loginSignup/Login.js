@@ -22,46 +22,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const baseEndpoint = "http://localhost:8000/api";
 //const baseEndpoint = "http://IPADDRESS:8000/api";
 
-
-// Login component for user authentication (original)
-// const Login = ({ onSwitch }) => {
-//   // Local state variables to manage email and password input values
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   // State variables for validation error messages
-//   const [emailError, setEmailError] = useState("");
-//   const [passwordError, setPasswordError] = useState("");
-
-//   // Function to handle login upon button press
-//   const handleLogin = () => {
-//     let isValid = true;
-
-//     // Regex pattern to validate email address format
-//     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-//     // Validate email format
-//     if (!email || !emailRegex.test(email)) {
-//       setEmailError("*Invalid email");
-//       isValid = false;
-//     } else {
-//       setEmailError("");
-//     }
-
-//     // Check if password is provided
-//     if (!password) {
-//       setPasswordError("*Password required");
-//       isValid = false;
-//     } else {
-//       setPasswordError("");
-//     }
-
-//     // If the provided email and password are valid, add login logic
-//     if (isValid) {
-//       // TODO: Implement back-end login logic here
-//     }
-//   };
-
 // Login component for user authentication
 const Login = ({ onSwitch, navigation }) => {
   // Local state variables to manage email and password input values
@@ -84,106 +44,51 @@ const Login = ({ onSwitch, navigation }) => {
     navigation.navigate("Tabs");
   };
 
-  //
   //jwt token endpoint
-  // const loginEndpoint = `${baseEndpoint}/token/`;
+  const loginEndpoint = `${baseEndpoint}/token/`;
 
-  // Function to handle login upon button press
-  // const handleLogin = () => {
-  //   let isValid = true;
-  //   Keyboard.dismiss();
-
-  //   // Regex pattern to validate email address format
-  //   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
+  const handleLogin = async () => {
+    let isValid = true;
+    Keyboard.dismiss();
+  
+    // Regex pattern to validate email address format
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  
     // If the provided email and password are valid, add login logic
-    // if (isValid) {
-    //   // TODO: Implement back-end login logic here
-    //   //console.log(email);
-    //   //console.log(password);
-
-    //   // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-    //   let bodyObj = {
-    //     email: email,
-    //     password: password,
-    //   };
-
-    //   // need to pass the data as JSON for our API to deal with
-    //   const bodyStr = JSON.stringify(bodyObj);
-    //   //console.log(bodyStr);
-    //   const options = {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: bodyStr,
-    //   };
-    //   fetch(loginEndpoint, options) //  Promise
-    //     .then((response) => {
-    //       // console.log(response);
-    //       return response.json();
-    //     })
-    //     .then((authData) => {
-    //       if (authData && authData.access) {
-    //         navigation.navigate("Tabs");
-    //         handleAuthData(authData, getProductList);
-    //       } else {
-    //         if (password && email) setAuthError("Wrong email or password");
-    //       }
-    //     })
-    //     .then((x) => {
-    //       // console.log(x);
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", err);
-    //     });
-    // }
-  // };
-
-  //   // If the provided email and password are valid, add login logic
-  //   if (isValid) {
-  //     // TODO: Implement back-end login logic here
-  //     //console.log(email);
-  //     //console.log(password);
-
-  //     // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-  //     let bodyObj = {
-  //       email: email,
-  //       password: password,
-  //     };
-
-  //     // need to pass the data as JSON for our API to deal with
-  //     const bodyStr = JSON.stringify(bodyObj);
-  //     //console.log(bodyStr);
-  //     const options = {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: bodyStr,
-  //     };
-  //     fetch(loginEndpoint, options) //  Promise
-  //       .then((response) => {
-  //         // console.log(response);
-  //         return response.json();
-  //       })
-  //       .then((authData) => {
-  //         if (authData && authData.access) {
-  //           navigation.navigate("Tabs");
-  //           handleAuthData(authData, getProductList);
-  //         } else {
-  //           if (password && email) setAuthError("Wrong email or password");
-  //         }
-  //       })
-  //       .then((x) => {
-  //         // console.log(x);
-  //       })
-  //       .catch((err) => {
-  //         // console.log("err", err);
-  //         setAuthError("Wrong email or password");
-  //       });
-  //   }
-  // };
+    if (isValid) {
+      try {
+          let bodyObj = {
+          email: email,
+          password: password,
+        };
+  
+        // need to pass the data as JSON for our API to deal with
+        const bodyStr = JSON.stringify(bodyObj);
+        //console.log(bodyStr);
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: bodyStr,
+        };
+  
+        const response = await fetch(loginEndpoint, options);
+        //console.log(response);
+        const authData = await response.json();
+  
+        if (authData && authData.access) {
+         await loginUser(email, password);
+          navigation.navigate("Tabs");
+          // handleAuthData(authData, getProductList);
+        } else {
+          if (password && email) setAuthError("Wrong email or password");
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+  };
 
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -287,8 +192,8 @@ const Login = ({ onSwitch, navigation }) => {
             <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
           </Pressable>
 
-        {/* <ButtonLogin title="LOGIN" onPress={handleLogin} /> */}
-        <ButtonLogin title="LOGIN" onPress={login} />
+        <ButtonLogin title="LOGIN" onPress={handleLogin} />
+        {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
 
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
