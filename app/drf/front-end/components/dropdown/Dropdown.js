@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import CustomText from "../CustomText";
 
 // Dropdown component
 const Dropdown = ({ items, iconName, label, onSelect }) => {
@@ -62,7 +63,11 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
         onPress={() => toggleDropdown(!isOpen)}
         style={{ flexDirection: "row", alignItems: "center" }}
       >
-        {label && <Text style={styles.labelStyle}>{label}</Text>}
+        {label && (
+          <CustomText fontType="text" style={styles.labelStyle}>
+            {label}
+          </CustomText>
+        )}
         {iconName && (
           <MaterialIcons
             name={iconName}
@@ -100,7 +105,9 @@ const Dropdown = ({ items, iconName, label, onSelect }) => {
                   },
                 ]}
               >
-                <Text style={styles.text}>{item.label}</Text>
+                <CustomText fontType="text" style={styles.text}>
+                  {item.label}
+                </CustomText>
               </Animated.View>
             </TouchableOpacity>
           ))}

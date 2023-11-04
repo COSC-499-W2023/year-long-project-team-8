@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 10,
     height: 45,
-    width: 100,
+    width: 110, // Adjust the width as necessary
     marginLeft: 8,
     marginBottom: 10,
     backgroundColor: "#FCBF3D",
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#FCBF3D",
     borderRadius: 10,
-    shadowColor: "#000", // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // X, Y offset of the shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25, // Opacity of the shadow
     shadowRadius: 3.84, // Blur radius of the shadow
     elevation: 5, // Elevation for Android
@@ -106,6 +106,38 @@ const styles = StyleSheet.create({
   filterText: {
     fontWeight: "600",
     color: "white",
+  },
+  sortDropdownContainer: {
+    flex: 1,
+    marginRight: 10,
+    marginLeft: 5,
+    justifyContent: "center",
+  },
+  sortDropdown: {
+    marginBottom: 8,
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#dcdcdc",
+    paddingVertical: 10, // Adjusted to match the vertical padding of mainFilter
+    paddingHorizontal: 10,
+    height: 45, // Make sure this matches the height of the mainFilter
+    justifyContent: "center", // This will vertically center the text inside the dropdown
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  sortDropdownText: {
+    color: "black", // Text color
+    textAlign: "center", // Align text to center
+    fontSize: 16, // Text size
+  },
+  sortDropdownIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
   },
   listingsContainer: {
     paddingTop: 10,

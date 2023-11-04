@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
-import Profile from "../profilePage/profilePage.js"
+import Profile from "../profilePage/profilePage.js";
+import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 

@@ -1,142 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   View,
-  Text,
-  Modal,
   ScrollView,
   TouchableOpacity,
   Image,
   SafeAreaView,
 } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
+import CustomText from "../CustomText";
 import Listing from "./Listing";
 import { useScrollToTop } from "@react-navigation/native";
 import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
 import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
+import { categoryIcons, foodListings, sortOptions } from "./Data"; // Adjust the path as necessary
+
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
-
-const categoryIcons = {
-  Italian: require("../../assets/icons/italian.png"),
-  Vegan: require("../../assets/icons/vegetarian.png"),
-  Meat: require("../../assets/icons/meat.png"),
-  Asian: require("../../assets/icons/asian.png"),
-  Mexican: require("../../assets/icons/mexican.png"),
-  Produce: require("../../assets/icons/produce.png"),
-  Desserts: require("../../assets/icons/dessert.png"),
-  Canned: require("../../assets/icons/canned.png"),
-};
-
-const foodListings = [
-  {
-    dish: "Pasta Carbonara",
-    name: "Aisha",
-    date: "3 hours ago",
-    image: require("../../assets/images/dummyImages/Pasta.jpg"),
-    category: "Italian",
-    distance: "1km",
-    rating: 4.5,
-  },
-  {
-    dish: "Veggie Pizza",
-    name: "Daniel",
-    date: "5 hours ago",
-    image: require("../../assets/images/dummyImages/Pizza.webp"),
-    category: "Italian",
-    distance: "2km",
-    rating: 3.5,
-  },
-  {
-    dish: "Grilled Chicken",
-    name: "Olga",
-    date: "1 hours ago",
-    image: require("../../assets/images/dummyImages/Chicken.jpg"),
-    category: "Meat",
-    distance: "4km",
-    rating: 5,
-  },
-  {
-    dish: "Vegan Burrito",
-    name: "Giovanni",
-    date: "8 hours ago",
-    image: require("../../assets/images/dummyImages/Burrito.jpg"),
-    category: ["Mexican", "Vegan"],
-    distance: "6km",
-    rating: 3,
-  },
-  {
-    dish: "Cheeseburger",
-    name: "Linh",
-    date: "4 hours ago",
-    image: require("../../assets/images/dummyImages/Cheeseburger.jpg"),
-    category: "Meat",
-    distance: "9km",
-    rating: 1.5,
-  },
-  {
-    dish: "Rice Noodles",
-    name: "Esmeralda",
-    date: "5 hours ago",
-    image: require("../../assets/images/dummyImages/Ricenoodles.webp"),
-    category: "Asian",
-    distance: "9km",
-    rating: 2.5,
-  },
-  {
-    dish: "BBQ Ribs",
-    name: "Haruki",
-    date: "7 hours ago",
-    image: require("../../assets/images/dummyImages/Bbqribs.jpg"),
-    category: "Meat",
-    distance: "11km",
-    rating: 4.7,
-  },
-  {
-    dish: "Salmon Salad",
-    name: "Kwame",
-    date: "1 day ago",
-    image: require("../../assets/images/dummyImages/Salmonsalad.jpeg"),
-    category: "Meat",
-    distance: "8km",
-    rating: 4.9,
-  },
-  {
-    dish: "Vegan Sushi",
-    name: "Francesca",
-    image: require("../../assets/images/dummyImages/VeganSushi.jpg"),
-    category: ["Asian", "Vegan"],
-    distance: "10km",
-    rating: 3.9,
-  },
-  {
-    dish: "Spaghetti Bolognese",
-    name: "Ananya",
-    date: "1 day ago",
-    image: require("../../assets/images/dummyImages/Spaghettibolognese.jpg"),
-    category: ["Italian", "Meat"],
-    distance: "12km",
-    rating: 1.8,
-  },
-  {
-    dish: "Lobster Bisque",
-    name: "Michael",
-    date: "1 day ago",
-    image: require("../../assets/images/dummyImages/LobsterBisque.png"),
-    category: "Seafood",
-    distance: "1km",
-    rating: 1.8,
-  },
-  {
-    dish: "Mushroom Risotto",
-    name: "Pierre",
-    date: "1 day ago",
-    image: require("../../assets/images/dummyImages/MushroomRisotto.jpg"),
-    category: ["Italian"],
-    distance: "8km",
-    rating: 4.5,
-  },
-];
 
 const handleMapPress = () => {
   //TODO
@@ -147,14 +28,20 @@ const HomePage = () => {
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const [selectedDropdownValue, setSelectedDropdownValue] = useState("");
-
   // State to hold selected food categories
   const [selectedCategories, setSelectedCategories] = React.useState([]);
 
   //State to hold if modal is opened
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+
+  const [distanceFilter, setDistanceFilter] = useState(10); // in kilometers
+  const [ratingFilter, setRatingFilter] = useState(3.5); // rating out of 5
+  const [hoursFilter, setHoursFilter] = useState(24); // hours since published
+  const [allergensFilter, setAllergensFilter] = useState([]); // list of allergens to filter out
+
+  // Add state to manage the selected sort option
+  const [selectedSortOption, setSelectedSortOption] = useState("Distance");
 
   // Function to open the filter modal
   const openFilterModal = () => {
@@ -205,37 +92,90 @@ const HomePage = () => {
     );
   };
 
-  // Filtering the food listings based on search query, selected categories, distance, rating, and time frame
-  const filteredListings = foodListings.filter((listing) => {
-    const isDishMatching = listing.dish
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const isCategoryMatchingSearch = isCategoryMatching(
-      listing.category,
-      searchQuery
-    );
-    const isListingCategorySelected = selectedCategories.some((cat) =>
-      isCategoryMatching(listing.category, cat)
+  const convertRelativeTimeToHours = (relativeTime) => {
+    if (!relativeTime) return 0; // If the date is not provided, return 0 hours
+
+    const match = relativeTime.match(
+      /(\d+)\s*(hours?|days?|minutes?|seconds?)\s*ago/
     );
 
-    return (
-      (isDishMatching || isCategoryMatchingSearch) &&
-      (!selectedCategories.length || isListingCategorySelected)
-    );
-  });
+    if (!match) return 0; // If the format is unknown, return 0 hours
 
-  // Sorting the filtered listings based on the selectedDropdownValue
-  if (selectedDropdownValue === "Date") {
-    filteredListings.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date);
-    });
-  } else if (selectedDropdownValue === "Distance") {
-    filteredListings.sort(
-      (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
-    );
-  } else if (selectedDropdownValue === "Rating") {
-    filteredListings.sort((a, b) => b.rating - a.rating);
-  }
+    const value = parseInt(match[1], 10);
+    const unit = match[2];
+
+    if (unit.startsWith("day")) {
+      return value * 24;
+    } else if (unit.startsWith("hour")) {
+      return value;
+    } else if (unit.startsWith("minute")) {
+      return value / 60;
+    } else if (unit.startsWith("second")) {
+      return value / 3600;
+    }
+
+    return 0; // Default return if none of the conditions match
+  };
+
+  const filteredAndSortedListings = useMemo(() => {
+    return foodListings
+      .filter((listing) => {
+        const isDishMatching = listing.dish
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        const isCategoryMatchingSearch = isCategoryMatching(
+          listing.category,
+          searchQuery
+        );
+        const isListingCategorySelected = selectedCategories.some((cat) =>
+          isCategoryMatching(listing.category, cat)
+        );
+        // Apply distance filter
+        const listingDistance = parseFloat(listing.distance.replace("km", ""));
+        const withinDistance = listingDistance <= distanceFilter;
+
+        // Apply rating filter
+        const meetsRating = listing.rating >= ratingFilter;
+
+        // Apply hours filter
+        const hoursSincePublished = convertRelativeTimeToHours(listing.date);
+        const withinTimeFrame = hoursSincePublished <= hoursFilter;
+
+        // Apply allergens filter
+        const doesNotContainAllergens = !allergensFilter.some((allergen) =>
+          listing.allergen?.includes(allergen)
+        );
+
+        return (
+          (isDishMatching || isCategoryMatchingSearch) &&
+          (!selectedCategories.length || isListingCategorySelected) &&
+          withinDistance &&
+          meetsRating &&
+          withinTimeFrame &&
+          doesNotContainAllergens
+        );
+      })
+      .sort((a, b) => {
+        if (selectedSortOption === "Distance") {
+          return parseFloat(a.distance) - parseFloat(b.distance);
+        } else if (selectedSortOption === "Rating") {
+          return b.rating - a.rating;
+        } else if (selectedSortOption === "Date") {
+          const hoursA = convertRelativeTimeToHours(a.date);
+          const hoursB = convertRelativeTimeToHours(b.date);
+          return hoursA - hoursB;
+        }
+        return 0;
+      });
+  }, [
+    searchQuery,
+    selectedCategories,
+    distanceFilter,
+    ratingFilter,
+    hoursFilter,
+    allergensFilter,
+    selectedSortOption,
+  ]);
 
   return (
     // Container to ensure content is displayed within safe areas of the device
@@ -291,7 +231,8 @@ const HomePage = () => {
                 </TouchableOpacity>
 
                 {/* Label for the category icon */}
-                <Text
+                <CustomText
+                  fontType={"text"}
                   style={[
                     styles.categoryText,
                     isCategorySelected(category)
@@ -300,7 +241,7 @@ const HomePage = () => {
                   ]}
                 >
                   {category}
-                </Text>
+                </CustomText>
               </View>
             ))}
           </ScrollView>
@@ -311,61 +252,32 @@ const HomePage = () => {
               onPress={openFilterModal}
             >
               <Image source={filterIcon} style={styles.filterIcon} />
-              <Text style={styles.filterText}>Filter</Text>
+              <CustomText fontType={"title"} style={styles.filterText}>
+                Filter
+              </CustomText>
             </TouchableOpacity>
-            <ScrollView
-              horizontal
-              style={styles.filterContainer}
-              showsHorizontalScrollIndicator={false}
-            >
-              {/* Wrap each View in a TouchableOpacity to make it a button */}
-              <TouchableOpacity
-                style={styles.filter}
-                onPress={() => {
-                  /* Handle Distance filter press */
-                }}
-              >
-                <Text style={styles.filterText}>Distance</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.filter}
-                onPress={() => {
-                  /* Handle Rating filter press */
-                }}
-              >
-                <Text style={styles.filterText}>Rating</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.filter}
-                onPress={() => {
-                  /* Handle Date filter press */
-                }}
-              >
-                <Text style={styles.filterText}>Date</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.filter}
-                onPress={() => {
-                  /* Handle Allergies filter press */
-                }}
-              >
-                <Text style={styles.filterText}>Allergies</Text>
-              </TouchableOpacity>
-            </ScrollView>
+            <View style={styles.sortDropdownContainer}>
+              <SelectList
+                data={sortOptions}
+                setSelected={setSelectedSortOption}
+                placeholder="Sort by"
+                boxStyles={styles.sortDropdown}
+                placeholderStyles={styles.sortDropdownText}
+              />
+            </View>
           </View>
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {/* Checking if there are listings to display */}
-            {filteredListings.length ? (
-              filteredListings.map((listing, idx) => (
+            {/* Here, we replace filteredListings with filteredAndSortedListings */}
+            {filteredAndSortedListings.length ? (
+              filteredAndSortedListings.map((listing, idx) => (
                 <Listing key={listing.dish} listing={listing} idx={idx} />
               ))
             ) : (
-              // Displaying message if no matching listings are found
-              <Text style={styles.noMatchesText}>
+              <CustomText fontType={"text"} style={styles.noMatchesText}>
                 Nothing like that for now...
-              </Text>
+              </CustomText>
             )}
           </View>
         </View>
@@ -376,7 +288,11 @@ const HomePage = () => {
       <FilterModal
         isVisible={isFilterModalVisible}
         onClose={closeFilterModal}
-        // pass any other props needed for filtering
+        setDistanceFilter={setDistanceFilter}
+        setRatingFilter={setRatingFilter}
+        setHoursFilter={setHoursFilter}
+        setAllergensFilter={setAllergensFilter}
+        // other props if needed
       />
     </SafeAreaView>
   );

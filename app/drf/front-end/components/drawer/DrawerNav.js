@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, TouchableOpacity, View, Text } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Tabs from "../tabs/BottomTabs"; // Importing the bottom tabs navigation component
 import DrawerProps from "./DrawerProps.js"; // Custom drawer content
 import SettingsPage from "../settingsPage/Settings"; // Settings page component
+import Profile from "../profilePage/profilePage.js";
 
 // Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
@@ -13,28 +14,21 @@ const notificationIcon = require("../../assets/notification.png");
 // Create a drawer navigator
 const Drawer = createDrawerNavigator();
 
-// Screen for Profile
-const Profile = () => (
-  <View>
-    <Text>Dummy Profile</Text>
-  </View>
-);
 const DrawerNav = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Tabs" // Set the initial route to be the Tabs
-      drawerContent={(props) => <DrawerProps {...props} />} // Custom drawer content
+      drawerContent={(props) => <DrawerProps {...props} />}
       screenOptions={{
-        swipeEnabled: false, // Disable the swipe gesture for opening/closing the drawer
+        swipeEnabled: false,
       }}
     >
       <Drawer.Screen
         name="Tabs"
-        component={Tabs} // Bottom tabs component
+        component={Tabs}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (
-            // Display the logo in the center of the header
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
@@ -82,7 +76,7 @@ const DrawerNav = () => {
 
       <Drawer.Screen
         name="Settings"
-        component={SettingsPage} // Settings page component
+        component={SettingsPage}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (

@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import CustomText from "../CustomText";
+import DrawerItem from "./DrawerItem";
 // Logo asset
 const logo = require("../../assets/logo.png");
 
@@ -40,7 +41,7 @@ const DrawerProps = ({ navigation, state }) => {
       <DrawerItem
         iconName="person"
         label="Profile"
-        onPress={() => navigation.navigate("Profile")}
+        onPress={() => navigation.navigate("Tabs", { screen: "Profile" })}
         isActive={activeRouteName === "Profile"}
       />
       <DrawerItem
@@ -67,36 +68,16 @@ const DrawerProps = ({ navigation, state }) => {
         onPress={handleLogout}
       >
         <Ionicons name="log-out" size={24} style={styles.logoutIcon} />
-        <Text style={[styles.drawerText, styles.logoutText]}>Logout</Text>
+        <CustomText
+          style={[styles.drawerText, styles.logoutText]}
+          fontType="text"
+        >
+          Logout
+        </CustomText>
       </TouchableOpacity>
     </View>
   );
 };
-
-/**
- * Reusable component for Drawer Items
- * @param {string} iconName - Name of the icon.
- * @param {string} label - Display label for the item.
- * @param {function} onPress - Callback for when the item is pressed.
- * @param {boolean} isActive - Whether the item is currently active.
- */
-const DrawerItem = ({ iconName, label, onPress, isActive }) => (
-  <TouchableOpacity
-    style={[styles.drawerItem, isActive ? styles.activeDrawerItem : null]}
-    onPress={onPress}
-  >
-    <Ionicons
-      name={iconName}
-      size={24}
-      style={[styles.icon, isActive ? styles.activeIcon : null]}
-    />
-    <Text
-      style={[styles.drawerText, isActive ? styles.activeDrawerText : null]}
-    >
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   container: {
