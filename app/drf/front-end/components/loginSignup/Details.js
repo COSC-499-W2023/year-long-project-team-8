@@ -16,6 +16,7 @@ import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+//const Details = ({ navigation, route }) => {
 const Details = ({ navigation}) => {
   //Setting accessToken and userId parameters passed from SignUp component
   //const accessToken = route.params?.accessToken;
@@ -81,6 +82,9 @@ const Details = ({ navigation}) => {
     }
   };
 
+
+  //setting userUpdateEndpoint for userId
+  const userUpdateEndpoint = `http://192.168.1.67:8081/api/users/${userId}/`;
   const handleUpdate = async () => {
     const userId = await AsyncStorage.getItem('user_id');
     const accessToken = await AsyncStorage.getItem('access_token');
@@ -89,9 +93,9 @@ const Details = ({ navigation}) => {
     //PATCH request, passing accessToken to Auth header and content body
     try {
       const response = await fetch(userUpdateEndpoint, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
@@ -106,10 +110,13 @@ const Details = ({ navigation}) => {
       }
 
       const data = await response.json();
+
+      navigation.navigate("Tabs", { userId, accessToken: accessToken });
       console.log('User profile updated:', data);
       navigation.navigate("Tabs");
+     // navigation.navigate("Tabs", { userId, accessToken: accessToken });
     } catch (error) {
-      console.error('Error updating user profile:', error.message);
+      console.error("Error updating user profile:", error.message);
     }
   };
 
@@ -226,7 +233,7 @@ const Details = ({ navigation}) => {
           </View>
           <Pressable
             style={DetailStyles.skipContainer}
-            onPress={() => navigation.navigate("Tabs")}
+            onPress={() => navigation.navigate("MainApp")}
           >
             <Text
               style={[

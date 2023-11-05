@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
+import CustomText from "../CustomText";
 
 // Component to represent a single food listing
 const Listing = ({ listing, idx }) => {
@@ -21,11 +22,15 @@ const Listing = ({ listing, idx }) => {
         </View>
 
         {/* Name of the dish */}
-        <Text style={styles.cardTitle}>{listing.dish}</Text>
+        <CustomText fontType={"title"} style={styles.cardTitle}>
+          {listing.dish}
+        </CustomText>
 
         {/* Container for the dish creator's name and rating */}
         <View style={styles.nameAndRatingContainer}>
-          <Text style={styles.byName}>By {listing.name}</Text>
+          <CustomText fontType={"text"} style={styles.byName}>
+            By {listing.name}
+          </CustomText>
 
           {/* Icon from 'MaterialIcons' to represent star rating */}
           <MaterialIcons
@@ -34,13 +39,19 @@ const Listing = ({ listing, idx }) => {
             color="gold"
             style={styles.star}
           />
-          <Text style={styles.rating}>{listing.rating}</Text>
+          <CustomText fontType={"subHeader"} style={styles.rating}>
+            {listing.rating}
+          </CustomText>
         </View>
 
         {/* Container for the date when the listing was posted and distance info */}
         <View>
-          <Text style={styles.datePosted}>{listing.date || "Just now"}</Text>
-          <Text style={styles.distanceText}>{listing.distance}</Text>
+          <CustomText fontType={"subHeader"} style={styles.datePosted}>
+            {listing.date || "Just now"}
+          </CustomText>
+          <CustomText fontType={"subHeader"} style={styles.distanceText}>
+            {listing.distance}
+          </CustomText>
         </View>
       </TouchableOpacity>
     </Card>

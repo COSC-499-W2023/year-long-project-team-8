@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -73,7 +75,7 @@ if DEBUG:
         "http://localhost:8111",
         "https://localhost:8111",
         "http://localhost:19006",
-        #ip:8000"
+        #"http://ip:8000"
     ]
 
 TEMPLATES = [
