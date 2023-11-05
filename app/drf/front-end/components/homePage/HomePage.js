@@ -6,7 +6,7 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+import SortModal from "./SortModal";
 import CustomText from "../CustomText";
 import Listing from "./Listing";
 import { useScrollToTop } from "@react-navigation/native";
@@ -14,7 +14,7 @@ import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
 import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
-import { categoryIcons, foodListings, sortOptions } from "./Data"; // Adjust the path as necessary
+import { categoryIcons, foodListings, sortOptions } from "./Data";
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
@@ -130,18 +130,18 @@ const HomePage = () => {
         const isListingCategorySelected = selectedCategories.some((cat) =>
           isCategoryMatching(listing.category, cat)
         );
-        // Apply distance filter
+        // Distance filter
         const listingDistance = parseFloat(listing.distance.replace("km", ""));
         const withinDistance = listingDistance <= distanceFilter;
 
-        // Apply rating filter
+        // Rating filter
         const meetsRating = listing.rating >= ratingFilter;
 
-        // Apply hours filter
+        // Hours filter
         const hoursSincePublished = convertRelativeTimeToHours(listing.date);
         const withinTimeFrame = hoursSincePublished <= hoursFilter;
 
-        // Apply allergens filter
+        // Allergens filter
         const doesNotContainAllergens = !allergensFilter.some((allergen) =>
           listing.allergen?.includes(allergen)
         );
@@ -178,10 +178,7 @@ const HomePage = () => {
   ]);
 
   return (
-    // Container to ensure content is displayed within safe areas of the device
     <SafeAreaView style={styles.container}>
-      {/* Custom Navigation bar with sort options */}
-
       {/* Main content container */}
       <ScrollView
         style={styles.scrollContainer}
@@ -257,19 +254,16 @@ const HomePage = () => {
               </CustomText>
             </TouchableOpacity>
             <View style={styles.sortDropdownContainer}>
-              <SelectList
+              <SortModal
                 data={sortOptions}
-                setSelected={setSelectedSortOption}
-                placeholder="Sort by"
-                boxStyles={styles.sortDropdown}
-                placeholderStyles={styles.sortDropdownText}
+                onSelect={setSelectedSortOption}
+                placeholder="Distance"
               />
             </View>
           </View>
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {/* Here, we replace filteredListings with filteredAndSortedListings */}
             {filteredAndSortedListings.length ? (
               filteredAndSortedListings.map((listing, idx) => (
                 <Listing key={listing.dish} listing={listing} idx={idx} />
@@ -292,7 +286,6 @@ const HomePage = () => {
         setRatingFilter={setRatingFilter}
         setHoursFilter={setHoursFilter}
         setAllergensFilter={setAllergensFilter}
-        // other props if needed
       />
     </SafeAreaView>
   );

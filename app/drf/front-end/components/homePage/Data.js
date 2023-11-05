@@ -123,9 +123,16 @@ export const foodListings = [
   },
 ];
 
-// Exporting sort options if needed elsewhere
 export const sortOptions = [
-  { label: "Distance", value: "Distance" },
-  { label: "Rating", value: "Rating" },
-  { label: "Date", value: "Date" },
+  {
+    label: "Distance",
+    value: "Distance",
+    icon: require("../../assets/distance.png"),
+  },
+  {
+    label: "Rating",
+    value: "Rating",
+    icon: require("../../assets/star.png"),
+  },
+  { label: "Date", value: "Date", icon: require("../../assets/date.png") },
 ];

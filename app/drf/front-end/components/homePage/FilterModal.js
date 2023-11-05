@@ -195,8 +195,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  keyboardAvoidingView: {},
-
   modalContent: {
     padding: 20,
     backgroundColor: "#f8f9fa",

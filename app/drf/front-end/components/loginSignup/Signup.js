@@ -17,10 +17,10 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-//const baseEndpoint = "http://localhost:8000/api";
+const baseEndpoint = "http://localhost:8000/api";
 
-const tokenEndpoint = "http://192.168.1.67:8000/api/token/";
-const baseEndpoint = "http://192.168.1.67:8000/api";
+const tokenEndpoint = "http://localhost:8000/api/token/";
+//const baseEndpoint = "http://ip:8000/api";
 
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
