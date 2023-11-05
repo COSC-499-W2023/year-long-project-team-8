@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, userContext } from "react";
 import {
   View,
   Text,
@@ -15,7 +16,8 @@ import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../../context/AuthContext'
 
 const baseEndpoint = "http://localhost:8000/api";
 
@@ -35,6 +37,8 @@ const Signup = ({ onSwitch, navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+ // const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
   const handleSignup = async () => {
@@ -109,9 +113,12 @@ const Signup = ({ onSwitch, navigation }) => {
         const userId = extractUserIdFromUrl(userData.url);
 
         // Store the token and navigate to the Details screen
-        AsyncStorage.setItem("user_id", userId.toString());
-        AsyncStorage.setItem("access_token", receivedToken);
-        navigation.navigate("Details", { userId, accessToken: receivedToken });
+        AsyncStorage.setItem('user_id', userId.toString());
+        AsyncStorage.setItem('access_token', receivedToken);
+        AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
+       // navigation.navigate("Details", { userId, accessToken: receivedToken });
+        navigation.navigate("Details");
+
       } catch (error) {
         console.log("Error during signup:", error);
       }
