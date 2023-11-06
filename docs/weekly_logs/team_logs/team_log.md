@@ -192,7 +192,6 @@ October 23 - October 29, 2023
 <!-- 
 - screenshot of the projects board
 -->
-<br>
 ![Alt text](../img/projboard_w8.png)
 
 ### Username Map
@@ -254,4 +253,88 @@ We have created tests for several endpoints in our API and model instances. Link
 
 Link to test report: https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
 
+
+October 30 - November 5, 2023
+
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+![Alt text](../img/projboard_w9.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Profile page back-end functionality
+- Integrate to a MySQL database
+- Extend the product model
+- Create location model and configure with map API
+- Create review model
+- Create dietary restrictions model
+- Create message model
+- Create photo model
+- Implement email based authentication
+- System Architecture diagram
+- ER diagram
+- Side Hamburger style menu
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Authentication and registration (front-end)
+- Manage state
+- Handle security of storing user data - tokens, email, id
+- Extend user model to store more details
+- JWT token authentication for API calls
+- Upgrade backend security with permissions/authentication
+- Refactor User Details view API
+- Profile Page front-end
+- User details page
+- User model refactor
+- Side menu
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- Implement email based authentication
+- System Architecture diagram
+- ER diagram
+- Side Hamburger style menu
+- Profile page back-end functionality
+- Documentation
+- UI refinements
+- Authentication refactoring
+
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+![Alt text](../img/burnup_w9.png)
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+We have created tests for several endpoints in our API and model instances. Link below to a detailed test report.
+![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
+![Alt text](../img/FE_tests_w8.png)
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
 

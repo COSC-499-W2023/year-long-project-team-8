@@ -165,6 +165,63 @@ October 23 - October 30, 2023
 | 3      |             | ✓           |
 
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 30 - November 6, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](img/bm_w9.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- profile page documentation
+- profile page button functionality
+- settings button to open a drawer
+- in drawer have the ability to log out and edit the profile
+- complete testing for profile page
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+1. profile page button functionality
+2. settings button to open drawer
+3. settings drawer has ability to log out
+4. create edit profile functionality
+5. create edit profile page
+6. profile page documentation
+7. profile page implementation
+8. live demo 
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+
+-->
+
+| Item # | Completed   | To Be Done  |
+|:------:|:-----------:|:-----------:|
+| 1      |      ✓      |             |
+| 2      |      ✓      |             |
+| 3      |             |      ✓      |
+| 4      |             |      ✓      |
+| 5      |             |      ✓      |
+| 6      |             |      ✓      |
+| 7      |       ✓     |             |
+| 8      |       ✓     |             |
+
+
+
+
+
 
 
 

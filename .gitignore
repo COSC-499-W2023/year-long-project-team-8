@@ -131,3 +131,7 @@ dmypy.json
 
 # dependencies
 node_modules/
+
+# personal environment
+bmenv/
+```

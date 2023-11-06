@@ -167,3 +167,53 @@ October 23 - 29, 2023
 | Item # | Completed  | To Be Done |
 |:------:|:-----------|:-----------|
 | 49      |            |      ✓      |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 30 - November 05, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![Alt text](img/mk_w9.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Continue to refine authorization
+- Manage authentication in front end using Context
+- Handle JWT tokens in the front end
+- Use context throughout the app the control state and authentication
+- Refresh tokens on a time interval
+- Check for tokens, log out user if tokens not valid
+- Update ER diagram
+- Update Architecture diagram
+- Demo the app
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item 49 - handle authentication in the front end
+- item 65 - design document
+- item 64 - system architecture diagram
+- item 63 - ER diagram - have a working prototype but is a living document and may change as our needs evolve
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 49      |     ✓      |           |
+| 65     |           |      ✓      |
+| 64      |           |     ✓       |
+| 63      |           |     ✓       |
