@@ -153,8 +153,8 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.SessionAuthentication", #removed other authentication to get fine grain insights on jwt
-        # "api.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication", #removed other authentication to get fine grain insights on jwt
+        "api.authentication.TokenAuthentication",
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
