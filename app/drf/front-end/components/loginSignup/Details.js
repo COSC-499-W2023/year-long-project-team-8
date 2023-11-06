@@ -84,7 +84,6 @@ const Details = ({ navigation}) => {
 
 
   //setting userUpdateEndpoint for userId
-  const userUpdateEndpoint = `http://192.168.1.67:8081/api/users/${userId}/`;
   const handleUpdate = async () => {
     const userId = await AsyncStorage.getItem('user_id');
     const accessToken = await AsyncStorage.getItem('access_token');
@@ -111,9 +110,8 @@ const Details = ({ navigation}) => {
 
       const data = await response.json();
 
-      navigation.navigate("Tabs", { userId, accessToken: accessToken });
       console.log('User profile updated:', data);
-      navigation.navigate("Tabs");
+      navigation.navigate("MainApp");
      // navigation.navigate("Tabs", { userId, accessToken: accessToken });
     } catch (error) {
       console.error("Error updating user profile:", error.message);
