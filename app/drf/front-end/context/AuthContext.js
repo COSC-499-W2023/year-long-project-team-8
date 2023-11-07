@@ -82,7 +82,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('access_token')
         AsyncStorage.removeItem('refresh')
         AsyncStorage.removeItem('user_id')
-       // navigation.navigate('Landing');
+        navigation.navigate('Landing');
         // history.push('/login')
     }
 
