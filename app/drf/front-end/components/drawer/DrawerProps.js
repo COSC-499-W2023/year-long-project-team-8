@@ -13,6 +13,7 @@ const logo = require("../../assets/logo.png");
  * @param {object} state - Current navigation state.
  */
 const DrawerProps = ({ navigation, state }) => {
+  // import logout function from AuthContext
   const { logoutUser } = useContext(AuthContext);
   // Extract the name of the currently active route
   const activeRouteName = state.routes[state.index].name;
