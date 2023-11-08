@@ -43,7 +43,7 @@ const HomePage = () => {
   // Add state to manage the selected sort option
   const [selectedSortOption, setSelectedSortOption] = useState("Distance");
 
-  // Function to handle map press !!currently using an imported function for testing!!!
+  // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {
    
     try {

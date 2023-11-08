@@ -1,13 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { jwtDecode } from 'jwt-decode'; // Update the import
+import { jwtDecode } from 'jwt-decode'; 
 
 const baseEndpoint = "http://localhost:8000/api";
 
-
 const AuthContext = createContext();
 
+// Define parameters for context to hold - also need to add to context data below to persist the data
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -16,6 +16,7 @@ export const AuthProvider = ({children}) => {
     const [refresh, setRefreshToken] =useState(null);
     const [loading, setLoading] = useState(false);
     
+    // Persists auth data wherever it is imported and in scope
     const loadAuthData = async () => {
       try {
         const authTokensData = await AsyncStorage.getItem('authTokens');
@@ -48,8 +49,7 @@ export const AuthProvider = ({children}) => {
       loadAuthData();
     }, []);
 
-    //const history = useHistory()
-
+    // Function to log in user, sets user data
     let loginUser = async (email, password)=> {
         let response = await fetch(`${baseEndpoint}/token/`, {
             method:'POST',
@@ -62,18 +62,17 @@ export const AuthProvider = ({children}) => {
 
         if(response.status === 200){
             setAuthTokens(data)
+            // Use jwtDecode to decode the access token to extract encrypted user information
             setUserId(jwtDecode(data.access).user_id)
             AsyncStorage.setItem('authTokens', JSON.stringify(data))
             AsyncStorage.setItem('access', JSON.stringify(data.access))
             AsyncStorage.setItem('refresh', JSON.stringify(data.access))
-            //navigation.navigate('Tabs');  // for some reason this navigation didn't work so na
-            // history.push('/')
         }else{
             alert('Something went wrong!')
         }
     }
 
-
+    // Function to log out user, removing all user data
     let logoutUser = () => {
         setAuthTokens(null)
         setUser(null)
@@ -83,10 +82,9 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('refresh')
         AsyncStorage.removeItem('user_id')
         navigation.navigate('Landing');
-        // history.push('/login')
     }
 
-
+    // Call to refresh Token endpoint to update the access token
     let updateToken = async ()=> {
         let response = await fetch(`${baseEndpoint}/token/refresh/`, {
             method:'POST',
@@ -114,6 +112,7 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    // Data held within context, accessible wherever Context is in scope and imported
     let contextData = {
         user:user,
         userId:userId,
@@ -122,7 +121,7 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
     }
 
-
+    // Update token on a time interval - call to refresh token endpoint and reset access token
     useEffect(()=> {
 
         if(loading){
