@@ -16,15 +16,17 @@ import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
 import { categoryIcons, foodListings, sortOptions } from "./Data";
 //import { apiHelpers } from '../helperFunctions/apiHelpers';
-import { filterCategory, getUserData } from '../helperFunctions/apiHelpers';
-import AuthContext from '../../context/AuthContext'
+import { filterCategory, getUserData } from '../helperFunctions/apiHelpers'; // Import functions
+import AuthContext from '../../context/AuthContext' // Import AuthContext
 
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
 const HomePage = () => {
+  // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
+
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
 
