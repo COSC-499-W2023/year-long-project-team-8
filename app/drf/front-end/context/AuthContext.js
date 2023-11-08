@@ -62,7 +62,7 @@ export const AuthProvider = ({children}) => {
 
         if(response.status === 200){
             setAuthTokens(data)
-            setUser(jwtDecode(data.access).user_id)
+            setUserId(jwtDecode(data.access).user_id)
             AsyncStorage.setItem('authTokens', JSON.stringify(data))
             AsyncStorage.setItem('access', JSON.stringify(data.access))
             AsyncStorage.setItem('refresh', JSON.stringify(data.access))
@@ -116,6 +116,7 @@ export const AuthProvider = ({children}) => {
 
     let contextData = {
         user:user,
+        userId:userId,
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
