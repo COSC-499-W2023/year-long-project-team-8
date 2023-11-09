@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import styles from './profilePageStyles'; // Make sure you import your styles correctly
+import { getUserData } from '../helperFunctions/apiHelpers'; // Import functions
+import AuthContext from '../../context/AuthContext' // Import AuthContext
 
 const ProfilePage = () => {
+// Use AuthContext to get tokens and userId
+const { authTokens, userId } = useContext(AuthContext);
+
+// Declare userData as a state variable
+const [userData, setUserData] = useState(null);
+
+// use effect to load users data when page is loaded
+useEffect(() => {
+  // Fetch user data and update the state
+  getUserData(userId, authTokens)
+    .then((data) => {
+      setUserData(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+    });
+}, [userId, authTokens]);
+
   return (
     <View style={styles.container}>
       {/* holds the background image */}
@@ -32,8 +52,8 @@ const ProfilePage = () => {
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-        {/* users name */}
-        <Text style={styles.name}>Brandon Mack</Text>
+        {/* users name (email for now - replace with firstname + lastname)*/}
+        {userData && <Text style={styles.name}>{userData.email}</Text>} 
 
         {/* users location */}
         <View style={styles.locationContainer}>
