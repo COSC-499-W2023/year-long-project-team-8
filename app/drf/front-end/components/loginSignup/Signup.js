@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, userContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -38,7 +38,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
- // const { loginUser } = useContext(AuthContext);
+ const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
   const handleSignup = async () => {
@@ -117,6 +117,7 @@ const Signup = ({ onSwitch, navigation }) => {
         AsyncStorage.setItem('access_token', receivedToken);
         AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
        // navigation.navigate("Details", { userId, accessToken: receivedToken });
+       loginUser(signupEmail,signupPassword);
         navigation.navigate("Details");
 
       } catch (error) {

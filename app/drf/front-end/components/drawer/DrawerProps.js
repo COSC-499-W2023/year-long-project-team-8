@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
 import DrawerItem from "./DrawerItem";
+import AuthContext from '../../context/AuthContext'
 // Logo asset
 const logo = require("../../assets/logo.png");
 
@@ -12,6 +13,8 @@ const logo = require("../../assets/logo.png");
  * @param {object} state - Current navigation state.
  */
 const DrawerProps = ({ navigation, state }) => {
+  // import logout function from AuthContext
+  const { logoutUser } = useContext(AuthContext);
   // Extract the name of the currently active route
   const activeRouteName = state.routes[state.index].name;
 
@@ -21,6 +24,7 @@ const DrawerProps = ({ navigation, state }) => {
   const handleLogout = () => {
     // TODO: Implement back-end logic for logging out here.
     console.log("Logout pressed");
+    logoutUser();
     navigation.closeDrawer();
   };
 
