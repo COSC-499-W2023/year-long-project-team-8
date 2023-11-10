@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
-
+import { baseEndpoint } from '../../config/config';
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -82,13 +82,12 @@ const Details = ({ navigation}) => {
     }
   };
 
-
   //setting userUpdateEndpoint for userId
   const handleUpdate = async () => {
     const userId = await AsyncStorage.getItem('user_id');
     const accessToken = await AsyncStorage.getItem('access_token');
     //setting userUpdateEndpoint for userId
-    const userUpdateEndpoint = `http://localhost:8000/api/users/${userId}/`;
+    const userUpdateEndpoint = `${baseEndpoint}/users/${userId}/`;
     //PATCH request, passing accessToken to Auth header and content body
     try {
       const response = await fetch(userUpdateEndpoint, {

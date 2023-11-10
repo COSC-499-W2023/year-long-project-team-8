@@ -2,8 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { jwtDecode } from 'jwt-decode'; 
-
-const baseEndpoint = "http://localhost:8000/api";
+import { baseEndpoint } from '../config/config';
 
 const AuthContext = createContext();
 
@@ -18,32 +17,37 @@ export const AuthProvider = ({children}) => {
     
     // Persists auth data wherever it is imported and in scope
     const loadAuthData = async () => {
-      try {
-        const authTokensData = await AsyncStorage.getItem('authTokens');
-        if (authTokensData) {
-          const authTokensJSON = await JSON.parse(authTokensData);
-          const tokenString = JSON.stringify(authTokensData);
-          console.log('Token to be saved:', authTokensJSON);
-          console.log('Token string:', tokenString);
-          setAuthTokens(authTokensJSON);
-          //setAuthTokens(tokenString);
-          // need to refine decoding to properly set user
-          const decodedToken = jwtDecode(tokenString);
-          console.log("decoded token: ", decodedToken);
-          const userId = decodedToken.user_id;
-          const userEmail = decodedToken.email;
-          console.log('User ID:', userId);
-          console.log('User email:', userEmail);
-          setUserId(userId);
-        } else {
-          setAuthTokens(null);
-          setUser(null);
+        try {
+          const authTokensData = await AsyncStorage.getItem('authTokens');
+          if (authTokensData) {
+            const authTokensJSON = await JSON.parse(authTokensData);
+            const tokenString = JSON.stringify(authTokensData);
+            console.log('Token to be saved:', authTokensJSON);
+            console.log('Token string:', tokenString);
+            setAuthTokens(authTokensJSON);
+      
+            // Check if authTokensJSON.access exists before decoding
+            if (authTokensJSON.access) {
+              const decodedToken = jwtDecode(authTokensJSON.access);
+              console.log("decoded token: ", decodedToken);
+              const userId = decodedToken.user_id;
+              const userEmail = decodedToken.email;
+              console.log('User ID:', userId);
+              console.log('User email:', userEmail);
+              setUserId(userId);
+            } else {
+              setUserId(null);
+            }
+          } else {
+            setAuthTokens(null);
+            setUser(null);
+            setUserId(null); // Make sure to reset userId when no tokens are available
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error('Error loading auth data:', error);
         }
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading auth data:', error);
-      }
-    };
+      };
     
     useEffect(() => {
       loadAuthData();
@@ -66,7 +70,7 @@ export const AuthProvider = ({children}) => {
             setUserId(jwtDecode(data.access).user_id)
             AsyncStorage.setItem('authTokens', JSON.stringify(data))
             AsyncStorage.setItem('access', JSON.stringify(data.access))
-            AsyncStorage.setItem('refresh', JSON.stringify(data.access))
+            AsyncStorage.setItem('refresh', JSON.stringify(data.refresh))
         }else{
             alert('Something went wrong!')
         }

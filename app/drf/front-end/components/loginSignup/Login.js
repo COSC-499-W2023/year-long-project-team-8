@@ -14,13 +14,10 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
+import { baseEndpoint } from '../../config/config';
 import AuthContext from '../../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-// base endpoint
-const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://ip/api";
 
 // Login component for user authentication
 const Login = ({ onSwitch, navigation }) => {

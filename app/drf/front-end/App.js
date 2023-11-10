@@ -7,7 +7,6 @@ import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
 import { AuthProvider } from './context/AuthContext'
 
-
 const Stack = createStackNavigator();
 
 const App = () => {
