@@ -54,6 +54,32 @@ async function getUserData(userId, authTokens) {
     }
   }
 
+  // Helper function to retrieve all product listings
+  async function getProductList (authTokens) {
+    try {
+      const response = await fetch(`${baseEndpoint}/products/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(authTokens.access) 
+        },
+      });
+  
+      if (response.status === 200) {
+        const productData = await response.json();
+        return productData; // Return the data to the caller
+        // if unauthorized access attempt, logout user
+      }else if(response.statusText === 'Unauthorized'){
+        logoutUser() 
+      }else {
+        throw new Error('Something went wrong!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      throw new Error('Something went wrong!');
+    }
+  }
+
 // A sample function to handle returned data from API call
 function renderProducts(data) {
   // Example function to render the products
@@ -68,5 +94,6 @@ function renderProducts(data) {
 // Export all the functions
 export {
   filterCategory,
-  getUserData
+  getUserData,
+  getProductList,
 };
