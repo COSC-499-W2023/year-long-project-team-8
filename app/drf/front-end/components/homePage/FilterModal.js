@@ -78,14 +78,11 @@ const FilterModal = ({
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Ionicons name="close" size={24} color="#000" />
             </TouchableOpacity>
-            <CustomText style={styles.filterTitle} fontType="title">
-              Filter By
-            </CustomText>
 
             {/* Allergen Filter with Dropdown */}
-            <View style={styles.filterOption}>
+            <View style={styles.filterOptionFirst}>
               <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                Filter by Allergens
+                Allergens
               </CustomText>
               {/* Use SelectList for the dropdown */}
               <SelectList
@@ -189,7 +186,7 @@ const FilterModal = ({
 
 const styles = StyleSheet.create({
   modal: {
-    margin: 0,
+    marginHorizontal: 10,
     justifyContent: "flex-end",
   },
   scrollView: {
@@ -232,6 +229,11 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     color: "#212529",
+  },
+  filterOptionFirst: {
+    width: "100%",
+    marginBottom: 20,
+    marginTop: 20,
   },
   filterOption: {
     width: "100%",
@@ -279,25 +281,9 @@ const styles = StyleSheet.create({
     marginRight: 6,
     fontSize: 14,
   },
-  dropdown: {
-    backgroundColor: "#fff",
-    position: "absolute",
-    top: 40,
-    left: 0,
-    right: 0,
-    borderWidth: 1,
-    borderColor: "#ced4da",
-    zIndex: 1000,
-  },
-  dropdownItem: {
-    padding: 10,
-    fontSize: 16,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ced4da",
-  },
+
   applyButton: {
-    backgroundColor: "#3D80FC",
+    backgroundColor: "#FCBF3D",
     alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 35,
@@ -312,8 +298,8 @@ const styles = StyleSheet.create({
   closeButton: {
     position: "absolute",
     zIndex: 1000,
-    top: 22,
-    right: 22,
+    top: 10,
+    right: 10,
     backgroundColor: "#dee2e6",
     padding: 8,
     borderRadius: 20,
