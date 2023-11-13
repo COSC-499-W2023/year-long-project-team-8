@@ -48,6 +48,7 @@ INSTALLED_APPS = [
      "rest_framework.authtoken",
     "rest_framework_simplejwt",
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
     # internal apps
     "api",
     'products',
@@ -153,8 +154,8 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-       # "rest_framework.authentication.SessionAuthentication", #removed other authentication to get fine grain insights on jwt
-       # "api.authentication.TokenAuthentication",
+    "rest_framework.authentication.SessionAuthentication", #removed other authentication to get fine grain insights on jwt
+       "api.authentication.TokenAuthentication",
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
@@ -162,6 +163,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SIMPLE_JWT = {
