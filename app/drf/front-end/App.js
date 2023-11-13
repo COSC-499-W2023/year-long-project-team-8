@@ -5,7 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
-import { AuthProvider } from './context/AuthContext'
+
+import { AuthProvider } from "./context/AuthContext";
+
 
 const Stack = createStackNavigator();
 
@@ -14,21 +16,20 @@ const App = () => {
     <View style={{ flex: 1 }}>
       <StatusBar />
       <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Landing"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="Landing" component={Landing} />
-          <Stack.Screen name="Details" component={Details} />
-          <Stack.Screen name="MainApp" component={MainApp} />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Landing"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Landing" component={Landing} />
+            <Stack.Screen name="Details" component={Details} />
+            <Stack.Screen name="MainApp" component={MainApp} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </AuthProvider>
-</View>
-
+    </View>
   );
 };
 

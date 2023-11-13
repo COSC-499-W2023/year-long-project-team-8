@@ -16,9 +16,8 @@ import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
 import { categoryIcons, foodListings, sortOptions } from "./Data";
 //import { apiHelpers } from '../helperFunctions/apiHelpers';
-import { filterCategory, getUserData } from '../helperFunctions/apiHelpers'; // Import functions
-import AuthContext from '../../context/AuthContext' // Import AuthContext
-
+import { filterCategory, getUserData } from "../helperFunctions/apiHelpers"; // Import functions
+import AuthContext from "../../context/AuthContext"; // Import AuthContext
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
@@ -47,26 +46,25 @@ const HomePage = () => {
 
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {
-   
     try {
       // Usage example
-      const data = await filterCategory('pizza', authTokens);
+      const data = await filterCategory("pizza", authTokens);
       console.log(data);
-      console.log("TOKENS:",authTokens);
+      console.log("TOKENS:", authTokens);
       // TODO: Process the data as needed
       console.log("Map icon pressed!");
     } catch (error) {
       console.log(error);
       // Handle errors
     }
-    try{
-      console.log("User Id: ",userId);
-    const userData = await getUserData(userId, authTokens);
-    console.log(userData);
-  } catch (error) {
-    console.log(error);
-    // Handle errors
-  }
+    try {
+      console.log("User Id: ", userId);
+      const userData = await getUserData(userId, authTokens);
+      console.log(userData);
+    } catch (error) {
+      console.log(error);
+      // Handle errors
+    }
   };
 
   // Function to open the filter modal

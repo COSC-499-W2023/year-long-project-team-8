@@ -1,28 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
-  Image,
   TouchableOpacity,
-  Modal,
   StyleSheet,
   FlatList,
   SafeAreaView,
 } from "react-native";
-import CustomText from "../CustomText";
-import { Ionicons } from "@expo/vector-icons";
+import Modal from "react-native-modal";
 
-const sortIcon = require("../../assets/sort.png");
-const checkIcon = require("../../assets/checked.png");
+import CustomText from "../CustomText";
+
+const RadioButton = ({ isSelected }) => (
+  <View
+    style={[
+      styles.radioButtonOuter,
+      isSelected && styles.radioButtonOuterSelected,
+    ]}
+  >
+    {isSelected && <View style={styles.radioButtonInner} />}
+  </View>
+);
+const DropdownItem = React.memo(({ item, onSelect, isSelected }) => (
+  <TouchableOpacity
+    onPress={() => onSelect(item)}
+    style={[styles.dropdownItem, isSelected && styles.selectedItem]}
+  >
+    <RadioButton isSelected={isSelected} />
+    <CustomText style={styles.dropdownItemText} fontType={"text"}>
+      {item.label}
+    </CustomText>
+  </TouchableOpacity>
+));
 
 const Dropdown = ({ data, onSelect, placeholder }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(placeholder);
 
-  const selectOption = (option) => {
-    setSelectedOption(option.label);
-    onSelect(option.value);
-    setIsVisible(false);
-  };
+  const selectOption = useCallback(
+    (option) => {
+      setSelectedOption(option.label);
+      onSelect(option.value);
+      setIsVisible(false);
+    },
+    [onSelect]
+  );
 
   return (
     <View style={styles.dropdownContainer}>
@@ -35,58 +56,44 @@ const Dropdown = ({ data, onSelect, placeholder }) => {
         </CustomText>
       </TouchableOpacity>
       <Modal
-        transparent={true}
-        visible={isVisible}
-        animationType="slide"
-        onRequestClose={() => setIsVisible(false)}
+        isVisible={isVisible}
+        onBackdropPress={() => setIsVisible(false)}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        style={styles.modalStyle}
+        useNativeDriver={true}
+        hideModalContentWhileAnimating={true}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          onPressOut={() => setIsVisible(false)}
-          activeOpacity={1}
-        >
-          <SafeAreaView style={styles.modalContainer}>
-            <TouchableOpacity
-              onPress={() => setIsVisible(false)}
-              style={styles.closeButton}
-            >
-              <Ionicons name="close" size={24} color="black" />
-            </TouchableOpacity>
-            <View style={styles.modalHeader}>
-              <Image source={sortIcon} style={styles.sortIcon} />
-              <CustomText style={styles.modalTitle} fontType={"title"}>
-                Sort By
-              </CustomText>
-            </View>
-            <FlatList
-              data={data}
-              keyExtractor={(item) => item.value}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => selectOption(item)}
-                  style={[
-                    styles.dropdownItem,
-                    selectedOption === item.label && styles.selectedItem,
-                  ]}
-                >
-                  <Image source={item.icon} style={styles.itemIcon} />
-                  <CustomText style={styles.dropdownItemText} fontType={"text"}>
-                    {item.label}
-                  </CustomText>
-                  {selectedOption === item.label && (
-                    <Image source={checkIcon} style={styles.checkIcon} />
-                  )}
-                </TouchableOpacity>
-              )}
-            />
-          </SafeAreaView>
-        </TouchableOpacity>
+        <SafeAreaView style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <CustomText fontType={"title"} style={styles.title}>
+              SORT BY
+            </CustomText>
+          </View>
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.value}
+            renderItem={({ item }) => (
+              <DropdownItem
+                item={item}
+                onSelect={selectOption}
+                isSelected={selectedOption === item.label}
+              />
+            )}
+          />
+        </SafeAreaView>
       </Modal>
     </View>
   );
 };
 
+export default Dropdown;
+
 const styles = StyleSheet.create({
+  modalStyle: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
   dropdownContainer: {
     justifyContent: "center",
     marginHorizontal: 10,
@@ -110,17 +117,20 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  title: {
+    alignSelf: "center",
+    padding: 10,
+    fontSize: 20,
+    color: "#2e2e2e",
   },
   modalContainer: {
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingVertical: 40,
-    paddingHorizontal: 15,
   },
   selectedItem: {
-    borderRadius: 10,
+    borderRadius: 20,
     backgroundColor: "rgba(57, 147, 248, 0.32)",
   },
   checkIcon: {
@@ -130,11 +140,11 @@ const styles = StyleSheet.create({
     right: 20,
   },
   modalHeader: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 10,
   },
   sortIcon: {
     width: 30,
@@ -177,17 +187,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 15,
     backgroundColor: "white",
     justifyContent: "flex-start",
     height: 60,
     marginBottom: 10,
+    borderRadius: 20,
   },
   dropdownItemText: {
     fontSize: 16,
     color: "#333333",
     marginLeft: 10,
   },
+  radioButtonOuter: {
+    height: 24,
+    width: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: "#333333",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+  radioButtonOuterSelected: {
+    borderColor: "#1E90FF", // Change this to your desired color
+  },
+  radioButtonInner: {
+    height: 12,
+    width: 12,
+    borderRadius: 6,
+    backgroundColor: "#1E90FF", // Change this to your desired color
+  },
 });
-
-export default Dropdown;
