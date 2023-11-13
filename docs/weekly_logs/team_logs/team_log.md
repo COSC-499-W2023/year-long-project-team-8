@@ -372,6 +372,8 @@ November 6 - November 12, 2023
 - Create message model
 - Create photo model
 - Implement email based authentication
+- Basic Listing page
+- Homepage main view
 
 
 ### Completed Tasks
@@ -398,6 +400,8 @@ November 6 - November 12, 2023
 - Documentation
 - UI refinements
 - Profile page display of all User data
+- Add listing page front end
+- Homepage front end
 
 
 ### Burnup Chart
