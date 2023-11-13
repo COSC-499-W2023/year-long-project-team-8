@@ -27,10 +27,11 @@ SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['10.0.0.111']
+ALLOWED_HOSTS = ['10.0.0.111', '192.168.1.135']
 
 CORS_ORIGIN_WHITELIST = [
     'http://10.0.0.111:8081',
+    'http://192.168.1.135:8081',
 ]
 
 # Application definition
