@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import {
   View,
@@ -14,9 +13,8 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
-import AuthContext from '../../context/AuthContext'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AuthContext from "../../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // base endpoint
 const baseEndpoint = "http://localhost:8000/api";
@@ -50,59 +48,58 @@ const Login = ({ onSwitch, navigation }) => {
   const handleLogin = async () => {
     let isValid = true;
     Keyboard.dismiss();
-  
+
     // Regex pattern to validate email address format
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  
+
     // If the provided email and password are valid, add login logic
     if (isValid) {
+      //       // TODO: Implement back-end login logic here
+      //       //console.log(email);
+      //       //console.log(password);
 
-//       // TODO: Implement back-end login logic here
-//       //console.log(email);
-//       //console.log(password);
+      //       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
+      //       let bodyObj = {
+      //         email: email,
+      //         password: password,
+      //       };
 
-//       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-//       let bodyObj = {
-//         email: email,
-//         password: password,
-//       };
-
-//       // need to pass the data as JSON for our API to deal with
-//       const bodyStr = JSON.stringify(bodyObj);
-//       //console.log(bodyStr);
-//       const options = {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: bodyStr,
-//       };
-//       fetch(loginEndpoint, options) //  Promise
-//         .then((response) => {
-//           //console.log(response);
-//           return response.json();
-//         })
-//         .then((authData) => {
-//           if (authData && authData.access) {
-//             navigation.navigate("MainApp");
-//             handleAuthData(authData, getProductList);
-//           } else {
-//             if (password && email) setAuthError("Wrong email or password");
-//           }
-//         })
-//         .then((x) => {
-//           // console.log(x);
-//         })
-//         .catch((err) => {
-//           console.log("err", err);
-//         });
+      //       // need to pass the data as JSON for our API to deal with
+      //       const bodyStr = JSON.stringify(bodyObj);
+      //       //console.log(bodyStr);
+      //       const options = {
+      //         method: "POST",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: bodyStr,
+      //       };
+      //       fetch(loginEndpoint, options) //  Promise
+      //         .then((response) => {
+      //           //console.log(response);
+      //           return response.json();
+      //         })
+      //         .then((authData) => {
+      //           if (authData && authData.access) {
+      //             navigation.navigate("MainApp");
+      //             handleAuthData(authData, getProductList);
+      //           } else {
+      //             if (password && email) setAuthError("Wrong email or password");
+      //           }
+      //         })
+      //         .then((x) => {
+      //           // console.log(x);
+      //         })
+      //         .catch((err) => {
+      //           console.log("err", err);
+      //         });
 
       try {
-          let bodyObj = {
+        let bodyObj = {
           email: email,
           password: password,
         };
-  
+
         // need to pass the data as JSON for our API to deal with
         const bodyStr = JSON.stringify(bodyObj);
         //console.log(bodyStr);
@@ -113,13 +110,13 @@ const Login = ({ onSwitch, navigation }) => {
           },
           body: bodyStr,
         };
-  
+
         const response = await fetch(loginEndpoint, options);
         //console.log(response);
         const authData = await response.json();
-  
+
         if (authData && authData.access) {
-         await loginUser(email, password);
+          await loginUser(email, password);
           navigation.navigate("MainApp");
           //navigation.navigate("Tabs");
           // handleAuthData(authData, getProductList);
@@ -234,8 +231,8 @@ const Login = ({ onSwitch, navigation }) => {
             <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
           </Pressable>
 
-        <ButtonLogin title="LOGIN" onPress={handleLogin} />
-        {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
+          <ButtonLogin title="LOGIN" onPress={handleLogin} />
+          {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
 
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
@@ -261,8 +258,6 @@ const Login = ({ onSwitch, navigation }) => {
   );
 };
 
-
-
 export default Login;
 
 // below is added functions to test
@@ -287,7 +282,7 @@ async function handleAuthData(authData, callback) {
   try {
     await AsyncStorage.setItem("access", authData.access);
     await AsyncStorage.setItem("refresh", authData.refresh);
-    
+
     if (callback) {
       callback();
     }
@@ -309,7 +304,7 @@ async function getFetchOptions(method, body) {
   const accessToken = await AsyncStorage.getItem("access");
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${accessToken || ''}`, // Use an empty string if access token is not found
+    Authorization: `Bearer ${accessToken || ""}`, // Use an empty string if access token is not found
   };
 
   return {
