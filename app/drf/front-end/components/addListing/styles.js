@@ -67,8 +67,8 @@ export default StyleSheet.create({
     marginVertical: 10,
     backgroundColor: "#007AFF",
     borderRadius: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -81,6 +81,6 @@ export default StyleSheet.create({
     fontSize: 16,
   },
   saveButton: {
-    backgroundColor: "#34C759",
+    backgroundColor: "orange",
   },
 });
