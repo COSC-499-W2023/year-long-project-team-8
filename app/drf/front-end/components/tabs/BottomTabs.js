@@ -7,11 +7,11 @@ import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AuthContext from '../../context/AuthContext'
+import { baseEndpoint } from '../../config/config';
 
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();
-const baseEndpoint = "http://localhost:8000/api";
 
 // Individual screens for each tab:
 // These are placeholders and can be replaced with actual screens when developed

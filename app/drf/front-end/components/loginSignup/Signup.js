@@ -14,16 +14,13 @@ import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
+import { baseEndpoint } from '../../config/config';
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../context/AuthContext'
 
-const baseEndpoint = "http://localhost:8000/api";
-
-const tokenEndpoint = "http://localhost:8000/api/token/";
-//const baseEndpoint = "http://ip:8000/api";
-
+const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
 const Signup = ({ onSwitch, navigation }) => {

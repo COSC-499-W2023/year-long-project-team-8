@@ -26,9 +26,24 @@ SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Get the local IP address dynamically
+def get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        local_ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return local_ip
 
-ALLOWED_HOSTS = []
+local_ip = get_local_ip()
 
+
+ALLOWED_HOSTS = [local_ip]
+
+CORS_ORIGIN_WHITELIST = [
+    f'http://{local_ip}:8081',
+]
 
 
 # Application definition
