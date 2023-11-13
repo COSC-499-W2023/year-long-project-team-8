@@ -4,7 +4,9 @@ Note: must import AuthContext into components where you wish to use these functi
       AuthContext stores userId and token data.
 */
 
-const baseEndpoint = "http://localhost:8000/api";
+//const baseEndpoint = "http://localhost:8000/api";
+const baseEndpoint = "http://10.0.0.111:8000/api";
+
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories

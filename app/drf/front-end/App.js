@@ -5,7 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
+
 import { AuthProvider } from "./context/AuthContext";
+
 
 const Stack = createStackNavigator();
 
