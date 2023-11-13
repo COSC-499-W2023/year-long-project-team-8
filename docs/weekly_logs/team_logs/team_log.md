@@ -339,6 +339,10 @@ We have created tests for several endpoints in our API and model instances. Link
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
 
 
+## Work Period
+<!-- 
+- start/end dates of the week
+-->
 November 6 - November 12, 2023
 
 
