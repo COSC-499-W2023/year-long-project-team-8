@@ -386,6 +386,7 @@ November 6 - November 12, 2023
 - Integrate API calls into front-end - Profile Page
 - API Helpers startercode for back-end consumption
 - Back-end filtering
+- Configuration file for easier connection to Expo Go Mobile environment
 - Product model re-factor for categorical filtering
 - Configuration script to facilitate expo/emulator launch + connections
 - Logout functionality
