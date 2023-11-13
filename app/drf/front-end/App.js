@@ -16,7 +16,7 @@ const App = () => {
       <AuthProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="MainApp"
+            initialRouteName="Landing"
             screenOptions={{
               headerShown: false,
             }}
