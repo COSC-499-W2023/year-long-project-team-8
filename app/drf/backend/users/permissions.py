@@ -16,7 +16,7 @@ class UserPermission(permissions.BasePermission):
             return True # anyone can create user, no additional checks needed.
         if view.action == "list":
             return request.user.is_authenticated and request.user.is_staff
-        elif view.action in ["retrieve", "update", "partial_update", "delete"]:
+        elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
             return True  # defer to has_object_permission
         else:
             return False
