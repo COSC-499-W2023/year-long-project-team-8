@@ -8,6 +8,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 from django.db.models import Q
 import django_filters
+from users.permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
+
 
 # Product filter to filter for CSV filter list
 class ProductFilter(django_filters.FilterSet):
@@ -29,11 +32,20 @@ class ProductFilter(django_filters.FilterSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    #authentication_classes = [JWTAuthentication]
     filter_backends = [DjangoFilterBackend]
     # filterset_fields = ['categories']
     filterset_class = ProductFilter
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
+    def list_my_products(self, request, *args, **kwargs):
+        # Get products created by the current user
+        queryset = Product.objects.filter(owner=self.request.user)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     
     

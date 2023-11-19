@@ -41,7 +41,8 @@ local_ip = get_local_ip()
 
 
 ALLOWED_HOSTS = [local_ip,
-                 '127.0.0.1']
+                 '127.0.0.1',
+                 'localhost',]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
