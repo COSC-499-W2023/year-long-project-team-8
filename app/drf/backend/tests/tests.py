@@ -19,7 +19,7 @@ class UserExistenceTest(TestCase):
                
 class ProductViewSetTest(APITestCase):
     def setUp(self):
-        self.product = Product.objects.create(title='Test Product', categories='test')
+        #self.product = Product.objects.create(title='Test Product', categories='test')
 
         self.user = User.objects.create_user(
             email="test@example.com",
@@ -30,6 +30,7 @@ class ProductViewSetTest(APITestCase):
             password="adminpassword"
         )
         self.client = APIClient()
+        self.product = Product.objects.create(title='Test Product', categories='test', owner= self.user)
         self.url = f'/api/products/{self.product.id}/'
 
     def get_auth_header(self, user):
@@ -44,8 +45,24 @@ class ProductViewSetTest(APITestCase):
         # Make a GET request to the product detail view
         response = self.client.get('/api/products/', {'categories': 'test'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)   
+    
+    # test for my-products endpoint
+    # ensures that only 1 item was created for the user and the api hit is successful
+    def test_myproducts(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        response = self.client.get('/api/my-products/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1) 
+    
+    # test to decline unauthenticated user
+    def test_list_my_products_unauthenticated(self):
+        # Create a new client without authentication
+        unauthenticated_client = self.client_class()
+        response = unauthenticated_client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
         
-
     def test_retrieve_product_detail(self):
         access_token = self.get_auth_header(self.admin_user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
