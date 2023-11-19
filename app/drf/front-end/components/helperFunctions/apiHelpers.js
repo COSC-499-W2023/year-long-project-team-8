@@ -3,8 +3,8 @@ This is a helper function script, to help more code more modular.
 Note: must import AuthContext into components where you wish to use these functions
       AuthContext stores userId and token data.
 */
-
-const baseEndpoint = "http://localhost:8000/api";
+import { baseEndpoint } from '../../config/config';
+//const baseEndpoint = "http://localhost:8000/api";
 //const baseEndpoint = "http://10.0.0.111:8000/api";
 
 
