@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import datetime 
 from datetime import timedelta
 from pathlib import Path
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,9 @@ def get_local_ip():
 local_ip = get_local_ip()
 
 
-ALLOWED_HOSTS = [local_ip]
+ALLOWED_HOSTS = [local_ip,
+                 '127.0.0.1',
+                 'localhost',]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',

@@ -3,9 +3,9 @@ This is a helper function script, to help more code more modular.
 Note: must import AuthContext into components where you wish to use these functions
       AuthContext stores userId and token data.
 */
-
+import { baseEndpoint } from '../../config/config';
 //const baseEndpoint = "http://localhost:8000/api";
-const baseEndpoint = "http://10.0.0.111:8000/api";
+//const baseEndpoint = "http://10.0.0.111:8000/api";
 
 
 // Helper function to return products filtered on category
@@ -16,7 +16,7 @@ async function filterCategory(categories, authTokens) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
+        'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
       },
     });
 
@@ -82,15 +82,41 @@ async function getUserData(userId, authTokens) {
     }
   }
 
+// Helper function to retrieve all product listings
+async function getUserProductList (authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/my-products/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access) 
+      },
+    });
+
+    if (response.status === 200) {
+      const productData = await response.json();
+      return productData; // Return the data to the caller
+      // if unauthorized access attempt, logout user
+    }else if(response.statusText === 'Unauthorized'){
+      logoutUser() 
+    }else {
+      throw new Error('Something went wrong!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong!');
+  }
+}
+
 // A sample function to handle returned data from API call
 function renderProducts(data) {
-  // Example function to render the products
-  // You can customize this based on your needs
-  data.forEach(product => {
-    console.log('Product Title:', product.title);
-    console.log('Product Content:', product.content);
-    // Add your rendering logic here (e.g., append to a list or update the DOM)
-  });
+// Example function to render the products
+// You can customize this based on your needs
+data.forEach(product => {
+  console.log('Product Title:', product.title);
+  console.log('Product Content:', product.content);
+  // Add your rendering logic here (e.g., append to a list or update the DOM)
+});
 }
 
 // Export all the functions
@@ -98,4 +124,5 @@ export {
   filterCategory,
   getUserData,
   getProductList,
+  getUserProductList,
 };
