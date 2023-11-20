@@ -33,7 +33,7 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    #authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     filter_backends = [DjangoFilterBackend]
     # filterset_fields = ['categories']
     filterset_class = ProductFilter
