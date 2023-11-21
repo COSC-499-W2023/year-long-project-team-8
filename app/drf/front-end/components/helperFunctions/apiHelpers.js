@@ -4,8 +4,7 @@ Note: must import AuthContext into components where you wish to use these functi
       AuthContext stores userId and token data.
 */
 
-//const baseEndpoint = "http://localhost:8000/api";
-const baseEndpoint = "http://10.0.0.111:8000/api";
+import { baseEndpoint } from '../../config/config';
 
 
 // Helper function to return products filtered on category
@@ -93,9 +92,34 @@ function renderProducts(data) {
   });
 }
 
+//function for updating user data
+async function updateUserData(userId, authTokens, updatedData) {
+  try {
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: 'PATCH', // Use PATCH method for partial updates
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (response.status === 200) {
+      const userData = await response.json();
+      return userData; // Return the updated data to the caller
+    } else {
+      throw new Error('Something went wrong!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong!');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
   getUserData,
   getProductList,
+  updateUserData
 };

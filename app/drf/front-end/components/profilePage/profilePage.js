@@ -1,27 +1,58 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, TextInput, KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import styles from './profilePageStyles'; // Make sure you import your styles correctly
-import { getUserData } from '../helperFunctions/apiHelpers'; // Import functions
+import { getUserData, updateUserData } from '../helperFunctions/apiHelpers'; // Import functions
 import AuthContext from '../../context/AuthContext' // Import AuthContext
 
 const ProfilePage = () => {
-// Use AuthContext to get tokens and userId
-const { authTokens, userId } = useContext(AuthContext);
+  const { authTokens, userId } = useContext(AuthContext);
 
-// Declare userData as a state variable
-const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [phone, setPhone] = useState('');
 
-// use effect to load users data when page is loaded
-useEffect(() => {
-  // Fetch user data and update the state
-  getUserData(userId, authTokens)
-    .then((data) => {
-      setUserData(data);
-    })
-    .catch((error) => {
-      console.error("Error fetching user data:", error);
-    });
-}, [userId, authTokens]);
+  useEffect(() => {
+    getUserData(userId, authTokens)
+      .then((data) => {
+        setUserData(data);
+        console.log("User Data:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId, authTokens]);
+
+  const handleOpenDetailsModal = () => {
+    setShowDetailsModal(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setShowDetailsModal(false);
+  };
+
+  const handleSaveDetails = () => {
+    // Update user data with the new details
+    updateUserData(userId, authTokens, { firstname, lastname, phone })
+      .then(() => {
+        // Fetch and update the user data after saving details
+        getUserData(userId, authTokens)
+          .then((data) => {
+            setUserData(data);
+            console.log("User Data updated:", data);
+          })
+          .catch((error) => {
+            console.error("Error fetching updated user data:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error updating user data:", error);
+      });
+
+    // Close the details modal
+    setShowDetailsModal(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -52,8 +83,69 @@ useEffect(() => {
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-        {/* users name (email for now - replace with firstname + lastname)*/}
-        {userData && <Text style={styles.name}>{userData.email}</Text>} 
+        {/* Greeting text */}
+        <Text style={styles.name}>
+        {userData?.firstname
+          ? `Hello, ${userData.firstname}!`
+          : 'Hello! Complete details below'}
+        </Text>
+        <Text style={styles.location}>
+        {userData?.email
+          ? userData.email
+          : ''}
+        </Text>
+        <Text style={styles.location}>
+        {userData?.phone
+          ? userData.phone
+          : ''}
+        </Text>
+
+        {/*adding button for details update*/}
+
+      {/* Add Details button */}
+      {(
+        <TouchableOpacity onPress={handleOpenDetailsModal}>
+          <Text style={styles.location}>Add Details</Text>
+        </TouchableOpacity>
+      )}
+        
+      {/* Details Modal */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={showDetailsModal}
+        onRequestClose={handleCloseDetailsModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add Details</Text>
+            <TextInput
+              placeholder="First Name"
+              style={styles.inputField}
+              value={firstname}
+              onChangeText={(text) => setFirstname(text)}
+            />
+            <TextInput
+              placeholder="Last Name"
+              style={styles.inputField}
+              value={lastname}
+              onChangeText={(text) => setLastname(text)}
+            />
+            <TextInput
+              placeholder="Phone"
+              style={styles.inputField}
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
+            />
+            <TouchableOpacity onPress={handleSaveDetails} style={styles.saveButton}>
+              <Text style={styles.saveButtonText}>Save Details</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCloseDetailsModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
         {/* users location */}
         <View style={styles.locationContainer}>
