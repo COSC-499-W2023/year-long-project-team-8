@@ -16,7 +16,7 @@ class UserPermission(permissions.BasePermission):
             return True # anyone can create user, no additional checks needed.
         if view.action == "list":
             return request.user.is_authenticated and request.user.is_staff
-        elif view.action in ["retrieve", "update", "partial_update", "delete"]:
+        elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
             return True  # defer to has_object_permission
         else:
             return False
@@ -46,3 +46,10 @@ class IsSelfOrReadOnly(BasePermission):
 
         # Check if the user making the request is the same as the user being updated.
         return obj == request.user
+    
+# Permissions for only allowing model owner to edit the model
+class IsOwnerOrReadOnly(permissions.BasePermission):
+     def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.owner == request.user
