@@ -95,8 +95,9 @@ function renderProducts(data) {
 //function for updating user data
 async function updateUserData(userId, authTokens, updatedData) {
   try {
+    
     const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
-      method: 'PATCH', // Use PATCH method for partial updates
+      method: 'PATCH', // Using PATCH for partial updates
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + String(authTokens.access),

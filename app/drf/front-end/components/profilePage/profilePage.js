@@ -13,6 +13,7 @@ const ProfilePage = () => {
   const [lastname, setLastname] = useState('');
   const [phone, setPhone] = useState('');
 
+  // Getting user data
   useEffect(() => {
     getUserData(userId, authTokens)
       .then((data) => {
@@ -24,6 +25,7 @@ const ProfilePage = () => {
       });
   }, [userId, authTokens]);
 
+  // Handling opening and closing Modal for editing details
   const handleOpenDetailsModal = () => {
     setShowDetailsModal(true);
   };
@@ -33,8 +35,21 @@ const ProfilePage = () => {
   };
 
   const handleSaveDetails = () => {
+    const updatedData = {};
+  
+    // Add fields to the updatedData object only if they are not empty
+    if (firstname !== "") {
+      updatedData.firstname = firstname;
+    }
+    if (lastname !== "") {
+      updatedData.lastname = lastname;
+    }
+    if (phone !== "") {
+      updatedData.phone = phone;
+    }
+  
     // Update user data with the new details
-    updateUserData(userId, authTokens, { firstname, lastname, phone })
+    updateUserData(userId, authTokens, updatedData)
       .then(() => {
         // Fetch and update the user data after saving details
         getUserData(userId, authTokens)
@@ -49,10 +64,11 @@ const ProfilePage = () => {
       .catch((error) => {
         console.error("Error updating user data:", error);
       });
-
+  
     // Close the details modal
     setShowDetailsModal(false);
   };
+  
 
   return (
     <View style={styles.container}>
@@ -83,7 +99,7 @@ const ProfilePage = () => {
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-        {/* Greeting text */}
+        {/* Greeting text (will only display if user has that info)*/}
         <Text style={styles.name}>
         {userData?.firstname
           ? `Hello, ${userData.firstname}!`
@@ -100,45 +116,54 @@ const ProfilePage = () => {
           : ''}
         </Text>
 
-        {/*adding button for details update*/}
+        {/* users location (will update this field going forward using map api*/}
+        <View style={styles.locationContainer}>
+          <Image
+            source={require('../../assets/images/profilePage/location.png')}
+            style={styles.locationIcon}
+          />
+          <Text style={styles.location}>Kelowna, BC</Text>
+        </View>
 
       {/* Add Details button */}
       {(
-        <TouchableOpacity onPress={handleOpenDetailsModal}>
-          <Text style={styles.location}>Add Details</Text>
+        <TouchableOpacity onPress={handleOpenDetailsModal} style = {styles.viewAllButton}>
+          <Text style={styles.viewAllButtonText}>Edit Account</Text>
         </TouchableOpacity>
       )}
         
-      {/* Details Modal */}
+      {/* Details Modal (inputs for details updates) */}
+      {/* TODO: Add front end validation for phone number and improve model styling */}
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={showDetailsModal}
         onRequestClose={handleCloseDetailsModal}
+        style = {styles.modal}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add Details</Text>
+            <Text style={styles.name}>Edit Details</Text>
             <TextInput
               placeholder="First Name"
-              style={styles.inputField}
+              style={styles.textInput}
               value={firstname}
               onChangeText={(text) => setFirstname(text)}
             />
             <TextInput
               placeholder="Last Name"
-              style={styles.inputField}
+              style={styles.textInput}
               value={lastname}
               onChangeText={(text) => setLastname(text)}
             />
             <TextInput
               placeholder="Phone"
-              style={styles.inputField}
+              style={styles.textInput}
               value={phone}
               onChangeText={(text) => setPhone(text)}
             />
-            <TouchableOpacity onPress={handleSaveDetails} style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Save Details</Text>
+            <TouchableOpacity onPress={handleSaveDetails} style={styles.applyButton}>
+              <Text style={styles.applyButtonText}>Save Details</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleCloseDetailsModal} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
@@ -147,14 +172,7 @@ const ProfilePage = () => {
         </View>
       </Modal>
 
-        {/* users location */}
-        <View style={styles.locationContainer}>
-          <Image
-            source={require('../../assets/images/profilePage/location.png')}
-            style={styles.locationIcon}
-          />
-          <Text style={styles.location}>Kelowna, BC</Text>
-        </View>
+       
       </View>
 
       {/* container that holds all the recent posts */}
