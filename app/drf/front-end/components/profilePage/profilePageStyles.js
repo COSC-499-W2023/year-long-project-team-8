@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+
 export const colors = {
   lightOrange: '#F8B951',
   mediumOrange: '#FCA63C',
@@ -15,64 +16,38 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  headerImage: {
-    height: '30%',
-    width: '100%',
-  },
   ratingContainer: {
     alignItems: 'center',
-    bottom: 120,
+    top: 20,
   },
   profileContainer: {
-    marginTop: -90,
+    top: 40,
     alignItems: 'center',
   },
   profilePicture: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 130,
+    height: 130,
+    borderRadius: 70,
     borderWidth: 2,
     borderColor: 'black',
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: '500',
     marginTop: 15,
   },
   locationContainer: {
     flexDirection: 'row',
-    marginTop: 10,
-  },
-  locationIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 2,
+    marginTop: 5,
   },
   location: {
     fontSize: 16,
-    color: 'gray',
+    color: colors.mediumOrange,
     marginLeft: 2,
-  },
-  contactContainer: {
-    marginTop: 30,
-  },
-  contactRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  contactIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 5,
-  },
-  contactText: {
-    fontSize: 18,
-    marginLeft: 5,
   },
   settingsButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
   },
   settingsIcon: {
     width: 30,
@@ -80,11 +55,13 @@ const styles = StyleSheet.create({
   },
   centeredPostsContainer: {
     flex: 1,
+    top: 20
   },
   postsContainer: {
     flexDirection: 'row',
   },
   postContainer: {
+      bottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -104,15 +81,16 @@ const styles = StyleSheet.create({
     recentPostsText: {
     fontSize: 20,
     textAlign: 'center',
-      top: 30,
+      top: 50,
       fontWeight: 'bold',
   },
   viewAllButton: {
     backgroundColor: colors.mediumOrange,
     borderRadius: 8,
-    width: 120,
+    width: 140,
+    height: 50,
     padding: 10,
-    bottom: 25,
+    bottom: 60,
     alignSelf: 'center',
   },
   viewAllButtonText: {
@@ -120,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'center',
     fontWeight: "bold",
+    top: 5
   },
 });
 

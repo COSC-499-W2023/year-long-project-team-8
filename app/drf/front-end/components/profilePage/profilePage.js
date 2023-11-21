@@ -1,99 +1,69 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import styles from './profilePageStyles';
 import { getUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
 import StarRating from './ratingIcons';
 
 const ProfilePage = () => {
+  // Context and state
   const { authTokens, userId } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  const [rating, setRating] = useState(4);
+  const [rating] = useState(4);
 
-  const handleStarPress = (newRating) => {
-    setRating(newRating);
-  };
-
+  // Fetch user data on component mount
   useEffect(() => {
     getUserData(userId, authTokens)
-      .then((data) => {
-        setUserData(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-      });
+      .then((data) => setUserData(data))
+      .catch((error) => console.error('Error fetching user data:', error));
   }, [userId, authTokens]);
 
   return (
-      // main container
     <View style={styles.container}>
-        {/* holds the header image */}
-      <Image
-        source={require('../../assets/images/profilePage/background.png')}
-        style={styles.headerImage}
-      />
-        {/* settings button*/}
-      <TouchableOpacity style={styles.settingsButton}>
-          {/* image for the settings button */}
-        <Image
-          source={require('../../assets/images/profilePage/settings.png')}
-          style={styles.settingsIcon}
-        />
-      </TouchableOpacity>
-        {/* rating container */}
+      {/* Rating container */}
       <View style={styles.ratingContainer}>
-          {/* shows the rating*/}
+        {/* Display user rating */}
         <StarRating rating={rating} />
       </View>
-        {/* container for profile information */}
+
+      {/* Profile information container */}
       <View style={styles.profileContainer}>
-          {/* profile picture */}
+        {/* Profile picture */}
         <Image
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-          {/* users first and last name */}
-        {userData && <Text style={styles.name}>{userData.email}</Text>}
-          {/* container to hold the location information */}
+
+        {/* User name */}
+        {/* users first and last name {userData && <Text style={styles.name}>{userData.email}</Text>} */}
+        <Text style={styles.name}>Brandon Mack</Text>
+
+        {/* Location information */}
         <View style={styles.locationContainer}>
-            {/* location icon */}
-          <Image
-            source={require('../../assets/images/profilePage/location.png')}
-            style={styles.locationIcon}
-          />
-            {/* location text */}
           <Text style={styles.location}>Kelowna, BC</Text>
         </View>
       </View>
 
-        {/* recent post container */}
+      {/* Recent posts container */}
       <View style={styles.centeredPostsContainer}>
         <Text style={styles.recentPostsText}>Recent Posts</Text>
-          {/* allows the posts to be scrolled horizontally */}
+
+        {/* Scrollable recent posts */}
         <ScrollView
           horizontal
           style={styles.postsContainer}
           showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
         >
-            {/* recent posts are put here */}
-          <View style={styles.postContainer}>
-            <View style={styles.post}></View>
-          </View>
-            <View style={styles.postContainer}>
-            <View style={styles.post}></View>
-          </View>
-            <View style={styles.postContainer}>
-            <View style={styles.post}></View>
-          </View>
-          {/* Add more post containers as needed */}
+          {/* Placeholder for recent posts */}
+          {[1, 2, 3].map((index) => (
+            <View key={index} style={styles.postContainer}>
+              <View style={styles.post}></View>
+            </View>
+          ))}
         </ScrollView>
-          {/* button that takes user to the page with all of their posts */}
+
+        {/* Button to view all posts */}
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllButtonText}>View All</Text>
         </TouchableOpacity>
