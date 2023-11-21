@@ -1,58 +1,57 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   ScrollView,
-  } from 'react-native';
+} from 'react-native';
 import styles from './profilePageStyles';
+import { getUserData } from '../helperFunctions/apiHelpers';
+import AuthContext from '../../context/AuthContext';
 import StarRating from './ratingIcons';
 
 const ProfilePage = () => {
-
-
-
-  {/* star rating system */}
+  const { authTokens, userId } = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
   const [rating, setRating] = useState(3.5);
 
   const handleStarPress = (newRating) => {
     setRating(newRating);
-  }
+  };
 
-  {/* main function */}
+  useEffect(() => {
+    getUserData(userId, authTokens)
+      .then((data) => {
+        setUserData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+      });
+  }, [userId, authTokens]);
+
   return (
     <View style={styles.container}>
-      {/* holds the background image */}
       <Image
         source={require('../../assets/images/profilePage/background.png')}
         style={styles.headerImage}
       />
-      {/* settings button */}
-      {/* TODO: make the settings button clickable and actually do something */}
       <TouchableOpacity style={styles.settingsButton}>
-        {/* settings button image */}
         <Image
           source={require('../../assets/images/profilePage/settings.png')}
           style={styles.settingsIcon}
         />
       </TouchableOpacity>
-      {/* star rating system */}
       <View style={styles.ratingContainer}>
         <StarRating rating={rating}/>
       </View>
 
-      {/* main container holding the profile information */}
       <View style={styles.profileContainer}>
-        {/* profile picture */}
         <Image
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-        {/* users name */}
-        <Text style={styles.name}>Brandon Mack</Text>
-
-        {/* users location */}
+        {userData && <Text style={styles.name}>{userData.email}</Text>}
         <View style={styles.locationContainer}>
           <Image
             source={require('../../assets/images/profilePage/location.png')}
@@ -62,44 +61,18 @@ const ProfilePage = () => {
         </View>
       </View>
 
-      {/* container that holds all the recent posts */}
       <View style={styles.centeredPostsContainer}>
         <Text style={styles.recentPostsText}>Recent Posts</Text>
-        {/* scrollview allows users to horizontally scroll the recent posts (max will be 10) */}
-        {/* TODO: change this to an array that can show the most recent posts by a user */}
         <ScrollView
           horizontal
           style={styles.postsContainer}
           showsHorizontalScrollIndicator={false}
         >
-          {/* containers where the actual posts are located */}
           <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
+            <View style={styles.post}></View>
           </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
+          {/* Add more post containers as needed */}
         </ScrollView>
-        {/* view all button */}
-        {/* TODO: make this button actually take the user to a page where all of their posts are */}
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllButtonText}>View All</Text>
         </TouchableOpacity>
