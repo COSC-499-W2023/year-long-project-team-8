@@ -43,7 +43,7 @@ const ProfilePage = () => {
         />
       </TouchableOpacity>
       <View style={styles.ratingContainer}>
-        <StarRating rating={rating}/>
+        <StarRating rating={rating} />
       </View>
 
       <View style={styles.profileContainer}>

@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text, Animated } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import CustomText from "../CustomText";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons"; // Import MaterialIcons for the checkmarks and crosses
 
@@ -15,9 +16,11 @@ const PasswordChecklist = ({ password }) => {
         size={20}
         color={condition ? "green" : "red"}
       />
-      <Text style={condition ? checklistStyles.valid : checklistStyles.invalid}>
+      <CustomText
+        style={condition ? checklistStyles.valid : checklistStyles.invalid}
+      >
         {text}
-      </Text>
+      </CustomText>
     </View>
   );
 

@@ -167,3 +167,104 @@ October 23 - 29, 2023
 | Item # | Completed  | To Be Done |
 |:------:|:-----------|:-----------|
 | 49      |            |      ✓      |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 30 - November 05, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![Alt text](img/mk_w9.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Continue to refine authorization
+- Manage authentication in front end using Context
+- Handle JWT tokens in the front end
+- Use context throughout the app the control state and authentication
+- Refresh tokens on a time interval
+- Check for tokens, log out user if tokens not valid
+- Update ER diagram
+- Update Architecture diagram
+- Demo the app
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item 49 - handle authentication in the front end
+- item 65 - design document
+- item 64 - system architecture diagram
+- item 63 - ER diagram - have a working prototype but is a living document and may change as our needs evolve
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 49      |     ✓      |           |
+| 65     |           |      ✓      |
+| 64      |           |     ✓       |
+| 63      |           |     ✓       |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 06 - November 12, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![Alt text](img/mk_w10.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Implement search/filter functionality in backend
+- Test functionality using postman + DRF Web
+- Integrate backend API calls display data in front end - Profile page + logging data in homePage
+- Refactor Product Model to store categories
+- Refactor Product View for categorical filtering
+- Implement logout and integrate into front-end
+- Implement apiHelpers - a JS script for front-end consumption of backend. Can be used directly or as starter code for front-end to access database
+- Continue working on Design Document
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- issue #67 - extend product model - completed for current state of project - will continue to evolve
+- issue #88 - api call for user data
+- issue #89 - api call for product listing
+- issue #84 - implement logout
+- issue #83 - filtering backend
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 67      |     ✓      |           |
+| 88     |      ✓      |           |
+| 89      |      ✓      |            |
+| 84      |     ✓       |            |
+| 83      |     ✓       |            |

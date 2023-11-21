@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -14,48 +14,9 @@ import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
 
-// base endpoint
-const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://IPADDRESS:8000/api";
-
-// Login component for user authentication (original)
-// const Login = ({ onSwitch }) => {
-//   // Local state variables to manage email and password input values
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   // State variables for validation error messages
-//   const [emailError, setEmailError] = useState("");
-//   const [passwordError, setPasswordError] = useState("");
-
-//   // Function to handle login upon button press
-//   const handleLogin = () => {
-//     let isValid = true;
-
-//     // Regex pattern to validate email address format
-//     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-//     // Validate email format
-//     if (!email || !emailRegex.test(email)) {
-//       setEmailError("*Invalid email");
-//       isValid = false;
-//     } else {
-//       setEmailError("");
-//     }
-
-//     // Check if password is provided
-//     if (!password) {
-//       setPasswordError("*Password required");
-//       isValid = false;
-//     } else {
-//       setPasswordError("");
-//     }
-
-//     // If the provided email and password are valid, add login logic
-//     if (isValid) {
-//       // TODO: Implement back-end login logic here
-//     }
-//   };
+import { baseEndpoint } from '../../config/config';
+import AuthContext from "../../context/AuthContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Login component for user authentication
 const Login = ({ onSwitch, navigation }) => {
@@ -71,107 +32,100 @@ const Login = ({ onSwitch, navigation }) => {
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
 
+  const { loginUser } = useContext(AuthContext);
+
+  // new login call from AuthContext - can refactor to include the front end validation
+  const login = async () => {
+    await loginUser(email, password); // loginUser should return a Promise
+    navigation.navigate("Tabs");
+  };
+
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
-  // Function to handle login upon button press
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let isValid = true;
     Keyboard.dismiss();
 
     // Regex pattern to validate email address format
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    // Validate email format
-    if (!email || !emailRegex.test(email)) {
-      setEmailError("Invalid email");
-      isValid = false;
-    } else {
-      setEmailError("");
-    }
-
-    // Check if password is provided
-    if (!password) {
-      setPasswordError("Password required");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
-
     // If the provided email and password are valid, add login logic
     if (isValid) {
-      // TODO: Implement back-end login logic here
-      //console.log(email);
-      //console.log(password);
+      //       // TODO: Implement back-end login logic here
+      //       //console.log(email);
+      //       //console.log(password);
 
-      // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-      let bodyObj = {
-        email: email,
-        password: password,
-      };
+      //       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
+      //       let bodyObj = {
+      //         email: email,
+      //         password: password,
+      //       };
 
-      // need to pass the data as JSON for our API to deal with
-      const bodyStr = JSON.stringify(bodyObj);
-      //console.log(bodyStr);
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: bodyStr,
-      };
-      fetch(loginEndpoint, options) //  Promise
-        .then((response) => {
-          // console.log(response);
-          return response.json();
-        })
-        .then((authData) => {
-          if (authData && authData.access) {
-            navigation.navigate("Tabs");
-            handleAuthData(authData, getProductList);
-          } else {
-            if (password && email) setAuthError("Wrong email or password");
-          }
-        })
-        .then((x) => {
-          // console.log(x);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
+      //       // need to pass the data as JSON for our API to deal with
+      //       const bodyStr = JSON.stringify(bodyObj);
+      //       //console.log(bodyStr);
+      //       const options = {
+      //         method: "POST",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: bodyStr,
+      //       };
+      //       fetch(loginEndpoint, options) //  Promise
+      //         .then((response) => {
+      //           //console.log(response);
+      //           return response.json();
+      //         })
+      //         .then((authData) => {
+      //           if (authData && authData.access) {
+      //             navigation.navigate("MainApp");
+      //             handleAuthData(authData, getProductList);
+      //           } else {
+      //             if (password && email) setAuthError("Wrong email or password");
+      //           }
+      //         })
+      //         .then((x) => {
+      //           // console.log(x);
+      //         })
+      //         .catch((err) => {
+      //           console.log("err", err);
+      //         });
+
+      try {
+        let bodyObj = {
+          email: email,
+          password: password,
+        };
+
+        // need to pass the data as JSON for our API to deal with
+        const bodyStr = JSON.stringify(bodyObj);
+        //console.log(bodyStr);
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: bodyStr,
+        };
+
+        const response = await fetch(loginEndpoint, options);
+        //console.log(response);
+        const authData = await response.json();
+
+        if (authData && authData.access) {
+          await loginUser(email, password);
+          navigation.navigate("MainApp");
+          //navigation.navigate("Tabs");
+          // handleAuthData(authData, getProductList);
+        } else {
+          if (password && email) setAuthError("Wrong email or password");
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
     }
   };
-
-  //alternative handle login for testing
-  //   function handleLogin(event) {
-  //     console.log(event)
-  //     event.preventDefault()
-  //     const loginEndpoint = `${baseEndpoint}/token/` //jwt token endpoint
-  //     let loginFormData = new FormData(loginForm)
-  //     let loginObjectData = Object.fromEntries(loginFormData)
-  //     let bodyStr = JSON.stringify(loginObjectData)
-  //     const options = {
-  //         method: "POST",
-  //         headers: {
-  //             "Content-Type": "application/json"
-  //         },
-  //         body: bodyStr
-  //     }
-  //     fetch(loginEndpoint, options) //  Promise
-  //     .then(response=>{
-  //         console.log(response)
-  //         return response.json()
-  //     })
-  //     .then(authData => {
-  //         handleAuthData(authData, getProductList) // use callback to get product list
-  //     })
-  //     .then(x => {
-  //         console.log(x)
-  //     })
-  //     .catch(err=> {
-  //         console.log('err', err)
-  //     })
-  // };
 
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -276,6 +230,7 @@ const Login = ({ onSwitch, navigation }) => {
           </Pressable>
 
           <ButtonLogin title="LOGIN" onPress={handleLogin} />
+          {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
 
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
@@ -319,23 +274,53 @@ function getProductList() {
       }
     });
 }
-function handleAuthData(authData, callback) {
-  localStorage.setItem("access", authData.access);
-  localStorage.setItem("refresh", authData.refresh);
-  if (callback) {
-    callback();
+
+// new function for react native asynctorage
+async function handleAuthData(authData, callback) {
+  try {
+    await AsyncStorage.setItem("access", authData.access);
+    await AsyncStorage.setItem("refresh", authData.refresh);
+
+    if (callback) {
+      callback();
+    }
+  } catch (error) {
+    // Handle errors here, e.g., by logging or displaying an error message.
+    console.error("Error storing data in AsyncStorage:", error);
   }
 }
-function getFetchOptions(method, body) {
+// function handleAuthData(authData, callback) {
+//   localStorage.setItem("access", authData.access);
+//   localStorage.setItem("refresh", authData.refresh);
+//   if (callback) {
+//     callback();
+//   }
+// }
+
+// new function for asyncstorage in react native
+async function getFetchOptions(method, body) {
+  const accessToken = await AsyncStorage.getItem("access");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken || ""}`, // Use an empty string if access token is not found
+  };
+
   return {
     method: method === null ? "GET" : method,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("access")}`, //access token!
-    },
+    headers,
     body: body ? body : null,
   };
 }
+// function getFetchOptions(method, body) {
+//   return {
+//     method: method === null ? "GET" : method,
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${localStorage.getItem("access")}`, //access token!
+//     },
+//     body: body ? body : null,
+//   };
+// }
 function isTokenNotValid(jsonData) {
   if (jsonData.code && jsonData.code === "token_not_valid") {
     // run a refresh token fetch

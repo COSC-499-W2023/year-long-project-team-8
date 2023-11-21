@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 
 from products.models import Product
 from products.serializers import ProductSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 # currently set to display sample data and headers
 # adjust to set to api home gui
@@ -20,5 +22,14 @@ def api_home(request, *args, **kwaargs):
         return Response(serializer.data)
     return Response({"invalid":"bad data"}, status=400)
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
+        # Add custom claims
+        token['email'] = user.email
+        # ...
+
+        return token
 

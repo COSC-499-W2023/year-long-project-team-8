@@ -125,3 +125,113 @@
 |   3    |    ✓         |        |
 |   4    |      ✓       |         |
 |   5    |      ✓      |          |
+
+### Work Period
+ - October 30 - November 5, 2023
+
+### Individual Peer Evaluation
+![Alt text](img/week_9_evaljoss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Implement backend functionality for profile page
+- Refine token and session logic in backend
+- Refactor authentication and token storage with Mac
+- research map api
+- research MySQL implementation
+  
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#16 Configure our Django authentication portal with React Native Login/Signup page
+- item#14 Create user authentication login/signup using the Django authentication library
+- item#43 Update user model for profile information
+- item#57 Update Django View and Serializer for for User
+- item#56 Implement user details page
+- item#79 Backend implementation for profile page
+- item#66 integrate MySQL database
+- item#65 work on design doc
+- item#57 update Django view and serializer for user
+- item#56 implement user details page backend logic
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    | ✓         |            |
+|   3    |    ✓         |        |
+|   4    |      ✓       |         |
+|   5    |      ✓      |          |
+|   6   |           |      ✓     |
+|   7   |          |      ✓      |
+|   8  |           |     ✓      |
+|   9   |      ✓      |          |
+|   10   |      ✓      |          |
+
+### Work Period
+ - November 6 - November 13, 2023
+
+### Individual Peer Evaluation
+![Alt text](img/week_10_evaljoss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Configure Expo Go (Testing on mobile)
+- Fix network related issues with connecting to backend
+- Implement backend functionality for profile page
+- Refine token and session logic in backend
+- research map api
+- research MySQL implementation
+  
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#16 Configure our Django authentication portal with React Native Login/Signup page
+- item#14 Create user authentication login/signup using the Django authentication library
+- item#43 Update user model for profile information
+- item#57 Update Django View and Serializer for for User
+- item#56 Implement user details page
+- item#79 Backend implementation for profile page
+- item#66 integrate MySQL database
+- item#65 work on design doc
+- item#57 update Django view and serializer for user
+- item#56 implement user details page backend logic
+- item#94 Configure DRF with Expo GO mobile environment
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    | ✓         |            |
+|   3    |    ✓         |        |
+|   4    |      ✓       |         |
+|   5    |      ✓      |          |
+|   6   |           |      ✓     |
+|   7   |          |      ✓      |
+|   8  |           |     ✓      |
+|   9   |           |     ✓      |
+|   10   |      ✓      |          |
+|   11  |          |     ✓      |
+
+
+

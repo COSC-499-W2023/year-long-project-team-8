@@ -165,6 +165,111 @@ October 23 - October 30, 2023
 | 3      |             | ✓           |
 
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+October 30 - November 6, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](img/bm_w9.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- profile page documentation
+- profile page button functionality
+- settings button to open a drawer
+- in drawer have the ability to log out and edit the profile
+- complete testing for profile page
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+1. profile page button functionality
+2. settings button to open drawer
+3. settings drawer has ability to log out
+4. create edit profile functionality
+5. create edit profile page
+6. profile page documentation
+7. profile page implementation
+8. live demo 
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+
+-->
+
+| Item # | Completed   | To Be Done  |
+|:------:|:-----------:|:-----------:|
+| 1      |      ✓      |             |
+| 2      |      ✓      |             |
+| 3      |             |      ✓      |
+| 4      |             |      ✓      |
+| 5      |             |      ✓      |
+| 6      |             |      ✓      |
+| 7      |       ✓     |             |
+| 8      |       ✓     |             |
+
+# Team_Member_Name Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 6 - November 13, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![week 10](./img/bm_w10.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+** My laptop is currently broken so I was unable to complete any code this week thus I had a larger commit the previous week and will be aiming to finish a couple features over reading break. I spent my time this week working on figma and paper prototyping due to this **
+
+- finish profile page documentation
+- finish profile page drawer
+- begin working on the users post page
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- 1. profile page functionality
+- 2. settings button to open drawer
+- 3. create the edit profile page
+- 4. begin design and implementation of the user post page
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 1      |            |     ✓       |
+| 2      |     ✓       |           |
+| 3      |            |     ✓       |
+| 4      |      ✓      |            |
+
+
+
+
+
+
 
 
 

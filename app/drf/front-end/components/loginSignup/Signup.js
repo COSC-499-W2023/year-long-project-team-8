@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -13,16 +14,13 @@ import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
+import { baseEndpoint } from '../../config/config';
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../../context/AuthContext'
 
-
-const baseEndpoint = "http://localhost:8000/api";
-
-const tokenEndpoint = "http://localhost:8000/api/token/";
-//const baseEndpoint = "http://ip:8000/api";
-
+const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
 const Signup = ({ onSwitch, navigation }) => {
@@ -36,6 +34,8 @@ const Signup = ({ onSwitch, navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+ const { loginUser } = useContext(AuthContext);
 
   // Function to handle signup validation and submission
   const handleSignup = async () => {
@@ -81,11 +81,11 @@ const Signup = ({ onSwitch, navigation }) => {
             password: signupPassword,
           }),
         });
-  
+
         if (!createUserResponse.ok) {
           throw new Error("Error creating user account");
         }
-  
+
         // Fetch token for the created user
         const tokenResponse = await fetch(tokenEndpoint, {
           method: "POST",
@@ -97,22 +97,26 @@ const Signup = ({ onSwitch, navigation }) => {
             password: signupPassword,
           }),
         });
-  
+
         if (!tokenResponse.ok) {
           throw new Error("Error fetching token");
         }
         //Retrieving token data for user
         const tokenData = await tokenResponse.json();
         const receivedToken = tokenData.access;
-        
+
         //Parsing respone to get userId
         const userData = await createUserResponse.json();
         const userId = extractUserIdFromUrl(userData.url);
-  
+
         // Store the token and navigate to the Details screen
         AsyncStorage.setItem('user_id', userId.toString());
         AsyncStorage.setItem('access_token', receivedToken);
-        navigation.navigate("Details", { userId, accessToken: receivedToken });
+        AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
+       // navigation.navigate("Details", { userId, accessToken: receivedToken });
+       loginUser(signupEmail,signupPassword);
+        navigation.navigate("Details");
+
       } catch (error) {
         console.log("Error during signup:", error);
       }
@@ -121,10 +125,10 @@ const Signup = ({ onSwitch, navigation }) => {
 
   // Function to extract userId from the URL
   const extractUserIdFromUrl = (url) => {
-  const idRegex = /\/users\/(\d+)\//;
-  const match = url.match(idRegex);
-  return match && match[1] ? parseInt(match[1], 10) : null;
-};
+    const idRegex = /\/users\/(\d+)\//;
+    const match = url.match(idRegex);
+    return match && match[1] ? parseInt(match[1], 10) : null;
+  };
 
   const [fontLoaded, setFontLoaded] = useState(false);
 

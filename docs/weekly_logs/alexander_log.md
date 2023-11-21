@@ -112,7 +112,58 @@
 
 | Item # | Completed | To Be Done |
 |:------:|:----------|:-----------|
-|   1    | ✓         |           |
+|   1    | ✓         |            |
 |   2    |           |  ✓         |
 |   3    | ✓         |            |
-|   4    | ✓         |           |
+|   4    | ✓         |            |
+
+### Work Period
+ - October 30 - 5, 2023
+
+### Task Types
+![Alt text](img/ar_w9.png)
+
+### Recap of Students Goals
+
+- Advance with Home page desing
+- Home page post filtering
+- Home page post sorting
+- Drawer navegation 
+
+### Student Tasks on Project Board
+
+- #1 Home page front-end
+- #2 Drawer Navegation
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |  ✓         |
+|   2    |  ✓        |            |
+
+### Work Period
+ - November 6 - 11, 2023
+
+### Task Types
+![Alt text](img/ar_w10.png)
+
+### Recap of Students Goals
+
+- Advance with Home page Front end
+- Filtering modal for homepage front end
+- Sorting modal for homepage front end
+- Add listing page structural front-end/implementation 
+
+### Student Tasks on Project Board
+
+- #1 Home page front-end
+- #2 Add listing page
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |  ✓         |
+|   2    |           |  ✓         |
+
