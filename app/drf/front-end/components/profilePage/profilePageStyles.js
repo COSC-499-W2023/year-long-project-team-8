@@ -1,8 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+// Get window dimensions for responsive styling
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+// Define color constants
 export const colors = {
   lightOrange: '#F8B951',
   mediumOrange: '#FCA63C',
@@ -10,19 +12,27 @@ export const colors = {
   darkGray: '#222222',
 };
 
+// Stylesheet definition
 const styles = StyleSheet.create({
+  // Main container style
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
+
+  // Rating container style
   ratingContainer: {
     alignItems: 'center',
     top: 20,
   },
+
+  // Profile container style
   profileContainer: {
     top: 40,
     alignItems: 'center',
   },
+
+  // Profile picture style
   profilePicture: {
     width: 130,
     height: 130,
@@ -30,43 +40,61 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'black',
   },
+
+  // User's name style
   name: {
     fontSize: 24,
     color: 'black',
     fontWeight: '500',
     marginTop: 15,
   },
+
+  // Location container style
   locationContainer: {
     flexDirection: 'row',
     marginTop: 5,
   },
+
+  // Location text style
   location: {
     fontSize: 16,
     color: colors.mediumOrange,
     marginLeft: 2,
   },
+
+  // Settings button style
   settingsButton: {
     position: 'absolute',
   },
+
+  // Settings icon style
   settingsIcon: {
     width: 30,
     height: 30,
   },
+
+  // Centered posts container style
   centeredPostsContainer: {
     flex: 1,
     top: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  // Container for multiple posts style
   postsContainer: {
     flexDirection: 'row',
   },
+
+  // "Recent Posts" text style
   recentPostsText: {
     fontSize: 20,
     fontWeight: '500',
     color: 'black',
     marginBottom: 20,
   },
+
+  // Individual post container style
   postContainer: {
     width: windowWidth * 0.3,
     height: '90%',
@@ -82,6 +110,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 2, height: 2 },
   },
+
+  // "View All" button style
   viewAllButton: {
     alignItems: 'center',
     backgroundColor: colors.lightOrange,
@@ -90,6 +120,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 120,
   },
+
+  // "View All" button text style
   viewAllButtonText: {
     fontSize: 16,
     fontWeight: '400',
