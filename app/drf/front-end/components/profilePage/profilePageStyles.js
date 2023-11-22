@@ -3,7 +3,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-
 export const colors = {
   lightOrange: '#F8B951',
   mediumOrange: '#FCA63C',
@@ -12,7 +11,7 @@ export const colors = {
 };
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -55,50 +54,47 @@ const styles = StyleSheet.create({
   },
   centeredPostsContainer: {
     flex: 1,
-    top: 20
+    top: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   postsContainer: {
     flexDirection: 'row',
   },
+  recentPostsText: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'black',
+    marginBottom: 20,
+  },
   postContainer: {
-      bottom: 10,
+    width: windowWidth * 0.3,
+    height: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  post: {
-    width: windowWidth * 0.3,
-    height: windowHeight * 0.2,
+    backgroundColor: '#e8e8e8',
     borderWidth: 2,
+    marginLeft: 5,
+    marginRight: 5,
     borderRadius: 10,
-    borderColor: 'black',
-    backgroundColor: 'lightgray',
-    margin: 6.5,
-    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.5,
+    shadowColor: 'black',
     shadowRadius: 3,
-    elevation: 5,
-  },
-    recentPostsText: {
-    fontSize: 20,
-    textAlign: 'center',
-      top: 50,
-      fontWeight: 'bold',
+    shadowOffset: { width: 2, height: 2 },
   },
   viewAllButton: {
-    backgroundColor: colors.mediumOrange,
-    borderRadius: 8,
-    width: 140,
-    height: 50,
-    padding: 10,
-    bottom: 60,
-    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.lightOrange,
+    borderRadius: 10,
+    marginTop: 20,
+    height: 40,
+    width: 120,
   },
   viewAllButtonText: {
-    color: 'white',
     fontSize: 16,
-    alignSelf: 'center',
-    fontWeight: "bold",
-    top: 5
+    fontWeight: '400',
+    color: 'white',
+    marginTop: 10,
   },
 });
 
