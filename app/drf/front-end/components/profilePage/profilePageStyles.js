@@ -12,7 +12,6 @@ export const colors = {
   darkGray: '#222222',
 };
 
-// Stylesheet definition
 const styles = StyleSheet.create({
   // Main container style
   container: {
@@ -80,12 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  // Container for multiple posts style
-  postsContainer: {
-    flexDirection: 'row',
-  },
-
   // "Recent Posts" text style
   recentPostsText: {
     fontSize: 20,

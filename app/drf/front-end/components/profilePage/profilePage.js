@@ -1,21 +1,36 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import styles from './profilePageStyles';
-import { getUserData } from '../helperFunctions/apiHelpers';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { getUserData, updateUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
 import StarRating from './ratingIcons';
+import styles from './profilePageStyles';
 
+/**
+ * ProfilePage component represents the user's profile page.
+ * It displays user information, rating, recent posts, and provides an option to edit details.
+ */
 const ProfilePage = () => {
   // Context and state
   const { authTokens, userId } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [phone, setPhone] = useState('');
   const [rating] = useState(3.5);
 
   // Fetch user data on component mount
   useEffect(() => {
+    // Fetch user data using API
     getUserData(userId, authTokens)
-      .then((data) => setUserData(data))
-      .catch((error) => console.error('Error fetching user data:', error));
+      .then((data) => {
+        // Set the user data in the state
+        setUserData(data);
+        console.log("User Data:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
   }, [userId, authTokens]);
 
   return (
@@ -33,7 +48,9 @@ const ProfilePage = () => {
         />
 
         {/* Displaying user's name */}
-        <Text style={styles.name}>Brandon Mack</Text>
+        <Text style={styles.name}>
+          {userData?.firstname ? userData.firstname.charAt(0).toUpperCase() + userData.firstname.slice(1) : 'First'} {userData?.lastname ? userData.lastname.charAt(0).toUpperCase() + userData.lastname.slice(1) : 'Last'}
+        </Text>
 
         {/* Displaying user's location */}
         <View style={styles.locationContainer}>

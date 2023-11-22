@@ -40,6 +40,7 @@ def get_local_ip():
 local_ip = get_local_ip()
 
 
+
 ALLOWED_HOSTS = [local_ip,
                  '127.0.0.1',
                  'localhost',]
