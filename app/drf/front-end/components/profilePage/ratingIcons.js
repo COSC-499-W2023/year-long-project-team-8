@@ -15,17 +15,37 @@ const StarRating = ({ rating }) => {
     },
     filledStar: {
       textShadowColor: 'grey',
-      textShadowOffset: { width: 2.5, height: 2.5},
+      textShadowOffset: { width: 2.5, height: 2.5 },
       textShadowOpacity: 0.5,
       textShadowRadius: 1,
     },
+    halfFilledStar: {
+      textShadowColor: 'grey',
+      textShadowOffset: { width: 2.5, height: 2.5 },
+      textShadowOpacity: 0.5,
+      textShadowRadius: 1,
+    },
+    emptyStar: {
+      textShadowColor: 'grey',
+      textShadowOffset: { width: 1.75, height: 1.75 },
+      textShadowOpacity: 0.5,
+      textShadowRadius: 1,
+    }
   });
 
   for (let i = 1; i <= maxRating; i++) {
     const isHalfStar = i - 0.5 <= rating && rating < i;
     const isFilledStar = i <= rating;
 
-    const starStyle = isFilledStar ? [StarStyle.starIcon, StarStyle.filledStar] : StarStyle.starIcon;
+    let starStyle;
+
+    if (isHalfStar) {
+      starStyle = [StarStyle.starIcon, StarStyle.halfFilledStar];
+    } else if (isFilledStar) {
+      starStyle = isFilledStar ? [StarStyle.starIcon, StarStyle.filledStar] : StarStyle.starIcon;
+    } else {
+        starStyle = [StarStyle.starIcon, StarStyle.emptyStar];
+    }
 
     starElements.push(
       <Icon
