@@ -72,13 +72,19 @@ const styles = StyleSheet.create({
     height: 30,
   },
 
-  // Centered posts container style
+   // Centered posts container style
   centeredPostsContainer: {
     flex: 1,
     top: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  // Container for multiple posts style
+  postsContainer: {
+    flexDirection: 'row',
+  },
+
   // "Recent Posts" text style
   recentPostsText: {
     fontSize: 20,
