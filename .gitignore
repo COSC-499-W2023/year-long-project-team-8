@@ -134,4 +134,7 @@ node_modules/
 
 # personal environment
 bmenv/
+.idea/misc.xml
+.DS_Store
+app/drf/front-end/config/config.js
 ```
