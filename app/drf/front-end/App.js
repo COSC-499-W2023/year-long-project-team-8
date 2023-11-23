@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
-
+import EditProfile from "./components/editProfile/editProfileMain.js";
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -26,6 +26,7 @@ const App = () => {
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="MainApp" component={MainApp} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>
