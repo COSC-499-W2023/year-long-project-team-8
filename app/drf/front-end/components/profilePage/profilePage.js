@@ -1,22 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { getUserData, updateUserData } from '../helperFunctions/apiHelpers';
+import { getUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
 import StarRating from './ratingIcons';
 import styles from './profilePageStyles';
 
 /**
  * ProfilePage component represents the user's profile page.
- * It displays user information, rating, recent posts, and provides an option to edit details.
+ * It displays user information, rating, recent posts, and provides an option to view all posts.
  */
 const ProfilePage = () => {
   // Context and state
   const { authTokens, userId } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [phone, setPhone] = useState('');
   const [rating] = useState(3.5);
 
   // Fetch user data on component mount
@@ -35,6 +31,7 @@ const ProfilePage = () => {
 
   return (
     <View style={styles.container}>
+        {/*TODO: get the average rating for the user and implement here*/}
       {/* Section for displaying user rating */}
       <View style={styles.ratingContainer}>
         <StarRating rating={rating} />
@@ -49,11 +46,12 @@ const ProfilePage = () => {
 
         {/* Displaying user's name */}
         <Text style={styles.name}>
-          {userData?.firstname ? userData.firstname.charAt(0).toUpperCase() + userData.firstname.slice(1) : 'First'} {userData?.lastname ? userData.lastname.charAt(0).toUpperCase() + userData.lastname.slice(1) : 'Last'}
+          {getUserDisplayName(userData)}
         </Text>
 
         {/* Displaying user's location */}
         <View style={styles.locationContainer}>
+            {/*TODO: get users location and input it here*/}
           <Text style={styles.location}>Kelowna, BC</Text>
         </View>
       </View>
@@ -63,21 +61,33 @@ const ProfilePage = () => {
         <Text style={styles.recentPostsText}>Recent Posts</Text>
         {/* Container for displaying multiple post components */}
         <View style={styles.postsContainer}>
-          {[1, 2, 3].map((index) => (
-            <View key={index} style={styles.postContainer}>
-              {/* Individual post component */}
-              <View style={styles.post}></View>
-            </View>
-          ))}
+          {renderRecentPosts()}
         </View>
 
         {/* Button to view all posts */}
+          {/*TODO: once page with all posts is built link this button with it*/}
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllButtonText}>View All</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
+};
+
+const getUserDisplayName = (userData) => {
+  const firstName = userData?.firstname || 'First';
+  const lastName = userData?.lastname || 'Last';
+  return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
+};
+
+const renderRecentPosts = () => {
+  return [1, 2, 3].map((index) => (
+    <View key={index} style={styles.postContainer}>
+      {/* Individual post component */}
+        {/*TODO: once posts page is complete add the three most recent posts here*/}
+      <View style={styles.post}></View>
+    </View>
+  ));
 };
 
 export default ProfilePage;
