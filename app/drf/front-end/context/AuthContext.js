@@ -94,7 +94,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('access_token')
         AsyncStorage.removeItem('refresh')
         AsyncStorage.removeItem('user_id')
-        //navigation.navigate('Landing');
+        // navigation.navigate('Landing');
     }
 
     // Call to refresh Token endpoint to update the access token

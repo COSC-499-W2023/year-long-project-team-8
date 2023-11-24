@@ -3,10 +3,9 @@ This is a helper function script, to help more code more modular.
 Note: must import AuthContext into components where you wish to use these functions
       AuthContext stores userId and token data.
 */
-import { baseEndpoint } from '../../config/config';
-//const baseEndpoint = "http://localhost:8000/api";
-//const baseEndpoint = "http://10.0.0.111:8000/api";
 
+
+import { baseEndpoint } from '../../config/config';
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
@@ -119,10 +118,37 @@ data.forEach(product => {
 });
 }
 
+//function for updating user data
+async function updateUserData(userId, authTokens, updatedData) {
+  try {
+    
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: 'PATCH', // Using PATCH for partial updates
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (response.status === 200) {
+      const userData = await response.json();
+      return userData; // Return the updated data to the caller
+    } else {
+      throw new Error('Something went wrong!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong!');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
   getUserData,
   getProductList,
+  updateUserData,
   getUserProductList,
+
 };
