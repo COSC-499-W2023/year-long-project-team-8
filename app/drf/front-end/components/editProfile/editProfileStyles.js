@@ -16,66 +16,126 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBarContainer: {
-    width: windowWidth,
-    height: 40,
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-
-      borderColor: 'red',
-      borderWidth: 2,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20,
+    height: 40,
+    width: windowWidth,
   },
   backArrow: {
     height: 30,
     width: 30,
-    alignSelf: 'flex-start',
-    marginLeft: 30,
-      top: '50%',
-      transform: [{ translateY: -15 }],
+    transform: [{translateY: -15}],
   },
   saveButton: {
     fontSize: 20,
-      fontWeight: '600',
-    alignSelf: 'flex-end',
-    marginRight: 30,
-      top: '50%',
-      transform: [{ translateY: -11 }],
+    fontWeight: '600',
+    transform: [{translateY: -11}],
   },
-    nameTextContainer: {
-        height: 50,
-        borderColor: 'blue',
-        borderWidth: 2,
-    },
-    firstName: {
+  nameTextContainer: {
+    marginTop: 10,
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  firstName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 3,
+    width: '50%',
+  },
+  lastName: {
+    marginLeft: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    width: '45%',
+  },
+  nameInputContainer: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  firstNameInput: {
+    fontSize: 18,
+    fontWeight: '500',
+    height: 40,
+    width: '50%',
+    backgroundColor: '#e9e9e9',
+    borderRadius: 5,
+    padding: 8,
+    marginTop: 3,
+  },
+  lastNameInput: {
+    fontSize: 18,
+    fontWeight: '500',
+    height: 40,
+    width: '45%',
+    backgroundColor: '#e9e9e9',
+    borderRadius: 5,
+    padding: 8,
+    marginTop: 3,
+  },
+  phoneNumberTextContainer: {
+    marginTop: 10,
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  countryCode: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 3,
+    width: '50%',
+  },
+  phoneNumber: {
+    marginLeft: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    width: '45%',
+  },
+  phoneNumberInputContainer: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    borderColor: 'red',
+    borderWidth: 1,
+  },
+/*
+  countryCodeInput: {
 
-    },
-    lastName: {
+  },
+  phoneNumberInput: {
 
-    },
-    nameInputContainer: {
-      height: 50,
-        borderColor: 'green',
-        borderWidth: 2,
+  },
 
-    },
-    firstNameInput: {
+  countryCodePickerContainer: {
+    height: 40,
+    width: '50%', // Adjust width as needed
+    marginTop: 10,
+    borderWidth: 2,
+    borderColor: 'purple', // Choose your color
+  },
 
-    },
-    lastNameInput: {
+  countryCodePicker: {
+    backgroundColor: 'white',
+  },
 
-    },
-    phoneNumberTextContainer: {
-      height: 50,
-        borderColor: 'purple',
-        borderWidth: 2,
-    },
-    countryCode: {
+  countryCodePickerItem: {
+    justifyContent: 'flex-start',
+  },
 
-    },
-    phoneNumberInput: {
-
-    },
-
+  countryCodePickerDropDown: {
+    backgroundColor: 'white',
+  },
+   */
 });
 
 export default styles;

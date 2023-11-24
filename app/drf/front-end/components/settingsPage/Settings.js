@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   // Styles for the header text
   headerText: {
-    marginTop: 10,
+    marginTop: 20,
     fontSize: 24,
     fontWeight: "bold",
     alignSelf: "center",
