@@ -1,131 +1,150 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  TouchableOpacity,
-  Image,
   View,
-  Text,
-  TextInput,
+  Image,
+  StyleSheet,
   ScrollView,
-  FlatList,
+  Alert,
+  TouchableOpacity,
 } from "react-native";
-import ImagePicker from "./ImagePicker";
-import CustomText from "../CustomText";
-import CategorySelector from "./CategorySelector";
-import AllergenSelector from "./AllergenSelector";
-import styles from "./styles";
+import * as ImagePicker from "expo-image-picker";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { TextInput } from "react-native-paper";
 
-// Options for categories and allergens
-const allergenOptions = [
-  "Peanuts",
-  "Tree nuts",
-  "Milk",
-  "Eggs",
-  "Wheat",
-  "Soy",
-  "Fish",
-  "Shellfish",
-  "Cheese",
-];
+const AddListing = () => {
+  const [imageUris, setImageUris] = useState([]);
+  const { showActionSheetWithOptions } = useActionSheet();
 
-const categoryOptions = [
-  "Italian",
-  "Vegan",
-  "Meat",
-  "Asian",
-  "Mexican",
-  "Produce",
-  "Desserts",
-  "Canned",
-];
-
-export default function AddListing() {
-  // State hooks for managing the form data
-  const [imageUri, setImageUri] = useState(null);
-  const [title, setTitle] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedAllergens, setSelectedAllergens] = useState([]);
-
-  // Callback for when an image is selected
-  const onImageSelected = (uri) => {
-    setImageUri(uri);
+  const addImage = (asset) => {
+    const updatedUris = [...imageUris, asset.uri];
+    setImageUris(updatedUris);
   };
 
-  // Request permissions for camera and media library on component mount
-  useEffect(() => {
-    (async () => {
-      const cameraRollStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      if (!cameraRollStatus.granted || !cameraStatus.granted) {
-        alert(
-          "Sorry, we need camera roll and camera permissions to make this work!"
-        );
+  const requestPermissions = async () => {
+    const cameraResult = await ImagePicker.getCameraPermissionsAsync();
+    const libraryResult = await ImagePicker.getMediaLibraryPermissionsAsync();
+    if (!cameraResult.granted || !libraryResult.granted) {
+      Alert.alert(
+        "Permissions required",
+        "Please grant camera and media library permissions to continue."
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleImageSelection = async () => {
+    if (!(await requestPermissions())) return;
+
+    const options = ["Cancel", "Take Photo", "Choose from Gallery"];
+    const cancelButtonIndex = 0;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      async (buttonIndex) => {
+        if (buttonIndex === 1) {
+          const result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [3, 2],
+            quality: 1,
+          });
+          if (!result.canceled) {
+            addImage(result);
+          }
+        } else if (buttonIndex === 2) {
+          const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [3, 2],
+            quality: 1,
+          });
+          if (!result.canceled) {
+            addImage(result);
+          }
+        }
       }
-    })();
-  }, []);
-
-  // Handle the submission of the form
-  const handleSave = () => {
-    const formData = {
-      imageUri,
-      title,
-      categories: selectedCategories,
-      allergens: selectedAllergens,
-    };
-    console.log("formData", formData);
-    // TODO: Backend
+    );
   };
 
-  // Toggle the selection of categories
-  const toggleCategory = (category) => {
-    setSelectedCategories((currentCategories) => {
-      if (currentCategories.includes(category)) {
-        return currentCategories.filter((c) => c !== category);
-      } else {
-        return [category, ...currentCategories];
-      }
-    });
+  const handleRemoveImage = (index) => {
+    const updatedUris = imageUris.filter((_, i) => i !== index);
+    setImageUris(updatedUris);
   };
 
-  // Toggle the selection of allergens
-  const toggleAllergen = (allergen) => {
-    setSelectedAllergens((currentAllergens) => {
-      if (currentAllergens.includes(allergen)) {
-        return currentAllergens.filter((a) => a !== allergen);
-      } else {
-        return [allergen, ...currentAllergens];
-      }
-    });
-  };
+  const renderImageWithTrashcan = (uri, index) => (
+    <View key={index} style={styles.imageContainer}>
+      <Image source={{ uri }} style={styles.image} />
+      <TouchableOpacity
+        style={styles.trashcanButton}
+        onPress={() => handleRemoveImage(index)}
+      >
+        <MaterialIcons name="delete" size={24} color="grey" />
+      </TouchableOpacity>
+    </View>
+  );
 
-  // Render the AddListing component UI
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Title"
-        onChangeText={setTitle}
-        value={title}
-      />
-      <ImagePicker onImageSelected={onImageSelected} />
-      <CustomText style={styles.label}>Select Categories:</CustomText>
-      <CategorySelector
-        categories={categoryOptions}
-        selectedCategories={selectedCategories}
-        onCategoryToggle={toggleCategory}
-      />
-      <CustomText style={styles.label}>Select Allergens:</CustomText>
-      <AllergenSelector
-        allergens={allergenOptions}
-        selectedAllergens={selectedAllergens}
-        onAllergenToggle={toggleAllergen}
-      />
-      <TouchableOpacity
-        style={[styles.button, styles.saveButton]}
-        onPress={handleSave}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.imagesScrollContainer}
       >
-        <CustomText style={styles.buttonText}>Save Listing</CustomText>
-      </TouchableOpacity>
+        {imageUris.map(renderImageWithTrashcan)}
+        {imageUris.length < 3 && (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={handleImageSelection}
+          >
+            <MaterialIcons name="add-a-photo" size={24} color="white" />
+          </TouchableOpacity>
+        )}
+      </ScrollView>
     </ScrollView>
   );
-}
+};
+
+export default AddListing;
+
+// Update styles as needed
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: "white",
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  imagesScrollContainer: {
+    flexDirection: "row",
+    marginBottom: 16,
+  },
+  imageContainer: {
+    marginRight: 8,
+    alignItems: "center",
+    marginBottom: 8,
+    position: "relative",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  trashcanButton: {
+    alignSelf: "flex-start",
+  },
+  addButton: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    backgroundColor: "orange",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 8,
+  },
+});
