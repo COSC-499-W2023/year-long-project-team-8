@@ -150,3 +150,72 @@ class UserViewSetTestCase(TestCase):
     #     #Verify the user has been deleted
     #    user_exists = User.objects.filter(id=self.user.id).exists()
     #    self.assertFalse(user_exists)
+
+class PasswordResetTest(APITestCase):
+    
+    #endpoints
+    create_url = '/api/users/'
+    send_reset_password_email_url = 'api/users/reset_password/'
+    confirm_reset_password_url = 'api/users/reset_password_confirm/'
+    
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="testpassword"
+        )
+        self.admin_user = User.objects.create_superuser(
+            email="admin@example.com",
+            password="adminpassword"
+        )
+        self.client = APIClient()
+
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+     
+    def test_resest_password(self):
+        
+        #creating user 
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        
+        response = self.client.post(self.create_url, self.user) 
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        #expecting one email sent
+        self.assertEqual(len(mail.outbox), 1)
+        email_lines = mail.outbox[0].body.splitlines()
+        activation_link =  [l for l in email_lines if "/activate/" in l][0]
+        
+        user_id, token = activation_link.split("/")[:2]
+        
+        # verify email (not yet implemented)
+        data = {"user_id": user_id, "token": token}
+        response = self.client.post(self.activate_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # reset password
+        data = {"email": self.user_data["email"]}
+        response = self.client.post(self.send_reset_password_email_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+         # parse reset-password email to get uid and token
+        email_lines = mail.outbox[1].body.splitlines()
+        reset_link = [l for l in email_lines if "/reset_password/" in l][0]
+        uid, token = activation_link.split("/")[-2:]
+        
+        #confirm reset password
+        data = {"uid": user_id, "token": token, "new_password": "new_password"}
+        response = self.client.post(self.confirm_reset_password_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)        
+        
+        # login to get the authentication token with old password
+        response = self.client.get(f'/api/users/{self.user.id}/')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+        # login to get the authentication token with new password
+        login_data = dict(self.user)
+        login_data["password"] = "new_password"
+        response = self.client.post(self.login_url, login_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
