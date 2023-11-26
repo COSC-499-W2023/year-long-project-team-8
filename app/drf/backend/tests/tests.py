@@ -150,3 +150,66 @@ class UserViewSetTestCase(TestCase):
     #     #Verify the user has been deleted
     #    user_exists = User.objects.filter(id=self.user.id).exists()
     #    self.assertFalse(user_exists)
+
+class ProductSearchTestCase(APITestCase):
+    def setUp(self):
+        # Create a test user and a product
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        self.product = Product.objects.create(
+            title='Smartphone',
+            content='High-performance mobile device',
+            owner=self.user
+        )
+        self.client = APIClient()
+
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+
+    def test_search_single_keyword(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+    
+        # Perform a search with a single keyword
+        response = self.client.get('/api/products/', {'search': 'Smartphone'})
+       
+        # Assert that the response status is HTTP 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Check if there is any data in the response
+        if response.data and 'results' in response.data:
+            results = response.data['results']
+            # Assert that the expected product is present in the response
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].get('title'), 'Smartphone')
+        else:
+            # Print a message if the response data or 'results' key is missing
+            print('Response data or "results" key is missing.')
+
+
+    def test_search_multiple_keywords(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Perform a search with multiple keywords
+        response = self.client.get('/api/products/', {'search': 'Smartphone performance'})
+        
+        # Assert that the response status is HTTP 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Assert that the expected product is present in the response
+        results = response.data['results']
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(results[0].get('title'), 'Smartphone')
+
+    def test_search_no_results(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Perform a search with keywords that should yield no results
+        response = self.client.get('/api/products/', {'search': 'Nonexistent Keyword'})
+        
+        # Assert that the response status is HTTP 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Assert that no products are present in the response
+        self.assertEqual(len(response.data['results']), 0)
