@@ -11,7 +11,7 @@ import django_filters
 from users.permissions import IsOwnerOrReadOnly
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from rest_framework.filters import SearchFilter
 
 # Product filter to filter for CSV filter list
 class ProductFilter(django_filters.FilterSet):
@@ -33,12 +33,13 @@ class ProductFilter(django_filters.FilterSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    # authentication_classes = [JWTAuthentication]
-    filter_backends = [DjangoFilterBackend]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['categories']
     filterset_class = ProductFilter
     parser_classes = (MultiPartParser, FormParser)
+    search_fields = ['title', 'content']
     
     def perform_create(self, serializer):
         product = serializer.save(owner=self.request.user)

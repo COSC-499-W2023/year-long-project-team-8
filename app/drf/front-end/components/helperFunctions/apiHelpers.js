@@ -143,6 +143,30 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function to return products based on a keyword search query
+async function productSearch(query, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/?search=${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
+      },
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      // Returns data to caller to be handled, eg(renderProducts() below)
+      return data;
+    } else {
+      throw new Error('Something went wrong!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong!');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -150,5 +174,6 @@ export {
   getProductList,
   updateUserData,
   getUserProductList,
+  productSearch
 
 };
