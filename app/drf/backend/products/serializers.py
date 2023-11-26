@@ -18,5 +18,8 @@ class ProductSerializer(serializers.ModelSerializer):
                   'owner',
                   'created_at',
                   'updated_at',
-                  'images',]
+                  'images',
+                  'valid',
+                  'best_before',
+                  ]
         

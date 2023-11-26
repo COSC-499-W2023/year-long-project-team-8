@@ -62,6 +62,12 @@ class ProductViewSet(ModelViewSet):
         queryset = Product.objects.filter(owner=self.request.user)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
+    # override query set to update valid flag before each API call to products
+    def get_queryset(self):
+        # Call the update_valid_flag method before returning the queryset
+        Product.objects.update_valid_flag()
+        return super().get_queryset()
 
     
 class ImageViewSet(ModelViewSet):
