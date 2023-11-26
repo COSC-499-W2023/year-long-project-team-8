@@ -178,6 +178,7 @@ const productData = {
   // ... other product fields
 };
 
+// currently not supporting images
 async function createProduct(productData, authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/products/`, {
@@ -205,6 +206,48 @@ async function createProduct(productData, authTokens) {
   }
 }
 
+// get images from upload
+const imageFiles = [/* array of File objects */];
+
+// pass product data and images to function
+async function createProductImages(productData, imageFiles, authTokens) {
+  try {
+    const formData = new FormData();
+
+    // Append product data as fields in the FormData
+    Object.keys(productData).forEach(key => {
+      formData.append(key, productData[key]);
+    });
+
+    // Append image files to the FormData
+    imageFiles.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
+
+    const response = await fetch(`${baseEndpoint}/products/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+      throw new Error('Failed to create product');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -212,6 +255,6 @@ export {
   getProductList,
   updateUserData,
   getUserProductList,
-  productSearch
-
+  productSearch,
+  createProductImages,
 };
