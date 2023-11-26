@@ -167,6 +167,44 @@ async function productSearch(query, authTokens) {
   }
 }
 
+// helper function to create post 
+// will need to pass in userId from AuthContext
+const productData = {
+  title: 'New Product',
+  content: 'Description of the new product',
+  location: '',
+  categories: '',
+  owner: userId,
+  // ... other product fields
+};
+
+async function createProduct(productData, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: JSON.stringify(productData),
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+      throw new Error('Failed to create product');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
