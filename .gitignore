@@ -134,4 +134,6 @@ node_modules/
 
 # personal environment
 bmenv/
+
+app/drf/backend/.expo
 ```

@@ -6,10 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get('window').width;
 
 const SettingsPage = () => {
-  // Access the navigation object to navigate to other screens
   const navigation = useNavigation();
 
-  // Function to navigate to the Edit Profile page
   const goToEditProfile = () => {
     navigation.navigate("EditProfile");
   };
