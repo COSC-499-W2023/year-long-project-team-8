@@ -156,7 +156,6 @@ class UserViewSetTestCase(TestCase):
 
 class ProductSearchTestCase(APITestCase):
     def setUp(self):
-        # Create a test user and a product
         self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
         future_date = timezone.now() + timezone.timedelta(days=30)
         self.product = Product.objects.create(
@@ -179,17 +178,15 @@ class ProductSearchTestCase(APITestCase):
         # Perform a search with a single keyword
         response = self.client.get('/api/products/', {'search': 'Smartphone'})
        
-        # Assert that the response status is HTTP 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         # Check if there is any data in the response
         if response.data and 'results' in response.data:
             results = response.data['results']
-            # Assert that the expected product is present in the response
+        
             self.assertEqual(len(results), 1)
             self.assertEqual(results[0].get('title'), 'Smartphone')
         else:
-            # Print a message if the response data or 'results' key is missing
             print('Response data or "results" key is missing.')
 
 
@@ -199,10 +196,8 @@ class ProductSearchTestCase(APITestCase):
         # Perform a search with multiple keywords
         response = self.client.get('/api/products/', {'search': 'Smartphone performance'})
         
-        # Assert that the response status is HTTP 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # Assert that the expected product is present in the response
         results = response.data['results']
         self.assertEqual(len(response.data['results']), 1)
         self.assertEqual(results[0].get('title'), 'Smartphone')
@@ -213,16 +208,12 @@ class ProductSearchTestCase(APITestCase):
         # Perform a search with keywords that should yield no results
         response = self.client.get('/api/products/', {'search': 'Nonexistent Keyword'})
         
-        # Assert that the response status is HTTP 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # Assert that no products are present in the response
         self.assertEqual(len(response.data['results']), 0)
   
 # Test class for best_before date and valid flag      
 class ProductValidityTests(TestCase):
     def setUp(self):
-        # Create a test user and a product
         self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
         future_date = timezone.now() + timezone.timedelta(days=30)
         self.client = APIClient()
@@ -238,13 +229,11 @@ class ProductValidityTests(TestCase):
 
     def test_invalid_best_before_date(self):
         past_date = timezone.now() - timezone.timedelta(days=30)
-        with self.assertRaises(ValidationError):  # Import ValidationError from django.core.exceptions
+        with self.assertRaises(ValidationError): 
             self.product = Product(
                 title='Expired Product',
                 best_before=past_date,
                 owner=self.user,
             )
-            self.product.full_clean()  # Run validation manually
-
-        # Verify that the model was not created
+            self.product.full_clean() 
         self.assertEqual(Product.objects.count(), 0)
