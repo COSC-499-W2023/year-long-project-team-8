@@ -458,6 +458,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - User based Products
 - Images model - store and display images with products
 - Search functionality
+- Configure Expo Go with backend and create configuration file (#131)
+- System architecture diagram
 
 
 ### Completed Tasks
@@ -484,6 +486,10 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Best before date and valid flag on product model #116
 - functionality to update valid flag based on current date #117
 - test cases for valid flag and best before #118
+- Forgot password backend tests #109
+- Creating configuration file and IP getter #132
+- Configure EXPO Go with DRF #131
+- System architecture diagram
 
 
 ### In Progress Tasks
@@ -494,6 +500,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Edit profile page testing (#127)
 - Implement the logic and user messages on the edit profile page (#125)
 - Test front-back end communication for images
+- Forgot password sending external email (#130)
+- Forgot password api endpoint configuration (#129)
 
 ### Burnup Chart
 <!-- 
