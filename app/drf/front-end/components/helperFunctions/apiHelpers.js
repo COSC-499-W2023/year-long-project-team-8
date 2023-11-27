@@ -143,6 +143,111 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function to return products based on a keyword search query
+async function productSearch(query, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/?search=${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
+      },
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      // Returns data to caller to be handled, eg(renderProducts() below)
+      return data;
+    } else {
+      throw new Error('Something went wrong!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong!');
+  }
+}
+
+// helper function to create post 
+// will need to pass in userId from AuthContext
+// const productData = {
+//   title: 'New Product',
+//   content: 'Description of the new product',
+//   location: '',
+//   categories: '',
+//   owner: userId,
+//   // ... other product fields
+// }
+
+// currently not supporting images
+async function createProduct(productData, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: JSON.stringify(productData),
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+      throw new Error('Failed to create product');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong');
+  }
+}
+
+// get images from upload
+const imageFiles = [/* array of File objects */];
+
+// pass product data and images to function
+async function createProductImages(productData, imageFiles, authTokens) {
+  try {
+    const formData = new FormData();
+
+    // Append product data as fields in the FormData
+    Object.keys(productData).forEach(key => {
+      formData.append(key, productData[key]);
+    });
+
+    // Append image files to the FormData
+    imageFiles.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
+
+    const response = await fetch(`${baseEndpoint}/products/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error('Error:', errorData);
+      throw new Error('Failed to create product');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('Something went wrong');
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -150,5 +255,6 @@ export {
   getProductList,
   updateUserData,
   getUserProductList,
-
+  productSearch,
+  createProductImages,
 };
