@@ -249,6 +249,8 @@
 - Assist in moving edit deatisl to settings page (where applicable)
 - Design document and video with team
 - research MySQL implementation
+- Configuration file
+- Configure Expo go with backend
   
 
 ### Student Tasks on Project Board
@@ -270,6 +272,11 @@
 - item#109 Forgot password testing
 - item#129 Forgot password api endpoint configuration
 - item#130 Forgot password sending external email
+- item#131 Configure Expo Go with DRF
+- item#132 Create config gile and IP getter
+
+
+
 ### Which Tasks Are Completed vs. In Progress
 <!--
 - list of completed tasks
@@ -291,7 +298,10 @@
 |   10   |      ✓      |          |
 |   11  |          |     ✓      |
 |   12  |          |     ✓      |
-|   13  |          |     ✓      |
+|   13  |       ✓     |         |
 |   14  |          |     ✓      |
+|   15  |          |     ✓      |
+|   16  |       ✓    |           |
+|   17  |       ✓    |          |
 
 
