@@ -6,8 +6,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
 import { AuthProvider } from "./context/AuthContext";
+
 import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
+
 
 const Stack = createStackNavigator();
 
