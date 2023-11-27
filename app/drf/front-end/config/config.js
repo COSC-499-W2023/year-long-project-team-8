@@ -3,7 +3,14 @@
 // run django server locally using python manage.py runserver 0.0.0.0:8000
 // run npm expo start as normal
 
+
 //modify baseendpoint ip to test on expo, else use localhost
 
 //export const baseEndpoint = "http://206.87.21.92:8000/api";
 export const baseEndpoint = "http://localhost:8000/api";
+
+//export const baseEndpoint = "http://192.168.1.135:8000/api";
+//export const baseEndpoint = "http://localhost:8000/api";
+//export const baseEndpoint = "http://206.87.16.244:8000/api";
+
+

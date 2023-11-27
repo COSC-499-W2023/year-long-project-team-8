@@ -421,3 +421,76 @@ We have created tests for several endpoints in our API and model instances. Link
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
 ![Alt text](../img/FE_tests_w8.png)
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+# Team 8 Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 13 - November 26, 2023
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
+<br>
+![alt-text](../img/projboard_w12.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Implement the logic and user messages on the edit profile page (#125)
+- Edit profile page documentation (#126)
+- Edit profile page testing (#127)
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Redo the profile page and reimplement the backend functionality (#121)
+- Start the settings page in the drawer to allow users to navigate to the edit profile page (#122)
+- Implement the front end of the edit profile page (#123)
+- Implement the backend functionality of the edit profile page (#124)
+- Profile page documentation (#50)
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- Edit profile page documentation (#126)
+- Edit profile page testing (#127)
+- Implement the logic and user messages on the edit profile page (#125)
+
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/insights
+<br>
+![burnup-chart](../img/burnup_w12.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
