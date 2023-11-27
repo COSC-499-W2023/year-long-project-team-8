@@ -169,14 +169,14 @@ async function productSearch(query, authTokens) {
 
 // helper function to create post 
 // will need to pass in userId from AuthContext
-const productData = {
-  title: 'New Product',
-  content: 'Description of the new product',
-  location: '',
-  categories: '',
-  owner: userId,
-  // ... other product fields
-};
+// const productData = {
+//   title: 'New Product',
+//   content: 'Description of the new product',
+//   location: '',
+//   categories: '',
+//   owner: userId,
+//   // ... other product fields
+// }
 
 // currently not supporting images
 async function createProduct(productData, authTokens) {
