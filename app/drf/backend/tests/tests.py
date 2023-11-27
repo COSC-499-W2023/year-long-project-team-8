@@ -7,6 +7,8 @@ from django.test import TestCase
 from products.serializers import ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
         
 class UserExistenceTest(TestCase):
@@ -29,8 +31,9 @@ class ProductViewSetTest(APITestCase):
             email="admin@example.com",
             password="adminpassword"
         )
+        future_date = timezone.now() + timezone.timedelta(days=30)
         self.client = APIClient()
-        self.product = Product.objects.create(title='Test Product', categories='test', owner= self.user)
+        self.product = Product.objects.create(title='Test Product', categories='test', owner= self.user, best_before=future_date)
         self.url = f'/api/products/{self.product.id}/'
 
     def get_auth_header(self, user):
@@ -155,10 +158,12 @@ class ProductSearchTestCase(APITestCase):
     def setUp(self):
         # Create a test user and a product
         self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
         self.product = Product.objects.create(
             title='Smartphone',
             content='High-performance mobile device',
-            owner=self.user
+            owner=self.user,
+            best_before=future_date
         )
         self.client = APIClient()
 
@@ -213,3 +218,33 @@ class ProductSearchTestCase(APITestCase):
 
         # Assert that no products are present in the response
         self.assertEqual(len(response.data['results']), 0)
+  
+# Test class for best_before date and valid flag      
+class ProductValidityTests(TestCase):
+    def setUp(self):
+        # Create a test user and a product
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.client = APIClient()
+        
+    def test_valid_best_before_date(self):
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.product = Product.objects.create(
+            title='Test Product',
+            best_before=future_date,
+            owner=self.user,
+        )
+        self.assertTrue(self.product.valid)
+
+    def test_invalid_best_before_date(self):
+        past_date = timezone.now() - timezone.timedelta(days=30)
+        with self.assertRaises(ValidationError):  # Import ValidationError from django.core.exceptions
+            self.product = Product(
+                title='Expired Product',
+                best_before=past_date,
+                owner=self.user,
+            )
+            self.product.full_clean()  # Run validation manually
+
+        # Verify that the model was not created
+        self.assertEqual(Product.objects.count(), 0)
