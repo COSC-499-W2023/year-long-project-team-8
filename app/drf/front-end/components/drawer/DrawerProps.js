@@ -26,6 +26,7 @@ const DrawerProps = ({ navigation, state }) => {
     console.log("Logout pressed");
     logoutUser();
     navigation.closeDrawer();
+    navigation.navigate('Landing');
   };
 
   return (

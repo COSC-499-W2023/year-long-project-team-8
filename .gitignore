@@ -136,4 +136,5 @@ node_modules/
 bmenv/
 .idea/misc.xml
 app/drf/front-end/config/config.js
+app/drf/backend/.expo
 ```
