@@ -283,7 +283,7 @@ November 13 - November 26, 2023
 -->
 - Implement the logic and user messages on the edit profile page (#125)
 - Edit profile page documentation (#126)
-Edit profile page testing (#127)
+- Edit profile page testing (#127)
 
 ### Student Tasks on Project Board
 <!-- 
