@@ -1,9 +1,13 @@
 // editProfileStyles.js
+
+// Importing necessary modules from react-native
 import { StyleSheet, Dimensions } from 'react-native';
 
+// Dimensions of the window
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+// Color palette used in the styles
 export const colors = {
   lightOrange: '#F8B951',
   mediumOrange: '#FCA63C',
@@ -12,10 +16,13 @@ export const colors = {
   inputGrey: '#e9e9e9',
 };
 
+// StyleSheet for the EditProfilePage component styles
 const styles = StyleSheet.create({
+  // Styling for the SafeAreaView component
   safeAreaView: {
     flex: 1,
   },
+  // Styling for the top navigation bar
   topBarContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -25,16 +32,19 @@ const styles = StyleSheet.create({
     height: 40,
     width: windowWidth,
   },
+  // Styling for the back arrow image
   backArrow: {
     height: 30,
     width: 30,
     transform: [{ translateY: -15 }],
   },
+  // Styling for the save button text
   saveButton: {
     fontSize: 20,
     fontWeight: '600',
     transform: [{ translateY: -11 }],
   },
+  // Styling for the container of first name and last name texts
   nameTextContainer: {
     marginTop: 10,
     height: 40,
@@ -43,24 +53,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  // Styling for the first name text
   firstName: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 3,
     width: '47%',
   },
+  // Styling for the last name text
   lastName: {
     marginLeft: 20,
     fontSize: 18,
     fontWeight: 'bold',
     width: '47%',
   },
+  // Styling for the container of first name and last name input fields
   nameInputContainer: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
+  // Styling for the first name input field
   firstNameInput: {
     fontSize: 18,
     fontWeight: '500',
@@ -70,8 +84,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
-
   },
+  // Styling for the last name input field
   lastNameInput: {
     fontSize: 18,
     fontWeight: '500',
@@ -81,8 +95,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
-
   },
+  // Styling for the container of phone number text
   phoneNumberTextContainer: {
     marginTop: 5,
     height: 40,
@@ -91,17 +105,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  // Styling for the phone number text
   phoneNumber: {
     fontSize: 18,
     fontWeight: 'bold',
     width: '70%',
   },
+  // Styling for the container of the phone number input field
   phoneNumberInputContainer: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
+  // Styling for the phone number input field
   phoneNumberInput: {
     fontSize: 18,
     fontWeight: '500',
@@ -112,6 +129,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 3,
   },
+  // Styling for the container of email text
   emailTextContainer: {
     marginTop: 5,
     height: 40,
@@ -120,17 +138,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  // Styling for the email text
   email: {
     fontSize: 18,
     fontWeight: 'bold',
     width: '25%',
   },
+  // Styling for the container of the email input field
   emailInputContainer: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
+  // Styling for the email input field
   emailInput: {
     fontSize: 18,
     fontWeight: '500',
@@ -143,5 +164,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// Exporting the styles as the default export
 export default styles;
-
