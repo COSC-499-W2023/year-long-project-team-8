@@ -21,7 +21,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=True)
-    best_before = models.DateTimeField(blank=False,null=False)
+    best_before = models.DateTimeField(blank=False,null=False) # CHANGE TO DATEFIELD WHEN TIME PERMITTING (will need to drop database or update all products)
     
     objects = ProductManager()
     
