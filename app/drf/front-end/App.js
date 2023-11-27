@@ -7,7 +7,6 @@ import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
 
 import { AuthProvider } from "./context/AuthContext";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 const Stack = createStackNavigator();
 
@@ -15,22 +14,20 @@ const App = () => {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar />
-      <ActionSheetProvider>
-        <AuthProvider>
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="MainApp"
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name="Landing" component={Landing} />
-              <Stack.Screen name="Details" component={Details} />
-              <Stack.Screen name="MainApp" component={MainApp} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </AuthProvider>
-      </ActionSheetProvider>
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Landing"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Landing" component={Landing} />
+            <Stack.Screen name="Details" component={Details} />
+            <Stack.Screen name="MainApp" component={MainApp} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     </View>
   );
 };
