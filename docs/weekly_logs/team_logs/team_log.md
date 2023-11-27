@@ -455,6 +455,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Implement the logic and user messages on the edit profile page (#125)
 - Edit profile page documentation (#126)
 - Edit profile page testing (#127)
+- User based Products
+- Images model - store and display images with products
+- Search functionality
 
 
 ### Completed Tasks
@@ -466,6 +469,21 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Implement the front end of the edit profile page (#123)
 - Implement the backend functionality of the edit profile page (#124)
 - Profile page documentation (#50)
+- refactor Product model to link to User #86
+- link products to Users API call #87
+- integrate user-products into front-end #98
+- test case for filtering #99
+- test case for user owned products #100
+- API call to user owned products #101
+- Implement Search for title+content #110
+- test cases for search functionality (backend) #111
+- API helper function for search in front end #112
+- Implement image storage for products backend #113
+- API helper to post product (text only) #114
+- API helper to make post with images #115
+- Best before date and valid flag on product model #116
+- functionality to update valid flag based on current date #117
+- test cases for valid flag and best before #118
 
 
 ### In Progress Tasks
@@ -475,7 +493,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Edit profile page documentation (#126)
 - Edit profile page testing (#127)
 - Implement the logic and user messages on the edit profile page (#125)
-
+- Test front-back end communication for images
 
 ### Burnup Chart
 <!-- 
@@ -492,5 +510,6 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 
 - add screenshot(s) of test run summary 
 -->
+![Alt text](../img/backend_test_w12.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
