@@ -37,8 +37,6 @@ class Product(models.Model):
         try:
             super().save(*args, **kwargs)
         except ValidationError as e:
-            # Catch the validation error and handle it as needed
-            # For example, you might log the error, return an error response, etc.
             print(f"Validation Error: {e}")
    
 class ProductImages(models.Model):
