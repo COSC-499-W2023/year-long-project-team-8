@@ -31,7 +31,7 @@
 <!--
 - list of completed tasks
 - list of tasks to be done
-
+✓ x
 -->
 
 | Item # | Completed  | To Be Done |
