@@ -1,118 +1,93 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import styles from './profilePageStyles'; // Make sure you import your styles correctly
-import { getUserData } from '../helperFunctions/apiHelpers'; // Import functions
-import AuthContext from '../../context/AuthContext' // Import AuthContext
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { getUserData } from '../helperFunctions/apiHelpers';
+import AuthContext from '../../context/AuthContext';
+import StarRating from './ratingIcons';
+import styles from './profilePageStyles';
 
+/**
+ * ProfilePage component represents the user's profile page.
+ * It displays user information, rating, recent posts, and provides an option to view all posts.
+ */
 const ProfilePage = () => {
-// Use AuthContext to get tokens and userId
-const { authTokens, userId } = useContext(AuthContext);
+  // Context and state
+  const { authTokens, userId } = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
+  const [rating] = useState(3.5);
 
-// Declare userData as a state variable
-const [userData, setUserData] = useState(null);
-
-// use effect to load users data when page is loaded
-useEffect(() => {
-  // Fetch user data and update the state
-  getUserData(userId, authTokens)
-    .then((data) => {
-      setUserData(data);
-    })
-    .catch((error) => {
-      console.error("Error fetching user data:", error);
-    });
-}, [userId, authTokens]);
+  // Fetch user data on component mount
+  useEffect(() => {
+    // Fetch user data using API
+    getUserData(userId, authTokens)
+      .then((data) => {
+        // Set the user data in the state
+        setUserData(data);
+        console.log("User Data:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId, authTokens]);
 
   return (
     <View style={styles.container}>
-      {/* holds the background image */}
-      <Image
-        source={require('../../assets/images/profilePage/background.png')}
-        style={styles.headerImage}
-      />
-      {/* settings button */}
-      {/* TODO: make the settings button clickable and actually do something */}
-      <TouchableOpacity style={styles.settingsButton}>
-        {/* settings button image */}
-        <Image
-          source={require('../../assets/images/profilePage/settings.png')}
-          style={styles.settingsIcon}
-        />
-      </TouchableOpacity>
-      {/* star rating system */}
-      {/*TODO: change the star style and allow them to be half stars*/}
+        {/*TODO: get the average rating for the user and implement here*/}
+      {/* Section for displaying user rating */}
       <View style={styles.ratingContainer}>
-        <Text style={styles.star}>⭐⭐⭐⭐⭐</Text>
+        <StarRating rating={rating} />
       </View>
 
-      {/* main container golding the profile information */}
+      {/* Section for displaying user profile information */}
       <View style={styles.profileContainer}>
-        {/* profile picture */}
         <Image
           source={require('../../assets/images/profilePage/pfp.png')}
           style={styles.profilePicture}
         />
-        {/* users name (email for now - replace with firstname + lastname)*/}
-        {userData && <Text style={styles.name}>{userData.email}</Text>} 
 
-        {/* users location */}
+        {/* Displaying user's name */}
+        <Text style={styles.name}>
+          {getUserDisplayName(userData)}
+        </Text>
+
+        {/* Displaying user's location */}
         <View style={styles.locationContainer}>
-          <Image
-            source={require('../../assets/images/profilePage/location.png')}
-            style={styles.locationIcon}
-          />
+            {/*TODO: get users location and input it here*/}
           <Text style={styles.location}>Kelowna, BC</Text>
         </View>
       </View>
 
-      {/* container that holds all the recent posts */}
+      {/* Section for displaying recent posts */}
       <View style={styles.centeredPostsContainer}>
         <Text style={styles.recentPostsText}>Recent Posts</Text>
-        {/* scrollview allows users to horizontally scroll the recent posts (max will be 10) */}
-        {/* TODO: change this to an array that can show the most recent posts by a user */}
-        <ScrollView
-          horizontal
-          style={styles.postsContainer}
-          showsHorizontalScrollIndicator={false}
-        >
-          {/* containers where the actual posts are located */}
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-          <View style={styles.postContainer}>
-            <View style={styles.post}>
-            </View>
-          </View>
-        </ScrollView>
-        {/* view all button */}
-        {/* TODO: make this button actually take the user to a page where all of their posts are */}
+        {/* Container for displaying multiple post components */}
+        <View style={styles.postsContainer}>
+          {renderRecentPosts()}
+        </View>
+
+        {/* Button to view all posts */}
+          {/*TODO: once page with all posts is built link this button with it*/}
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllButtonText}>View All</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
+};
+
+const getUserDisplayName = (userData) => {
+  const firstName = userData?.firstname || 'First';
+  const lastName = userData?.lastname || 'Last';
+  return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
+};
+
+const renderRecentPosts = () => {
+  return [1, 2, 3].map((index) => (
+    <View key={index} style={styles.postContainer}>
+      {/* Individual post component */}
+        {/*TODO: once posts page is complete add the three most recent posts here*/}
+      <View style={styles.post}></View>
+    </View>
+  ));
 };
 
 export default ProfilePage;

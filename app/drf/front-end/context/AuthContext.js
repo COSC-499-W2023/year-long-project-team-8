@@ -3,6 +3,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { jwtDecode } from 'jwt-decode'; 
 import { baseEndpoint } from '../config/config';
+import { decode, encode } from 'base-64';
+
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+if (!global.atob) {
+  global.atob = decode;
+}
 
 const AuthContext = createContext();
 
@@ -85,7 +94,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('access_token')
         AsyncStorage.removeItem('refresh')
         AsyncStorage.removeItem('user_id')
-        navigation.navigate('Landing');
+        // navigation.navigate('Landing');
     }
 
     // Call to refresh Token endpoint to update the access token

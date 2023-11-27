@@ -234,4 +234,74 @@
 |   11  |          |     ✓      |
 
 
+### Work Period
+ - November 14 - November 27, 2023
+
+### Individual Peer Evaluation
+![Alt text](img/week_12_evaljoss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Frogot password feature
+- Email verification
+- Assist in moving edit deatisl to settings page (where applicable)
+- Design document and video with team
+- research MySQL implementation
+- Configuration file
+- Configure Expo go with backend
+  
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#16 Configure our Django authentication portal with React Native Login/Signup page
+- item#14 Create user authentication login/signup using the Django authentication library
+- item#43 Update user model for profile information
+- item#57 Update Django View and Serializer for for User
+- item#56 Implement user details page
+- item#79 Backend implementation for profile page
+- item#66 integrate MySQL database
+- item#65 work on design doc
+- item#57 update Django view and serializer for user
+- item#56 implement user details page backend logic
+- item#94 Configure DRF with Expo GO mobile environment
+- item#78 Edit profile page backend
+- item#109 Forgot password testing
+- item#129 Forgot password api endpoint configuration
+- item#130 Forgot password sending external email
+- item#131 Configure Expo Go with DRF
+- item#132 Create config gile and IP getter
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    | ✓         |            |
+|   3    |    ✓         |        |
+|   4    |      ✓       |         |
+|   5    |      ✓      |          |
+|   6   |           |      ✓     |
+|   7   |          |      ✓      |
+|   8  |           |     ✓      |
+|   9   |           |     ✓      |
+|   10   |      ✓      |          |
+|   11  |          |     ✓      |
+|   12  |          |     ✓      |
+|   13  |       ✓     |         |
+|   14  |          |     ✓      |
+|   15  |          |     ✓      |
+|   16  |       ✓    |           |
+|   17  |       ✓    |          |
+
 

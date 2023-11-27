@@ -421,3 +421,103 @@ We have created tests for several endpoints in our API and model instances. Link
 ![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
 ![Alt text](../img/FE_tests_w8.png)
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+# Team 8 Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 13 - November 26, 2023
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
+<br>
+![alt-text](../img/projboard_w12.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Implement the logic and user messages on the edit profile page (#125)
+- Edit profile page documentation (#126)
+- Edit profile page testing (#127)
+- User based Products
+- Images model - store and display images with products
+- Search functionality
+- Configure Expo Go with backend and create configuration file (#131)
+- System architecture diagram
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Redo the profile page and reimplement the backend functionality (#121)
+- Start the settings page in the drawer to allow users to navigate to the edit profile page (#122)
+- Implement the front end of the edit profile page (#123)
+- Implement the backend functionality of the edit profile page (#124)
+- Profile page documentation (#50)
+- refactor Product model to link to User #86
+- link products to Users API call #87
+- integrate user-products into front-end #98
+- test case for filtering #99
+- test case for user owned products #100
+- API call to user owned products #101
+- Implement Search for title+content #110
+- test cases for search functionality (backend) #111
+- API helper function for search in front end #112
+- Implement image storage for products backend #113
+- API helper to post product (text only) #114
+- API helper to make post with images #115
+- Best before date and valid flag on product model #116
+- functionality to update valid flag based on current date #117
+- test cases for valid flag and best before #118
+- Forgot password backend tests #109
+- Creating configuration file and IP getter #132
+- Configure EXPO Go with DRF #131
+- System architecture diagram
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- Edit profile page documentation (#126)
+- Edit profile page testing (#127)
+- Implement the logic and user messages on the edit profile page (#125)
+- Test front-back end communication for images
+- Forgot password sending external email (#130)
+- Forgot password api endpoint configuration (#129)
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/insights
+<br>
+![burnup-chart](../img/burnup_w12.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+![Alt text](../img/backend_test_w12.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing

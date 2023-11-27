@@ -167,3 +167,28 @@
 |   1    |           |  ✓         |
 |   2    |           |  ✓         |
 
+### Work Period
+ - November 11 - 26, 2023
+
+### Task Types
+![Alt text](img/ar_w12.png)
+
+### Recap of Students Goals
+
+- Figma design Add Listing page
+- Front end struture Add Listing Page
+- Add Images fuctionality add listing page
+- Continue adjusting details in homepage
+
+### Student Tasks on Project Board
+
+- #1 Home page front-end
+- #2 Add listing page
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |  ✓         |
+|   2    |           |  ✓         |
+

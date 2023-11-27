@@ -1,8 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+// Get window dimensions for responsive styling
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+// Define color constants
 export const colors = {
   lightOrange: '#F8B951',
   mediumOrange: '#FCA63C',
@@ -11,119 +13,119 @@ export const colors = {
 };
 
 const styles = StyleSheet.create({
-    container: {
+  // Main container style
+  container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  headerImage: {
-    height: '30%',
-    width: '100%',
-  },
+
+  // Rating container style
   ratingContainer: {
     alignItems: 'center',
+    top: 20,
   },
-  star: {
-    fontSize: 24,
-    marginTop: -30,
-    bottom: 100,
-  },
+
+  // Profile container style
   profileContainer: {
-    marginTop: -65,
+    top: 40,
     alignItems: 'center',
   },
+
+  // Profile picture style
   profilePicture: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 130,
+    height: 130,
+    borderRadius: 70,
     borderWidth: 2,
     borderColor: 'black',
   },
+
+  // User's name style
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: '500',
     marginTop: 15,
   },
+
+  // Location container style
   locationContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 5,
   },
-  locationIcon: {
-    width: 20, // Adjust the width and height as needed
-    height: 20,
-    marginRight: 2,
-  },
+
+  // Location text style
   location: {
     fontSize: 16,
-    color: 'gray',
+    color: colors.mediumOrange,
     marginLeft: 2,
   },
-  contactContainer: {
-    marginTop: 30,
-  },
-  contactRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  contactIcon: {
-    width: 20, // Adjust the width and height as needed
-    height: 20,
-    marginRight: 5,
-  },
-  contactText: {
-    fontSize: 18,
-    marginLeft: 5,
-  },
+
+  // Settings button style
   settingsButton: {
     position: 'absolute',
-    top: 20, // Adjust the top value as needed
-    right: 20, // Adjust the right value as needed
   },
+
+  // Settings icon style
   settingsIcon: {
-    width: 30, // Adjust the width and height as needed
+    width: 30,
     height: 30,
   },
+
+   // Centered posts container style
   centeredPostsContainer: {
     flex: 1,
-  },
-  postsContainer: {
-    flexDirection: 'row',
-  },
-  postContainer: {
+    top: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  post: {
-    width: windowWidth * 0.3,
-    height: windowHeight * 0.2,
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: 'black',
-    backgroundColor: 'lightgray',
-    margin: 6.5,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    elevation: 5,
+
+  // Container for multiple posts style
+  postsContainer: {
+    flexDirection: 'row',
   },
-    recentPostsText: {
+
+  // "Recent Posts" text style
+  recentPostsText: {
     fontSize: 20,
-    textAlign: 'center',
-      top: 30,
-      fontWeight: 'bold',
+    fontWeight: '500',
+    color: 'black',
+    marginBottom: 20,
   },
+
+  // Individual post container style
+  postContainer: {
+    width: windowWidth * 0.3,
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e8e8e8',
+    borderWidth: 2,
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    shadowOpacity: 0.5,
+    shadowColor: 'black',
+    shadowRadius: 3,
+    shadowOffset: { width: 2, height: 2 },
+  },
+
+  // "View All" button style
   viewAllButton: {
-    backgroundColor: colors.mediumOrange,
-    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: colors.lightOrange,
+    borderRadius: 10,
+    marginTop: 20,
+    height: 40,
     width: 120,
-    padding: 10,
-    bottom: 25,
-    alignSelf: 'center',
   },
+
+  // "View All" button text style
   viewAllButtonText: {
-    color: 'white',
     fontSize: 16,
-    alignSelf: 'center',
-    fontWeight: "bold",
+    fontWeight: '400',
+    color: 'white',
+    marginTop: 10,
   },
 });
 

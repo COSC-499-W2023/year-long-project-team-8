@@ -268,3 +268,64 @@ November 06 - November 12, 2023
 | 89      |      ✓      |            |
 | 84      |     ✓       |            |
 | 83      |     ✓       |            |
+
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 13 - November 26, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+!![Alt text](img/mk_w12.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- refactor product model to connect users to products
+- implement API endpoint to user's product list "my-products"
+- integrate my-products into front end with API helpers function
+- implement image model
+- connect images to products
+- test images implementation Postman
+- implement search functionality in backend
+- implement API helper function for search query to backend
+- add best before date and accompanying valid flag on product model
+- automate updated the flag based on current date each time product list endpoint is queried
+- test cases for new functionality
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- refactor Product model to link to User #86
+- link products to Users API call #87
+- integrate user-products into front-end #98
+- test case for filtering #99
+- test case for user owned products #100
+- API call to user owned products #101
+- Implement Search for title+content #110
+- test cases for search functionality (backend) #111
+- API helper function for search in front end #112
+- Implement image storage for products backend #113
+- API helper to post product (text only) #114
+- API helper to make post with images #115
+- Best before date and valid flag on product model #116
+- functionality to update valid flag based on current date #117
+- test cases for valid flag and best before #118
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| ALL      |     ✓      |           |
+

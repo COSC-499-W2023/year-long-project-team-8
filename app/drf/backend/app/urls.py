@@ -18,15 +18,17 @@ from django.urls import path, include
 from rest_framework import routers
  
 from users.views import UserViewSet
-from products.views import ProductViewSet
+from products.views import ProductViewSet, ImageViewSet
  
 router = routers.DefaultRouter()
 router.register("users", UserViewSet)
 router.register("products", ProductViewSet)
+router.register('images', ImageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("api.urls")),
     path("api/", include(router.urls)),
+    path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
     # path("api/products/", include("products.urls")),
 ]

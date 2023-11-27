@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import datetime 
 from datetime import timedelta
 from pathlib import Path
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,10 @@ def get_local_ip():
 local_ip = get_local_ip()
 
 
-ALLOWED_HOSTS = [local_ip]
+
+ALLOWED_HOSTS = [local_ip,
+                 '127.0.0.1',
+                 'localhost',]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
@@ -210,8 +214,8 @@ SIMPLE_JWT = {
     "JTI_CLAIM": "jti",
 
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "SLIDING_TOKEN_LIFETIME": timedelta(days=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=30),
 
     "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
