@@ -83,7 +83,6 @@ const ImageUpload = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 5,
-    marginBottom: 10,
     marginHorizontal: 10,
     borderRadius: 5,
     backgroundColor: "white",

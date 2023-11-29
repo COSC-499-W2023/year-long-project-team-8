@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, TouchableOpacity, View } from "react-native";
+import { StyleSheet, ScrollView, TouchableOpacity, Button } from "react-native";
 import CustomInput from "./CustomInput";
 import Selector from "./Selector";
 import ImageUpload from "./ImageUpload";
 import PostButton from "./PostButton";
 import CustomText from "../CustomText";
 import CategoryModal from "./CategoryModal";
+import DatePickerSelector from "./DatePickerSelector"; // Import DatePickerSelector
 
 const AddListing = () => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [expirationDate, setExpirationDate] = useState(new Date());
+
+  // Handles date selected by the user as the expiration date.
+  const handleDateChange = (newDate) => {
+    setExpirationDate(newDate);
+  };
 
   // Handles closing the modal without selecting categories.
   const handleCloseModal = () => {
@@ -54,6 +61,7 @@ const AddListing = () => {
         onPress={() => setCategoryModalVisible(true)}
       />
       <Selector title={"Allergens"} desc="Add Allergens" />
+      <DatePickerSelector onDateChange={handleDateChange} />
       <ImageUpload />
       <PostButton title="Pass Your Plate" onPress={handlePost} />
       <TouchableOpacity style={styles.cancel}>
