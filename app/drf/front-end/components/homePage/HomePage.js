@@ -14,9 +14,14 @@ import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
 import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
-import { categoryIcons, foodListings, sortOptions } from "./Data";
+import { foodListings, sortOptions } from "./Data";
+import { categoryIcons } from "../Categories";
 //import { apiHelpers } from '../helperFunctions/apiHelpers';
-import { filterCategory, getUserData, getUserProductList } from "../helperFunctions/apiHelpers"; // Import functions
+import {
+  filterCategory,
+  getUserData,
+  getUserProductList,
+} from "../helperFunctions/apiHelpers"; // Import functions
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
 
 const map = require("../../assets/icons/map.png");
@@ -66,16 +71,16 @@ const HomePage = () => {
       // Handle errors
     }
     try {
-     // Usage example
-     const productdata = await getUserProductList(authTokens);
-     console.log(productdata);
-     console.log("TOKENS:", authTokens);
-     // TODO: Process the data as needed
-     console.log("Map icon pressed!");
-   } catch (error) {
-     console.log(error);
-     // Handle errors
-   }
+      // Usage example
+      const productdata = await getUserProductList(authTokens);
+      console.log(productdata);
+      console.log("TOKENS:", authTokens);
+      // TODO: Process the data as needed
+      console.log("Map icon pressed!");
+    } catch (error) {
+      console.log(error);
+      // Handle errors
+    }
   };
 
   // Function to open the filter modal

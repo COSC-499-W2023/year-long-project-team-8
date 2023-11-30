@@ -10,7 +10,6 @@ import { AuthProvider } from "./context/AuthContext";
 import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
 
-
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -29,7 +28,7 @@ const App = () => {
             <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="MainApp" component={MainApp} />
             <Stack.Screen name="Settings" component={SettingsNav} />
-              <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>
