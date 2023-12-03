@@ -15,14 +15,15 @@ const ProfilePage = () => {
 
   // Getting user data
   useEffect(() => {
-    getUserData(userId, authTokens)
-      .then((data) => {
-        setUserData(data);
-        console.log("User Data:", data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setUserData(data);
+          console.log("User Data:", data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    
   }, [userId, authTokens]);
 
   // Handling opening and closing Modal for editing details
