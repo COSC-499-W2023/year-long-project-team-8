@@ -4,6 +4,7 @@ import {
   Text,
   Pressable,
   Keyboard,
+  Modal,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
@@ -28,6 +29,8 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +42,24 @@ const Login = ({ onSwitch, navigation }) => {
     await loginUser(email, password); // loginUser should return a Promise
     navigation.navigate("Tabs");
   };
+   // Handle opening and closing the forgot password modal
+   const handleOpenForgotPasswordModal = () => {
+    setForgotPasswordModalVisible(true);
+  };
 
+  const handleCloseForgotPasswordModal = () => {
+    setForgotPasswordModalVisible(false);
+  };
+
+  // Handle sending forgot password email
+  const handleForgotPassword = () => {
+    // Implement the logic to send email instructions using Django Rest Framework
+    console.log('Forgot password for email:', forgotPasswordEmail);
+    // You can make an API call to your Django backend here
+    // Close the modal after handling the forgot password logic
+    setForgotPasswordModalVisible(false);
+  };
+  
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
@@ -52,45 +72,6 @@ const Login = ({ onSwitch, navigation }) => {
 
     // If the provided email and password are valid, add login logic
     if (isValid) {
-      //       // TODO: Implement back-end login logic here
-      //       //console.log(email);
-      //       //console.log(password);
-
-      //       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-      //       let bodyObj = {
-      //         email: email,
-      //         password: password,
-      //       };
-
-      //       // need to pass the data as JSON for our API to deal with
-      //       const bodyStr = JSON.stringify(bodyObj);
-      //       //console.log(bodyStr);
-      //       const options = {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: bodyStr,
-      //       };
-      //       fetch(loginEndpoint, options) //  Promise
-      //         .then((response) => {
-      //           //console.log(response);
-      //           return response.json();
-      //         })
-      //         .then((authData) => {
-      //           if (authData && authData.access) {
-      //             navigation.navigate("MainApp");
-      //             handleAuthData(authData, getProductList);
-      //           } else {
-      //             if (password && email) setAuthError("Wrong email or password");
-      //           }
-      //         })
-      //         .then((x) => {
-      //           // console.log(x);
-      //         })
-      //         .catch((err) => {
-      //           console.log("err", err);
-      //         });
 
       try {
         let bodyObj = {
@@ -225,13 +206,9 @@ const Login = ({ onSwitch, navigation }) => {
             }
             errorText={passwordError || authError}
           />
-          <Pressable style={LoginStyles.forgotPasswordContainer}>
-            <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-          </Pressable>
 
           <ButtonLogin title="LOGIN" onPress={handleLogin} />
           {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
-
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
             <Text
               style={[
@@ -250,9 +227,47 @@ const Login = ({ onSwitch, navigation }) => {
               </Text>
             </Text>
           </Pressable>
+          <Pressable
+          style={LoginStyles.forgotPasswordContainer}
+          onPress={handleOpenForgotPasswordModal}
+        >
+          <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
+        </Pressable>
         </View>
+         {/* Forgot Password Modal */}
+         <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isForgotPasswordModalVisible}
+          onRequestClose={handleCloseForgotPasswordModal}
+        >
+          <View style={LoginStyles.forgotPasswordModalContainer}>
+            <View style={LoginStyles.forgotPasswordModalContent}>
+              <Text style={LoginStyles.forgotPasswordModalHeader}>Forgot Password?</Text>
+              <InputField
+                style={LoginStyles.forgotPasswordModalInput}
+                placeholder="Enter your email"
+                onChangeText={(text) => setForgotPasswordEmail(text)}
+                value={forgotPasswordEmail}
+              />
+              <Pressable
+                style={LoginStyles.forgotPasswordModalButton}
+                onPress={handleForgotPassword}
+              >
+                <Text style={LoginStyles.forgotPasswordModalButtonText}>Send Instructions</Text>
+              </Pressable>
+              <Pressable
+                style={LoginStyles.forgotPasswordModalCloseButton}
+                onPress={handleCloseForgotPasswordModal}
+              >
+                <Text style={LoginStyles.forgotPasswordModalCloseButtonText}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </KeyboardAvoidingView>
+    
   );
 };
 
