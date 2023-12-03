@@ -62,10 +62,19 @@ const CategoryModal = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent={true}>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent={true}
+      testID="categoryModal"
+    >
       <View style={styles.modalBackground}>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={onClose}
+            testID="closeModalButton"
+          >
             <MaterialIcons name="close" size={24} color="black" />
           </TouchableOpacity>
           <View>
@@ -90,9 +99,13 @@ const CategoryModal = ({
               ))}
             </View>
           ))}
-          <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={handleDone}
+            testID="doneButton"
+          >
             <CustomText style={styles.buttonText} fontType={"title"}>
-              Select Categories
+              Done
             </CustomText>
           </TouchableOpacity>
         </View>
@@ -136,7 +149,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   title: {
-    fontSize: 25,
+    fontSize: 17,
     marginTop: 20,
   },
   row: {
@@ -149,18 +162,18 @@ const styles = StyleSheet.create({
   categoryItem: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
+    padding: 15,
     margin: 5,
     borderRadius: 5,
     width: "30%",
   },
   selectedCategoryItem: {
     backgroundColor: "#E8E8E8",
-    borderRadius: 50,
+    borderRadius: 60,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     marginBottom: 5,
   },
   doneButton: {

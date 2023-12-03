@@ -66,7 +66,7 @@ const AddListing = () => {
       <PostButton title="Pass Your Plate" onPress={handlePost} />
       <TouchableOpacity style={styles.cancel}>
         <CustomText fontType={"subHeader"} style={styles.cancelText}>
-          Cancel
+          Reset
         </CustomText>
       </TouchableOpacity>
       <CategoryModal

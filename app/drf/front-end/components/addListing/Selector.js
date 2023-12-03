@@ -24,7 +24,7 @@ export default Selector;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 17,
   },
   container: {
     flexDirection: "row",
