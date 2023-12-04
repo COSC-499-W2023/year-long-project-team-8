@@ -316,6 +316,49 @@ November 13 - November 26, 2023
 |   7    |            |      ✓      |
 |   8    |            |      ✓      |
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 26 - December 4, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_w13.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Design document
+- Design Video
+- Documentation
+- Fixing up the edit profile page and other touch ups
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #136 - Design Document and Design Video
+- #125 - Implement the logic and user messages on the edit profile page
+- #137 - Add the map feature
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+|  136   | ✓          |            |
+|  125   |            | ✓          |
+|  137   |            | ✓          |
+
+
 
 
 
