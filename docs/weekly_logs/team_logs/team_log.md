@@ -521,3 +521,82 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 ![Alt text](../img/backend_test_w12.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 27 - December 3, 2023
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
+<br>
+![alt-text](../img/projboard_w13.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Add listing
+- Settings with add account detail edit
+- Demo video
+- Design document
+- Forgot password
+- Finish product model/api calls 
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Add listing
+- Settings with add account detail edit
+- Demo video
+- Design document
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- Edit profile page testing (#127)
+- Implement the logic and user messages on the edit profile page (#125)
+- Add map feature (#137)
+- Forgot password sending external email (#130)
+- Forgot password api endpoint configuration (#129)
+- Automated testing with GitHub issues (#135)
+- Create images model (#72)
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/insights
+<br>
+![burnup-chart](../img/burnup_w13.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+![Alt text](../img/backend_test_w13.png)
+![image](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/112984152/9cfe5249-da59-4561-b0b6-add365b95da4)
+![Alt text](../img/FE_tests_w8.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
