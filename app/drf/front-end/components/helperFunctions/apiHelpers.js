@@ -35,7 +35,7 @@ async function filterCategory(categories, authTokens) {
 // Helper function to get user data with JWT authorization
 async function getUserData(userId, authTokens) {
     try {
-      const response = await fetch(`${baseEndpoint}/users/${userId}`, {
+      const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
