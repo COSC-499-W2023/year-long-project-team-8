@@ -596,6 +596,6 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 - add screenshot(s) of test run summary 
 -->
 ![Alt text](../img/backend_test_w13.png)
-![Alt text](../img/FE_tests_w8.png)
+![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
