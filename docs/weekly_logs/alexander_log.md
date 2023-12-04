@@ -204,6 +204,7 @@
 - Front end Add Listing Page design 
 - Front end Add Listing Page category selection
 - Front end Add Listing Page Image uploads
+- Front end Add Listing Page Expiration Date Selection and guidelines
 - Front end Add Listing Page modals and UI
 
 ### Student Tasks on Project Board
