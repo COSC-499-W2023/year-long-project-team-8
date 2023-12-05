@@ -52,14 +52,34 @@ const Login = ({ onSwitch, navigation }) => {
   };
 
   // Handle sending forgot password email
-  const handleForgotPassword = () => {
-    // Implement the logic to send email instructions using Django Rest Framework
-    console.log('Forgot password for email:', forgotPasswordEmail);
-    // You can make an API call to your Django backend here
-    // Close the modal after handling the forgot password logic
-    setForgotPasswordModalVisible(false);
-  };
+  const handleForgotPassword = async () => {
+    try {
+      // Make API call to initiate password reset
+      const response = await fetch(`${baseEndpoint}/auth/forgot-password/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: forgotPasswordEmail}),
+      });
   
+      const responseData = await response.json();
+  
+      if (response.ok) {
+        // Password reset email sent successfully
+        console.log('Password reset email sent successfully');
+      } else {
+        // Handle error response
+        console.error('Error:', responseData);
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Network error:', error);
+    } finally {
+      // Close the modal after handling the forgot password logic
+      setForgotPasswordModalVisible(false);
+    }
+  };  
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
