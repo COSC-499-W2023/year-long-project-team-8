@@ -14,6 +14,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 from django.core.mail import send_mail
+from django.urls import reverse
 
 # currently set to display sample data and headers
 # adjust to set to api home gui
@@ -52,12 +53,19 @@ class ForgotPasswordView(APIView):
             reset_token = str(refresh.access_token)
 
             # Send the reset link to the user's email
-            reset_url = f'http://localhost/reset-password/{reset_token}/'
+            reset_url = request.build_absolute_uri(
+                reverse('reset_password', args=[reset_token])
+            )
             send_mail('Password Reset', f'Click the link to reset your password: {reset_url}', 'PassThePlate Team', [email])
 
         return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
 
 class ResetPasswordView(APIView):
+    def get(self, request, token):
+        # Render a page with a form for password reset
+        return Response({'token': token}, status=status.HTTP_200_OK)
+
+    
     def post(self, request):
         # Implement logic to reset the password
         token = request.data.get('token')

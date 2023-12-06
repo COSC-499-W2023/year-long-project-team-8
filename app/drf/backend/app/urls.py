@@ -31,7 +31,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
     path('api/auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
-    path('api/auth/reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('api/auth/reset-password/<str:token>/', ResetPasswordView.as_view(), name='reset_password'),
 ]
     
     # path("api/products/", include("products.urls")),

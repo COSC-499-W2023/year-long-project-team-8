@@ -14,6 +14,7 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
+import { Linking } from 'react-native';
 
 import { baseEndpoint } from '../../config/config';
 import AuthContext from "../../context/AuthContext";
