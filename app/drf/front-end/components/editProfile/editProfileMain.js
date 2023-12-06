@@ -1,154 +1,165 @@
 import React, { useEffect, useState, useContext } from "react";
 import {
-    View,
-    Text,
-    SafeAreaView,
-    TouchableOpacity,
-    Image,
-    BackHandler,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  BackHandler,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./editProfileStyles";
 import { getUserData, updateUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
-import EditProfileForm from "./editProfileUI"; // Importing the EditProfileForm component
+import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
 
-// EditProfilePage Component
 const EditProfilePage = () => {
-    // Destructuring values from the authentication context
-    const { authTokens, userId } = useContext(AuthContext);
+  // Destructuring values from the authentication context
+  const { authTokens, userId } = useContext(AuthContext);
 
-    // State variables to hold user data and form input values
-    const [userData, setUserData] = useState(null);
-    const [firstname, setFirstName] = useState("");
-    const [lastname, setLastName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [prevEmail, setPrevEmail] = useState("");
-    const [prevPhone, setPrevPhone] = useState("");
-    const [prevFirstName, setPrevFirstName] = useState("");
-    const [prevLastName, setPrevLastName] = useState("");
+  // State variables to hold user data and form input values
+  const [userData, setUserData] = useState(null);
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [prevEmail, setPrevEmail] = useState("");
+  const [prevPhone, setPrevPhone] = useState("");
+  const [prevFirstName, setPrevFirstName] = useState("");
+  const [prevLastName, setPrevLastName] = useState("");
 
-    // Accessing navigation object for navigating between screens
-    const navigation = useNavigation();
+  // Accessing navigation object for navigating between screens
+  const navigation = useNavigation();
 
-    // Effect hook to fetch user data when component mounts or dependencies change
-    useEffect(() => {
-        // Fetch user data
+  // Effect hook to fetch user data when the component mounts or dependencies change
+  useEffect(() => {
+    // Fetch user data
+    getUserData(userId, authTokens)
+      .then((data) => {
+        setUserData(data);
+        setFirstName(data?.firstname || "");
+        setLastName(data?.lastname || "");
+        setPhone(data?.phone || "");
+        setEmail(data?.email || "");
+        console.log("User Data:", data);
+      })
+      .catch((error) => {
+        console.log("Error fetching user data: ", error, "editProfileMain.js");
+      });
+  }, [userId, authTokens]);
+
+  // Function to handle saving edited user details
+  const handleSaveDetails = () => {
+    const updatedData = {};
+
+    // Checking for changes in form inputs and updating the corresponding fields
+    if (firstname !== "") {
+      updatedData.firstname = firstname;
+    }
+    if (lastname !== "") {
+      updatedData.lastname = lastname;
+    }
+    if (phone !== "") {
+      updatedData.phone = phone;
+    }
+    if (email !== "") {
+      updatedData.email = email;
+    }
+
+    // Updating user data via API call
+    updateUserData(userId, authTokens, updatedData)
+      .then(() => {
+        // Fetching updated user data after a successful update
         getUserData(userId, authTokens)
-            .then((data) => {
-                setUserData(data);
-                setFirstName(data?.firstname || "");
-                setLastName(data?.lastname || "");
-                setPhone(data?.phone || "");
-                setEmail(data?.email || "");
-                console.log("User Data:", data);
-            })
-            .catch((error) => {
-                console.log("Error fetching user data: ", error, "editProfileMain.js");
-            });
-    }, [userId, authTokens]);
+          .then((data) => {
+            setUserData(data);
+            console.log("User Data updated:", data);
+          })
+          .catch((error) => {
+            console.error(
+              "Error fetching updated user data:",
+              error,
+              "editProfileMain.js"
+            );
+          });
+      })
+      .catch((error) => {
+        console.error("Error updating user data:", error);
+      });
+  };
 
-    // Function to handle saving edited user details
-    const handleSaveDetails = () => {
-        const updatedData = {};
+  // Function to navigate back to the previous screen
+  const goBack = () => {
+    navigation.goBack();
+  };
 
-        // Checking for changes in form inputs and updating the corresponding fields
-        if (firstname !== "") {
-            updatedData.firstname = firstname;
-        }
-        if (lastname !== "") {
-            updatedData.lastname = lastname;
-        }
-        if (phone !== "") {
-            updatedData.phone = phone;
-        }
-        if (email !== "") {
-            updatedData.email = email;
-        }
-
-        // Updating user data via API call
-        updateUserData(userId, authTokens, updatedData)
-            .then(() => {
-                // Fetching updated user data after successful update
-                getUserData(userId, authTokens)
-                    .then((data) => {
-                        setUserData(data);
-                        console.log("User Data updated:", data);
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching updated user data:", error, "editProfileMain.js");
-                    });
-            })
-            .catch((error) => {
-                console.error("Error updating user data:", error);
-            });
+  // Effect hook to handle the hardware back button press
+  useEffect(() => {
+    const handleBackPress = () => {
+      goBack();
+      return true;
     };
 
-    // Function to navigate back to the previous screen
-    const goBack = () => {
-        navigation.goBack();
+    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+    // Cleanup function to remove the event listener when the component is unmounted
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
     };
+  }, []);
 
-    // Effect hook to handle the hardware back button press
-    useEffect(() => {
-        const handleBackPress = () => {
-            goBack();
-            return true;
-        };
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      {/* Top navigation bar with back button and save button */}
+      <View style={styles.topBarContainer}>
+        <TouchableOpacity onPress={goBack}>
+          <Image
+            source={require("../../assets/back_arrow.png")}
+            style={styles.backArrow}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSaveDetails}>
+          <Text style={styles.saveButton}>Save</Text>
+        </TouchableOpacity>
+      </View>
 
-        BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+      <View style={styles.profilePictureContainer}>
+        <Image
+          source={require("../../assets/images/profilePage/pfp.png")}
+          style={styles.profileImage}
+        />
+      </View>
 
-        // Cleanup function to remove the event listener when the component is unmounted
-        return () => {
-            BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
-        };
-    }, []);
+      {/* EditProfileForm component */}
+      <EditProfileForm
+        firstname={firstname}
+        setFirstName={setFirstName}
+        prevFirstName={prevFirstName}
+        setPrevFirstName={setPrevFirstName}
+        lastname={lastname}
+        setLastName={setLastName}
+        prevLastName={prevLastName}
+        setPrevLastName={setPrevLastName}
+        phone={phone}
+        setPhone={setPhone}
+        prevPhone={prevPhone}
+        setPrevPhone={setPrevPhone}
+        email={email}
+        setEmail={setEmail}
+        prevEmail={prevEmail}
+        setPrevEmail={setPrevEmail}
+      />
+      <View style={styles.buttonFieldContainer}>
+        <TouchableOpacity style={styles.changePasswordButton}>
+          <Text style={styles.changePasswordText}>Change Password</Text>
+        </TouchableOpacity>
 
-    return (
-        <SafeAreaView style={styles.safeAreaView}>
-            {/* Top navigation bar with back button and save button */}
-            <View style={styles.topBarContainer}>
-                <TouchableOpacity onPress={goBack}>
-                    <Image
-                        source={require("../../assets/back_arrow.png")}
-                        style={styles.backArrow}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleSaveDetails}>
-                    <Text style={styles.saveButton}>Save</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.profilePictureContainer}>
-                <Image source={require("../../assets/images/profilePage/pfp.png")} style={styles.profileImage} />
-            </View>
-
-            {/* EditProfileForm component */}
-            <EditProfileForm
-                firstname={firstname}
-                setFirstName={setFirstName}
-                lastname={lastname}
-                setLastName={setLastName}
-                phone={phone}
-                setPhone={setPhone}
-                email={email}
-                setEmail={setEmail}
-                prevEmail={prevEmail}
-                setPrevEmail={setPrevEmail}
-            />
-            <View style={styles.buttonFieldContainer}>
-                <TouchableOpacity style={styles.forgotPasswordButton}>
-                        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.deleteAccountButton}>
-                    <Text style={styles.deleteAccountText}>Delete Account</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
-    );
+        <TouchableOpacity style={styles.deleteAccountButton}>
+          <Text style={styles.deleteAccountText}>Delete Account</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
 };
 
-// Exporting the EditProfilePage component as the default export
 export default EditProfilePage;

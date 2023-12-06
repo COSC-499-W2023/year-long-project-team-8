@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
-  forgotPasswordButton: {
+  changePasswordButton: {
     height: 50,
     width: '100%',
     marginBottom: 20,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  forgotPasswordText: {
+  changePasswordText: {
     color: "white",
     fontWeight: 'bold',
   },
@@ -206,14 +206,9 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderRadius: 75,
+    borderColor: "black",
+    borderWidth: 1,
   },
-
-
-
-
-
-
-
 });
 
 // Exporting the styles as the default export
