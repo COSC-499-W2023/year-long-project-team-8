@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   // Styling for the container of first name and last name texts
   nameTextContainer: {
-    marginTop: 10,
+    marginTop: 80,
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   firstNameInput: {
     fontSize: 18,
     fontWeight: '500',
-    height: 40,
+    height: 45,
     width: '47%',
     backgroundColor: '#e9e9e9',
     borderRadius: 5,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   lastNameInput: {
     fontSize: 18,
     fontWeight: '500',
-    height: 40,
+    height: 45,
     width: '47%',
     backgroundColor: colors.inputGrey,
     borderRadius: 5,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   // Styling for the container of phone number text
   phoneNumberTextContainer: {
-    marginTop: 5,
+    marginTop: 10,
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   phoneNumberInput: {
     fontSize: 18,
     fontWeight: '500',
-    height: 40,
+    height: 45,
     width: '100%',
     backgroundColor: '#e9e9e9',
     borderRadius: 5,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   // Styling for the container of email text
   emailTextContainer: {
-    marginTop: 5,
+    marginTop: 10,
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -155,13 +155,65 @@ const styles = StyleSheet.create({
   emailInput: {
     fontSize: 18,
     fontWeight: '500',
-    height: 40,
+    height: 45,
     width: '100%',
     backgroundColor: '#e9e9e9',
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
   },
+  buttonFieldContainer: {
+    marginTop: 95,
+    flex: 0.4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  forgotPasswordButton: {
+    height: 50,
+    width: '100%',
+    marginBottom: 20,
+    backgroundColor: colors.mediumOrange,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  forgotPasswordText: {
+    color: "white",
+    fontWeight: 'bold',
+  },
+  deleteAccountButton: {
+    height: 45,
+    width: '100%',
+    marginTop: 20,
+    backgroundColor: colors.darkOrange,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteAccountText: {
+    color: "white",
+    fontWeight: 'bold',
+  },
+  profilePictureContainer: {
+    marginTop: 50,
+    height: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileImage: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+  },
+
+
+
+
+
+
+
 });
 
 // Exporting the styles as the default export

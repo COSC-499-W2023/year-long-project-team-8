@@ -120,6 +120,10 @@ const EditProfilePage = () => {
                 </TouchableOpacity>
             </View>
 
+            <View style={styles.profilePictureContainer}>
+                <Image source={require("../../assets/images/profilePage/pfp.png")} style={styles.profileImage} />
+            </View>
+
             {/* EditProfileForm component */}
             <EditProfileForm
                 firstname={firstname}
@@ -133,6 +137,15 @@ const EditProfilePage = () => {
                 prevEmail={prevEmail}
                 setPrevEmail={setPrevEmail}
             />
+            <View style={styles.buttonFieldContainer}>
+                <TouchableOpacity style={styles.forgotPasswordButton}>
+                        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.deleteAccountButton}>
+                    <Text style={styles.deleteAccountText}>Delete Account</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     );
 };
