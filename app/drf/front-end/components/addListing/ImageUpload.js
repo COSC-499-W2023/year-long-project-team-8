@@ -4,10 +4,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import CustomText from "../CustomText";
 
-imageIcon = require("../../assets/icons/addImage.png");
+const imageIcon = require("../../assets/icons/addImage.png");
+
+// ImageUpload component allows users to pick images from their gallery and displays them.
 const ImageUpload = () => {
   const [images, setImages] = useState([]);
 
+  // Function to handle picking an image from the gallery
   const handleImagePick = async () => {
     // Check if the limit of 3 images is already reached
     if (images.length >= 3) {
@@ -16,6 +19,7 @@ const ImageUpload = () => {
     }
 
     try {
+      // Request permission to access the media library
       const permissionResult =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (permissionResult.granted === false) {
@@ -23,6 +27,7 @@ const ImageUpload = () => {
         return;
       }
 
+      // Launch the image picker
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
@@ -30,7 +35,8 @@ const ImageUpload = () => {
         aspect: [1, 1],
       });
 
-      if (!result.cancelled) {
+      // If the operation wasn't cancelled, update the images state
+      if (!result.canceled) {
         setImages([...images, result.uri]);
       }
     } catch (error) {
@@ -39,30 +45,36 @@ const ImageUpload = () => {
     }
   };
 
+  // Function to handle deletion of a selected image
   const handleDeleteImage = (index) => {
     setImages(images.filter((_, idx) => idx !== index));
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleImagePick} style={styles.button}>
-        <Image source={imageIcon} style={styles.icon} />
-        <CustomText style={styles.imageText} fontType={"textFont"}>
-          Upload
-        </CustomText>
-      </TouchableOpacity>
-      <View style={styles.imageContainer}>
-        {images.map((uri, index) => (
-          <View key={index} style={styles.imageWrapper}>
-            <Image source={{ uri }} style={styles.image} />
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDeleteImage(index)}
-            >
-              <MaterialIcons name="cancel" size={18} color="red" />
-            </TouchableOpacity>
-          </View>
-        ))}
+      <CustomText fontType={"title"} style={styles.title}>
+        Add Images
+      </CustomText>
+      <View style={styles.containerImages}>
+        <TouchableOpacity onPress={handleImagePick} style={styles.button}>
+          <Image source={imageIcon} style={styles.icon} />
+          <CustomText style={styles.imageText} fontType={"textFont"}>
+            Upload
+          </CustomText>
+        </TouchableOpacity>
+        <View style={styles.imageContainer}>
+          {images.map((uri, index) => (
+            <View key={index} style={styles.imageWrapper}>
+              <Image source={{ uri }} style={styles.image} />
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeleteImage(index)}
+              >
+                <MaterialIcons name="cancel" size={18} color="red" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -70,16 +82,32 @@ const ImageUpload = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    marginTop: 5,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: "white",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  title: {
+    marginTop: 15,
+    marginLeft: 15,
+    fontSize: 20,
+  },
+  containerImages: {
     alignItems: "center",
+    flexDirection: "row",
   },
   imageContainer: {
     flexDirection: "row",
   },
   image: {
     marginTop: 10,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 5,
   },
   imageWrapper: {
@@ -100,8 +128,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
   imageText: {
     alignSelf: "center",

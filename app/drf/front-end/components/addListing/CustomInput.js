@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import CustomText from "../CustomText";
-import Selector from "./Selector";
 
 // CustomInput component allows for a stylized text input with character count
 const CustomInput = ({
@@ -42,7 +41,7 @@ export default CustomInput;
 const styles = StyleSheet.create({
   title: {
     marginTop: 15,
-    marginLeft: 10,
+    marginLeft: 15,
     fontSize: 20,
   },
   inputField: {

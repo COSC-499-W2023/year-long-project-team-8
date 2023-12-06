@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import CustomText from "../CustomText";
 
-const Selector = ({ title, desc }) => {
+// Reusable component for displaying a title and a clickable description.
+const Selector = ({ title, desc, onPress }) => {
   return (
     <View style={styles.container}>
+      {/* Display the title */}
       <CustomText style={styles.title} fontType={"title"}>
         {title}
       </CustomText>
-      <TouchableOpacity style={styles.button}>
+
+      {/* Clickable area for the description */}
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        {/* Display the description */}
         <CustomText fontType={"textFont"}>{desc}</CustomText>
       </TouchableOpacity>
     </View>
@@ -25,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 20,
     marginTop: 5,
     marginHorizontal: 10,
