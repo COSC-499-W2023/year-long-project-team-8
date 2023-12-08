@@ -1,5 +1,6 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+import React, {useState} from "react";
+import { View, Text, TextInput, Alert } from "react-native";
+
 import styles from "./editProfileStyles";
 
 const EditProfileForm = ({
@@ -20,20 +21,21 @@ const EditProfileForm = ({
   prevEmail,
   setPrevEmail,
 }) => {
+
   // Format phone number to remove non-numeric characters and limit to 11 characters
   const formatPhoneNumber = (text) => {
     const cleaned = text.replace(/\D/g, "");
-    setPhone(cleaned.slice(0, 11));
+    setPhone(cleaned.slice(0, 10));
   };
 
-  // Format phone number for display with +1 (XXX) XXX-XXXX pattern
+  // Format phone number for display with  (XXX) XXX-XXXX pattern
   const phoneFormatted = (phone) => {
-    return phone.replace(/(\d)(\d{3})(\d{3})(\d{4})/, '+$1 ($2) $3 - $4');
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 - $3');
   };
 
-  // Check if phone number matches the pattern /^\+1 \(\d{3}\) \d{3} - \d{4}/
+  // Check if phone number matches the pattern /^\(\d{3}\) \d{3} - \d{4}/
   const isPhoneValid = (phone) => {
-    const phonePattern = /^\+1 \(\d{3}\) \d{3} - \d{4}/;
+    const phonePattern = /^ \(\d{3}\) \d{3} - \d{4}/;
     return phonePattern.test(phone);
   };
 
@@ -57,7 +59,22 @@ const EditProfileForm = ({
   // Validate email and revert to the previous value if invalid
   const emailValidation = () => {
     if (isEmailValid(email)) {
+      setEmail(email);const emailValidation = () => {
+    if (isEmailValid(email)) {
       setEmail(email);
+    } else {
+      // Revert to the previous value
+      setEmail(prevEmail);
+
+      // Show an alert
+      setShowAlert(true);
+
+      // Set a timeout to hide the alert after 3 seconds (adjust as needed)
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+    }
+  };
     } else {
       // TODO: Implement error modal to give user feedback
       setEmail(prevEmail);

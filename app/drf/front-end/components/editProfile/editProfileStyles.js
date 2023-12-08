@@ -209,6 +209,17 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContentContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+
 });
 
 // Exporting the styles as the default export
