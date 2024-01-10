@@ -30,5 +30,4 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("api/", include(router.urls)),
     path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
-    # path("api/products/", include("products.urls")),
 ]
