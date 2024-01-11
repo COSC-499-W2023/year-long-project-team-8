@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import * as Location from 'expo-location';
+
 import { getUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
 import StarRating from './ratingIcons';
@@ -13,11 +15,12 @@ const ProfilePage = () => {
   // Context and state
   const { authTokens, userId } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  const [rating] = useState(3.5);
+  const [rating] = useState(5);
+  const [currentPosition, setCurrentPosition] = useState(null);
 
   // Fetch user data on component mount
   useEffect(() => {
-    // Fetch user data using API
+    // Fetch user data
     getUserData(userId, authTokens)
       .then((data) => {
         // Set the user data in the state
@@ -29,6 +32,18 @@ const ProfilePage = () => {
       });
   }, [userId, authTokens]);
 
+useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setCurrentPosition(location);
+    })(); // Added parentheses to immediately invoke the async function
+  }, []); // Added empty dependency array as this effect should only run once
   return (
     <View style={styles.container}>
         {/*TODO: get the average rating for the user and implement here*/}
@@ -75,8 +90,8 @@ const ProfilePage = () => {
 };
 
 const getUserDisplayName = (userData) => {
-  const firstName = userData?.firstname || 'First';
-  const lastName = userData?.lastname || 'Last';
+  const firstName = userData?.firstname || 'test';
+  const lastName = userData?.lastname || 'user';
   return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
 };
 
