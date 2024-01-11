@@ -13,6 +13,7 @@ import datetime
 from datetime import timedelta
 from pathlib import Path
 import socket
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,13 @@ def get_local_ip():
     return local_ip
 
 local_ip = get_local_ip()
+
+# Set up path for media(images)
+# Actual directory user files go to
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+
+# URL used to access the media
+MEDIA_URL = '/media/'
 
 
 
