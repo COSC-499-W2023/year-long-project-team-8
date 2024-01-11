@@ -12,8 +12,8 @@ class UserViewSet(ModelViewSet):
  
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by("-date_joined")
-    # permission_classes = [UserPermission,]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [UserPermission,]
+    authentication_classes = [JWTAuthentication]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
