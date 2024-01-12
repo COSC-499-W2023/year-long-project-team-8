@@ -7,7 +7,7 @@ import CustomText from "../CustomText";
 const imageIcon = require("../../assets/icons/addImage.png");
 
 // ImageUpload component allows users to pick images from their gallery and displays them.
-const ImageUpload = ({ images, setImages }) => {
+const ImageUpload = ({ images, setImages, isFieldMissing }) => {
   const [alertVisible, setAlertVisible] = useState(false);
 
   const showAlert = () => setAlertVisible(true);
@@ -48,7 +48,7 @@ const ImageUpload = ({ images, setImages }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isFieldMissing && styles.missingField]}>
       <CustomText fontType={"title"} style={styles.title}>
         Add Images
       </CustomText>
@@ -191,6 +191,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  missingField: {
+    borderColor: "red",
+    borderWidth: 1,
   },
 });
 
