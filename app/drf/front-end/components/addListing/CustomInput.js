@@ -4,31 +4,29 @@ import CustomText from "../CustomText";
 
 // CustomInput component allows for a stylized text input with character count
 const CustomInput = ({
-  title, // Title for the input field
-  maxLength, // Maximum allowed length of the input
-  height = 90, // Default height of the input field, can be overridden
-  fontSize = 18, // Default font size, can be overridden
-  multiline = false, // Determines if the input field should support multiple lines
+  title,
+  maxLength,
+  height = 90,
+  fontSize = 18,
+  multiline = false,
+  text,
+  setText,
 }) => {
-  const [text, setText] = useState(""); // State to keep track of the input text
-
   return (
     <View style={[styles.inputField, { height: multiline ? height : height }]}>
-      {/* CustomText component used for the title */}
       <CustomText style={styles.title} fontType={"title"}>
         {title}
       </CustomText>
-      {/* TextInput for user input */}
       <TextInput
+        value={text}
         maxLength={maxLength}
         multiline={multiline}
-        onChangeText={setText} // Updates text state on input change
+        onChangeText={setText}
         style={[
           styles.inputText,
           { fontSize: fontSize, height: multiline ? height : undefined },
         ]}
       />
-      {/* Character count displayed at the bottom right */}
       <CustomText style={styles.charCount}>
         {`${text.length} / ${maxLength}`}
       </CustomText>

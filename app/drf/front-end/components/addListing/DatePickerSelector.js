@@ -11,35 +11,24 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-// DatePickerSelector component allows users to pick a date.
-const DatePickerSelector = ({ onDateChange }) => {
-  // State to control the visibility of the date picker modal.
+const DatePickerSelector = ({ selectedDate, onDateChange }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // State to store the selected date. Initialized to the current date.
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  // Current date, used to prevent selection of past dates.
-  const currentDate = new Date();
   // State for info modal visibility
   const [isInfoModalVisible, setInfoModalVisibility] = useState(false);
 
-  // Function to show the date picker modal.
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
 
-  // Function to hide the date picker modal.
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
 
-  // Function to handle the confirmation of a date selection.
   const handleConfirm = (date) => {
-    setSelectedDate(date); // Update the selected date state.
-    onDateChange(date); // Propagate the date change to the parent component.
-    hideDatePicker(); // Hide the date picker modal.
+    onDateChange(date);
+    hideDatePicker();
   };
 
-  // Function to format the date into a readable string.
   const formatDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
@@ -60,12 +49,10 @@ const DatePickerSelector = ({ onDateChange }) => {
         <CustomText fontType={"title"} style={styles.title}>
           Expiration Date
         </CustomText>
-        {/* Information Icon */}
         <TouchableOpacity onPress={onInfoPress} style={styles.infoIcon}>
           <Ionicons name="information-circle-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      {/* Date Picker Button */}
       <TouchableOpacity style={styles.button} onPress={showDatePicker}>
         <CustomText fontType={"textFont"}>
           {formatDate(selectedDate)}
@@ -74,9 +61,10 @@ const DatePickerSelector = ({ onDateChange }) => {
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
-        minimumDate={currentDate} // Restrict past dates
-        onConfirm={handleConfirm} // Handle date confirmation
-        onCancel={hideDatePicker} // Handle cancellation
+        date={selectedDate}
+        minimumDate={new Date()}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
       {/* Information Modal */}
       <Modal
