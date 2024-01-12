@@ -8,36 +8,47 @@ import CustomText from "../CustomText";
 import CategoryModal from "./CategoryModal";
 import AllergenModal from "./AllergenModal";
 import DatePickerSelector from "./DatePickerSelector";
+import MissingFieldsModal from "./MissingFieldsModal"; // import the modal
 
 const AddListing = () => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isAllergenModalVisible, setAllergenModalVisible] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
-  const [expirationDate, setExpirationDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
+  const [isTitleMissing, setTitleMissing] = useState(false);
+  const [isDescriptionMissing, setDescriptionMissing] = useState(false);
+  const [isCategoriesMissing, setCategoriesMissing] = useState(false);
+  const [isAllergensMissing, setAllergensMissing] = useState(false);
+  const [isImagesMissing, setImagesMissing] = useState(false);
+  const [missingFields, setMissingFields] = useState([]);
+
+  const [showMissingFieldsModal, setShowMissingFieldsModal] = useState(false);
 
   //Form submittion logic
   const handlePost = () => {
-    let missingFields = [];
+    let newMissingFields = [];
 
     // Check each field and add to missingFields if empty
-    if (!title.trim()) missingFields.push("title");
-    if (!description.trim()) missingFields.push("description");
-    if (selectedCategories.length === 0) missingFields.push("categories");
-    if (selectedAllergens.length === 0) missingFields.push("allergens");
-    if (!selectedDate) missingFields.push("expiration date");
-    if (images.length === 0) missingFields.push("images");
+    if (!title.trim()) newMissingFields.push("Title");
+    if (!description.trim()) newMissingFields.push("Description");
+    if (selectedCategories.length === 0) newMissingFields.push("Categories");
+    if (selectedAllergens.length === 0) newMissingFields.push("allergens");
+    if (images.length === 0) newMissingFields.push("Images");
+    setTitleMissing(!title.trim());
+    setDescriptionMissing(!description.trim());
+    setCategoriesMissing(selectedCategories.length === 0);
+    setAllergensMissing(selectedAllergens.length === 0);
+    setImagesMissing(images.length === 0);
+    setMissingFields(newMissingFields);
 
     // Check if missingFields array is not empty
-    if (missingFields.length > 0) {
-      // Create a single alert with all missing fields
-      alert(
-        `Please fill in the following fields: ${missingFields.join(", ")}.`
-      );
+    if (newMissingFields.length > 0) {
+      // Show the modal instead of an alert
+      setShowMissingFieldsModal(true);
       return;
     }
 
@@ -110,6 +121,11 @@ const AddListing = () => {
     } other/s`;
   }
 
+  // Function to close the missing fields modal
+  const handleCloseModal = () => {
+    setShowMissingFieldsModal(false);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <CustomInput
@@ -117,6 +133,7 @@ const AddListing = () => {
         maxLength={30}
         text={title}
         setText={setTitle}
+        isFieldMissing={isTitleMissing}
       />
       <CustomInput
         title={"Description"}
@@ -126,22 +143,29 @@ const AddListing = () => {
         multiline={true}
         text={description}
         setText={setDescription}
+        isFieldMissing={isDescriptionMissing}
       />
       <Selector
         title={"Category"}
         desc={categoryDescription}
         onPress={() => setCategoryModalVisible(true)}
+        isFieldMissing={isCategoriesMissing}
       />
       <Selector
         title={"Allergens"}
         desc={allergenDescription}
         onPress={() => setAllergenModalVisible(true)}
+        isFieldMissing={isAllergensMissing}
       />
       <DatePickerSelector
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
       />
-      <ImageUpload images={images} setImages={setImages} />
+      <ImageUpload
+        images={images}
+        setImages={setImages}
+        isFieldMissing={isImagesMissing}
+      />
       <PostButton title="Pass Your Plate" onPress={handlePost} />
       <TouchableOpacity style={styles.cancel} onPress={resetForm}>
         <CustomText fontType={"subHeader"} style={styles.cancelText}>
@@ -159,6 +183,14 @@ const AddListing = () => {
         selectedAllergensProp={selectedAllergens}
         onClose={handleAllergenCloseModal}
         onSelect={handleAllergenSelect}
+      />
+      <MissingFieldsModal
+        visible={showMissingFieldsModal}
+        missingFields={missingFields}
+        onClose={() => {
+          setShowMissingFieldsModal(false);
+          setMissingFields([]); // Clear missing fields when closing modal
+        }}
       />
     </ScrollView>
   );

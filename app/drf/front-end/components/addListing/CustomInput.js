@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import CustomText from "../CustomText";
 
-// CustomInput component allows for a stylized text input with character count
 const CustomInput = ({
   title,
   maxLength,
@@ -11,9 +10,10 @@ const CustomInput = ({
   multiline = false,
   text,
   setText,
+  isFieldMissing,
 }) => {
   return (
-    <View style={[styles.inputField, { height: multiline ? height : height }]}>
+    <View style={[styles.inputField, isFieldMissing && styles.missingField]}>
       <CustomText style={styles.title} fontType={"title"}>
         {title}
       </CustomText>
@@ -66,5 +66,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "gray",
     marginTop: 5,
+  },
+  missingField: {
+    borderColor: "red",
+    borderWidth: 1,
   },
 });
