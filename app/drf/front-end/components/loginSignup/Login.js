@@ -31,6 +31,8 @@ const Login = ({ onSwitch, navigation }) => {
   const [authError, setAuthError] = useState("");
   const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [forgotPasswordError, setForgotPasswordError] = useState('');
+
 
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
@@ -48,12 +50,20 @@ const Login = ({ onSwitch, navigation }) => {
   };
 
   const handleCloseForgotPasswordModal = () => {
-    setForgotPasswordModalVisible(false);
+    if (!forgotPasswordError) {
+      setForgotPasswordModalVisible(false);
+    }
   };
 
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
     try {
+      // Validate email format
+      const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      if (!emailRegex.test(forgotPasswordEmail)) {
+        setForgotPasswordError('Invalid email format');
+        return;
+      }
       // Make API call to initiate password reset
       const response = await fetch(`${baseEndpoint}/auth/forgot-password/`, {
         method: 'POST',
@@ -70,12 +80,14 @@ const Login = ({ onSwitch, navigation }) => {
         console.log('Password reset email sent successfully');
         navigation.navigate('PasswordReset', { email: forgotPasswordEmail });
       } else {
-        // Handle error response
-        console.error('Error:', responseData);
+         // Handle error response
+         console.error('Error:', responseData);
+         setForgotPasswordError('Error initiating password reset');
       }
     } catch (error) {
-      // Handle network or other errors
+       // Handle network or other errors
       console.error('Network error:', error);
+      setForgotPasswordError('Network error. Please try again.');
     } finally {
       // Close the modal after handling the forgot password logic
       setForgotPasswordModalVisible(false);
@@ -256,7 +268,7 @@ const Login = ({ onSwitch, navigation }) => {
         </Pressable>
         </View>
          {/* Forgot Password Modal */}
-         <Modal
+        <Modal
           animationType="slide"
           transparent={true}
           visible={isForgotPasswordModalVisible}
@@ -264,31 +276,37 @@ const Login = ({ onSwitch, navigation }) => {
         >
           <View style={LoginStyles.forgotPasswordModalContainer}>
             <View style={LoginStyles.forgotPasswordModalContent}>
-              <Text style={LoginStyles.forgotPasswordModalHeader}>Forgot Password?</Text>
-              <InputField
-                style={LoginStyles.forgotPasswordModalInput}
-                placeholder="Enter your email"
-                onChangeText={(text) => setForgotPasswordEmail(text)}
-                value={forgotPasswordEmail}
-              />
-              <Pressable
-                style={LoginStyles.forgotPasswordModalButton}
-                onPress={handleForgotPassword}
-              >
-                <Text style={LoginStyles.forgotPasswordModalButtonText}>Send Instructions</Text>
-              </Pressable>
-              <Pressable
-                style={LoginStyles.forgotPasswordModalCloseButton}
-                onPress={handleCloseForgotPasswordModal}
-              >
-                <Text style={LoginStyles.forgotPasswordModalCloseButtonText}>Close</Text>
-              </Pressable>
+              <View style={LoginStyles.floatingBubble}>
+                <Text style={LoginStyles.forgotPasswordModalHeader}>Forgot Password?</Text>
+                <InputField
+                  style={LoginStyles.forgotPasswordModalInput}
+                  placeholder="Enter your email"
+                  onChangeText={(text) => setForgotPasswordEmail(text)}
+                  value={forgotPasswordEmail}
+                />
+               {forgotPasswordError && (
+              <Text style={LoginStyles.forgotPasswordModalError}>
+                {forgotPasswordError === 'Invalid email format' ? 'Invalid email' : forgotPasswordError}
+              </Text>
+                )}
+                <Pressable
+                  style={LoginStyles.forgotPasswordModalButton}
+                  onPress={handleForgotPassword}
+                >
+                  <Text style={LoginStyles.forgotPasswordModalButtonText}>Send Instructions</Text>
+                </Pressable>
+                <Pressable
+                  style={LoginStyles.forgotPasswordModalCloseButton}
+                  onPress={handleCloseForgotPasswordModal}
+                >
+                  <Text style={LoginStyles.forgotPasswordModalCloseButtonText}>Close</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Modal>
       </ScrollView>
     </KeyboardAvoidingView>
-    
   );
 };
 
