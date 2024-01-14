@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, Text, TextInput, Alert } from "react-native";
+import { View, Text, TextInput } from "react-native";
 
 import styles from "./editProfileStyles";
 
@@ -65,14 +65,6 @@ const EditProfileForm = ({
     } else {
       // Revert to the previous value
       setEmail(prevEmail);
-
-      // Show an alert
-      setShowAlert(true);
-
-      // Set a timeout to hide the alert after 3 seconds (adjust as needed)
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
     }
   };
     } else {
@@ -154,8 +146,7 @@ const EditProfileForm = ({
           style={styles.phoneNumberInput}
           placeholder={"+x (xxx) xxx - xxxx"}
           value={phoneFormatted(phone)}
-          maxLength={20}  // Increased maxLength to accommodate longer formatted numbers
-          keyboardType={"phone-pad"}
+          maxLength={20}
           onFocus={() => setPrevPhone(phone)}
           onChangeText={(text) => formatPhoneNumber(text)}
           onEndEditing={() => phoneValidation()}

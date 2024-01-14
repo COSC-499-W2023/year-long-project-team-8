@@ -149,6 +149,7 @@ const EditProfilePage = () => {
         prevEmail={prevEmail}
         setPrevEmail={setPrevEmail}
       />
+      {/*}
       <View style={styles.buttonFieldContainer}>
         <TouchableOpacity style={styles.changePasswordButton}>
           <Text style={styles.changePasswordText}>Change Password</Text>
@@ -158,6 +159,7 @@ const EditProfilePage = () => {
           <Text style={styles.deleteAccountText}>Delete Account</Text>
         </TouchableOpacity>
       </View>
+      */}
     </SafeAreaView>
   );
 };
