@@ -19,6 +19,8 @@ from rest_framework import routers
  
 from users.views import UserViewSet
 from products.views import ProductViewSet, ImageViewSet
+from django.conf import settings
+from django.conf.urls.static import static
  
 router = routers.DefaultRouter()
 router.register("users", UserViewSet)
@@ -30,5 +32,4 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("api/", include(router.urls)),
     path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
-    # path("api/products/", include("products.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
