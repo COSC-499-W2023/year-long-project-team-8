@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, ScrollView, TouchableOpacity, Button } from "react-native";
 import CustomInput from "./CustomInput";
 import Selector from "./Selector";
@@ -9,6 +9,8 @@ import CategoryModal from "./CategoryModal";
 import AllergenModal from "./AllergenModal";
 import DatePickerSelector from "./DatePickerSelector";
 import MissingFieldsModal from "./MissingFieldsModal"; // import the modal
+import { createProductImages } from "../helperFunctions/apiHelpers";
+import AuthContext from "../../context/AuthContext"; // Import AuthContext
 
 const AddListing = () => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
@@ -25,6 +27,8 @@ const AddListing = () => {
   const [isAllergensMissing, setAllergensMissing] = useState(false);
   const [isImagesMissing, setImagesMissing] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
+
+  const { authTokens, userId } = useContext(AuthContext);
 
   const [showMissingFieldsModal, setShowMissingFieldsModal] = useState(false);
 
@@ -55,15 +59,18 @@ const AddListing = () => {
     // If all fields are valid, create formData and log it
     const formData = {
       title: title,
-      description: description,
+      content: description,
       categories: selectedCategories,
-      allergens: selectedAllergens,
-      expirationDate: selectedDate.toISOString().split("T")[0],
-      images: images,
+      //allergens: selectedAllergens,
+      best_before: selectedDate.toISOString().split("T")[0],
+      owner: userId,
+      //images: images,
     };
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
+    console.log("Image Data:", JSON.stringify(images, null, 2));
     //TODO: Backend implementation
+    createProductImages(formData, images, authTokens);
   };
 
   // Function to reset the form
