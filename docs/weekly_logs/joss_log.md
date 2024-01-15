@@ -353,4 +353,50 @@
 |   7   |          |      ✓      |
 
 
+### Work Period
+ - January 6 - December 14, 2024
 
+### Individual Peer Evaluation
+![Alt text](img/t2week_1_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Frogot password feature
+- -Universal email sending (currently restricted to gmail)
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#79 Backend implementation for profile page
+- item#66 integrate MySQL database
+- item#109 Forgot password testing
+- item#129 Forgot password api endpoint configuration
+- item#130 Forgot password sending external email
+- item#135 Automated testing with GitHub issues
+- item#148 Increase and test security measures of current forgot password implementation
+- item#146 Allow for any email provider to recieve forgot password code using sendgrid api
+- item#147 clean up map api
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    |        |        ✓        |
+|   3    |     ✓     |           |
+|   4    |        ✓     |           |
+|   5    |        ✓     |            |
+|   6   |           |      ✓     |
+|   7   |           |      ✓     |
+|   8   |           |      ✓     |
+|   9  |           |      ✓     |

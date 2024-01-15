@@ -599,3 +599,83 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 ![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+January 6 - January 14, 2024
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
+<br>
+![alt-text](../img/t2projboard_w1.png)
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- Add listing refinements
+- Settings with add account detail edit
+- Forgot password with email code
+- Finish product model/api calls
+- Map api
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- Add listing refinements
+- Settings with add account detail edit
+- Demo video
+- Design document
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- Edit profile page testing (#127)
+- Implement the logic and user messages on the edit profile page (#125)
+- Add map feature (#137)
+- Forgot password sending external email (#130)
+- Forgot password api endpoint configuration (#129)
+- Automated testing with GitHub issues (#135)
+- Create images model (#72)
+- Front end image handling
+- increase and test secuirty measures for forgot password
+- SendGrid API
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/insights
+<br>
+![burnup-chart](../img/t2burnup_w1.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+![Alt text](../img/backend_test_w13.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing

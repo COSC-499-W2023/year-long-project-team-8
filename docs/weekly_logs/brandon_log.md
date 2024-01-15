@@ -358,6 +358,49 @@ November 26 - December 4, 2023
 |  125   |            | ✓          |
 |  137   |            | ✓          |
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+January 7 - January 14, 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](img/bm_t2_w1.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- add more functionality to the map branch
+- testing for the mapping feature
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+1. add the edit profile functionality
+2. ensure settings page navigation to edit profiile works 
+3. begin addition of the map feature 
+4. add documentation for the edit profile and profile pages
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 1      |      ✓      |            |
+| 2      |       ✓     |            |
+| 3      |            |      ✓      |
+| 4      |       ✓     |            |
+
+
 
 
 

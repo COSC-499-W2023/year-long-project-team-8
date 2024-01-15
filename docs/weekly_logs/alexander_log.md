@@ -220,4 +220,31 @@
 |   1    |           |  ✓         |
 |   2    |           |  ✓         |
 
+### Work Period
+ - January 7 - 14, 2024
+
+### Task Types
+![Alt text](img/ar_w14.png)
+
+### Recap of Students Goals
+
+- Front end Add Listing Page design 
+- Front end Add Listing Page category selection
+- Front end Add Listing Page Image uploads
+- Front end Add Listing Page Expiration Date Selection and guidelines
+- Front end Add Listing Page modals and UI
+
+### Student Tasks on Project Board
+
+- #1 Add listing page 
+- #2 Creating mockups in figma fo ui/ux
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |  ✓        |            |
+|   2    | ✓         |           |
+
 
