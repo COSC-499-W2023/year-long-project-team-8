@@ -1,20 +1,18 @@
-// Importing necessary components and functions from React, React Native, and custom modules
 import React, { useEffect, useState, useContext } from "react";
 import {
-    View,
-    Text,
-    SafeAreaView,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    BackHandler,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  BackHandler,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./editProfileStyles"; // Importing styles for the component
-import { getUserData, updateUserData } from "../helperFunctions/apiHelpers"; // Importing functions for fetching and updating user data
-import AuthContext from "../../context/AuthContext"; // Importing authentication context
+import styles from "./editProfileStyles";
+import { getUserData, updateUserData } from "../helperFunctions/apiHelpers";
+import AuthContext from "../../context/AuthContext";
+import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
 
-// Functional component definition for the EditProfilePage
 const EditProfilePage = () => {
   // Destructuring values from the authentication context
   const { authTokens, userId } = useContext(AuthContext);
@@ -25,15 +23,17 @@ const EditProfilePage = () => {
   const [lastname, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
-  // State variables to store previous values for email and phone
   const [prevEmail, setPrevEmail] = useState("");
   const [prevPhone, setPrevPhone] = useState("");
   const [prevFirstName, setPrevFirstName] = useState("");
   const [prevLastName, setPrevLastName] = useState("");
 
-  // Effect hook to fetch user data when component mounts or dependencies change
+  // Accessing navigation object for navigating between screens
+  const navigation = useNavigation();
+
+  // Effect hook to fetch user data when the component mounts or dependencies change
   useEffect(() => {
+    // Fetch user data
     getUserData(userId, authTokens)
       .then((data) => {
         setUserData(data);
@@ -44,7 +44,7 @@ const EditProfilePage = () => {
         console.log("User Data:", data);
       })
       .catch((error) => {
-        console.log("Error fetching user data: ", error);
+        console.log("Error fetching user data: ", error, "editProfileMain.js");
       });
   }, [userId, authTokens]);
 
@@ -69,14 +69,18 @@ const EditProfilePage = () => {
     // Updating user data via API call
     updateUserData(userId, authTokens, updatedData)
       .then(() => {
-        // Fetching updated user data after successful update
+        // Fetching updated user data after a successful update
         getUserData(userId, authTokens)
           .then((data) => {
             setUserData(data);
             console.log("User Data updated:", data);
           })
           .catch((error) => {
-            console.error("Error fetching updated user data:", error);
+            console.error(
+              "Error fetching updated user data:",
+              error,
+              "editProfileMain.js"
+            );
           });
       })
       .catch((error) => {
@@ -84,8 +88,10 @@ const EditProfilePage = () => {
       });
   };
 
-  // Accessing navigation object for navigating between screens
-  const navigation = useNavigation();
+  // Function to navigate back to the previous screen
+  const goBack = () => {
+    navigation.goBack();
+  };
 
   // Effect hook to handle the hardware back button press
   useEffect(() => {
@@ -102,28 +108,6 @@ const EditProfilePage = () => {
     };
   }, []);
 
-  // Function to navigate back to the previous screen
-  const goBack = () => {
-    navigation.goBack();
-  };
-
-  // Function to format phone number input as the user types
-  const formatPhoneNumber = (text) => {
-    const cleaned = text.replace(/\D/g, "");
-    setPhone(cleaned);
-  };
-
-  // Function to validate and update email input
-  const validEmail = (text) => {
-    if (text.includes('@')) {
-      setEmail(text);
-    } else {
-        setEmail(prevEmail);
-        console.log("missing @ symbol");
-    }
-  };
-
-  // Rendered JSX structure for the EditProfilePage
   return (
     <SafeAreaView style={styles.safeAreaView}>
       {/* Top navigation bar with back button and save button */}
@@ -139,62 +123,45 @@ const EditProfilePage = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Container for displaying and editing first name and last name */}
-      <View style={styles.nameTextContainer}>
-        <Text style={styles.firstName}>First Name</Text>
-        <Text style={styles.lastName}>Last Name</Text>
-      </View>
-
-      {/* Input fields for first name and last name */}
-      <View style={styles.nameInputContainer}>
-        <TextInput
-          style={styles.firstNameInput}
-          value={firstname ? firstname.charAt(0).toUpperCase() + firstname.slice(1) : ""}
-          onChangeText={(text) => setFirstName(text)}
-        />
-        <TextInput
-          style={styles.lastNameInput}
-          value={lastname ? lastname.charAt(0).toUpperCase() + lastname.slice(1) : ""}
-          onChangeText={(text) => setLastName(text)}
+      <View style={styles.profilePictureContainer}>
+        <Image
+          source={require("../../assets/images/profilePage/pfp.png")}
+          style={styles.profileImage}
         />
       </View>
 
-      {/* Container for displaying and editing phone number */}
-      <View style={styles.phoneNumberTextContainer}>
-        <Text style={styles.phoneNumber}>Phone Number</Text>
-      </View>
+      {/* EditProfileForm component */}
+      <EditProfileForm
+        firstname={firstname}
+        setFirstName={setFirstName}
+        prevFirstName={prevFirstName}
+        setPrevFirstName={setPrevFirstName}
+        lastname={lastname}
+        setLastName={setLastName}
+        prevLastName={prevLastName}
+        setPrevLastName={setPrevLastName}
+        phone={phone}
+        setPhone={setPhone}
+        prevPhone={prevPhone}
+        setPrevPhone={setPrevPhone}
+        email={email}
+        setEmail={setEmail}
+        prevEmail={prevEmail}
+        setPrevEmail={setPrevEmail}
+      />
+      {/*}
+      <View style={styles.buttonFieldContainer}>
+        <TouchableOpacity style={styles.changePasswordButton}>
+          <Text style={styles.changePasswordText}>Change Password</Text>
+        </TouchableOpacity>
 
-      {/* Input field for phone number with formatting and validation */}
-      <View style={styles.phoneNumberInputContainer}>
-        <TextInput
-          style={styles.phoneNumberInput}
-          value={phone.replace(/(\d)(\d{3})(\d{3})(\d{4})/, '+$1 ($2) $3 - $4')}
-          onChangeText={(text) => formatPhoneNumber(text)}
-          maxLength={14}
-          keyboardType={'phone-pad'}
-        />
+        <TouchableOpacity style={styles.deleteAccountButton}>
+          <Text style={styles.deleteAccountText}>Delete Account</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Container for displaying and editing email */}
-      <View style={styles.emailTextContainer}>
-        <Text style={styles.email}>Email</Text>
-      </View>
-
-      {/* Input field for email with validation */}
-      <View style={styles.emailInputContainer}>
-        <TextInput
-          style={styles.emailInput}
-          value={email}
-          onFocus={() => setPrevEmail(email)}
-          onChangeText={(text) => setEmail(text)}
-          onEndEditing={(event) => validEmail(event.nativeEvent.text)}
-        />
-      </View>
-
+      */}
     </SafeAreaView>
   );
 };
 
-// Exporting the EditProfilePage component as the default export
 export default EditProfilePage;
-
