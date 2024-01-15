@@ -4,91 +4,69 @@ Note: must import AuthContext into components where you wish to use these functi
       AuthContext stores userId and token data.
 */
 
-import { baseEndpoint } from '../../config/config';
+import { baseEndpoint } from "../../config/config";
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
 async function filterCategory(categories, authTokens) {
   try {
-    const response = await fetch(`${baseEndpoint}/products/?categories=${categories}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
-      },
-    });
+    const response = await fetch(
+      `${baseEndpoint}/products/?categories=${categories}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + String(authTokens.access), // add token if authorization is needed to filter
+        },
+      }
+    );
 
     if (response.status === 200) {
       const data = await response.json();
       // Returns data to caller to be handled, eg(renderProducts() below)
       return data;
     } else {
-      throw new Error('Something went wrong!');
+      throw new Error("Something went wrong!");
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong!');
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
   }
 }
 
 // Helper function to get user data with JWT authorization
 async function getUserData(userId, authTokens) {
-    try {
-      const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authTokens.access) 
-        },
-      });
-  
-      if (response.status === 200) {
-        const userData = await response.json();
-        return userData; // Return the data to the caller
-      } else {
-       throw new Error(`Something went wrong! File: apiHelpers.js - getUserData()`);
+  try {
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
 
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      throw new Error('Something went wrong!');
+    if (response.status === 200) {
+      const userData = await response.json();
+      return userData; // Return the data to the caller
+    } else {
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - getUserData()`
+      );
     }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
   }
-
-  // Helper function to retrieve all product listings
-  async function getProductList (authTokens) {
-    try {
-      const response = await fetch(`${baseEndpoint}/products/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authTokens.access) 
-        },
-      });
-  
-      if (response.status === 200) {
-        const productData = await response.json();
-        return productData; // Return the data to the caller
-        // if unauthorized access attempt, logout user
-      }else if(response.statusText === 'Unauthorized'){
-        logoutUser() 
-      }else {
-        throw new Error(`Something went wrong! File: apiHelpers.js - getProductList()`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      throw new Error('Something went wrong!');
-    }
-  }
+}
 
 // Helper function to retrieve all product listings
-async function getUserProductList (authTokens) {
+async function getProductList(authTokens) {
   try {
-    const response = await fetch(`${baseEndpoint}/my-products/`, {
-      method: 'GET',
+    const response = await fetch(`${baseEndpoint}/products/`, {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String(authTokens.access) 
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
       },
     });
 
@@ -96,37 +74,66 @@ async function getUserProductList (authTokens) {
       const productData = await response.json();
       return productData; // Return the data to the caller
       // if unauthorized access attempt, logout user
-    }else if(response.statusText === 'Unauthorized'){
-      logoutUser() 
-    }else {
-      throw new Error(`Something went wrong! File: apiHelpers.js - getUserProductList()`);
+    } else if (response.statusText === "Unauthorized") {
+      logoutUser();
+    } else {
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - getProductList()`
+      );
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong!');
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
+  }
+}
+
+// Helper function to retrieve all product listings
+async function getUserProductList(authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/my-products/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 200) {
+      const productData = await response.json();
+      return productData; // Return the data to the caller
+      // if unauthorized access attempt, logout user
+    } else if (response.statusText === "Unauthorized") {
+      logoutUser();
+    } else {
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - getUserProductList()`
+      );
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
   }
 }
 
 // A sample function to handle returned data from API call
 function renderProducts(data) {
-// Example function to render the products
-// You can customize this based on your needs
-data.forEach(product => {
-  console.log('Product Title:', product.title);
-  console.log('Product Content:', product.content);
-  // Add your rendering logic here (e.g., append to a list or update the DOM)
-});
+  // Example function to render the products
+  // You can customize this based on your needs
+  data.forEach((product) => {
+    console.log("Product Title:", product.title);
+    console.log("Product Content:", product.content);
+    // Add your rendering logic here (e.g., append to a list or update the DOM)
+  });
 }
 
 //function for updating user data
 async function updateUserData(userId, authTokens, updatedData) {
   try {
-    
     const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
-      method: 'PATCH', // Using PATCH for partial updates
+      method: "PATCH", // Using PATCH for partial updates
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String(authTokens.access),
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
       },
       body: JSON.stringify(updatedData),
     });
@@ -135,11 +142,13 @@ async function updateUserData(userId, authTokens, updatedData) {
       const userData = await response.json();
       return userData; // Return the updated data to the caller
     } else {
-      throw new Error(`Something went wrong! File: apiHelpers.js - updateUserData()`);
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - updateUserData()`
+      );
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong!');
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
   }
 }
 
@@ -147,10 +156,10 @@ async function updateUserData(userId, authTokens, updatedData) {
 async function productSearch(query, authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/products/?search=${query}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization':'Bearer ' + String(authTokens.access) // add token if authorization is needed to filter
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access), // add token if authorization is needed to filter
       },
     });
 
@@ -159,11 +168,13 @@ async function productSearch(query, authTokens) {
       // Returns data to caller to be handled, eg(renderProducts() below)
       return data;
     } else {
-      throw new Error('Something went wrong! File: apiHelpers.js - productSearch()');
+      throw new Error(
+        "Something went wrong! File: apiHelpers.js - productSearch()"
+      );
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong!');
+    console.error("Error:", error);
+    throw new Error("Something went wrong!");
   }
 }
 
@@ -171,10 +182,10 @@ async function productSearch(query, authTokens) {
 async function createProduct(productData, authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/products/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String(authTokens.access),
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
       },
       body: JSON.stringify(productData),
     });
@@ -186,37 +197,62 @@ async function createProduct(productData, authTokens) {
     } else {
       // Handle errors or provide feedback to the user
       const errorData = await response.json();
-      console.error('Error:', errorData);
-      throw new Error('Failed to create product');
+      console.error("Error:", errorData);
+      throw new Error("Failed to create product");
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong');
+    console.error("Error:", error);
+    throw new Error("Something went wrong");
   }
 }
 
 // get images from upload
-const imageFiles = [/* array of File objects */];
+const imageFiles = [
+  /* array of File objects */
+];
 
-// pass product data and images to function
 async function createProductImages(productData, imageFiles, authTokens) {
   try {
     const formData = new FormData();
 
     // Append product data as fields in the FormData
-    Object.keys(productData).forEach(key => {
+    Object.keys(productData).forEach((key) => {
       formData.append(key, productData[key]);
     });
+    console.log("in function form Data:", JSON.stringify(formData, null, 2));
 
     // Append image files to the FormData
-    imageFiles.forEach((file, index) => {
-      formData.append(`images[${index}]`, file);
-    });
+    if (imageFiles) {
+      await Promise.all(
+        imageFiles.map(async (fileUri, index) => {
+          const filename = `image_${index}.jpg`;
 
+          // Convert local URI to file content
+          const fileContent =
+            Platform.OS === "ios"
+              ? await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.Base64,
+                })
+              : await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.UTF8,
+                });
+
+          formData.append("images", {
+            uri: fileUri,
+            type: "image/jpeg", // Adjust the type if needed
+            name: filename,
+            data: fileContent, // Add the file content here
+          });
+          console.log(`Image URL ${index}: ${fileUri}`);
+        })
+      );
+    }
+    console.log("in function form Data:", formData);
     const response = await fetch(`${baseEndpoint}/products/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': 'Bearer ' + String(authTokens.access),
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + String(authTokens.access),
       },
       body: formData,
     });
@@ -228,12 +264,12 @@ async function createProductImages(productData, imageFiles, authTokens) {
     } else {
       // Handle errors or provide feedback to the user
       const errorData = await response.json();
-      console.error('Error:', errorData);
-      throw new Error('Failed to create product');
+      console.error("Error:", errorData);
+      throw new Error("Failed to create product");
     }
   } catch (error) {
-    console.error('Error:', error);
-    throw new Error('Something went wrong');
+    console.error("Error:", error);
+    throw new Error("Something went wrong creating post with images");
   }
 }
 
