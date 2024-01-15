@@ -3,8 +3,10 @@ This is a helper function script, to help more code more modular.
 Note: must import AuthContext into components where you wish to use these functions
       AuthContext stores userId and token data.
 */
+
 import { baseEndpoint } from "../../config/config";
 import * as FileSystem from "expo-file-system";
+
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
@@ -56,7 +58,6 @@ async function getUserData(userId, authTokens) {
     throw new Error("Something went wrong!");
   }
 }
-
 // Helper function to retrieve all product listings
 async function getProductList(authTokens) {
   try {
@@ -137,6 +138,7 @@ async function updateUserData(userId, authTokens, updatedData) {
       return userData; // Return the updated data to the caller
     } else {
       throw new Error("Something went wrong!");
+
     }
   } catch (error) {
     console.error("Error:", error);
@@ -167,6 +169,7 @@ async function productSearch(query, authTokens) {
     throw new Error("Something went wrong!");
   }
 }
+
 
 // helper function to create post
 // will need to pass in userId from AuthContext
