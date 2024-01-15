@@ -5,6 +5,7 @@ Note: must import AuthContext into components where you wish to use these functi
 */
 
 import { baseEndpoint } from "../../config/config";
+import * as FileSystem from "expo-file-system";
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
