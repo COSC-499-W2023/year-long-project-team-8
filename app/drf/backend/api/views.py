@@ -15,6 +15,9 @@ from rest_framework.decorators import permission_classes
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
+import sendgrid
+from sendgrid.helpers.mail import Mail, Email, To, Content
+from sendgrid.helpers.mail import Mail
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse
@@ -59,8 +62,17 @@ class ForgotPasswordView(APIView):
             user.reset_code = reset_code
             user.save()
 
-            # Send the reset code to the user's email
-            send_mail('Password Reset', f'Your password reset code is: {reset_code}', 'PassThePlate Team', [email])
+             # Send the reset code to the user's email using SendGrid
+            try:
+                sg = sendgrid.SendGridAPIClient(api_key='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')
+                from_email = 'passtheplate9@gmail.com'
+                to_email = email
+                subject = 'Password Reset'
+                content = f'Hello! Your password reset code is: {reset_code}. \nPass those plates.'
+                mail = Mail(from_email, to_email, subject, content)
+                sg.send(mail)
+            except Exception as e:
+                print("error")
 
         return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
     

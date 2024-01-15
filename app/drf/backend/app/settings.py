@@ -229,11 +229,17 @@ SIMPLE_JWT = {
      "TOKEN_OBTAIN_SERIALIZER": "api.views.MyTokenObtainPairSerializer",
 }
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'passtheplate9@gmail.com'
+# EMAIL_HOST_PASSWORD = 'hjdrfqpzmvrohkkk'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'passtheplate9@gmail.com'
-EMAIL_HOST_PASSWORD = 'hjdrfqpzmvrohkkk'
-
+EMAIL_HOST_PASSWORD = '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'
 #'passtheplate9@gmail.com' && Projectorange
