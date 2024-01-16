@@ -61,12 +61,7 @@ const MapScreen = () => {
           />
         )}
       </MapView>
-      <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
-        <TouchableOpacity onPress={zoomIn} title={zoomIn}>
 
-        </TouchableOpacity>
-        <Button title="Zoom Out" onPress={zoomOut} />
-      </View>
     </View>
   );
 };
