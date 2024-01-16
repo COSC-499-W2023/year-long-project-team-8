@@ -167,3 +167,84 @@
 |   1    |           |  ✓         |
 |   2    |           |  ✓         |
 
+### Work Period
+ - November 11 - 26, 2023
+
+### Task Types
+![Alt text](img/ar_w12.png)
+
+### Recap of Students Goals
+
+- Figma design Add Listing page
+- Front end struture Add Listing Page
+- Add Images fuctionality add listing page
+- Continue adjusting details in homepage
+
+### Student Tasks on Project Board
+
+- #1 Home page front-end
+- #2 Add listing page
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |  ✓         |
+|   2    |           |  ✓         |
+
+### Work Period
+ - November 27 - 3, 2023
+
+### Task Types
+![Alt text](img/ar_w13.png)
+
+### Recap of Students Goals
+
+- Figma design Add Listing page
+- Front end Add Listing Page design 
+- Front end Add Listing Page category selection
+- Front end Add Listing Page Image uploads
+- Front end Add Listing Page Expiration Date Selection and guidelines
+- Front end Add Listing Page modals and UI
+
+### Student Tasks on Project Board
+
+- #1 Add listing page
+- #1 Creating mockups in figma fo ui/ux
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |  ✓         |
+|   2    |           |  ✓         |
+
+### Work Period
+ - January 7 - 14, 2024
+
+### Task Types
+![Alt text](img/ar_w14.png)
+
+### Recap of Students Goals
+
+- Front end Add Listing Page design 
+- Front end Add Listing Page category selection
+- Front end Add Listing Page Image uploads
+- Front end Add Listing Page Expiration Date Selection and guidelines
+- Front end Add Listing Page modals and UI
+
+### Student Tasks on Project Board
+
+- #1 Add listing page 
+- #2 Creating mockups in figma fo ui/ux
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |  ✓        |            |
+|   2    | ✓         |           |
+
+

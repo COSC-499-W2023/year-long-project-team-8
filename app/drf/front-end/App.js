@@ -7,8 +7,11 @@ import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
 import PasswordReset from './components/loginSignup/PasswordReset';
 
+
 import { AuthProvider } from "./context/AuthContext";
 
+import SettingsNav from "./components/settingsPage/Settings.js";
+import EditProfile from "./components/editProfile/editProfileMain.js";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +31,9 @@ const App = () => {
             <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="MainApp" component={MainApp} />
             <Stack.Screen name="PasswordReset" component={PasswordReset} />
+            <Stack.Screen name="Settings" component={SettingsNav} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>

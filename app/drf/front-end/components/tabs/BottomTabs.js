@@ -1,14 +1,13 @@
-
 import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
 import Profile from "../profilePage/profilePage.js";
+import AddListing from "../addListing/AddListing.js";
 import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import AuthContext from '../../context/AuthContext'
-import { baseEndpoint } from '../../config/config';
-
+import AuthContext from "../../context/AuthContext";
+import { baseEndpoint } from "../../config/config";
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();
@@ -30,42 +29,32 @@ const Chat = () => (
   </View>
 );
 
-// Screen for Adding Listings
-const Add = () => (
-  <View style={styles.content}>
-    <Text style={styles.title}>Dummy Add Listing</Text>
-  </View>
-);
-
 // Screen for Profile
 
 // Main Bottom Tabs Component
 function BottomTabs({ route }) {
-
   // use Authcontext to get our token, query the database, and use logout if query fails
-  let {authTokens, logoutUser} = useContext(AuthContext)
-  useEffect(()=> {
-    getProducts()
-}, [])
+  let { authTokens, logoutUser } = useContext(AuthContext);
+  useEffect(() => {
+    getProducts();
+  }, []);
 
-
-let getProducts = async() =>{
+  let getProducts = async () => {
     let response = await fetch(`${baseEndpoint}/products/`, {
-        method:'GET',
-        headers:{
-            'Content-Type':'application/json',
-            'Authorization':'Bearer ' + String(authTokens.access) // you can comment out this code to remove the token and see that you are redirected to login and tokens are gone
-        }
-    })
-    let data = await response.json()
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access), // you can comment out this code to remove the token and see that you are redirected to login and tokens are gone
+      },
+    });
+    let data = await response.json();
 
-    if(response.status === 200){
-        console.log(data)
-    }else if(response.statusText === 'Unauthorized'){
-        logoutUser()
+    if (response.status === 200) {
+      console.log(data);
+    } else if (response.statusText === "Unauthorized") {
+      logoutUser();
     }
-    
-}
+  };
   // Configure and render the tab navigator
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -118,7 +107,7 @@ let getProducts = async() =>{
 
         <Tab.Screen
           name="add"
-          component={Add}
+          component={AddListing}
           options={{
             tabBarLabel: "Add",
             tabBarIcon: ({ focused, size }) => (

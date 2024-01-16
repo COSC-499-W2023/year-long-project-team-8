@@ -9,6 +9,8 @@ from django.test import TestCase
 from products.serializers import ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
         
 class UserExistenceTest(TestCase):
@@ -31,8 +33,9 @@ class ProductViewSetTest(APITestCase):
             email="admin@example.com",
             password="adminpassword"
         )
+        future_date = timezone.now() + timezone.timedelta(days=30)
         self.client = APIClient()
-        self.product = Product.objects.create(title='Test Product', categories='test', owner= self.user)
+        self.product = Product.objects.create(title='Test Product', categories='test', owner= self.user, best_before=future_date)
         self.url = f'/api/products/{self.product.id}/'
 
     def get_auth_header(self, user):
@@ -194,3 +197,87 @@ class ResetPasswordViewTest(TestCase):
         login_data = {"email": self.user.email, "password": "new_password"}
         response = self.client.post('/api/token/', login_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class ProductSearchTestCase(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.product = Product.objects.create(
+            title='Smartphone',
+            content='High-performance mobile device',
+            owner=self.user,
+            best_before=future_date
+        )
+        self.client = APIClient()
+
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+
+    def test_search_single_keyword(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+    
+        # Perform a search with a single keyword
+        response = self.client.get('/api/products/', {'search': 'Smartphone'})
+       
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Check if there is any data in the response
+        if response.data and 'results' in response.data:
+            results = response.data['results']
+        
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].get('title'), 'Smartphone')
+        else:
+            print('Response data or "results" key is missing.')
+
+
+    def test_search_multiple_keywords(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Perform a search with multiple keywords
+        response = self.client.get('/api/products/', {'search': 'Smartphone performance'})
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        results = response.data['results']
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(results[0].get('title'), 'Smartphone')
+
+    def test_search_no_results(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Perform a search with keywords that should yield no results
+        response = self.client.get('/api/products/', {'search': 'Nonexistent Keyword'})
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 0)
+  
+# Test class for best_before date and valid flag      
+class ProductValidityTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.client = APIClient()
+        
+    def test_valid_best_before_date(self):
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.product = Product.objects.create(
+            title='Test Product',
+            best_before=future_date,
+            owner=self.user,
+        )
+        self.assertTrue(self.product.valid)
+
+    def test_invalid_best_before_date(self):
+        past_date = timezone.now() - timezone.timedelta(days=30)
+        with self.assertRaises(ValidationError): 
+            self.product = Product(
+                title='Expired Product',
+                best_before=past_date,
+                owner=self.user,
+            )
+            self.product.full_clean() 
+        self.assertEqual(Product.objects.count(), 0)

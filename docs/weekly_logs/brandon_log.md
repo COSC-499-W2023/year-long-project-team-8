@@ -265,6 +265,147 @@ November 6 - November 13, 2023
 | 3      |            |     ✓       |
 | 4      |      ✓      |            |
 
+### Work Period
+<!-- 
+November 13 - November 26, 2023
+-->
+November 13 - November 26, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_w12.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Implement the logic and user messages on the edit profile page (#125)
+- Edit profile page documentation (#126)
+- Edit profile page testing (#127)
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+1. Redo the profile page and reimplement the backend functionality (#121)
+2. Start the settings page in the drawer to allow users to navigate to the edit profile page (#122)
+3. Implement the front end of the edit profile page (#123)
+4. Implement the backend functionality of the edit profile page (#124)
+5. Implement the logic and user messages on the edit profile page (#125)
+6. Profile page documentation (#50)
+7. Edit profile page documentation (#126)
+8. Edit profile page testing (#127)
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+|   1    |       ✓     |            |
+|   2    |        ✓    |            |
+|   3    |       ✓     |            |
+|   4    |       ✓     |            |
+|   5    |            |      ✓      |
+|   6    |     ✓       |            |
+|   7    |            |      ✓      |
+|   8    |            |      ✓      |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+November 26 - December 4, 2023
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_w13.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Design document
+- Design Video
+- Documentation
+- Fixing up the edit profile page and other touch ups
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #136 - Design Document and Design Video
+- #125 - Implement the logic and user messages on the edit profile page
+- #137 - Add the map feature
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+|  136   | ✓          |            |
+|  125   |            | ✓          |
+|  137   |            | ✓          |
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+January 7 - January 14, 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](img/bm_t2_w1.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- add more functionality to the map branch
+- testing for the mapping feature
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+1. add the edit profile functionality
+2. ensure settings page navigation to edit profiile works 
+3. begin addition of the map feature 
+4. add documentation for the edit profile and profile pages
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done |
+|:------:|:-----------|:-----------|
+| 1      |      ✓      |            |
+| 2      |       ✓     |            |
+| 3      |            |      ✓      |
+| 4      |       ✓     |            |
+
+
+
+
+
+
+
 
 
 
