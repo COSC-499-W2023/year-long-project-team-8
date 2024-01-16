@@ -468,6 +468,8 @@ January 8, 2023 - January 14, 2023
 - #72 create images model
 - #67 extend product model
 
+** Work can be seen on feats/add_listing_fe_bk as changes are not ready to be merged to master! **
+
 ### Which Tasks Are Completed vs. In Progress
 
 <!--

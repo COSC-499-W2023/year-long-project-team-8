@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const LoginStyles = StyleSheet.create({
   screen: {
@@ -52,6 +52,64 @@ const LoginStyles = StyleSheet.create({
     color: "#DB6D2A",
     fontSize: 17,
     fontWeight: "bold",
+  },
+  floatingBubble: {
+    backgroundColor: 'lightgrey',
+    padding: 40,
+    borderRadius: 10,
+    elevation: 5, // Android-only shadow effect
+    marginTop: 150,
+    alignSelf: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  forgotPasswordModalHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: "#1f1f1f",
+  },
+  forgotPasswordModalInput: {
+    marginBottom: 10,
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ccc',
+    color: "#1f1f1f",
+  },
+  forgotPasswordModalButton: {
+    backgroundColor: '#DB6D2A',
+    padding: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  forgotPasswordModalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  forgotPasswordModalCloseButton: {
+    backgroundColor: 'orange',
+    padding: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  forgotPasswordModalCloseButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

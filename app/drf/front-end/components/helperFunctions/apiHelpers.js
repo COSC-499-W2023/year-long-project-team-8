@@ -7,7 +7,6 @@ Note: must import AuthContext into components where you wish to use these functi
 import { baseEndpoint } from "../../config/config";
 import * as FileSystem from "expo-file-system";
 
-
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
 async function filterCategory(categories, authTokens) {
@@ -102,7 +101,9 @@ async function getUserProductList(authTokens) {
     } else if (response.statusText === "Unauthorized") {
       logoutUser();
     } else {
-      throw new Error("Something went wrong!");
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - getUserProductList()`
+      );
     }
   } catch (error) {
     console.error("Error:", error);
@@ -137,8 +138,9 @@ async function updateUserData(userId, authTokens, updatedData) {
       const userData = await response.json();
       return userData; // Return the updated data to the caller
     } else {
-      throw new Error("Something went wrong!");
-
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - updateUserData()`
+      );
     }
   } catch (error) {
     console.error("Error:", error);
@@ -162,25 +164,15 @@ async function productSearch(query, authTokens) {
       // Returns data to caller to be handled, eg(renderProducts() below)
       return data;
     } else {
-      throw new Error("Something went wrong!");
+      throw new Error(
+        "Something went wrong! File: apiHelpers.js - productSearch()"
+      );
     }
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Something went wrong!");
   }
 }
-
-
-// helper function to create post
-// will need to pass in userId from AuthContext
-// const productData = {
-//   title: 'New Product',
-//   content: 'Description of the new product',
-//   location: '',
-//   categories: '',
-//   owner: userId,
-//   // ... other product fields
-// }
 
 // currently not supporting images
 async function createProduct(productData, authTokens) {
