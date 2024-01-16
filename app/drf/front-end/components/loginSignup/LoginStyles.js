@@ -55,10 +55,10 @@ const LoginStyles = StyleSheet.create({
   },
   floatingBubble: {
     backgroundColor: 'lightgrey',
-    padding: 20,
+    padding: 40,
     borderRadius: 10,
     elevation: 5, // Android-only shadow effect
-    marginTop: 50,
+    marginTop: 150,
     alignSelf: 'center',
     ...Platform.select({
       ios: {
@@ -80,18 +80,19 @@ const LoginStyles = StyleSheet.create({
   },
   forgotPasswordModalInput: {
     marginBottom: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 18,
+    paddingHorizontal: 36,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: '#ccc',
+    color: "#1f1f1f",
   },
   forgotPasswordModalButton: {
     backgroundColor: '#DB6D2A',
-    padding: 10,
+    padding: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
   },
   forgotPasswordModalButtonText: {
     color: 'white',
@@ -100,10 +101,10 @@ const LoginStyles = StyleSheet.create({
   },
   forgotPasswordModalCloseButton: {
     backgroundColor: 'orange',
-    padding: 10,
+    padding: 20,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
   },
   forgotPasswordModalCloseButtonText: {
     color: 'white',

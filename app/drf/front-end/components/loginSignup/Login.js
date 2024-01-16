@@ -89,8 +89,7 @@ const Login = ({ onSwitch, navigation }) => {
       console.error('Network error:', error);
       setForgotPasswordError('Network error. Please try again.');
     } finally {
-      // Close the modal after handling the forgot password logic
-      setForgotPasswordModalVisible(false);
+      setForgotPasswordModalVisible(false); 
     }
   };  
   //jwt token endpoint
@@ -99,9 +98,6 @@ const Login = ({ onSwitch, navigation }) => {
   const handleLogin = async () => {
     let isValid = true;
     Keyboard.dismiss();
-
-    // Regex pattern to validate email address format
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     // If the provided email and password are valid, add login logic
     if (isValid) {
@@ -281,6 +277,7 @@ const Login = ({ onSwitch, navigation }) => {
                 <InputField
                   style={LoginStyles.forgotPasswordModalInput}
                   placeholder="Enter your email"
+                  placeholderTextColor="grey" 
                   onChangeText={(text) => setForgotPasswordEmail(text)}
                   value={forgotPasswordEmail}
                 />

@@ -13,43 +13,6 @@ import { AuthProvider } from "./context/AuthContext";
 const Stack = createStackNavigator();
 
 const App = () => {
-  useEffect(() => {
-    // Deep linking listener
-    const handleDeepLink = async (event) => {
-      // Extract the path from the deep link URL
-      const path = event.url.replace(/.*?:\/\//g, '');
-
-      // Check if the deep link matches the expected format
-      const match = path.match(/^reset-password\/(.+)$/);
-
-      if (match) {
-        // Extract the reset token from the deep link
-        const resetToken = match[1];
-
-        // Navigate to the ResetPassword screen with the reset token
-        // Replace this with your navigation logic
-        navigation.navigate('ResetPassword', { resetToken });
-      }
-    };
-    // Add the event listener
-    Linking.addEventListener('url', handleDeepLink);
-
-    // Remove the event listener when the component is unmounted
-    return () => {
-      Linking.removeEventListener('url', handleDeepLink);
-    };
-  }, []);
-
-  const extractResetTokenFromURL = (url) => {
-    const tokenRegex = /reset-password\/([^/]+)/;
-  
-    // Use the regular expression to extract the token
-    const match = url.match(tokenRegex);
-
-    // If there's a match, return the captured token, otherwise return null
-    return match ? match[1] : null;
-};
-
   return (
     <View style={{ flex: 1 }}>
       <StatusBar />

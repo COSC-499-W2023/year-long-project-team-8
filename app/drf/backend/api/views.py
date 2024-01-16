@@ -1,26 +1,17 @@
 import json, string, random
-from django.forms.models import model_to_dict
-from products.models import Product
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view
-from products.models import Product
 from products.serializers import ProductSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 import sendgrid
-from sendgrid.helpers.mail import Mail, Email, To, Content
 from sendgrid.helpers.mail import Mail
-from django.core.mail import send_mail
-from django.contrib.auth.hashers import make_password
-from django.urls import reverse
 
 # currently set to display sample data and headers
 # adjust to set to api home gui
@@ -50,15 +41,13 @@ class ForgotPasswordView(APIView):
     permission_classes = [AllowAny]
     
     def post(self, request):
-        # Implement logic to send a password reset email
+        
         email = request.data.get('email')
         user = User.objects.filter(email=email).first()
 
         if user:
             # Generate a random code for password reset
             reset_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-
-            # Save the reset code in the user model (you may need to add a field for this)
             user.reset_code = reset_code
             user.save()
 
@@ -68,7 +57,7 @@ class ForgotPasswordView(APIView):
                 from_email = 'passtheplate9@gmail.com'
                 to_email = email
                 subject = 'Password Reset'
-                content = f'Hello! Your password reset code is: {reset_code}. \nPass those plates.'
+                content = f'Hello! Your one time password reset code is: {reset_code} \nPass those plates.'
                 mail = Mail(from_email, to_email, subject, content)
                 sg.send(mail)
             except Exception as e:
@@ -80,7 +69,6 @@ class ForgotPasswordView(APIView):
 @permission_classes([AllowAny])
 class ResetPasswordView(APIView):
      def post(self, request):
-        # Implement logic to reset the password using the reset code
         reset_code = request.data.get('reset_code')
         password = request.data.get('password')
 
@@ -90,17 +78,11 @@ class ResetPasswordView(APIView):
         
             if not users.exists():
                 return Response({'error': 'No users found with the given reset code'}, status=status.HTTP_404_NOT_FOUND)
-        
-            # Log all users
-            for user in users:
-                print(f'Found user: {user.email}')
-        
-            # For simplicity, let's assume you want to use the first user (you can modify this logic)
             user = users.first()
         
-            # Reset the password
+            # Reset the password and clear old reset code
             user.set_password(password)
-            user.reset_code = None  # Reset the reset_code to avoid reuse
+            user.reset_code = None  
             user.save()
 
             return Response({'message': 'Password reset successfully'}, status=status.HTTP_200_OK)

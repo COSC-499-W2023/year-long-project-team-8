@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Text, KeyboardAvoidingView, ScrollView, Platform, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
-import styles from './LoginStyles'; // Assuming you have styles defined in LoginStyles.js
+import LoginStyles from "./LoginStyles";
 import InputField from './InputField';
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
@@ -33,8 +33,7 @@ const PasswordResetScreen = ({ navigation }) => {
         return;
       }
 
-      // Additional password strength checks can be added here
-
+      //api call
       const response = await fetch(`${baseEndpoint}/auth/reset-password/`, {
         method: 'POST',
         headers: {
@@ -85,10 +84,10 @@ const PasswordResetScreen = ({ navigation }) => {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.headerContainer}>
+        <View style={LoginStyles.headerContainer}>
           <Text
             style={[
-              styles.headerText,
+              LoginStyles.headerText,
               fontLoaded ? { fontFamily: 'titleFont' } : {},
             ]}
           >
@@ -96,7 +95,7 @@ const PasswordResetScreen = ({ navigation }) => {
           </Text>
           <Text
             style={[
-              styles.subHeaderText,
+              LoginStyles.subHeaderText,
               fontLoaded ? { fontFamily: 'subHeaderFont' } : {},
             ]}
           >
@@ -104,20 +103,20 @@ const PasswordResetScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <View style={styles.fields}>
+        <View style={LoginStyles.fields}>
           <InputField
-            icon="email" // Adjust icon as needed
+            icon="email" 
             placeholder="Enter code"
             value={reset_code}
             onChangeText={(text) => setCode(text)}
           />
          
           <InputField
-            icon="lock" // Adjust icon as needed
+            icon="lock" 
             placeholder="Enter new password"
             value={password}
             onChangeText={(text) => setNewPassword(text)}
-            secureTextEntry={!showPassword} // Added for show/hide functionality
+            secureTextEntry={!showPassword} 
             rightComponent={ 
               <View style={{ flexDirection: 'row' }}>
                 <Pressable
@@ -138,11 +137,11 @@ const PasswordResetScreen = ({ navigation }) => {
           />
           <PasswordStrengthBar password={password} />
           <InputField
-            icon="lock" // Adjust icon as needed
+            icon="lock" 
             placeholder="Confirm new password"
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
-            secureTextEntry={!showPassword} // Added for show/hide functionality
+            secureTextEntry={!showPassword} 
           />
           <ButtonSignup title="Reset Password" onPress={handleResetPassword} />
 
@@ -153,10 +152,10 @@ const PasswordResetScreen = ({ navigation }) => {
             <Text style={{ color: 'red' }}>{errorMessage}</Text>
           ) : null}
           <Pressable
-            style={styles.backButton}
+            style={LoginStyles.backButton}
             onPress={() => navigation.navigate('Landing')}
           >
-            <Text style={styles.backButtonText}>Back</Text>
+            <Text style={LoginStyles.backButton}>Back</Text>
           </Pressable>
         </View>
       </ScrollView>
