@@ -1,5 +1,7 @@
 from django.urls import reverse, path, include
 from rest_framework import status
+from django.core import mail
+from unittest.mock import patch
 from rest_framework.test import APITestCase,URLPatternsTestCase
 from products.models import Product
 from users.models import User
@@ -153,6 +155,48 @@ class UserViewSetTestCase(TestCase):
     #     #Verify the user has been deleted
     #    user_exists = User.objects.filter(id=self.user.id).exists()
     #    self.assertFalse(user_exists)
+
+class ForgotPasswordViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="testpassword"
+        )
+        self.client = APIClient()
+
+    def test_forgot_password_view(self):
+
+        data = {"email": self.user.email}
+        response = self.client.post('/api/auth/forgot-password/', data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class ResetPasswordViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="testpassword"
+        )
+        self.client = APIClient()
+
+    def test_reset_password_view(self):
+
+        reset_code = 'mock_reset_code' 
+        self.user.reset_code = reset_code
+        self.user.save()
+
+        # Confirm reset password
+        data = {"reset_code": reset_code, "password": "new_password"}
+        response = self.client.post('/api/auth/reset-password/', data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+
+        # Login to get the authentication token with the new password
+        login_data = {"email": self.user.email, "password": "new_password"}
+        response = self.client.post('/api/token/', login_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 class ProductSearchTestCase(APITestCase):
     def setUp(self):

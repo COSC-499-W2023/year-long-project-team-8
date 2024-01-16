@@ -4,7 +4,6 @@ Note: must import AuthContext into components where you wish to use these functi
       AuthContext stores userId and token data.
 */
 
-
 import { baseEndpoint } from '../../config/config';
 
 // Helper function to return products filtered on category
@@ -47,7 +46,8 @@ async function getUserData(userId, authTokens) {
         const userData = await response.json();
         return userData; // Return the data to the caller
       } else {
-        throw new Error('Something went wrong!');
+       throw new Error(`Something went wrong! File: apiHelpers.js - getUserData()`);
+
       }
     } catch (error) {
       console.error('Error:', error);
@@ -62,7 +62,7 @@ async function getUserData(userId, authTokens) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authTokens.access) 
+          //'Authorization': 'Bearer ' + String(authTokens.access) 
         },
       });
   
@@ -73,7 +73,7 @@ async function getUserData(userId, authTokens) {
       }else if(response.statusText === 'Unauthorized'){
         logoutUser() 
       }else {
-        throw new Error('Something went wrong!');
+        throw new Error(`Something went wrong! File: apiHelpers.js - getProductList()`);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -99,7 +99,7 @@ async function getUserProductList (authTokens) {
     }else if(response.statusText === 'Unauthorized'){
       logoutUser() 
     }else {
-      throw new Error('Something went wrong!');
+      throw new Error(`Something went wrong! File: apiHelpers.js - getUserProductList()`);
     }
   } catch (error) {
     console.error('Error:', error);
@@ -135,7 +135,7 @@ async function updateUserData(userId, authTokens, updatedData) {
       const userData = await response.json();
       return userData; // Return the updated data to the caller
     } else {
-      throw new Error('Something went wrong!');
+      throw new Error(`Something went wrong! File: apiHelpers.js - updateUserData()`);
     }
   } catch (error) {
     console.error('Error:', error);
@@ -159,24 +159,13 @@ async function productSearch(query, authTokens) {
       // Returns data to caller to be handled, eg(renderProducts() below)
       return data;
     } else {
-      throw new Error('Something went wrong!');
+      throw new Error('Something went wrong! File: apiHelpers.js - productSearch()');
     }
   } catch (error) {
     console.error('Error:', error);
     throw new Error('Something went wrong!');
   }
 }
-
-// helper function to create post 
-// will need to pass in userId from AuthContext
-// const productData = {
-//   title: 'New Product',
-//   content: 'Description of the new product',
-//   location: '',
-//   categories: '',
-//   owner: userId,
-//   // ... other product fields
-// }
 
 // currently not supporting images
 async function createProduct(productData, authTokens) {

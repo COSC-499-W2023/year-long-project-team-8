@@ -25,7 +25,7 @@ const ProfilePage = () => {
         console.log("User Data:", data);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user data:", error, "profilePage.js");
       });
   }, [userId, authTokens]);
 

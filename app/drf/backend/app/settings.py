@@ -13,6 +13,7 @@ import datetime
 from datetime import timedelta
 from pathlib import Path
 import socket
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,11 +40,19 @@ def get_local_ip():
 
 local_ip = get_local_ip()
 
+# Set up path for media(images)
+# Actual directory user files go to
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+
+# URL used to access the media
+MEDIA_URL = '/media/'
+
 
 
 ALLOWED_HOSTS = [local_ip,
                  '127.0.0.1',
-                 'localhost',]
+                 'localhost',
+                 '142.231.67.157',]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
@@ -95,6 +104,7 @@ if DEBUG:
         "http://localhost:8111",
         "https://localhost:8111",
         "http://localhost:19006",
+        "http://142.231.67.157:8081",
         #"http://ip:8000"
     ]
 
@@ -226,3 +236,18 @@ SIMPLE_JWT = {
     
      "TOKEN_OBTAIN_SERIALIZER": "api.views.MyTokenObtainPairSerializer",
 }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'passtheplate9@gmail.com'
+# EMAIL_HOST_PASSWORD = 'hjdrfqpzmvrohkkk'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'passtheplate9@gmail.com'
+EMAIL_HOST_PASSWORD = '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'
+#'passtheplate9@gmail.com' && Projectorange
