@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Image, StyleSheet, Modal } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import CustomText from "../CustomText";
@@ -7,37 +7,35 @@ import CustomText from "../CustomText";
 const imageIcon = require("../../assets/icons/addImage.png");
 
 // ImageUpload component allows users to pick images from their gallery and displays them.
-const ImageUpload = () => {
-  const [images, setImages] = useState([]);
+const ImageUpload = ({ images, setImages, isFieldMissing }) => {
+  const [alertVisible, setAlertVisible] = useState(false);
 
-  // Function to handle picking an image from the gallery
+  const showAlert = () => setAlertVisible(true);
+
   const handleImagePick = async () => {
-    // Check if the limit of 3 images is already reached
     if (images.length >= 3) {
-      alert("You can only upload up to 3 images.");
+      showAlert();
       return;
     }
 
     try {
-      // Request permission to access the media library
       const permissionResult =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (permissionResult.granted === false) {
+      if (!permissionResult.granted) {
         alert("You've refused to allow this app to access your gallery!");
         return;
       }
 
-      // Launch the image picker
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
         allowsEditing: true,
-        aspect: [1, 1],
+        aspect: [3, 2],
       });
 
-      // If the operation wasn't cancelled, update the images state
-      if (!result.canceled) {
-        setImages([...images, result.uri]);
+      if (!pickerResult.canceled && pickerResult.assets) {
+        const newImages = pickerResult.assets.map((asset) => asset.uri);
+        setImages([...images, ...newImages]);
       }
     } catch (error) {
       console.error("Error picking an image: ", error);
@@ -45,22 +43,18 @@ const ImageUpload = () => {
     }
   };
 
-  // Function to handle deletion of a selected image
   const handleDeleteImage = (index) => {
     setImages(images.filter((_, idx) => idx !== index));
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isFieldMissing && styles.missingField]}>
       <CustomText fontType={"title"} style={styles.title}>
         Add Images
       </CustomText>
       <View style={styles.containerImages}>
         <TouchableOpacity onPress={handleImagePick} style={styles.button}>
           <Image source={imageIcon} style={styles.icon} />
-          <CustomText style={styles.imageText} fontType={"textFont"}>
-            Upload
-          </CustomText>
         </TouchableOpacity>
         <View style={styles.imageContainer}>
           {images.map((uri, index) => (
@@ -76,6 +70,30 @@ const ImageUpload = () => {
           ))}
         </View>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={alertVisible}
+        onRequestClose={() => setAlertVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.centeredView}
+          activeOpacity={1}
+          onPressOut={() => setAlertVisible(false)}
+        >
+          <View style={styles.alertModalView}>
+            <CustomText style={styles.modalText}>
+              Ups! You can upload up to 3 pictures
+            </CustomText>
+            <TouchableOpacity
+              style={styles.buttonClose}
+              onPress={() => setAlertVisible(false)}
+            >
+              <CustomText style={styles.textStyle}>Got it!</CustomText>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
@@ -95,7 +113,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 15,
     marginLeft: 15,
-    fontSize: 20,
+    fontSize: 17,
   },
   containerImages: {
     alignItems: "center",
@@ -116,9 +134,11 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     position: "absolute",
-    top: -10,
+    top: -4,
     right: -10,
+    backgroundColor: "white",
     borderRadius: 15,
+    padding: 1,
   },
   button: {
     marginHorizontal: 10,
@@ -128,12 +148,53 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   icon: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
   imageText: {
     alignSelf: "center",
     marginTop: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  alertModalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: "#FCA63C",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 15,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  missingField: {
+    borderColor: "red",
+    borderWidth: 1,
   },
 });
 

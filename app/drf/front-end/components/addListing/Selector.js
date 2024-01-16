@@ -3,9 +3,9 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import CustomText from "../CustomText";
 
 // Reusable component for displaying a title and a clickable description.
-const Selector = ({ title, desc, onPress }) => {
+const Selector = ({ title, desc, onPress, isFieldMissing }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isFieldMissing && styles.missingField]}>
       {/* Display the title */}
       <CustomText style={styles.title} fontType={"title"}>
         {title}
@@ -24,7 +24,7 @@ export default Selector;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 17,
   },
   container: {
     flexDirection: "row",
@@ -43,4 +43,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   button: {},
+  missingField: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
 });
