@@ -22,6 +22,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=True)
     best_before = models.DateTimeField(blank=False,null=False) # CHANGE TO DATEFIELD WHEN TIME PERMITTING (will need to drop database or update all products)
+    allergens = models.CharField(max_length=200, blank=True, null=True)
     
     objects = ProductManager()
     

@@ -3,14 +3,15 @@ from rest_framework import status
 from django.core import mail
 from unittest.mock import patch
 from rest_framework.test import APITestCase,URLPatternsTestCase
-from products.models import Product
+from products.models import Product, ProductImages
 from users.models import User
 from django.test import TestCase
-from products.serializers import ProductSerializer
+from products.serializers import ProductImageSerializer, ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+import os
 
         
 class UserExistenceTest(TestCase):
@@ -281,3 +282,51 @@ class ProductValidityTests(TestCase):
             )
             self.product.full_clean() 
         self.assertEqual(Product.objects.count(), 0)
+        
+
+class ImageViewSetTest(APITestCase):
+    def setUp(self):
+        # Create a user
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
+
+        # Create a product
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(current_directory, 'test_image.jpg')
+        self.product = Product.objects.create(
+            title='Test Product',
+            content='Test content',
+            owner=self.user,
+            best_before=future_date,
+        )
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+        
+
+    def test_get_images(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}') 
+    
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(current_directory, 'test_image.jpg')
+
+        # Create an image associated with the product
+        self.image_data = {'image': open(image_path,'rb')}
+        response = self.client.post(f'/api/products/', self.image_data, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.get(f'/api/products/{self.product.id}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Ensure the correct data is returned
+        expected_data = ProductImageSerializer(ProductImages.objects.filter(product=self.product), many=True).data
+        self.assertEqual(response.data, expected_data)
+
+    def tearDown(self):
+        # Clean up any created files
+        for image in ProductImages.objects.all():
+            image.image.delete()
+            image.delete()
