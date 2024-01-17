@@ -314,8 +314,8 @@ class ImageViewSetTest(APITestCase):
         image_path = os.path.join(current_directory, 'test_image.jpg')
 
         # Create an image associated with the product
-        self.image_data = {'image': open(image_path,'rb')}
-        response = self.client.post(f'/api/products/', self.image_data, format='multipart')
+        image_data = {'image': open(image_path,'rb')}
+        response = self.client.post(f'/api/products/', image_data, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.get(f'/api/products/{self.product.id}/')
 
