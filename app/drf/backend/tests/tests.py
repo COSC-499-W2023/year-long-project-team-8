@@ -287,64 +287,6 @@ class ProductValidityTests(TestCase):
             )
             self.product.full_clean() 
         self.assertEqual(Product.objects.count(), 0)
-        
-
-# class ImageViewSetTest(APITestCase):
-#     def setUp(self):
-#         # Create a user
-#         self.client = APIClient()
-#         self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
-#         future_date = timezone.now() + timezone.timedelta(days=30)
-
-#         # Create a product
-#         # # current_directory = os.path.dirname(os.path.abspath(__file__))
-#         # # image_path = os.path.join(current_directory, '../../mediafiles/img/test_image.jpg')
-#         # current_directory = Path(__file__).resolve().parent
-#         # image_path = current_directory / '../../mediafiles/img/test_image.jpg'
-#         media_root = settings.MEDIA_ROOT
-#         image_path = os.path.join(media_root, 'img', 'test_image2.jpg')
-#         self.product = Product.objects.create(
-#             title='Test Product',
-#             content='Test content',
-#             owner=self.user,
-#             best_before=future_date,    
-#         )
-#         with open(image_path, 'rb') as image_file:
-#             self.product_image = ProductImages.objects.create(
-#             product=self.product,
-#             image=File(image_file)
-#             )
-        
-#     def get_auth_header(self, user):
-#         refresh = RefreshToken.for_user(user)
-#         access_token = str(refresh.access_token)
-#         return access_token
-        
-
-#     def test_get_images(self):
-#         access_token = self.get_auth_header(self.user)
-#         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}') 
-    
-#         # current_directory = os.path.dirname(os.path.abspath(__file__))
-#         # image_path = os.path.join(current_directory, 'test_image.jpg')
-
-#         # # Create an image associated with the product
-#         # self.image_data = {'images': open(image_path,'rb')}
-#         # response = self.client.post(f'/api/products/', self.image_data, format='multipart')
-#         # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         response = self.client.get(f'/api/products/{self.product.id}/')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-#         # Ensure the correct data is returned
-#         expected_data = ProductImageSerializer(ProductImages.objects.filter(product=self.product), many=True).data
-#         self.assertEqual(response.data, expected_data)
-
-#     def tearDown(self):
-#         # Clean up any created files
-#         for image in ProductImages.objects.all():
-#             image.image.delete()
-#             image.delete()
-            
             
 class ImageViewSetTest(APITestCase):
     def setUp(self):
