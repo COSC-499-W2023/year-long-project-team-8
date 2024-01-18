@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, KeyboardAvoidingView, ScrollView, Platform, Pressable } from 'react-native';
+import { View, TextInput, Button, Text, KeyboardAvoidingView, ScrollView, Platform, Pressable, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import LoginStyles from "./LoginStyles";
@@ -8,6 +8,7 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import ButtonSignup from "./ButtonLanding";
 import { baseEndpoint } from '../../config/config';
+import CustomText from '../CustomText';
 
 const PasswordResetScreen = ({ navigation }) => {
   const [reset_code, setCode] = useState('');
@@ -73,6 +74,11 @@ const PasswordResetScreen = ({ navigation }) => {
   }, []);
 
   return (
+    <ImageBackground 
+      source={require('../../assets/wave.png')} 
+      style={{ flex: 1 }}
+      resizeMode="cover" 
+    >
     <KeyboardAvoidingView
       style={{ flex: 1, paddingTop: 50 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -85,22 +91,13 @@ const PasswordResetScreen = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={LoginStyles.headerContainer}>
-          <Text
-            style={[
-              LoginStyles.headerText,
-              fontLoaded ? { fontFamily: 'titleFont' } : {},
-            ]}
-          >
+          <CustomText style={LoginStyles.headerText}>
             Password Reset
-          </Text>
-          <Text
-            style={[
-              LoginStyles.subHeaderText,
-              fontLoaded ? { fontFamily: 'subHeaderFont' } : {},
-            ]}
-          >
+          </CustomText>
+          <CustomText
+            style={LoginStyles.subHeaderText}>
             Enter your code and create a new password.
-          </Text>
+          </CustomText>
         </View>
 
         <View style={LoginStyles.fields}>
@@ -143,23 +140,23 @@ const PasswordResetScreen = ({ navigation }) => {
             onChangeText={(text) => setConfirmPassword(text)}
             secureTextEntry={!showPassword} 
           />
-          <ButtonSignup title="Reset Password" onPress={handleResetPassword} />
-
           {successMessage ? (
-            <Text style={{ color: 'green' }}>{successMessage}</Text>
+            <CustomText style={{ color: 'green' }}>{successMessage}</CustomText>
           ) : null}
           {errorMessage ? (
-            <Text style={{ color: 'red' }}>{errorMessage}</Text>
+            <CustomText style={LoginStyles.forgotPasswordModalError}>{errorMessage}</CustomText>
           ) : null}
+          <ButtonSignup title="Reset Password" onPress={handleResetPassword} />
           <Pressable
             style={LoginStyles.backButton}
             onPress={() => navigation.navigate('Landing')}
           >
-            <Text style={LoginStyles.backButton}>Back</Text>
+            <CustomText style={LoginStyles.backButton} fontType="text">Back</CustomText>
           </Pressable>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 };
 

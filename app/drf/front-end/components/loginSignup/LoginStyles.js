@@ -58,15 +58,22 @@ const LoginStyles = StyleSheet.create({
     color: "#DB6D2A",
     fontSize: 17,
     fontWeight: "bold",
+    
+  },
+  modalContainer:{
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width:"85%",
+    borderRadius: 10,
+    backgroundColor:"transparent"
+
   },
   floatingBubble: {
-    backgroundColor: "white",
-    padding: 60,
-    borderRadius: 10,
+    backgroundColor: "transparent",
+    padding: 20,
     elevation: 5,
-    marginTop: 150,
     alignSelf: "center",
-    width: "80%",
     ...Platform.select({
       ios: {
         shadowColor: "black",
@@ -79,27 +86,35 @@ const LoginStyles = StyleSheet.create({
       },
     }),
   },
+  
   forgotPasswordModalHeader: {
+    fontSize: 40,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color:"#3b3b3b",
+  },
+  forgotPasswordModalsubHeader: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color:"grey",
   },
   forgotPasswordModalInput: {
     width: "100%",
-    marginBottom: 10,
+    marginBottom: 20,
     padding: 15,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "#ccc",
     color: "#1f1f1f",
   },
-
+  containerInputModal:{
+    marginTop:20,
+  },
   forgotPasswordModalButton: {
-    backgroundColor: "orange",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 20,
+    position: "absolute",
+    right: 10, 
+    bottom: 10, 
   },
   forgotPasswordModalButtonText: {
     color: "white",
@@ -108,10 +123,10 @@ const LoginStyles = StyleSheet.create({
   },
   forgotPasswordModalCloseButton: {
     position: "absolute",
-    right: 10,
-    top: 10,
-    backgroundColor: "orange",
-    padding: 10,
+    right: 10, 
+    top: 10, 
+    backgroundColor: "#F8B951",
+    padding: 8, 
     borderRadius: 20,
     width: 40,
     height: 40,
@@ -124,6 +139,17 @@ const LoginStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  forgotPasswordModalError:{
+    color:"red",
+    marginLeft:10,
+    marginTop:10,
+  },
+  backButton:{
+    color: "#3b3a3a",
+    fontWeight: "bold",
+    fontSize: 15,
+    opacity: 0.7,
+  }
 });
 
 export default LoginStyles;
