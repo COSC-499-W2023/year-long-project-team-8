@@ -1,37 +1,55 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image, StyleSheet, Modal } from "react-native";
+import { View, TouchableOpacity, Image, ImageBackground, StyleSheet, Modal, ScrollView, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import CustomText from "../CustomText";
 
-const imageIcon = require("../../assets/icons/addImage.png");
+const imageIcon = require("../../assets/add-image.png");
 
-// ImageUpload component allows users to pick images from their gallery and displays them.
 const ImageUpload = ({ images, setImages, isFieldMissing }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
 
   const showAlert = () => setAlertVisible(true);
 
-  const handleImagePick = async () => {
+  const handleAddImagePress = () => {
+    if (images.length >= 3) {
+      showAlert(); 
+    } else {
+      setModalVisible(true); 
+    }
+  };
+
+  const handleMediaSelection = async (type) => {
+    setModalVisible(false);
+
     if (images.length >= 3) {
       showAlert();
       return;
     }
 
     try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permissionResult = type === 'camera'
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
       if (!permissionResult.granted) {
-        alert("You've refused to allow this app to access your gallery!");
+        Alert.alert("Permission required", "You need to grant permission to access the camera/gallery.");
         return;
       }
 
-      const pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5,
-        allowsEditing: true,
-        aspect: [3, 2],
-      });
+      const pickerResult = await (type === 'camera'
+        ? ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [3, 2],
+            quality: 0.5,
+          })
+        : ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 0.5,
+            allowsEditing: true,
+            aspect: [3, 2],
+          }));
 
       if (!pickerResult.canceled && pickerResult.assets) {
         const newImages = pickerResult.assets.map((asset) => asset.uri);
@@ -39,7 +57,7 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
       }
     } catch (error) {
       console.error("Error picking an image: ", error);
-      alert("An error occurred while picking the image.");
+      Alert.alert("Error", "An error occurred while picking the image.");
     }
   };
 
@@ -53,10 +71,10 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
         Add Images
       </CustomText>
       <View style={styles.containerImages}>
-        <TouchableOpacity onPress={handleImagePick} style={styles.button}>
-          <Image source={imageIcon} style={styles.icon} />
-        </TouchableOpacity>
-        <View style={styles.imageContainer}>
+      <TouchableOpacity onPress={handleAddImagePress} style={styles.button}>
+        <Image source={imageIcon} style={styles.icon} />
+      </TouchableOpacity>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageScrollView}>
           {images.map((uri, index) => (
             <View key={index} style={styles.imageWrapper}>
               <Image source={{ uri }} style={styles.image} />
@@ -68,8 +86,41 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
               </TouchableOpacity>
             </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <MaterialIcons name="close" size={24} color="white" />
+            </TouchableOpacity>
+            <CustomText style={styles.uploadModalHeaderText} fontType={"title"}>Add Image</CustomText>
+            <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => handleMediaSelection('gallery')}
+            >
+              <CustomText style={styles.modalButtonText}>Upload from Gallery</CustomText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => handleMediaSelection('camera')}
+            >
+              <CustomText style={styles.modalButtonText}>Take Picture</CustomText>
+            </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Modal
         animationType="fade"
         transparent={true}
@@ -83,10 +134,10 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
         >
           <View style={styles.alertModalView}>
             <CustomText style={styles.modalText}>
-              Ups! You can upload up to 3 pictures
+              Oops! You can upload up to 3 pictures.
             </CustomText>
             <TouchableOpacity
-              style={styles.buttonClose}
+              style={styles.modalButton}
               onPress={() => setAlertVisible(false)}
             >
               <CustomText style={styles.textStyle}>Got it!</CustomText>
@@ -113,24 +164,50 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 15,
     marginLeft: 15,
-    fontSize: 17,
+    fontSize: 20,
+    
+  },
+  uploadModalHeaderText:{
+    fontSize:22,
+    alignSelf:"center",
+    color:"black"
   },
   containerImages: {
     alignItems: "center",
     flexDirection: "row",
-  },
-  imageContainer: {
-    flexDirection: "row",
-  },
-  image: {
-    marginTop: 10,
-    width: 50,
-    height: 50,
-    borderRadius: 5,
+    justifyContent: "flex-start",
+    paddingHorizontal: 10, 
   },
   imageWrapper: {
     position: "relative",
-    marginHorizontal: 10,
+    marginRight: 15, 
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2, 
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3, 
+    elevation: 5, 
+    backgroundColor: 'white', 
+    borderRadius: 5,
+    marginTop: 15,
+    marginBottom: 15,
+  },
+  buttonsContainer:{
+    margin:10,
+  },
+  image: {
+    width: 65,
+    height: 65,
+    borderRadius: 5,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    marginRight: -15,
+    marginTop: -15,
+    backgroundColor:"orange",
+    borderRadius:20,
   },
   deleteButton: {
     position: "absolute",
@@ -141,25 +218,50 @@ const styles = StyleSheet.create({
     padding: 1,
   },
   button: {
-    marginHorizontal: 10,
-    marginTop: 16,
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 5,
+    marginRight: 15, 
+    marginTop: 15,
+    marginBottom: 15,
+    borderRadius: 15,
+    marginLeft:10,
   },
   icon: {
-    width: 60,
-    height: 60,
-  },
-  imageText: {
-    alignSelf: "center",
-    marginTop: 5,
+    width: 70,
+    height: 70,
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalButton: {
+    backgroundColor: "#FCA63C",
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginTop: 15,
+    width: 200,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   alertModalView: {
     margin: 20,
@@ -178,7 +280,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: "#FCA63C",
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
     marginTop: 15,
@@ -195,6 +297,11 @@ const styles = StyleSheet.create({
   missingField: {
     borderColor: "red",
     borderWidth: 1,
+  },
+  modalBackgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 

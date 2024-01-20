@@ -1,7 +1,9 @@
-// MissingFieldsModal.js
-import React from "react";
-import { Modal, View, StyleSheet, TouchableOpacity } from "react-native";
-import CustomText from "../CustomText";
+import React from 'react';
+import { Modal, View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import CustomText from '../CustomText';
+import { AntDesign } from '@expo/vector-icons';
+
+const window = Dimensions.get('window');
 
 const MissingFieldsModal = ({ visible, missingFields, onClose }) => {
   return (
@@ -9,22 +11,22 @@ const MissingFieldsModal = ({ visible, missingFields, onClose }) => {
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <CustomText style={styles.modalText}>
-            Please fill in the following fields:
-          </CustomText>
-          {missingFields.map((field, index) => (
-            <CustomText
-              key={index}
-              style={styles.bulletPoint}
-            >{`\u2022 ${field}`}</CustomText>
-          ))}
-          <TouchableOpacity style={styles.button} onPress={onClose}>
-            <CustomText style={styles.buttonText}>Got it!</CustomText>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <AntDesign name="close" size={18} color="white" />
           </TouchableOpacity>
+          
+          <CustomText style={styles.modalTitle} fontType={"title"}>Missing Information</CustomText>
+
+          <CustomText style={styles.modalText} fontType={"subHeader"}>
+            Please complete the following fields to share your leftovers
+          </CustomText>
+
+          {missingFields.map((field, index) => (
+            <CustomText key={index} style={styles.fieldItem}>{field}</CustomText>
+          ))}
         </View>
       </View>
     </Modal>
@@ -34,43 +36,68 @@ const MissingFieldsModal = ({ visible, missingFields, onClose }) => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
+    justifyContent: 'flex-end',
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
+    width: window.width,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 4,
     elevation: 5,
+    position: 'relative', 
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 22,
+  },
+  lineSeparator: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  horizontalLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'black'
+  },
+  circle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderColor: "black",
+    borderWidth: 1,
+    margin: 5
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: "center",
+    marginBottom: 20,
+    textAlign: 'center'
   },
-  bulletPoint: {
-    textAlign: "left",
-    alignSelf: "flex-start",
+  fieldItem: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 18
   },
-  button: {
-    backgroundColor: "#F8B951",
-    borderRadius: 5,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+  closeButton: {
+    position: 'absolute', 
+    top: 10, 
+    right: 10, 
+    width: 30, 
+    height: 30, 
+    backgroundColor: '#FFA500', 
+    borderRadius: 15, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2
   },
 });
 

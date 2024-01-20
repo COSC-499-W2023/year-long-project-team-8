@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 15,
     marginLeft: 15,
-    fontSize: 17,
+    fontSize: 20,
   },
   inputField: {
     marginTop: 5,
@@ -61,11 +61,14 @@ const styles = StyleSheet.create({
   },
   charCount: {
     position: "absolute",
-    bottom: 5,
+    bottom: 0,
     right: 5,
     fontSize: 12,
     color: "gray",
     marginTop: 5,
+    backgroundColor:"white",
+    padding:5,
+    borderRadius:5
   },
   missingField: {
     borderColor: "red",

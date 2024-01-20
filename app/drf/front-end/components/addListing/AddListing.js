@@ -40,7 +40,7 @@ const AddListing = () => {
     if (!title.trim()) newMissingFields.push("Title");
     if (!description.trim()) newMissingFields.push("Description");
     if (selectedCategories.length === 0) newMissingFields.push("Categories");
-    if (selectedAllergens.length === 0) newMissingFields.push("allergens");
+    if (selectedAllergens.length === 0) newMissingFields.push("Allergens");
     if (images.length === 0) newMissingFields.push("Images");
     setTitleMissing(!title.trim());
     setDescriptionMissing(!description.trim());
@@ -84,6 +84,13 @@ const AddListing = () => {
     setTitle("");
     setDescription("");
     setImages([]);
+
+    // Reset missing field indicators
+    setTitleMissing(false);
+    setDescriptionMissing(false);
+    setCategoriesMissing(false);
+    setAllergensMissing(false);
+    setImagesMissing(false);
   };
 
   // Handles closing the modal without selecting categories.
@@ -144,7 +151,7 @@ const AddListing = () => {
       />
       <CustomInput
         title={"Description"}
-        maxLength={100}
+        maxLength={500}
         height={150}
         fontSize={18}
         multiline={true}

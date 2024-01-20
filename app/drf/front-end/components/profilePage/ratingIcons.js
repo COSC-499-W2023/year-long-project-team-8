@@ -16,22 +16,13 @@ const StarRating = ({ rating }) => {
       marginLeft: 3,
     },
     filledStar: {
-      textShadowColor: 'grey',
-      textShadowOffset: { width: 2.5, height: 2.5 },
-      textShadowOpacity: 0.5,
-      textShadowRadius: 1,
+  
     },
     halfFilledStar: {
-      textShadowColor: 'grey',
-      textShadowOffset: { width: 2.5, height: 2.5 },
-      textShadowOpacity: 0.5,
-      textShadowRadius: 1,
+ 
     },
     emptyStar: {
-      textShadowColor: 'grey',
-      textShadowOffset: { width: 1.75, height: 1.75 },
-      textShadowOpacity: 0.5,
-      textShadowRadius: 1,
+     
     }
   });
 

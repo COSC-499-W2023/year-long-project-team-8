@@ -151,7 +151,7 @@ const DatePickerSelector = ({ selectedDate, onDateChange }) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 17,
+    fontSize: 20,
   },
   container: {
     flexDirection: "row",
