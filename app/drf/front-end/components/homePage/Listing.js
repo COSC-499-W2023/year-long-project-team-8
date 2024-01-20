@@ -8,28 +8,32 @@ import CustomText from "../CustomText";
 const Listing = ({ listing, idx }) => {
   return (
     // Card component from 'react-native-paper' to visually represent the listing
-    <Card key={listing.dish} style={styles.card}>
+    <Card key={listing.title} style={styles.card}>
       {/* Touchable area to interact with the listing */}
       <TouchableOpacity
         onPress={() => {
-          console.log("Card pressed:", listing.dish);
+          console.log("Card pressed:", listing.title);
         }}
-        key={listing.dish}
+        key={listing.title}
       >
-        {/* Container for the food image */}
+        {/* Container for the food image listing.image */}
         <View style={styles.imageContainer}>
-          <Card.Cover source={listing.image} style={styles.cardImage} />
+          <Card.Cover
+            source={require("../../assets/images/postImages/image_0_fPMr83c.jpg")}
+            // source={require("../../assets/images/postImages/image_0_fPMr83c.jpg")} need to dynamically set image to unique image
+            style={styles.cardImage}
+          />
         </View>
 
         {/* Name of the dish */}
         <CustomText fontType={"title"} style={styles.cardTitle}>
-          {listing.dish}
+          {listing.title}
         </CustomText>
 
         {/* Container for the dish creator's name and rating */}
         <View style={styles.nameAndRatingContainer}>
           <CustomText fontType={"text"} style={styles.byName}>
-            By {listing.name}
+            By {listing.owner}
           </CustomText>
 
           {/* Icon from 'MaterialIcons' to represent star rating */}
@@ -40,7 +44,8 @@ const Listing = ({ listing, idx }) => {
             style={styles.star}
           />
           <CustomText fontType={"subHeader"} style={styles.rating}>
-            {listing.rating}
+            {/* {listing.rating} */}
+            {1}
           </CustomText>
         </View>
 
@@ -50,7 +55,7 @@ const Listing = ({ listing, idx }) => {
             {listing.date || "Just now"}
           </CustomText>
           <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {listing.distance}
+            {"0" /* {listing.distance} */}
           </CustomText>
         </View>
       </TouchableOpacity>

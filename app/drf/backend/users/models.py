@@ -40,6 +40,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=15, blank=True, null=True)
     reset_code = models.CharField(max_length=6, blank=True, null=True)
     USERNAME_FIELD = "email"
+    rating = models.IntegerField(default=0)
  
     REQUIRED_FIELDS = []
     objects = CustomUserManager()

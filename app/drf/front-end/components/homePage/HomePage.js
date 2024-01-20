@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useContext } from "react";
+import React, { useRef, useState, useMemo, useContext, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -14,13 +14,14 @@ import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
 import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
-import { foodListings, sortOptions } from "./Data";
+import { sortOptions, foodListings } from "./Data";
 import { categoryIcons } from "../Categories";
 //import { apiHelpers } from '../helperFunctions/apiHelpers';
 import {
   filterCategory,
   getUserData,
   getUserProductList,
+  getProductList,
 } from "../helperFunctions/apiHelpers"; // Import functions
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
 
@@ -49,6 +50,9 @@ const HomePage = () => {
   // Add state to manage the selected sort option
   const [selectedSortOption, setSelectedSortOption] = useState("Distance");
 
+  // State for holding the fetched food listings
+  // const [foodListings, setFoodListings] = useState([]);
+  const [foodListing, setFoodListing] = useState([]);
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {
     try {
@@ -72,7 +76,7 @@ const HomePage = () => {
     }
     try {
       // Usage example
-      const productdata = await getUserProductList(authTokens);
+      const productdata = await getProductList(authTokens);
       console.log(productdata);
       console.log("TOKENS:", authTokens);
       // TODO: Process the data as needed
@@ -82,6 +86,25 @@ const HomePage = () => {
       // Handle errors
     }
   };
+
+  useEffect(() => {
+    const fetchFoodListings = async () => {
+      try {
+        const productList = await getProductList(authTokens);
+        console.log("Fetched Product List:", productList);
+        setFoodListing(productList.results);
+      } catch (error) {
+        console.error("Error fetching food listings:", error);
+      }
+    };
+
+    fetchFoodListings();
+  }, [authTokens]);
+
+  useEffect(() => {
+    console.log("FOOD LISTINGS IN HOME:", foodListing);
+    console.log("FOOD LISTINGS FROM DATA:", foodListings);
+  }, [foodListing]);
 
   // Function to open the filter modal
   const openFilterModal = () => {
@@ -158,32 +181,35 @@ const HomePage = () => {
   };
 
   const filteredAndSortedListings = useMemo(() => {
-    return foodListings
+    return foodListing
       .filter((listing) => {
-        const isDishMatching = listing.dish
+        const isDishMatching = listing.title
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
         const isCategoryMatchingSearch = isCategoryMatching(
-          listing.category,
+          listing.categories,
           searchQuery
         );
         const isListingCategorySelected = selectedCategories.some((cat) =>
-          isCategoryMatching(listing.category, cat)
+          isCategoryMatching(listing.categories, cat)
         );
         // Distance filter
-        const listingDistance = parseFloat(listing.distance.replace("km", ""));
+        //const listingDistance = parseFloat(listing.distance.replace("km", ""));
+        const listingDistance = 1.0;
         const withinDistance = listingDistance <= distanceFilter;
 
         // Rating filter
-        const meetsRating = listing.rating >= ratingFilter;
+        //const meetsRating = listing.rating >= ratingFilter;
+        const meetsRating = 6 >= ratingFilter;
 
         // Hours filter
         const hoursSincePublished = convertRelativeTimeToHours(listing.date);
-        const withinTimeFrame = hoursSincePublished <= hoursFilter;
+        //const withinTimeFrame = hoursSincePublished <= hoursFilter;
+        const withinTimeFrame = 0 <= hoursFilter;
 
         // Allergens filter
         const doesNotContainAllergens = !allergensFilter.some((allergen) =>
-          listing.allergen?.includes(allergen)
+          listing.allergens?.includes(allergen)
         );
 
         return (
@@ -306,7 +332,7 @@ const HomePage = () => {
           <View style={styles.listingsContainer}>
             {filteredAndSortedListings.length ? (
               filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.dish} listing={listing} idx={idx} />
+                <Listing key={listing.title} listing={listing} idx={idx} />
               ))
             ) : (
               <CustomText fontType={"text"} style={styles.noMatchesText}>

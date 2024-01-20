@@ -61,7 +61,7 @@ const AddListing = () => {
       title: title,
       content: description,
       categories: selectedCategories,
-      //allergens: selectedAllergens,
+      allergens: selectedAllergens,
       best_before: selectedDate.toISOString().split("T")[0],
       owner: userId,
       //images: images,
