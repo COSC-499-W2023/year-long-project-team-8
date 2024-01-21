@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import CustomText from "../CustomText";
 import { useNavigation } from "@react-navigation/native";
 import Slider from '@react-native-community/slider';
+import FilterModal from '../homePage/FilterModal.js'
 
 import styles from './mapStyles';
 
@@ -13,7 +14,7 @@ const MapScreen = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const navigation = useNavigation();
-
+    
     useEffect(() => {
         const requestLocationPermission = async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
@@ -52,7 +53,7 @@ const MapScreen = () => {
                     maximumTrackTintColor="#000000"
                 />
                 <CustomText style={styles.sliderText} fontType="text">
-                    {Math.floor(circleRadius / 1000)} Km
+                    {Math.floor(circleRadius / 1000)} KM
                 </CustomText>
                 <Circle
                     center={location}
