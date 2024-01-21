@@ -181,58 +181,58 @@ const HomePage = () => {
   };
 
   const filteredAndSortedListings = useMemo(() => {
-    return foodListing
-      .filter((listing) => {
-        const isDishMatching = listing.title
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-        const isCategoryMatchingSearch = isCategoryMatching(
-          listing.categories,
-          searchQuery
-        );
-        const isListingCategorySelected = selectedCategories.some((cat) =>
-          isCategoryMatching(listing.categories, cat)
-        );
-        // Distance filter
-        //const listingDistance = parseFloat(listing.distance.replace("km", ""));
-        const listingDistance = 1.0;
-        const withinDistance = listingDistance <= distanceFilter;
+    return foodListing.filter((listing) => {
+      const isDishMatching = listing.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const isCategoryMatchingSearch = isCategoryMatching(
+        listing.categories,
+        searchQuery
+      );
+      const isListingCategorySelected = selectedCategories.some((cat) =>
+        isCategoryMatching(listing.categories, cat)
+      );
+      // Distance filter
+      //const listingDistance = parseFloat(listing.distance.replace("km", ""));
+      const listingDistance = 1.0;
+      const withinDistance = listingDistance <= distanceFilter;
 
-        // Rating filter
-        //const meetsRating = listing.rating >= ratingFilter;
-        const meetsRating = 6 >= ratingFilter;
+      // Rating filter
+      //const meetsRating = listing.rating >= ratingFilter;
+      const meetsRating = 6 >= ratingFilter;
 
-        // Hours filter
-        const hoursSincePublished = convertRelativeTimeToHours(listing.date);
-        //const withinTimeFrame = hoursSincePublished <= hoursFilter;
-        const withinTimeFrame = 0 <= hoursFilter;
+      // Hours filter
+      const hoursSincePublished = convertRelativeTimeToHours(listing.date);
+      //const withinTimeFrame = hoursSincePublished <= hoursFilter;
+      const withinTimeFrame = 0 <= hoursFilter;
 
-        // Allergens filter
-        const doesNotContainAllergens = !allergensFilter.some((allergen) =>
-          listing.allergens?.includes(allergen)
-        );
+      // Allergens filter
+      // const doesNotContainAllergens = !allergensFilter.some((allergen) =>
+      //   listing.allergens?.includes(allergen)
+      // );
+      const doesNotContainAllergens = true;
 
-        return (
-          (isDishMatching || isCategoryMatchingSearch) &&
-          (!selectedCategories.length || isListingCategorySelected) &&
-          withinDistance &&
-          meetsRating &&
-          withinTimeFrame &&
-          doesNotContainAllergens
-        );
-      })
-      .sort((a, b) => {
-        if (selectedSortOption === "Distance") {
-          return parseFloat(a.distance) - parseFloat(b.distance);
-        } else if (selectedSortOption === "Rating") {
-          return b.rating - a.rating;
-        } else if (selectedSortOption === "Date") {
-          const hoursA = convertRelativeTimeToHours(a.date);
-          const hoursB = convertRelativeTimeToHours(b.date);
-          return hoursA - hoursB;
-        }
-        return 0;
-      });
+      return (
+        (isDishMatching || isCategoryMatchingSearch) &&
+        (!selectedCategories.length || isListingCategorySelected) &&
+        withinDistance &&
+        meetsRating &&
+        withinTimeFrame &&
+        doesNotContainAllergens
+      );
+    });
+    // .sort((a, b) => {
+    //   if (selectedSortOption === "Distance") {
+    //     return parseFloat(a.distance) - parseFloat(b.distance);
+    //   } else if (selectedSortOption === "Rating") {
+    //     return b.rating - a.rating;
+    //   } else if (selectedSortOption === "Date") {
+    //     const hoursA = convertRelativeTimeToHours(a.date);
+    //     const hoursB = convertRelativeTimeToHours(b.date);
+    //     return hoursA - hoursB;
+    //   }
+    //   return 0;
+    // });
   }, [
     searchQuery,
     selectedCategories,

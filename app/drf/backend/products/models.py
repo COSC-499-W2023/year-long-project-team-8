@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib import admin
 
 # Create your models here.
 class ProductManager(models.Manager):

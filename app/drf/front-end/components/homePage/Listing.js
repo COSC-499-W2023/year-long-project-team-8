@@ -54,9 +54,19 @@ const Listing = ({ listing, idx }) => {
         key={listing.title}
       >
         {/* Container for the food image listing.image */}
-        <View style={styles.imageContainer}>{images}</View>
+        <View style={styles.imageContainer}></View>
+        {/* <View style={styles.imageContainer}>{images}</View> */}
         {/* Dynamically load images based on filenames */}
-
+        <Image
+          // source={{
+          //   uri: "file:///C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0_1.jpg",
+          // }}
+          // source={{
+          //   uri: "file:///var/mobile/Containers/Data/Application/B13994E8-8E9C-4703-A772-2ED0CF69ACFD/Library/Caches/ExponentExperienceData/@anonymous/front-end-8692857e-d44a-41b7-a18c-9d0beda07d8d/ImagePicker/FEB53421-7D56-4122-8489-7B61A4ADB767.jpg",
+          // }}
+          //source={require("C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0_1.jpg")}
+          style={styles.cardImage}
+        />
         {/* {renderImages()} */}
 
         {/* Name of the dish */}
