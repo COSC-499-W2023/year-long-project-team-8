@@ -1,11 +1,48 @@
-import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
+import { Image } from "react-native";
+import React, { useState, useEffect } from "react";
+// import RNFS from "react-native-fs";
 
 // Component to represent a single food listing
 const Listing = ({ listing, idx }) => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      if (!listing.images || listing.images.length === 0) {
+        console.warn("No images loaded");
+        return;
+      }
+      console.warn("Maybe images");
+
+      const loadedImages = await Promise.all(
+        listing.images.map(async (image, index) => {
+          const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0_1.jpg`;
+
+          if (imagePath) {
+            return (
+              <Image
+                key={index}
+                source={{ uri: `file://${imagePath}` }}
+                style={styles.cardImage}
+              />
+            );
+          } else {
+            console.warn(`Image not found: ${imagePath}`);
+            return null;
+          }
+        })
+      );
+
+      setImages(loadedImages.filter((image) => image !== null));
+    };
+
+    loadImages();
+  }, [listing.images]);
+
   return (
     // Card component from 'react-native-paper' to visually represent the listing
     <Card key={listing.title} style={styles.card}>
@@ -17,13 +54,10 @@ const Listing = ({ listing, idx }) => {
         key={listing.title}
       >
         {/* Container for the food image listing.image */}
-        <View style={styles.imageContainer}>
-          <Card.Cover
-            source={require("../../assets/images/postImages/image_0_fPMr83c.jpg")}
-            // source={require("../../assets/images/postImages/image_0_fPMr83c.jpg")} need to dynamically set image to unique image
-            style={styles.cardImage}
-          />
-        </View>
+        <View style={styles.imageContainer}>{images}</View>
+        {/* Dynamically load images based on filenames */}
+
+        {/* {renderImages()} */}
 
         {/* Name of the dish */}
         <CustomText fontType={"title"} style={styles.cardTitle}>
