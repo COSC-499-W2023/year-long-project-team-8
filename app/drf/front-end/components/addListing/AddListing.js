@@ -69,7 +69,6 @@ const AddListing = () => {
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
     console.log("Image Data:", JSON.stringify(images, null, 2));
-    //TODO: Backend implementation
     createProductImages(formData, images, authTokens);
   };
 

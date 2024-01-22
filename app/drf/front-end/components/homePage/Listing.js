@@ -10,6 +10,8 @@ import React, { useState, useEffect } from "react";
 const Listing = ({ listing, idx }) => {
   const [images, setImages] = useState([]);
 
+  //TO DO: Refactor this block to load and render images - maybe use uri? adjust path as needed
+  //
   useEffect(() => {
     const loadImages = async () => {
       if (!listing.images || listing.images.length === 0) {
@@ -55,8 +57,8 @@ const Listing = ({ listing, idx }) => {
         key={listing.title}
       >
         {/* Container for the food image listing.image */}
-        {/* <View style={styles.imageContainer}> */}
         <View style={styles.imageContainer}>{images}</View>
+
         {/* Name of the dish */}
         <CustomText fontType={"title"} style={styles.cardTitle}>
           {listing.title}

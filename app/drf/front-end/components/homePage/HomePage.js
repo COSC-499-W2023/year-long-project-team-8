@@ -178,7 +178,7 @@ const HomePage = () => {
 
     return 0; // Default return if none of the conditions match
   };
-
+  // TODO: Use fetched data
   // In order to revert to old data, add return foodListings
   const filteredAndSortedListings = useMemo(() => {
     // return foodListings
