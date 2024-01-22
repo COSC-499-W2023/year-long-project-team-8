@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   View,
-  Text,
   Pressable,
   Keyboard,
+  Modal,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  TouchableWithoutFeedback,
+  ImageBackground
 } from "react-native";
+import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
 
-import { baseEndpoint } from '../../config/config';
+import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Login component for user authentication
 const Login = ({ onSwitch, navigation }) => {
@@ -28,6 +31,10 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] =
+    useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [forgotPasswordError, setForgotPasswordError] = useState("");
 
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +46,54 @@ const Login = ({ onSwitch, navigation }) => {
     await loginUser(email, password); // loginUser should return a Promise
     navigation.navigate("Tabs");
   };
+  // Handle opening and closing the forgot password modal
+  const handleOpenForgotPasswordModal = () => {
+    setForgotPasswordModalVisible(true);
+  };
+
+  // Handle sending forgot password email
+  const handleForgotPassword = async () => {
+    try {
+      // Validate email format
+      const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      if (!emailRegex.test(forgotPasswordEmail)) {
+        setForgotPasswordError("Invalid email format");
+        return;
+      }
+
+      // Make API call to initiate password reset
+      const response = await fetch(`${baseEndpoint}/auth/forgot-password/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: forgotPasswordEmail }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        // Password reset email sent successfully
+        console.log("Password reset email sent successfully");
+        navigation.navigate("PasswordReset", { email: forgotPasswordEmail });
+        setForgotPasswordModalVisible(false); // Close the modal here
+      } else {
+        // Handle error response
+        console.error("Error:", responseData);
+        setForgotPasswordError("Error initiating password reset");
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Network error:", error);
+      setForgotPasswordError("Network error. Please try again.");
+    }
+  };
+
+  // Handle closing the forgot password modal
+  const handleCloseForgotPasswordModal = () => {
+    setForgotPasswordModalVisible(false); // Close the modal
+    setForgotPasswordError(""); // Reset the error message
+  };
 
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
@@ -47,51 +102,8 @@ const Login = ({ onSwitch, navigation }) => {
     let isValid = true;
     Keyboard.dismiss();
 
-    // Regex pattern to validate email address format
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
     // If the provided email and password are valid, add login logic
     if (isValid) {
-      //       // TODO: Implement back-end login logic here
-      //       //console.log(email);
-      //       //console.log(password);
-
-      //       // here we are taking in the email field as username as this is the way authentication is used (username/pass)
-      //       let bodyObj = {
-      //         email: email,
-      //         password: password,
-      //       };
-
-      //       // need to pass the data as JSON for our API to deal with
-      //       const bodyStr = JSON.stringify(bodyObj);
-      //       //console.log(bodyStr);
-      //       const options = {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: bodyStr,
-      //       };
-      //       fetch(loginEndpoint, options) //  Promise
-      //         .then((response) => {
-      //           //console.log(response);
-      //           return response.json();
-      //         })
-      //         .then((authData) => {
-      //           if (authData && authData.access) {
-      //             navigation.navigate("MainApp");
-      //             handleAuthData(authData, getProductList);
-      //           } else {
-      //             if (password && email) setAuthError("Wrong email or password");
-      //           }
-      //         })
-      //         .then((x) => {
-      //           // console.log(x);
-      //         })
-      //         .catch((err) => {
-      //           console.log("err", err);
-      //         });
-
       try {
         let bodyObj = {
           email: email,
@@ -154,22 +166,22 @@ const Login = ({ onSwitch, navigation }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={LoginStyles.headerContainer}>
-          <Text
+          <CustomText
             style={[
               LoginStyles.headerText,
               fontLoaded ? { fontFamily: "titleFont" } : {},
             ]}
           >
             Login
-          </Text>
-          <Text
+          </CustomText>
+          <CustomText
             style={[
               LoginStyles.subHeaderText,
               fontLoaded ? { fontFamily: "subHeaderFont" } : {},
             ]}
           >
             Hungry or emptying space in the fridge?
-          </Text>
+          </CustomText>
         </View>
 
         <View style={LoginStyles.fields}>
@@ -225,32 +237,109 @@ const Login = ({ onSwitch, navigation }) => {
             }
             errorText={passwordError || authError}
           />
-          <Pressable style={LoginStyles.forgotPasswordContainer}>
-            <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-          </Pressable>
-
-          <ButtonLogin title="LOGIN" onPress={handleLogin} />
-          {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
-
+          <View style={LoginStyles.forgotLoginContainer}>
+            <Pressable
+              style={LoginStyles.forgotPasswordContainer}
+              onPress={handleOpenForgotPasswordModal}
+            >
+              <CustomText style={LoginStyles.forgotPasswordText}>
+                Forgot password?
+              </CustomText>
+            </Pressable>
+            <ButtonLogin
+              title="LOGIN"
+              onPress={handleLogin}
+              style={LoginStyles.loginBut}
+            />
+            {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
+          </View>
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
-            <Text
-              style={[
-                LoginStyles.signupText,
-                fontLoaded ? { fontFamily: "textFont" } : {},
-              ]}
+            <CustomText
+              style={
+                LoginStyles.signupText}
             >
               Don't have an account?{" "}
-              <Text
-                style={[
-                  LoginStyles.signup,
-                  fontLoaded ? { fontFamily: "textFont" } : {},
-                ]}
+              <CustomText
+                style={
+                  LoginStyles.signup
+                 }
               >
                 Sign up!
-              </Text>
-            </Text>
+              </CustomText>
+            </CustomText>
           </Pressable>
         </View>
+        {/* Forgot Password Modal */}
+        <Modal
+  animationType="slide"
+  transparent={true}
+  visible={isForgotPasswordModalVisible}
+  onRequestClose={handleCloseForgotPasswordModal}
+>
+  <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={LoginStyles.modalContainer}>
+        <ImageBackground 
+            source={require('../../assets/modal_wave.png')} 
+            style={LoginStyles.floatingBubble}
+            resizeMode="cover"
+            imageStyle={{ borderRadius: 10}}
+
+          >
+                  <Pressable
+                    style={LoginStyles.forgotPasswordModalCloseButton}
+                    onPress={handleCloseForgotPasswordModal}
+                  >
+                    <MaterialIcons
+                        name="close"
+                        size={22} 
+                        color="white" 
+                      />
+                  </Pressable>
+                  <CustomText style={LoginStyles.forgotPasswordModalHeader}>
+                    Forgot Password?
+                  </CustomText>
+                  <CustomText style={LoginStyles.forgotPasswordModalsubHeader}>
+                    Don't worry, a code will be sent to your email!
+                  </CustomText>
+                  <View style={LoginStyles.containerInputModal}>
+                  <InputField
+                      style={LoginStyles.forgotPasswordModalInput}
+                      placeholder="Enter your email"
+                      placeholderTextColor="grey"
+                      onChangeText={(text) => {
+                        setForgotPasswordEmail(text);
+                        setForgotPasswordError(""); // Clear the error message when user starts typing
+                      }}
+                      value={forgotPasswordEmail}
+                    />
+
+                  </View>
+                  {forgotPasswordError && (
+                    <CustomText style={LoginStyles.forgotPasswordModalError}>
+                      {forgotPasswordError === "Invalid email format"
+                        ? "Invalid email"
+                        : forgotPasswordError}
+                    </CustomText>
+                  )}
+                  <ButtonLogin
+                    title="SEND"
+                    onPress={handleForgotPassword}
+                    style={LoginStyles.forgotPasswordsendButton}
+                  />              
+              
+              </ImageBackground>
+              </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </View>
+  </TouchableWithoutFeedback>
+</Modal>
       </ScrollView>
     </KeyboardAvoidingView>
   );

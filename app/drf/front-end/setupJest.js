@@ -5,3 +5,5 @@ fetchMock.enableMocks();
 afterEach(() => {
   fetch.resetMocks();
 });
+
+jest.mock("@expo/vector-icons");

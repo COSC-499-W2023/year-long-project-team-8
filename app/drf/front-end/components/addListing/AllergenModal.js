@@ -1,61 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Modal, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Modal, View, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
-import { categoryIcons } from "../Categories";
+import { allergens } from "../Allergens"; // Import allergens array
 
-// CategoryModal component allows users to select categories from a list.
-const CategoryModal = ({
+const AllergenModal = ({
   visible,
   onClose,
   onSelect,
-  selectedCategoriesProp,
+  selectedAllergensProp,
 }) => {
-  // State to manage selected categories locally within the modal.
-  const [selectedCategories, setSelectedCategories] = useState(
-    selectedCategoriesProp
+  const [selectedAllergens, setSelectedAllergens] = useState(
+    selectedAllergensProp
   );
 
-  // Effect to update local state when the prop changes (e.g., on modal open).
   useEffect(() => {
-    setSelectedCategories(selectedCategoriesProp);
-  }, [selectedCategoriesProp]);
+    setSelectedAllergens(selectedAllergensProp);
+  }, [selectedAllergensProp]);
 
-  // Extracting category names from the categoryIcons object.
-  const categories = Object.keys(categoryIcons);
-
-  // Function to handle the selection of categories.
-  const handleSelect = (category) => {
-    if (selectedCategories.includes(category)) {
-      // If already selected, remove it from the selection.
-      setSelectedCategories(
-        selectedCategories.filter((item) => item !== category)
+  const handleSelect = (allergen) => {
+    if (selectedAllergens.includes(allergen)) {
+      setSelectedAllergens(
+        selectedAllergens.filter((item) => item !== allergen)
       );
     } else {
-      // If not selected, add it to the selection.
-      setSelectedCategories([...selectedCategories, category]);
+      setSelectedAllergens([...selectedAllergens, allergen]);
     }
   };
 
-  // Function to check if a category is selected.
-  const isCategorySelected = (category) => {
-    return selectedCategories.includes(category);
+  const isAllergenSelected = (allergen) => {
+    return selectedAllergens.includes(allergen);
   };
 
-  // Function to handle the 'Done' action.
   const handleDone = () => {
-    onSelect(selectedCategories);
+    onSelect(selectedAllergens);
     onClose();
   };
 
-  // Function to get rows of categories for the grid layout.
   const getRows = () => {
     const numColumns = 3;
-    const numRows = Math.ceil(categories.length / numColumns);
+    const numRows = Math.ceil(allergens.length / numColumns);
     let rows = [];
 
     for (let i = 0; i < numRows; i++) {
-      rows.push(categories.slice(i * numColumns, i * numColumns + numColumns));
+      rows.push(allergens.slice(i * numColumns, i * numColumns + numColumns));
     }
 
     return rows;
@@ -66,7 +54,7 @@ const CategoryModal = ({
       visible={visible}
       animationType="slide"
       transparent={true}
-      testID="categoryModal"
+      testID="allergenModal"
     >
       <View style={styles.modalBackground}>
         <View style={styles.container}>
@@ -79,22 +67,21 @@ const CategoryModal = ({
           </TouchableOpacity>
           <View>
             <CustomText fontType={"title"} style={styles.title}>
-              Categories
+              Allergens
             </CustomText>
           </View>
           {getRows().map((row, rowIndex) => (
             <View key={rowIndex} style={styles.row}>
-              {row.map((category) => (
+              {row.map((allergen) => (
                 <TouchableOpacity
-                  key={category}
+                  key={allergen}
                   style={[
-                    styles.categoryItem,
-                    isCategorySelected(category) && styles.selectedCategoryItem,
+                    styles.allergenItem,
+                    isAllergenSelected(allergen) && styles.selectedAllergenItem,
                   ]}
-                  onPress={() => handleSelect(category)}
+                  onPress={() => handleSelect(allergen)}
                 >
-                  <Image source={categoryIcons[category]} style={styles.icon} />
-                  <CustomText>{category}</CustomText>
+                  <CustomText>{allergen}</CustomText>
                 </TouchableOpacity>
               ))}
             </View>
@@ -114,9 +101,21 @@ const CategoryModal = ({
   );
 };
 
-export default CategoryModal;
+export default AllergenModal;
 
 const styles = StyleSheet.create({
+  allergenItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 15,
+    margin: 5,
+    borderRadius: 5,
+    width: "30%",
+  },
+  selectedAllergenItem: {
+    backgroundColor: "#E8E8E8",
+    borderRadius: 60,
+  },
   modalBackground: {
     flex: 1,
     justifyContent: "center",
@@ -151,6 +150,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     marginTop: 20,
+    marginBottom: 20,
   },
   row: {
     flexDirection: "row",
@@ -158,18 +158,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     padding: 5,
-  },
-  categoryItem: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 15,
-    margin: 5,
-    borderRadius: 5,
-    width: "30%",
-  },
-  selectedCategoryItem: {
-    backgroundColor: "#E8E8E8",
-    borderRadius: 60,
   },
   icon: {
     width: 40,

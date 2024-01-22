@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const LoginStyles = StyleSheet.create({
   screen: {
@@ -25,9 +25,15 @@ const LoginStyles = StyleSheet.create({
   fields: {
     paddingHorizontal: 30,
   },
+  loginBut: {},
+  forgotLoginContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   forgotPasswordContainer: {
     alignItems: "flex-start",
-    marginTop: 10,
+    marginTop: 0,
     marginLeft: 15,
   },
   forgotPasswordText: {
@@ -52,7 +58,98 @@ const LoginStyles = StyleSheet.create({
     color: "#DB6D2A",
     fontSize: 17,
     fontWeight: "bold",
+    
   },
+  modalContainer:{
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width:"85%",
+    borderRadius: 10,
+    backgroundColor:"transparent"
+
+  },
+  floatingBubble: {
+    backgroundColor: "transparent",
+    padding: 20,
+    elevation: 5,
+    alignSelf: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  
+  forgotPasswordModalHeader: {
+    fontSize: 40,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color:"#3b3b3b",
+  },
+  forgotPasswordModalsubHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color:"grey",
+  },
+  forgotPasswordModalInput: {
+    width: "100%",
+    marginBottom: 20,
+    padding: 15,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#ccc",
+    color: "#1f1f1f",
+  },
+  containerInputModal:{
+    marginTop:20,
+  },
+  forgotPasswordModalButton: {
+    position: "absolute",
+    right: 10, 
+    bottom: 10, 
+  },
+  forgotPasswordModalButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  forgotPasswordModalCloseButton: {
+    position: "absolute",
+    right: 10, 
+    top: 10, 
+    backgroundColor: "#F8B951",
+    padding: 8, 
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  forgotPasswordModalCloseButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  forgotPasswordModalError:{
+    color:"red",
+    marginLeft:10,
+    marginTop:10,
+  },
+  backButton:{
+    color: "#3b3a3a",
+    fontWeight: "bold",
+    fontSize: 15,
+    opacity: 0.7,
+  }
 });
 
 export default LoginStyles;

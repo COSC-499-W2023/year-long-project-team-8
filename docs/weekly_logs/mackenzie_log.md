@@ -484,3 +484,78 @@ January 8, 2023 - January 14, 2023
 |   72   | ✓         |            |
 |  115   | ✓         |            |
 |   67   | ✓         |            |
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+January 15, 2023 - January 21, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![Alt text](img/mk_w15.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- image handling!
+- backend unit testing for image upload
+- front end refactor to handle images in mobile
+- display posting text fields in front end
+- display post images in front end
+
+## Roadblocks
+
+It turns out not to be trivial to deal with images in a mobile app.
+
+- react native needs image paths to be static -> ready at compile time
+- this makes is hard to post images, create new paths, and display
+- the solution seems to be using uri, I have yet to be successful using uri
+- I have been able to hard code paths to images in to ensure it can be displayed but this too is problematic -> currently experiencing the hard coded images displaying randomly (or the reason is not yet obvious to me)
+-
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- #156 Display posts in home page
+- #168 Home Page refactor for fetched data
+- #115 API helper to make post with images
+- #171 display text fields for posting (front end)
+- #172 dynamic rendering of images for posts (front end)
+- #173 listing refactor for fetched data (front end)
+- #174 add admin view for products (backend)
+- #175 add allergens field on product model (backend)
+- api refactors
+
+** Work can be seen on feats/add_listing_fe_bk as changes are not ready to be merged to master! **
+
+### Which Tasks Are Completed vs. In Progress
+
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+| :----: | :-------- | :--------- |
+|  168   | ✓         |            |
+|  115   | ✓         |            |
+|  171   | ✓         |            |
+|  172   |           | ✓          |
+|  173   | ✓         |            |
+|  174   | ✓         |            |
+|  175   | ✓         |            |
+|        |           |            |
