@@ -819,6 +819,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - Handle images in the front end
 - Sort out the fe/be communication for file handling
 - Store post data in backend
+- Forgot password full functionality with email
+- Chat feature (will extend into next milestone)
+- Change password from profile page
 
 ### Completed Tasks
 
@@ -833,6 +836,13 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - #173 listing refactor for fetched data (front end)
 - #174 add admin view for products (backend)
 - #175 add allergens field on product model (backend)
+- #109 Forgot password testing
+- #129 Forgot password api endpoint configuration
+- #148 Increase and test security measures of current forgot password implementation
+- #146 Allow for any email provider to recieve forgot password code using sendgrid api
+- #130 Forgot password sending external email
+- #164 Chat serializers for user messages
+- #163 Create chat model
 
 ### In Progress Tasks
 
@@ -841,6 +851,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 
 - #172 dynamic rendering of images for posts (front end)
+- #165 API View for chat operations
+- #165 Chat components (FE) and API calls
+- #165 Chat API tests
 
 ### Burnup Chart
 
