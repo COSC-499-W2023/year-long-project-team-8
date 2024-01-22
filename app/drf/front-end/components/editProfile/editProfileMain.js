@@ -14,7 +14,6 @@ import AuthContext from "../../context/AuthContext";
 import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
 
 const EditProfilePage = () => {
-  // Destructuring values from the authentication context
   const { authTokens, userId } = useContext(AuthContext);
 
   // State variables to hold user data and form input values
