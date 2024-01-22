@@ -247,4 +247,28 @@
 |   1    |  ✓        |            |
 |   2    | ✓         |           |
 
+### Work Period
+ - January 15 - 21, 2024
+
+### Task Types
+![Alt text](img/ar_w15.png)
+
+### Recap of Students Goals
+
+- Front end Add Listing Page modal re-design
+- Front end Forgot password re design
+
+### Student Tasks on Project Board
+
+- #1 Add listing fe 
+- #2 Forgot Password fe
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |    ✓       |
+|   2    | ✓         |            |
+
 

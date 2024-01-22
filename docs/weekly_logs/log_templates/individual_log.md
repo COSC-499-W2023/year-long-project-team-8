@@ -15,17 +15,20 @@
 <!--
 - what tasks are you aiming to have completed by the end of the week
 -->
--
--
--
+- #158 complete map feature
+- #22 make button for change password
+- #159 pull location data from map
+- finish the map ui/ux
 
 ### Student Tasks on Project Board
 <!-- 
 - Tasks undertaken on the project board
 -->
-- 
--
--
+- #158 complete map feature
+- #22 make button for change password
+- #159 pull location data from map
+-  #20 calculate distance from your location to a post
+-  #21 link slider and radius modal on home page
 
 ### Which Tasks Are Completed vs. In Progress
 <!--
@@ -36,10 +39,11 @@
 
 | Item # | Completed  | To Be Done |
 |:------:|:-----------|:-----------|
-| 1      |            |            |
-| 2      |            |            |
-| 3      |            |            |
-| 4      |            |            |
-| 5      |            |            |
+|  158   |     ✓       |            |
+|   22   |      ✓      |            |
+|  159   |     ✓       |            |
+|   20   |            |       ✓     |
+|   21   |            |      ✓      |
+
 
 
