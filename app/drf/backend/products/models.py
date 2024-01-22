@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib import admin
 
 # Create your models here.
 class ProductManager(models.Manager):
@@ -22,6 +23,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=True)
     best_before = models.DateTimeField(blank=False,null=False) # CHANGE TO DATEFIELD WHEN TIME PERMITTING (will need to drop database or update all products)
+    allergens = models.CharField(max_length=200, blank=True, null=True)
     
     objects = ProductManager()
     
@@ -41,4 +43,4 @@ class Product(models.Model):
    
 class ProductImages(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to="img",null=True, blank=True)
+    image = models.ImageField(upload_to="",null=True, blank=True)

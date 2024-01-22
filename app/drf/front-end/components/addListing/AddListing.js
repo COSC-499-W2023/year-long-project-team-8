@@ -61,7 +61,7 @@ const AddListing = () => {
       title: title,
       content: description,
       categories: selectedCategories,
-      //allergens: selectedAllergens,
+      allergens: selectedAllergens,
       best_before: selectedDate.toISOString().split("T")[0],
       owner: userId,
       //images: images,
@@ -69,7 +69,6 @@ const AddListing = () => {
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
     console.log("Image Data:", JSON.stringify(images, null, 2));
-    //TODO: Backend implementation
     createProductImages(formData, images, authTokens);
   };
 

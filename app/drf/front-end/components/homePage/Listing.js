@@ -1,35 +1,72 @@
-import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
+import { Image } from "react-native";
+import React, { useState, useEffect } from "react";
+// import RNFS from "react-native-fs";
 
 // Component to represent a single food listing
 const Listing = ({ listing, idx }) => {
+  const [images, setImages] = useState([]);
+
+  //TO DO: Refactor this block to load and render images - maybe use uri? adjust path as needed
+  //
+  useEffect(() => {
+    const loadImages = async () => {
+      if (!listing.images || listing.images.length === 0) {
+        console.warn("No images loaded");
+        return;
+      }
+      console.warn("Maybe images");
+
+      const loadedImages = await Promise.all(
+        listing.images.map(async (image, index) => {
+          const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0.jpg`;
+          //const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/${image.name}image_0.jpg`;
+          if (imagePath) {
+            return (
+              <Card.Cover
+                key={index}
+                //source={{ uri: `file://${imagePath}` }}
+                source={require(imagePath)}
+                style={styles.cardImage}
+              />
+            );
+          } else {
+            console.warn(`Image not found: ${imagePath}`);
+            return null;
+          }
+        })
+      );
+
+      setImages(loadedImages.filter((image) => image !== null));
+    };
+
+    loadImages();
+  }, [listing.images]);
+
   return (
     // Card component from 'react-native-paper' to visually represent the listing
-    <Card key={listing.dish} style={styles.card}>
+    <Card key={listing.title} style={styles.card}>
       {/* Touchable area to interact with the listing */}
       <TouchableOpacity
         onPress={() => {
-          console.log("Card pressed:", listing.dish);
+          console.log("Card pressed:", listing.title);
         }}
-        key={listing.dish}
+        key={listing.title}
       >
-        {/* Container for the food image */}
-        <View style={styles.imageContainer}>
-          <Card.Cover source={listing.image} style={styles.cardImage} />
-        </View>
+        {/* Container for the food image listing.image */}
+        <View style={styles.imageContainer}>{images}</View>
 
         {/* Name of the dish */}
         <CustomText fontType={"title"} style={styles.cardTitle}>
-          {listing.dish}
+          {listing.title}
         </CustomText>
-
         {/* Container for the dish creator's name and rating */}
         <View style={styles.nameAndRatingContainer}>
           <CustomText fontType={"text"} style={styles.byName}>
-            By {listing.name}
+            By {listing.owner}
           </CustomText>
 
           {/* Icon from 'MaterialIcons' to represent star rating */}
@@ -40,17 +77,17 @@ const Listing = ({ listing, idx }) => {
             style={styles.star}
           />
           <CustomText fontType={"subHeader"} style={styles.rating}>
-            {listing.rating}
+            {/* {listing.rating} */}
+            {1}
           </CustomText>
         </View>
-
         {/* Container for the date when the listing was posted and distance info */}
         <View>
           <CustomText fontType={"subHeader"} style={styles.datePosted}>
             {listing.date || "Just now"}
           </CustomText>
           <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {listing.distance}
+            {"0" /* {listing.distance} */}
           </CustomText>
         </View>
       </TouchableOpacity>
