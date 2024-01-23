@@ -14,7 +14,6 @@ import AuthContext from "../../context/AuthContext";
 import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
 
 const EditProfilePage = () => {
-  // Destructuring values from the authentication context
   const { authTokens, userId } = useContext(AuthContext);
 
   // State variables to hold user data and form input values
@@ -149,17 +148,16 @@ const EditProfilePage = () => {
         prevEmail={prevEmail}
         setPrevEmail={setPrevEmail}
       />
-      {/*}
       <View style={styles.buttonFieldContainer}>
         <TouchableOpacity style={styles.changePasswordButton}>
           <Text style={styles.changePasswordText}>Change Password</Text>
         </TouchableOpacity>
-
+        {/*
         <TouchableOpacity style={styles.deleteAccountButton}>
           <Text style={styles.deleteAccountText}>Delete Account</Text>
         </TouchableOpacity>
-      </View>
       */}
+        </View>
     </SafeAreaView>
   );
 };

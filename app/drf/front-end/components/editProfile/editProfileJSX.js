@@ -144,7 +144,7 @@ const EditProfileForm = ({
         {/* Input field for phone number with formatting and validation */}
         <TextInput
           style={styles.phoneNumberInput}
-          placeholder={"+x (xxx) xxx - xxxx"}
+          placeholder={"(xxx) xxx - xxxx"}
           value={phoneFormatted(phone)}
           maxLength={20}
           onFocus={() => setPrevPhone(phone)}

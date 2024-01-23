@@ -16,6 +16,7 @@ import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
 import { foodListings, sortOptions } from "./Data";
 import { categoryIcons } from "../Categories";
+import { useNavigation } from "@react-navigation/native";
 //import { apiHelpers } from '../helperFunctions/apiHelpers';
 import {
   filterCategory,
@@ -28,6 +29,9 @@ const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
 const HomePage = () => {
+
+    const navigation = useNavigation();
+
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
 
@@ -51,36 +55,7 @@ const HomePage = () => {
 
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {
-    try {
-      // Usage example
-      const data = await filterCategory("pizza", authTokens);
-      console.log(data);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      console.log("User Id: ", userId);
-      const userData = await getUserData(userId, authTokens);
-      console.log(userData);
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      // Usage example
-      const productdata = await getUserProductList(authTokens);
-      console.log(productdata);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
+    navigation.navigate('mapView');
   };
 
   // Function to open the filter modal
