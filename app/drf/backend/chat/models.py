@@ -14,3 +14,4 @@ class Chat(models.Model):
     def create_chat(cls, sender, receiver, product, message):
         return cls.objects.create(sender=sender, receiver=receiver, product=product, message=message)
 
+#The default auto field for Product is: products.Product.id
