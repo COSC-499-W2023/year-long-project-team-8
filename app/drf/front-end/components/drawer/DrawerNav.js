@@ -5,6 +5,7 @@ import Tabs from "../tabs/BottomTabs"; // Importing the bottom tabs navigation c
 import DrawerProps from "./DrawerProps.js"; // Custom drawer content
 import SettingsPage from "../settingsPage/Settings"; // Settings page component
 import Profile from "../profilePage/profilePage.js";
+import Chat from "../chat/chat.js";
 
 // Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
@@ -89,6 +90,24 @@ const DrawerNav = () => {
               <Image
                 source={customHamburgerIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={Chat}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),

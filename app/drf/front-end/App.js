@@ -6,12 +6,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
 import PasswordReset from './components/loginSignup/PasswordReset';
-
-
-import { AuthProvider } from "./context/AuthContext";
-
 import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
+import Chat from "./components/chat/chat.js";
+
+import { AuthProvider } from "./context/AuthContext";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +32,7 @@ const App = () => {
             <Stack.Screen name="PasswordReset" component={PasswordReset} />
             <Stack.Screen name="Settings" component={SettingsNav} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="Chat" component={Chat} />
 
           </Stack.Navigator>
         </NavigationContainer>

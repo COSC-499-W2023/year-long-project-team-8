@@ -13,8 +13,7 @@ class ChatList(generics.ListCreateAPIView):
     def get_queryset(self):
         return Chat.objects.filter(sender=self.request.user) | Chat.objects.filter(receiver=self.request.user)
 
-    # Creating chat, need to confirm existnece of product_id or find a way to retrieve unique product
-    # Use title and owner field in meantime for testing purposes
+    # Creating chat
     def perform_create(self, serializer):
         sender = self.request.user
         product_id = self.request.data.get('product_id') 

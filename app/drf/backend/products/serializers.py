@@ -21,6 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
                   'images',
                   'valid',
                   'best_before',
+                  'id',
                   ]
         read_only_fields = ['valid']
         

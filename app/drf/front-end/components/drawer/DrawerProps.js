@@ -55,6 +55,12 @@ const DrawerProps = ({ navigation, state }) => {
         onPress={() => navigation.navigate("Settings")}
         isActive={activeRouteName === "Settings"}
       />
+      <DrawerItem
+        iconName="chatbubbles"
+        label="Chat"
+        onPress={() => navigation.navigate("Chat")}
+        isActive={activeRouteName === "Chat"}
+      />
 
       {/* Push the logout button to the bottom */}
       <View style={styles.flexGrow} />
