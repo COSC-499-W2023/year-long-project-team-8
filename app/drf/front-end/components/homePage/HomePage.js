@@ -52,48 +52,21 @@ const HomePage = () => {
   // State for holding the fetched food listings
   // const [foodListings, setFoodListings] = useState([]);
   const [foodListing, setFoodListing] = useState([]);
+  const [loading, setLoading] = useState(true);
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
-  const handleMapPress = async () => {
-    try {
-      // Usage example
-      const data = await filterCategory("pizza", authTokens);
-      console.log(data);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      console.log("User Id: ", userId);
-      const userData = await getUserData(userId, authTokens);
-      console.log(userData);
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      // Usage example
-      const productdata = await getProductList(authTokens);
-      console.log(productdata);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-  };
+  const handleMapPress = async () => {};
 
   useEffect(() => {
     const fetchFoodListings = async () => {
       try {
+        setLoading(true);
         const productList = await getProductList(authTokens);
         console.log("Fetched Product List:", productList);
         setFoodListing(productList.results);
       } catch (error) {
         console.error("Error fetching food listings:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -181,6 +154,9 @@ const HomePage = () => {
   // TODO: Use fetched data
   // In order to revert to old data, add return foodListings
   const filteredAndSortedListings = useMemo(() => {
+    if (loading) {
+      return <CustomText>Loading...</CustomText>;
+    }
     // return foodListings
     return foodListing
       .filter((listing) => {
@@ -245,6 +221,8 @@ const HomePage = () => {
     hoursFilter,
     allergensFilter,
     selectedSortOption,
+    foodListing,
+    loading,
   ]);
 
   return (

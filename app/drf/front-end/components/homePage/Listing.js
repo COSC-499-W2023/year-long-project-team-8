@@ -9,9 +9,6 @@ import React, { useState, useEffect } from "react";
 // Component to represent a single food listing
 const Listing = ({ listing, idx }) => {
   const [images, setImages] = useState([]);
-
-  //TO DO: Refactor this block to load and render images - maybe use uri? adjust path as needed
-  //
   useEffect(() => {
     const loadImages = async () => {
       if (!listing.images || listing.images.length === 0) {
@@ -25,7 +22,7 @@ const Listing = ({ listing, idx }) => {
           const uri = image.image;
           console.log("in function uri:", uri);
 
-          if (imagePath) {
+          if (image) {
             return (
               <Card.Cover
                 key={index}
@@ -34,7 +31,7 @@ const Listing = ({ listing, idx }) => {
               />
             );
           } else {
-            console.warn(`Image not found: ${imagePath}`);
+            console.log(`Image not found: ${listing}`);
             return null;
           }
         })
@@ -44,7 +41,7 @@ const Listing = ({ listing, idx }) => {
     };
 
     loadImages();
-  }, [listing.images]);
+  }, []);
 
   return (
     // Card component from 'react-native-paper' to visually represent the listing
@@ -57,8 +54,9 @@ const Listing = ({ listing, idx }) => {
         key={listing.title}
       >
         {/* Container for the food image listing.image */}
-        <View style={styles.imageContainer}>{images}</View>
-
+        <View style={styles.imageContainer}>
+          <View style={styles.imageContainer}>{images}</View>
+        </View>
         {/* Name of the dish */}
         <CustomText fontType={"title"} style={styles.cardTitle}>
           {listing.title}
