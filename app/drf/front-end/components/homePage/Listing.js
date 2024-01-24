@@ -15,21 +15,21 @@ const Listing = ({ listing, idx }) => {
   useEffect(() => {
     const loadImages = async () => {
       if (!listing.images || listing.images.length === 0) {
-        console.warn("No images loaded");
+        console.log("No images loaded");
         return;
       }
-      console.warn("Maybe images");
+      console.log("Maybe images");
 
       const loadedImages = await Promise.all(
         listing.images.map(async (image, index) => {
-          const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0.jpg`;
-          //const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/${image.name}image_0.jpg`;
+          const uri = image.image;
+          console.log("in function uri:", uri);
+
           if (imagePath) {
             return (
               <Card.Cover
                 key={index}
-                //source={{ uri: `file://${imagePath}` }}
-                source={require(imagePath)}
+                source={{ uri: `${uri}` }}
                 style={styles.cardImage}
               />
             );

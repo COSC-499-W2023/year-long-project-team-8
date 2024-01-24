@@ -9,5 +9,5 @@
 //export const baseEndpoint = "http://localhost:8000/api";
 
 //export const baseEndpoint = "http://192.168.1.135:8000/api";
-export const baseEndpoint = "http://192.168.0.234:8000/api";
+export const baseEndpoint = "http://142.231.175.0:8000/api";
 //export const baseEndpoint = "http://206.87.16.244:8000/api";
