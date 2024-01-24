@@ -12,7 +12,7 @@ import MissingFieldsModal from "./MissingFieldsModal"; // import the modal
 import { createProductImages } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
 
-const AddListing = () => {
+const AddListing = ({ navigation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isAllergenModalVisible, setAllergenModalVisible] = useState(false);
@@ -70,6 +70,7 @@ const AddListing = () => {
     console.log("Form Data:", JSON.stringify(formData, null, 2));
     console.log("Image Data:", JSON.stringify(images, null, 2));
     createProductImages(formData, images, authTokens);
+    navigation.navigate("Home");
   };
 
   // Function to reset the form

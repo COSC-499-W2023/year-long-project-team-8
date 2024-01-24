@@ -55,21 +55,19 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {};
-
+  const fetchFoodListings = async () => {
+    try {
+      setLoading(true);
+      const productList = await getProductList(authTokens);
+      console.log("Fetched Product List:", productList);
+      setFoodListing(productList.results);
+    } catch (error) {
+      console.error("Error fetching food listings:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchFoodListings = async () => {
-      try {
-        setLoading(true);
-        const productList = await getProductList(authTokens);
-        console.log("Fetched Product List:", productList);
-        setFoodListing(productList.results);
-      } catch (error) {
-        console.error("Error fetching food listings:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchFoodListings();
   }, [authTokens]);
 
