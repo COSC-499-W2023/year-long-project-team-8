@@ -23,13 +23,15 @@ import {
   getProductList,
 } from "../helperFunctions/apiHelpers"; // Import functions
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
+import { useAppState } from "../../context/AppStateContext";
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
+  const { postCreated, updatePostCreated } = useAppState();
 
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -53,6 +55,9 @@ const HomePage = () => {
   // const [foodListings, setFoodListings] = useState([]);
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  console.log("postCreated in HomePage:", postCreated);
+
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
   const handleMapPress = async () => {};
   const fetchFoodListings = async () => {
@@ -60,6 +65,7 @@ const HomePage = () => {
       setLoading(true);
       const productList = await getProductList(authTokens);
       console.log("Fetched Product List:", productList);
+      console.log("Created Post?:", postCreated);
       setFoodListing(productList.results);
     } catch (error) {
       console.error("Error fetching food listings:", error);
@@ -69,12 +75,24 @@ const HomePage = () => {
   };
   useEffect(() => {
     fetchFoodListings();
-  }, [authTokens]);
+  }, []);
 
   useEffect(() => {
     console.log("FOOD LISTINGS IN HOME:", foodListing);
     console.log("FOOD LISTINGS FROM DATA:", foodListings);
   }, [foodListing]);
+
+  useEffect(() => {
+    if (postCreated) {
+      // Perform re-fetch logic here
+      console.log("Re-fetching data in HomePage");
+      console.log("postCreated changed:", postCreated);
+      fetchFoodListings();
+
+      // After re-fetching, reset the postCreated state
+      updatePostCreated();
+    }
+  }, [postCreated, updatePostCreated]);
 
   // Function to open the filter modal
   const openFilterModal = () => {
@@ -221,6 +239,7 @@ const HomePage = () => {
     selectedSortOption,
     foodListing,
     loading,
+    postCreated,
   ]);
 
   return (
