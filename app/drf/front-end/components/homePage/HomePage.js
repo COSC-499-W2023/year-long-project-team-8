@@ -30,7 +30,6 @@ import { useAppState } from "../../context/AppStateContext";
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
-
 const HomePage = ({navigation}) => {
 
   // Use AuthContext to get tokens and userId
