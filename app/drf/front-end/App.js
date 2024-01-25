@@ -1,22 +1,24 @@
+
 import React, { useEffect } from "react";
 import { StatusBar, View, Linking } from "react-native";
-import Landing from "./components/landing/Landing.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Details from "./components/loginSignup/Details.js";
-import MainApp from "./components/drawer/DrawerNav.js";
+import Landing from "./components/landing/Landing";
+import Details from "./components/loginSignup/Details";
+import MainApp from "./components/drawer/DrawerNav";
 import PasswordReset from "./components/loginSignup/PasswordReset";
-
+import SettingsNav from "./components/settingsPage/Settings";
+import EditProfile from "./components/editProfile/editProfileMain";
+import ProfilePage from "./components/profilePage/profilePage";
+import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
-
-import SettingsNav from "./components/settingsPage/Settings.js";
-import EditProfile from "./components/editProfile/editProfileMain.js";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
+
     <AppStateProvider>
       <View style={{ flex: 1 }}>
         <StatusBar />
@@ -34,11 +36,13 @@ const App = () => {
               <Stack.Screen name="PasswordReset" component={PasswordReset} />
               <Stack.Screen name="Settings" component={SettingsNav} />
               <Stack.Screen name="EditProfile" component={EditProfile} />
+              <Stack.Screen name="mapView" component={mapView} />
             </Stack.Navigator>
           </NavigationContainer>
         </AuthProvider>
       </View>
     </AppStateProvider>
+
   );
 };
 

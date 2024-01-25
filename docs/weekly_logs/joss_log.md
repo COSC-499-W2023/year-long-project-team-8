@@ -400,3 +400,60 @@
 |   7   |           |      ✓     |
 |   8   |           |      ✓     |
 |   9  |           |      ✓     |
+
+### Work Period
+ - January 15 - January 21, 2024
+
+### Individual Peer Evaluation
+![Alt text](img/t2week_2_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Forgot password feature
+- Universal email sending (currently restricted to gmail)
+- Forgot password UI and flow optimization
+- Begin and research chat feature
+- Change password feature within profile page
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#109 Forgot password testing
+- item#129 Forgot password api endpoint configuration
+- item#148 Increase and test security measures of current forgot password implementation
+- item#146 Allow for any email provider to recieve forgot password code using sendgrid api
+- item#130 Forgot password sending external email
+- item#164 Chat serializers for user messages
+- item#163 Create chat model
+- item#162 Change password in Profile page
+- item#165 API View for chat operations
+- item#165 Chat components (FE) and API calls
+- item#165 Chat API tests
+- item#135 Automated testing with GitHub issues
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |      ✓      |          |
+|   2    |       ✓     |            |
+|   3    |     ✓     |           |
+|   4    |        ✓     |           |
+|   5    |        ✓     |            |
+|   6   |     ✓       |          |
+|   7   |       ✓       |        |
+|   8   |           |      ✓     |
+|   9  |           |      ✓     |
+|   10  |           |      ✓     |
+|   11 |           |      ✓     |
+|   12   |           |      ✓     |

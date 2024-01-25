@@ -16,6 +16,7 @@ import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
 import { sortOptions, foodListings } from "./Data";
 import { categoryIcons } from "../Categories";
+import { useNavigation } from "@react-navigation/native";
 import {
   filterCategory,
   getUserData,
@@ -28,7 +29,13 @@ import { useAppState } from "../../context/AppStateContext";
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
+
 const HomePage = ({ navigation }) => {
+
+
+  const navigation = useNavigation();
+
+
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
   const { postCreated, updatePostCreated } = useAppState();
@@ -59,7 +66,7 @@ const HomePage = ({ navigation }) => {
   console.log("postCreated in HomePage:", postCreated);
 
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
-  const handleMapPress = async () => {};
+
   const fetchFoodListings = async () => {
     try {
       setLoading(true);
@@ -72,6 +79,10 @@ const HomePage = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
+
+  const handleMapPress = async () => {
+    navigation.navigate('mapView');
+
   };
   useEffect(() => {
     fetchFoodListings();
