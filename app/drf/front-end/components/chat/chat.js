@@ -36,7 +36,8 @@ const chat = () => {
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
       <FlatList
         data={messages}
-        keyExtractor={(item) => item.id.toString()}
+        //fix this later
+        keyExtractor={(item) => (item.id ? item.id.toString() : "1")}
         renderItem={({ item }) => (
           <View style={{ marginBottom: 8 }}>
             <Text>{item.sender.username}: {item.message}</Text>

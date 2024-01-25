@@ -33,7 +33,7 @@ const filterIcon = require("../../assets/icons/filter.png");
 const HomePage = ({ navigation }) => {
 
 
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
 
   // Use AuthContext to get tokens and userId
@@ -79,7 +79,7 @@ const HomePage = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-
+  }
   const handleMapPress = async () => {
     navigation.navigate('mapView');
 
@@ -366,5 +366,5 @@ const HomePage = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-}
+
 export default HomePage;

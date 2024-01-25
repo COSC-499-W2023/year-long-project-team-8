@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
+    <AppStateProvider>
     <View style={{ flex: 1 }}>
       <StatusBar />
       <AuthProvider>
@@ -26,7 +27,6 @@ const App = () => {
             initialRouteName="Landing"
             screenOptions={{ headerShown: false }}
           >
-            <Stack.Screen name="Profile" component={ProfilePage} />
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="MainApp" component={MainApp} />
@@ -39,7 +39,7 @@ const App = () => {
         </NavigationContainer>
       </AuthProvider>
     </View>
-
+</AppStateProvider>
   );
 };
 

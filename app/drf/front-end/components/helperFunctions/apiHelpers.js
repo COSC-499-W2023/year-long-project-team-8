@@ -286,7 +286,7 @@ async function getChatMessages(authTokens) {
       const data = await response.json();
       return data.results;
     } else {
-      console.log("AUth data", authTokens)
+      console.log("Auth data", authTokens)
       throw new Error("Error fetching chat messages");
     }
   } catch (error) {
@@ -306,7 +306,7 @@ async function sendChatMessage(userId, authTokens, newMessage) {
       },
       body: JSON.stringify({ 
       sender: userId, 
-      receiver: 6,  // 6 is a placeholder
+      receiver: 3,  // 3 is a placeholder
       product: 1,           // 1 is a placeholder product
       message: newMessage, }),
     });
