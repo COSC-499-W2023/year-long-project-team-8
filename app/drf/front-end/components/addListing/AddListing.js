@@ -11,8 +11,9 @@ import DatePickerSelector from "./DatePickerSelector";
 import MissingFieldsModal from "./MissingFieldsModal"; // import the modal
 import { createProductImages } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
+import { useAppState } from "../../context/AppStateContext";
 
-const AddListing = () => {
+const AddListing = ({ navigation, onPostCreation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isAllergenModalVisible, setAllergenModalVisible] = useState(false);
@@ -32,8 +33,10 @@ const AddListing = () => {
 
   const [showMissingFieldsModal, setShowMissingFieldsModal] = useState(false);
 
+  const { updatePostCreated } = useAppState();
+
   //Form submittion logic
-  const handlePost = () => {
+  const handlePost = async () => {
     let newMissingFields = [];
 
     // Check each field and add to missingFields if empty
@@ -61,7 +64,7 @@ const AddListing = () => {
       title: title,
       content: description,
       categories: selectedCategories,
-      //allergens: selectedAllergens,
+      allergens: selectedAllergens,
       best_before: selectedDate.toISOString().split("T")[0],
       owner: userId,
       //images: images,
@@ -69,8 +72,17 @@ const AddListing = () => {
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
     console.log("Image Data:", JSON.stringify(images, null, 2));
-    //TODO: Backend implementation
-    createProductImages(formData, images, authTokens);
+    try {
+      // Wait for createProductImages to finish before proceeding
+      await createProductImages(formData, images, authTokens);
+
+      // If createProductImages is successful, update postCreated and navigate
+      await updatePostCreated();
+      navigation.navigate("Home");
+    } catch (error) {
+      // Handle error if createProductImages fails
+      console.error("Error creating product images:", error);
+    }
   };
 
   // Function to reset the form

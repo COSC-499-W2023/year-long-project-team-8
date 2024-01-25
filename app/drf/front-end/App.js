@@ -1,5 +1,6 @@
-import React from "react";
-import { StatusBar, View } from "react-native";
+
+import React, { useEffect } from "react";
+import { StatusBar, View, Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./components/landing/Landing";
@@ -10,8 +11,8 @@ import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
 import Chat from "./components/chat/chat.js";
 import mapView from "./components/map/mapMain";
-
 import { AuthProvider } from "./context/AuthContext";
+import { AppStateProvider } from "./context/AppStateContext";
 
 const Stack = createStackNavigator();
 

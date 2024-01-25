@@ -220,7 +220,11 @@ async function createProductImages(productData, imageFiles, authTokens) {
     if (imageFiles) {
       await Promise.all(
         imageFiles.map(async (fileUri, index) => {
-          const filename = `image_${index}.jpg`;
+          // Generate a unique filename using a combination of index and a unique identifier
+          const uniqueFilename = `image_${index}_${Math.random()
+            .toString(36)
+            .substring(7)}.jpg`;
+          //const uniqueFilename = `image_${index}.jpg`;
 
           // Convert local URI to file content
           const fileContent =
@@ -235,10 +239,12 @@ async function createProductImages(productData, imageFiles, authTokens) {
           formData.append("images", {
             uri: fileUri,
             type: "image/jpeg", // Adjust the type if needed
-            name: filename,
+            name: uniqueFilename,
             data: fileContent, // Add the file content here
           });
-          console.log(`Image URL ${index}: ${fileUri}`);
+
+          console.log(`Image ${index} - URI: ${fileUri}`);
+          console.log(`Image ${index} - Name: ${uniqueFilename}`);
         })
       );
     }

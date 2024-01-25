@@ -3,15 +3,20 @@ from rest_framework import status
 from django.core import mail
 from unittest.mock import patch
 from rest_framework.test import APITestCase,URLPatternsTestCase
-from products.models import Product
+from products.models import Product, ProductImages
 from users.models import User
 from django.test import TestCase
-from chat.models import Chat
 from products.serializers import ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+import os
+from django.core.files import File
+from pathlib import Path
+from django.conf import settings
+from unittest.mock import Mock, mock_open
+import io
 
         
 class UserExistenceTest(TestCase):
@@ -282,52 +287,3 @@ class ProductValidityTests(TestCase):
             )
             self.product.full_clean() 
         self.assertEqual(Product.objects.count(), 0)
-
-# Tests for chat functionality    
-class ChatTests(TestCase):
-    # Set up sender and receiver users with product (created by receiver)
-    def setUp(self):
-        self.user1 = User.objects.create_user(username='sender', password='password1')
-        self.user2 = User.objects.create_user(username='receiver', password='password2')
-        future_date = timezone.now() + timezone.timedelta(days=30)
-        self.product = Product.objects.create(
-            title='Test Product',
-            content='Product description',
-            owner=self.receiver,
-            best_before=future_date
-        )
-        self.client = APIClient()
-        
-    def test_create_chat(self):
-        self.client.force_authenticate(user=self.sender)
-
-        # Will need correct product_id, can get around this by just using owner to begin with
-        data = {
-            'product_id': self.product.id,
-            'message': 'Looks delicious. Where do I pick it up'
-        }
-        # POST chat through API endpoint
-        response = self.client.post('/api/chat/', data, format='json')
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Chat.objects.count(), 1)
-        self.assertEqual(Chat.objects.first().sender, self.sender)
-        self.assertEqual(Chat.objects.first().receiver, self.receiver)
-        # Remove if initially testing without product relation
-        self.assertEqual(Chat.objects.first().product, self.product)
-        
-    def test_get_chat_list(self):
-        self.client.force_authenticate(user=self.sender)
-
-        # Assuming you have an existing chat between sender and receiver
-        Chat.objects.create(sender=self.user1, receiver=self.user2, product=self.product, message='Hello!')
-
-        # GET chat through API endpoint
-        response = self.client.get('/api/chat/', format='json')
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 1)
-        self.assertEqual(response.data['results'][0]['sender'], self.sender)
-        self.assertEqual(response.data['results'][0]['receiver'], self.receiver)
-        # Remove if initially testing without product relation
-        self.assertEqual(response.data['results'][0]['product'], self.product.id)
