@@ -267,6 +267,55 @@ async function createProductImages(productData, imageFiles, authTokens) {
     throw new Error("Something went wrong creating post with images");
   }
 }
+// Helper function to get chat messages
+async function getChatMessages(authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/chat/`, {
+      headers: {
+        Authorization: `Bearer ${authTokens?.access}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.results;
+    } else {
+      console.log("AUth data", authTokens)
+      throw new Error("Error fetching chat messages");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+// Helper function to send a chat message
+async function sendChatMessage(userId, authTokens, newMessage) {
+  try {
+    const response = await fetch(`${baseEndpoint}/chat/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authTokens?.access}`,
+      },
+      body: JSON.stringify({ 
+      sender: userId, 
+      receiver: 6,  // 6 is a placeholder
+      product: 1,           // 1 is a placeholder product
+      message: newMessage, }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Error sending chat message");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
 
 // Export all the functions
 export {
@@ -277,4 +326,6 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
+  getChatMessages,
+  sendChatMessage,
 };

@@ -1,41 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
 import { View, Text, TextInput, Button, FlatList } from 'react-native';
 import { baseEndpoint } from '../../config/config';
+import AuthContext from "../../context/AuthContext";
+import { getChatMessages, sendChatMessage } from "../helperFunctions/apiHelpers";
 
 const chat = () => {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-
-  useEffect(() => {
-    // Fetch chat messages from endpoint
-    fetch(`${baseEndpoint}/chat/`)
-      .then(response => response.json())
-      .then(data => {
-        setMessages(data.results);
-      })
-      .catch(error => {
-        console.error('Error fetching messages:', error);
-      });
-  }, []);
-
-  const sendMessage = () => {
-    // Send a new message to endpoint
-    fetch(`${baseEndpoint}/chat/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: newMessage }),
-    })
-      .then(response => response.json())
-      .then(data => {
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+    const { authTokens, userId } = useContext(AuthContext);
+  
+    useEffect(() => {
+      const fetchChatMessages = async () => {
+        try {
+          const messages = await getChatMessages(authTokens);
+          setMessages(messages);
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+        }
+      };
+  
+      fetchChatMessages();
+    }, [authTokens]);
+  
+    const sendMessage = async () => {
+      try {
+        const data = await sendChatMessage(userId, authTokens, newMessage);
         setMessages([...messages, data]);
         setNewMessage('');
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error sending message:', error);
-      });
-  };
+      }
+    };
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
