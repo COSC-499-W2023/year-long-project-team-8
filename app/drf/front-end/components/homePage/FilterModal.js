@@ -13,6 +13,7 @@ import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import { SelectList } from "react-native-dropdown-select-list";
 
+
 const FilterModal = ({
   isVisible,
   onClose,
