@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useContext } from "react";
+import React, { useRef, useState, useMemo, useContext, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -14,26 +14,31 @@ import FloatingButton from "./FloattingButton";
 import SearchBar from "./SearchBar";
 import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
-import { foodListings, sortOptions } from "./Data";
+import { sortOptions, foodListings } from "./Data";
 import { categoryIcons } from "../Categories";
 import { useNavigation } from "@react-navigation/native";
-//import { apiHelpers } from '../helperFunctions/apiHelpers';
 import {
   filterCategory,
   getUserData,
   getUserProductList,
+  getProductList,
 } from "../helperFunctions/apiHelpers"; // Import functions
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
+import { useAppState } from "../../context/AppStateContext";
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
-const HomePage = () => {
 
-    const navigation = useNavigation();
+const HomePage = ({ navigation }) => {
+
+
+  const navigation = useNavigation();
+
 
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
+  const { postCreated, updatePostCreated } = useAppState();
 
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -53,10 +58,52 @@ const HomePage = () => {
   // Add state to manage the selected sort option
   const [selectedSortOption, setSelectedSortOption] = useState("Distance");
 
+  // State for holding the fetched food listings
+  // const [foodListings, setFoodListings] = useState([]);
+  const [foodListing, setFoodListing] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  console.log("postCreated in HomePage:", postCreated);
+
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
+
+  const fetchFoodListings = async () => {
+    try {
+      setLoading(true);
+      const productList = await getProductList(authTokens);
+      console.log("Fetched Product List:", productList);
+      console.log("Created Post?:", postCreated);
+      setFoodListing(productList.results);
+    } catch (error) {
+      console.error("Error fetching food listings:", error);
+    } finally {
+      setLoading(false);
+    }
+
   const handleMapPress = async () => {
     navigation.navigate('mapView');
+
   };
+  useEffect(() => {
+    fetchFoodListings();
+  }, []);
+
+  useEffect(() => {
+    console.log("FOOD LISTINGS IN HOME:", foodListing);
+    console.log("FOOD LISTINGS FROM DATA:", foodListings);
+  }, [foodListing]);
+
+  useEffect(() => {
+    if (postCreated) {
+      // Perform re-fetch logic here
+      console.log("Re-fetching data in HomePage");
+      console.log("postCreated changed:", postCreated);
+      fetchFoodListings();
+
+      // After re-fetching, reset the postCreated state
+      updatePostCreated();
+    }
+  }, [postCreated, updatePostCreated]);
 
   // Function to open the filter modal
   const openFilterModal = () => {
@@ -131,34 +178,45 @@ const HomePage = () => {
 
     return 0; // Default return if none of the conditions match
   };
-
+  // TODO: Use fetched data
+  // In order to revert to old data, add return foodListings
   const filteredAndSortedListings = useMemo(() => {
-    return foodListings
+    if (loading) {
+      return <CustomText>Loading...</CustomText>;
+    }
+    // return foodListings
+    return foodListing
       .filter((listing) => {
-        const isDishMatching = listing.dish
+        const isDishMatching = listing.title
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
         const isCategoryMatchingSearch = isCategoryMatching(
-          listing.category,
+          listing.categories,
           searchQuery
         );
         const isListingCategorySelected = selectedCategories.some((cat) =>
-          isCategoryMatching(listing.category, cat)
+          isCategoryMatching(listing.categories, cat)
         );
         // Distance filter
-        const listingDistance = parseFloat(listing.distance.replace("km", ""));
+        //const listingDistance = parseFloat(listing.distance.replace("km", ""));
+        // TODO: Update Logic to filter distance
+        const listingDistance = 1.0;
         const withinDistance = listingDistance <= distanceFilter;
 
         // Rating filter
-        const meetsRating = listing.rating >= ratingFilter;
+        // TODO: update logic to filter based on rating
+        //const meetsRating = listing.rating >= ratingFilter;
+        const meetsRating = 6 >= ratingFilter;
 
         // Hours filter
+        // TODO: Update time filter from created_at field on product
         const hoursSincePublished = convertRelativeTimeToHours(listing.date);
-        const withinTimeFrame = hoursSincePublished <= hoursFilter;
+        //const withinTimeFrame = hoursSincePublished <= hoursFilter;
+        const withinTimeFrame = 0 <= hoursFilter;
 
         // Allergens filter
         const doesNotContainAllergens = !allergensFilter.some((allergen) =>
-          listing.allergen?.includes(allergen)
+          listing.allergens?.includes(allergen)
         );
 
         return (
@@ -190,6 +248,9 @@ const HomePage = () => {
     hoursFilter,
     allergensFilter,
     selectedSortOption,
+    foodListing,
+    loading,
+    postCreated,
   ]);
 
   return (
@@ -281,7 +342,7 @@ const HomePage = () => {
           <View style={styles.listingsContainer}>
             {filteredAndSortedListings.length ? (
               filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.dish} listing={listing} idx={idx} />
+                <Listing key={listing.title} listing={listing} idx={idx} />
               ))
             ) : (
               <CustomText fontType={"text"} style={styles.noMatchesText}>
