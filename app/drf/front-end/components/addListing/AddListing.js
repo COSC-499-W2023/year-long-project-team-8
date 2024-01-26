@@ -37,18 +37,17 @@ const AddListing = ({ navigation, onPostCreation }) => {
 
   //Form submittion logic
   const handlePost = async () => {
+    //TODO: Allow no allergens
     let newMissingFields = [];
 
     // Check each field and add to missingFields if empty
     if (!title.trim()) newMissingFields.push("Title");
     if (!description.trim()) newMissingFields.push("Description");
     if (selectedCategories.length === 0) newMissingFields.push("Categories");
-    if (selectedAllergens.length === 0) newMissingFields.push("allergens");
     if (images.length === 0) newMissingFields.push("Images");
     setTitleMissing(!title.trim());
     setDescriptionMissing(!description.trim());
     setCategoriesMissing(selectedCategories.length === 0);
-    setAllergensMissing(selectedAllergens.length === 0);
     setImagesMissing(images.length === 0);
     setMissingFields(newMissingFields);
 
@@ -67,7 +66,6 @@ const AddListing = ({ navigation, onPostCreation }) => {
       allergens: selectedAllergens,
       best_before: selectedDate.toISOString().split("T")[0],
       owner: userId,
-      //images: images,
     };
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
@@ -156,7 +154,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
       />
       <CustomInput
         title={"Description"}
-        maxLength={100}
+        maxLength={800}
         height={150}
         fontSize={18}
         multiline={true}
@@ -170,7 +168,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
         onPress={() => setCategoryModalVisible(true)}
         isFieldMissing={isCategoriesMissing}
       />
-      <Selector
+      <Selector 
         title={"Allergens"}
         desc={allergenDescription}
         onPress={() => setAllergenModalVisible(true)}
@@ -179,7 +177,9 @@ const AddListing = ({ navigation, onPostCreation }) => {
       <DatePickerSelector
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
+        minimumDate={new Date(Date.now() + 86400000)} // Set to tomorrow's date
       />
+
       <ImageUpload
         images={images}
         setImages={setImages}

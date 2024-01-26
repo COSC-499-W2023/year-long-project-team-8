@@ -1,97 +1,53 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
-import { MaterialIcons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
-import { Image } from "react-native";
-import React, { useState, useEffect } from "react";
-// import RNFS from "react-native-fs";
+import { MaterialIcons } from "@expo/vector-icons";
 
-// Component to represent a single food listing
-const Listing = ({ listing, idx }) => {
-  const [images, setImages] = useState([]);
-  useEffect(() => {
-    const loadImages = async () => {
-      if (!listing.images || listing.images.length === 0) {
-        console.log("No images loaded");
-        return;
-      }
-      console.log("Maybe images");
-
-      const loadedImages = await Promise.all(
-        listing.images.map(async (image, index) => {
-          const uri = image.image;
-          console.log("in function uri:", uri);
-
-          if (image) {
-            return (
-              <Card.Cover
-                key={index}
-                source={{ uri: `${uri}` }}
-                style={styles.cardImage}
-              />
-            );
-          } else {
-            console.log(`Image not found: ${listing}`);
-            return null;
-          }
-        })
-      );
-
-      setImages(loadedImages.filter((image) => image !== null));
-    };
-
-    loadImages();
-  }, []);
-
+const Listing = ({ listing, navigation }) => {
   return (
-    // Card component from 'react-native-paper' to visually represent the listing
     <Card key={listing.title} style={styles.card}>
-      {/* Touchable area to interact with the listing */}
       <TouchableOpacity
         onPress={() => {
-          console.log("Card pressed:", listing.title);
+          navigation.navigate('MainStack', { screen: 'PostDetails', params: { listing } });
         }}
-        key={listing.title}
       >
-        {/* Container for the food image listing.image */}
-        <View style={styles.imageContainer}>
-          <View style={styles.imageContainer}>{images}</View>
-        </View>
-        {/* Name of the dish */}
+        {/* Check if there's at least one image and display the first one */}
+        {listing.images && listing.images.length > 0 && (
+          <Card.Cover
+            source={{ uri: listing.images[0].image }}
+            style={styles.cardImage}
+          />
+        )}
+
         <CustomText fontType={"title"} style={styles.cardTitle}>
           {listing.title}
         </CustomText>
-        {/* Container for the dish creator's name and rating */}
+
         <View style={styles.nameAndRatingContainer}>
           <CustomText fontType={"text"} style={styles.byName}>
             By {listing.owner}
           </CustomText>
 
-          {/* Icon from 'MaterialIcons' to represent star rating */}
-          <MaterialIcons
-            name="star"
-            size={16}
-            color="gold"
-            style={styles.star}
-          />
+          <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
           <CustomText fontType={"subHeader"} style={styles.rating}>
-            {/* {listing.rating} */}
-            {1}
+            {1} {/*replace this with actual rating */}
           </CustomText>
         </View>
-        {/* Container for the date when the listing was posted and distance info */}
+
         <View>
           <CustomText fontType={"subHeader"} style={styles.datePosted}>
             {listing.date || "Just now"}
           </CustomText>
           <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {"0" /* {listing.distance} */}
+            {"0" /*replace this with actual distance */}
           </CustomText>
         </View>
       </TouchableOpacity>
     </Card>
   );
 };
+
 export default Listing;
 
 const styles = StyleSheet.create({
