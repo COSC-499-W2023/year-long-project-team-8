@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView, Dimensions } from "react-native";
-import { Card, Divider } from "react-native-paper";
+import { View, Image, ScrollView, Dimensions, TouchableOpacity } from "react-native";
+import { Divider } from "react-native-paper";
 import CustomText from "../CustomText";
 import Carousel from 'react-native-reanimated-carousel';
 import styles from "./styles";
@@ -8,7 +8,7 @@ import ChatButton from "../loginSignup/ButtonLanding";
 
 const { width: windowWidth } = Dimensions.get('window');
 
-const PostDetails = ({ route }) => {
+const PostDetails = ({ route, navigation }) => {
   const { listing } = route.params;
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -94,16 +94,26 @@ const PostDetails = ({ route }) => {
               </CustomText>
             </>
           )}
-
           <CustomText fontType={"text"} style={styles.description}>
             {listing.content}
           </CustomText>
         </View>
-        <View style={styles.chatButtonContainer}>
-          <ChatButton
-            title="CHAT"
-            onPress={() => console.log("chat")}
-          />     
+        <View style={styles.buttonContainer}>
+          {/* Go Back Button */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.goBackButton}
+          >
+            <CustomText style={styles.goBackButtonText} fontType={"title"}>{'GO BACK'}</CustomText>
+          </TouchableOpacity>
+
+          {/* Chat Button */}
+          <View style={styles.chatButtonContainer}>
+            <ChatButton
+              title="CHAT"
+              onPress={() => console.log("chat")}
+            />     
+          </View>
         </View>
       </ScrollView>
     </View>

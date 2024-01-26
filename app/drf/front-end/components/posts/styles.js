@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
       resizeMode: "cover",
     },
     card: {
-      margin: 10,
+      marginTop: 10,
       padding: 10,
       backgroundColor: "#fff",
     },
@@ -58,10 +58,20 @@ const styles = StyleSheet.create({
       paginationDotInactive: {
         backgroundColor: 'lightgrey',
       },
-      chatButtonContainer: {
-        marginBottom: 30, 
-        marginRight: 20, 
+      buttonContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: 20, 
       },
+      goBackButton: {
+       marginTop:20,
+      },
+      goBackButtonText: {
+        color: '#8a8a8a', 
+        fontSize: 18,
+      },
+    
   });
 
 
