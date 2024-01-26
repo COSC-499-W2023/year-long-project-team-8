@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#fff",
     },
     title: {
-      fontSize: 24,
+      fontSize: 28,
       fontWeight: "bold",
     },
     detailRow: {
@@ -27,9 +27,6 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: 10,
-    },
-    divider: {
-      marginVertical: 8,
     },
     description: {
       fontSize: 16,
@@ -40,24 +37,37 @@ const styles = StyleSheet.create({
       fontSize: 14,
       color: "grey",
     },
+    paginationOverlay: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+      justifyContent: "center",
+      padding: 10,
+    },
+    
     paginationContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10,
-      },
-      paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: 4,
-      },
-      paginationDotActive: {
-        backgroundColor: 'orange', 
-      },
-      paginationDotInactive: {
-        backgroundColor: 'lightgrey',
-      },
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf:"center",
+      padding: 10, 
+      backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+      borderRadius:20,
+    },
+    paginationDot: {
+      height: 10,
+      width: 10,
+      borderRadius: 5, 
+      marginHorizontal: 5, 
+    },
+    paginationDotActive: {
+      backgroundColor: 'orange', 
+    },
+    paginationDotInactive: {
+      backgroundColor: 'gray', 
+    },    
       buttonContainer: {
         flexDirection: 'row', 
         justifyContent: 'space-between', 

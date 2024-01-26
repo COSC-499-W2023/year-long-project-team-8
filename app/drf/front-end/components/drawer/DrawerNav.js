@@ -5,6 +5,7 @@ import Tabs from "../tabs/BottomTabs"; // Importing the bottom tabs navigation c
 import DrawerProps from "./DrawerProps.js"; // Custom drawer content
 import SettingsPage from "../settingsPage/Settings"; // Settings page component
 import Profile from "../profilePage/profilePage.js";
+import PostDetails from "../posts/PostDetails.js";
 
 // Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
@@ -67,7 +68,7 @@ const DrawerNav = () => {
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
               <Image
                 source={customHamburgerIcon}
-                style={{ width: 25, height: 25, marginLeft: 20 }}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),
@@ -78,6 +79,29 @@ const DrawerNav = () => {
         name="Settings"
         component={SettingsPage}
         options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            // Display the logo in the center of the header
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            // Hamburger icon button to toggle the drawer
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
+      {/* Hidden {Post selected to view details} */}
+      <Drawer.Screen
+        name="PostDetails" 
+        component={PostDetails} 
+        options={({ navigation }) => ({
+          drawerItemStyle:"hidden",
           headerTitleAlign: "center",
           headerTitle: () => (
             // Display the logo in the center of the header

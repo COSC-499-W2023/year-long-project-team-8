@@ -1,54 +1,76 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, TouchableOpacity, StyleSheet, Animated} from "react-native";
 import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Listing = ({ listing, navigation }) => {
+  const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
+
+  const zoomIn = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1.05, // Zoom in to 105%
+      useNativeDriver: true, // Use native driver for better performance
+    }).start();
+  };
+
+  const zoomOut = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1, // Zoom out back to 100%
+      useNativeDriver: true,
+    }).start();
+  };
   return (
-    <Card key={listing.title} style={styles.card}>
-      <TouchableOpacity
+    <TouchableOpacity
+        activeOpacity={1}
+        onPressIn={zoomIn} // Trigger zoom-in on press in
+        onPressOut={zoomOut} // Trigger zoom-out on press release
         onPress={() => {
-          navigation.navigate('MainStack', { screen: 'PostDetails', params: { listing } });
+          navigation.navigate('PostDetails', { listing: listing });
         }}
       >
-        {/* Check if there's at least one image and display the first one */}
-        {listing.images && listing.images.length > 0 && (
-          <Card.Cover
-            source={{ uri: listing.images[0].image }}
-            style={styles.cardImage}
-          />
-        )}
+        <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+          <Card key={listing.title} style={styles.card}>
+            {/* Card content */}
+            {listing.images && listing.images.length > 0 && (
+              <Card.Cover
+                source={{ uri: listing.images[0].image }}
+                style={styles.cardImage}
+              />
+            )}
 
-        <CustomText fontType={"title"} style={styles.cardTitle}>
-          {listing.title}
-        </CustomText>
-
-        <View style={styles.nameAndRatingContainer}>
-          <CustomText fontType={"text"} style={styles.byName}>
-            By {listing.owner}
+          <CustomText fontType={"title"} style={styles.cardTitle}>
+            {listing.title}
           </CustomText>
 
-          <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
-          <CustomText fontType={"subHeader"} style={styles.rating}>
-            {1} {/*replace this with actual rating */}
-          </CustomText>
-        </View>
+          <View style={styles.nameAndRatingContainer}>
+            <CustomText fontType={"text"} style={styles.byName}>
+              By {listing.owner}
+            </CustomText>
 
-        <View>
-          <CustomText fontType={"subHeader"} style={styles.datePosted}>
-            {listing.date || "Just now"}
-          </CustomText>
-          <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {"0" /*replace this with actual distance */}
-          </CustomText>
-        </View>
-      </TouchableOpacity>
-    </Card>
+            <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
+            <CustomText fontType={"subHeader"} style={styles.rating}>
+              {1} {/* Replace this with the actual rating */}
+            </CustomText>
+          </View>
+
+          <View>
+            <CustomText fontType={"subHeader"} style={styles.datePosted}>
+              {listing.date || "Just now"}
+            </CustomText>
+            <CustomText fontType={"subHeader"} style={styles.distanceText}>
+              {"0" /* Replace this with the actual distance */}
+            </CustomText>
+          </View>
+        </Card>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 
 export default Listing;
+
+
 
 const styles = StyleSheet.create({
   card: {

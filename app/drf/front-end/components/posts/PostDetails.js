@@ -16,23 +16,26 @@ const PostDetails = ({ route, navigation }) => {
     <View style={styles.imageContainer}>
       <Image source={{ uri: item.image }} style={styles.image} />
     </View>
-  );
+  );  
 
   const renderPagination = () => {
     return (
-      <View style={styles.paginationContainer}>
-        {listing.images.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.paginationDot,
-              activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
-            ]}
-          />
-        ))}
+      <View style={styles.paginationOverlay}>
+        <View style={styles.paginationContainer}>
+          {listing.images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
+              ]}
+            />
+          ))}
+        </View>
       </View>
     );
   };
+  
 
   const formatWithSpacesAfterCommas = (text) => {
     if (!text) return '';
@@ -48,38 +51,53 @@ const PostDetails = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollview}>
-        {listing.images && listing.images.length > 0 && (
-          <>
-            <Carousel
-              loop={listing.images.length > 1}
-              width={windowWidth}
-              height={250}
-              data={listing.images}
-              renderItem={renderItem}
-              autoPlay={false}
-              parallaxScrollingOffset={50}
-              parallaxScrollingScale={0.9}
-              scrollEnabled={listing.images.length > 1}
-              onSnapToItem={index => setActiveIndex(index)}
-            />
-            {renderPagination()}
-          </>
-        )}
+        <View style={styles.carouselContainer}>
+          {/* Check if there are multiple images */}
+          {listing.images && listing.images.length > 1 ? (
+            <>
+              <Carousel
+                loop={false}
+                width={windowWidth}
+                height={250}
+                data={listing.images}
+                renderItem={renderItem}
+                autoPlay={false}
+                parallaxScrollingOffset={50}
+                parallaxScrollingScale={0.9}
+                scrollEnabled
+                onSnapToItem={index => setActiveIndex(index)}
+              />
+              {/* Render pagination only if there are multiple images */}
+              <View style={styles.paginationOverlay}>
+                <View style={styles.paginationContainer}>
+                {listing.images.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.paginationDot,
+                      activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
+                    ]}
+                  />
+                ))}
+                </View>
+              </View>
+            </>
+          ) : listing.images && listing.images.length === 1 ? (
+            // Directly render the single image without the carousel
+            <Image source={{ uri: listing.images[0].image }} style={styles.image} />
+          ) : null}
+        </View>
 
         <View style={styles.card}>
           <CustomText fontType={"title"} style={styles.title}>
             {listing.title}
           </CustomText>
 
-          <Divider style={styles.divider} />
-
           <View style={styles.detailRow}>
             <CustomText fontType={"text"} style={styles.detail}>
               Categories: {formatWithSpacesAfterCommas(listing.categories)}
             </CustomText>
           </View>
-
-          <Divider style={styles.divider} />
 
           <CustomText fontType={"subHeader"} style={styles.detail}>
             Best Before: {formatDate(listing.best_before)}
