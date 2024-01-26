@@ -5,6 +5,7 @@ import Tabs from "../tabs/BottomTabs"; // Importing the bottom tabs navigation c
 import DrawerProps from "./DrawerProps.js"; // Custom drawer content
 import SettingsPage from "../settingsPage/Settings"; // Settings page component
 import Profile from "../profilePage/profilePage.js";
+import PostDetails from "../posts/PostDetails.js";
 
 // Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
@@ -67,7 +68,7 @@ const DrawerNav = () => {
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
               <Image
                 source={customHamburgerIcon}
-                style={{ width: 25, height: 25, marginLeft: 20 }}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),
@@ -88,12 +89,35 @@ const DrawerNav = () => {
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
               <Image
                 source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
+      {/* Hidden {Post selected to view details} */}
+      <Drawer.Screen
+        name="PostDetails" 
+        component={PostDetails} 
+        options={({ navigation }) => ({
+          drawerItemStyle: { display: 'none' }, // Use an object with 'display: none' to hide the drawer item
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            // Arrow icon button to go back
+            <TouchableOpacity onPress={() => navigation.goBack()}>              
+            <Image
+                source={require('../../assets/icons/back-arrow.png')} 
                 style={{ width: 25, height: 25, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),
         })}
       />
+
     </Drawer.Navigator>
   );
 };
