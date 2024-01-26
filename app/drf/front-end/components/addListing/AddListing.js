@@ -37,7 +37,6 @@ const AddListing = ({ navigation, onPostCreation }) => {
 
   //Form submittion logic
   const handlePost = async () => {
-    //TODO: Allow no allergens
     let newMissingFields = [];
 
     // Check each field and add to missingFields if empty

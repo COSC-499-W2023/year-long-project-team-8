@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       padding: 10,
     },
-    
     paginationContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
@@ -70,18 +69,10 @@ const styles = StyleSheet.create({
     },    
       buttonContainer: {
         flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        justifyContent: 'flex-end', 
         alignItems: 'center', 
         padding: 20, 
       },
-      goBackButton: {
-       marginTop:20,
-      },
-      goBackButtonText: {
-        color: '#8a8a8a', 
-        fontSize: 18,
-      },
-    
   });
 
 

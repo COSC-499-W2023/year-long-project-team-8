@@ -117,14 +117,6 @@ const PostDetails = ({ route, navigation }) => {
           </CustomText>
         </View>
         <View style={styles.buttonContainer}>
-          {/* Go Back Button */}
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.goBackButton}
-          >
-            <CustomText style={styles.goBackButtonText} fontType={"title"}>{'GO BACK'}</CustomText>
-          </TouchableOpacity>
-
           {/* Chat Button */}
           <View style={styles.chatButtonContainer}>
             <ChatButton

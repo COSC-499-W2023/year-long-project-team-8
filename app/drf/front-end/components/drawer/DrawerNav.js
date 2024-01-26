@@ -101,23 +101,23 @@ const DrawerNav = () => {
         name="PostDetails" 
         component={PostDetails} 
         options={({ navigation }) => ({
-          drawerItemStyle:"hidden",
+          drawerItemStyle: { display: 'none' }, // Use an object with 'display: none' to hide the drawer item
           headerTitleAlign: "center",
           headerTitle: () => (
-            // Display the logo in the center of the header
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            // Hamburger icon button to toggle the drawer
-            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Image
-                source={customHamburgerIcon}
+            // Arrow icon button to go back
+            <TouchableOpacity onPress={() => navigation.goBack()}>              
+            <Image
+                source={require('../../assets/icons/back-arrow.png')} 
                 style={{ width: 25, height: 25, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),
         })}
       />
+
     </Drawer.Navigator>
   );
 };
