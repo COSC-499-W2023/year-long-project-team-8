@@ -8,15 +8,21 @@ const styles = StyleSheet.create({
   scrollview: {
     flex: 1,
   },
+  imageContainer: {
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    width: '100%', 
+  },
   image: {
-    width: "100%",
+    width: "95%", 
     height: 250,
     resizeMode: "cover",
+    borderRadius: 15,
   },
   chatCard: {
     marginVertical: 10, 
     borderRadius: 15,
-    elevation: 2,
+    elevation: 3,
     padding: 10,
     backgroundColor: "#fff",
   },
@@ -88,6 +94,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
   },
+  dividerContainer:{
+    marginVertical:10,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'grey',
+  },
   descriptionContainer:{
     marginHorizontal:5,
   },
@@ -100,16 +113,42 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   viewMoreText: {
-    color: "#5c5c5c",
-    fontSize: 14,
+    color: "#9ba5f1",
+    fontSize: 16,
     fontWeight: "bold",
   },  
-  
-  allergenText: {
-    fontSize: 14,
-    color: "grey",
-    marginLeft: 5, 
-    marginBottom: 10, 
+  giverTitle:{
+    fontSize:17,
+  },
+  giverContent:{
+    flexDirection: "row",
+    alignItems:"center",
+    justifyContent:"flex-start",
+    marginVertical:10,
+  },
+  profilePic:{
+    width:50,
+    height:50,
+    borderRadius:50,
+    marginRight:10,
+  },
+  ratingDisplay:{
+    flexDirection:"row",
+  },
+  rating:{
+    marginLeft: 10,
+  },
+  reviews:{
+    marginLeft: 5,
+    color:"#6676f2"
+  },
+  allergenText:{
+    fontSize: 16,
+    color: "#333",
+    paddingVertical: 3,
+  },
+  allergenTitle:{
+    fontSize:17,
   },
   paginationOverlay: {
     position: 'absolute',

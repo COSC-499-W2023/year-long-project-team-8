@@ -18,7 +18,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isAllergenModalVisible, setAllergenModalVisible] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date(Date.now() + 86400000));
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
@@ -89,7 +89,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
     setSelectedCategories([]);
     setAllergenModalVisible(false);
     setSelectedAllergens([]);
-    setSelectedDate(new Date());
+    setSelectedDate(new Date(Date.now() + 86400000));
     setTitle("");
     setDescription("");
     setImages([]);
