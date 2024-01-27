@@ -52,7 +52,7 @@
     "react-native-js-shimmer-placeholder": "^1.0.7",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-maps": "^1.7.1",
+    "react-native-maps": "1.7.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-paper": "^5.11.0",

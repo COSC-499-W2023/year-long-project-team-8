@@ -1,42 +1,30 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView, Dimensions, TouchableOpacity } from "react-native";
+import { View, Image, ScrollView, Dimensions, TextInput, TouchableOpacity } from "react-native";
 import { Divider } from "react-native-paper";
 import CustomText from "../CustomText";
 import Carousel from 'react-native-reanimated-carousel';
 import styles from "./styles";
-import ChatButton from "../loginSignup/ButtonLanding";
+import ChatButton from "./ChatButton";
+import { categoryIcons } from '../Categories'; 
 
 const { width: windowWidth } = Dimensions.get('window');
+
 
 const PostDetails = ({ route, navigation }) => {
   const { listing } = route.params;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [message, onChangeMesage] = React.useState("Hi! Can I get this plate?");
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+
+  const chatBubble = require("../../assets/icons/chat-bubbles.png");
 
   const renderItem = ({ item }) => (
     <View style={styles.imageContainer}>
       <Image source={{ uri: item.image }} style={styles.image} />
     </View>
   );  
-
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationOverlay}>
-        <View style={styles.paginationContainer}>
-          {listing.images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
   
-
   const formatWithSpacesAfterCommas = (text) => {
     if (!text) return '';
     return Array.isArray(text) ? text.join(', ') : text.split(',').join(', ');
@@ -93,37 +81,77 @@ const PostDetails = ({ route, navigation }) => {
             {listing.title}
           </CustomText>
 
-          <View style={styles.detailRow}>
-            <CustomText fontType={"text"} style={styles.detail}>
-              Categories: {formatWithSpacesAfterCommas(listing.categories)}
+          <CustomText fontType={"subHeader"} style={styles.bestBefore}>
+            Best Before: {formatDate(listing.best_before)}
+          </CustomText>
+
+          {/*Chat Section*/}
+          <View style={styles.chatCard}>
+            <View style={styles.chatHeader}>
+              <Image source={chatBubble} style={styles.chatIcon}/>
+              <CustomText fontType={"title"} style={styles.chatTitle}>Request Plate</CustomText>
+            </View>
+            <View style={styles.messageBox}>
+              <TextInput
+                style={styles.messageInput}
+                onChangeText={onChangeMesage}
+                value={message}
+              />
+              <ChatButton
+              title="SEND"
+              onPress={() => console.log("chat")}
+              />               
+            </View>
+          </View>
+
+          {/*Category Section*/}
+          <View style={styles.categoryContainer}>
+            <CustomText fontType={"title"} style={styles.categoryTitle}>Categories</CustomText>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginHorizontal: -10}}>
+              <View style={styles.detailRow}>
+                {listing.categories && typeof listing.categories === 'string' && listing.categories.split(',').map((category, index) => (
+                  <View key={index} style={styles.categoryItem}>
+                    <Image
+                      source={categoryIcons[category.trim()]}
+                      style={styles.categoryIcon}
+                    />
+                    <CustomText fontType={"text"} style={styles.categoryText}>
+                      {category.trim()} 
+                    </CustomText>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+          
+          {/*Description Section*/}
+          <View style={styles.descriptionContainer}>
+            <CustomText fontType={"title"} style={styles.descriptionTitle}>
+              Description
+            </CustomText>
+            <CustomText fontType={"text"} style={styles.descriptionText}>
+              {showFullDescription || listing.content.length <= 100
+                ? listing.content
+                : `${listing.content.substring(0, 100)}... `}
+              {listing.content.length > 100 && (
+                <CustomText
+                  onPress={() => setShowFullDescription(!showFullDescription)}
+                  style={styles.viewMoreText}>
+                  {showFullDescription ? 'See Less' : 'See More'}
+                </CustomText>
+              )}
             </CustomText>
           </View>
 
-          <CustomText fontType={"subHeader"} style={styles.detail}>
-            Best Before: {formatDate(listing.best_before)}
-          </CustomText>
 
           {/* Conditionally display allergens */}
           {listing.allergens && listing.allergens.length > 0 && (
             <>
-              <Divider style={styles.divider} />
-              <CustomText fontType={"subHeader"} style={styles.distanceText}>
+              <CustomText fontType={"subHeader"} style={styles.allergenText}>
                 Allergens: {formatWithSpacesAfterCommas(listing.allergens)}
               </CustomText>
             </>
           )}
-          <CustomText fontType={"text"} style={styles.description}>
-            {listing.content}
-          </CustomText>
-        </View>
-        <View style={styles.buttonContainer}>
-          {/* Chat Button */}
-          <View style={styles.chatButtonContainer}>
-            <ChatButton
-              title="CHAT"
-              onPress={() => console.log("chat")}
-            />     
-          </View>
         </View>
       </ScrollView>
     </View>
