@@ -36,20 +36,22 @@ class CustomUserManager(UserManager):
         return self._create_user(email, password, commit=commit)
    
 class User(AbstractUser):
-    email = models.EmailField(unique=True, blank=False, null=False)
-    firstname = models.CharField(max_length=30, blank=True, null=True)
-    lastname = models.CharField(max_length=30, blank=True, null=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    reset_code = models.CharField(max_length=6, blank=True, null=True)
-    rating = models.DecimalField(default=0.0, max_digits=3, decimal_places=1, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-    objects = CustomUserManager()
-    
-    def update_rating(self):
+   email = models.EmailField(unique=True, blank=False, null=False)
+   firstname = models.CharField(max_length=30, blank=True, null=True)
+   lastname = models.CharField(max_length=30, blank=True, null=True)
+   phone = models.CharField(max_length=15, blank=True, null=True)
+   reset_code = models.CharField(max_length=6, blank=True, null=True)
+   rating = models.FloatField(default=0.0)
+#    received_reviews = models.ManyToManyField('Review', related_name='receiver_reviews', blank=True)
+#    given_reviews = models.ManyToManyField('Review', related_name='giver_reviews', blank=True)
+   
+   USERNAME_FIELD = "email"
+   REQUIRED_FIELDS = []
+   objects = CustomUserManager()
+   
+   def update_rating(self):
         # Calculate the average rating from all reviews associated with this user
-        reviews = self.reviews.all()
+        reviews = self.received_reviews.all()
         total_rating = sum(review.rating for review in reviews) if reviews else 0
         average_rating = total_rating / len(reviews) if reviews else 0
 
@@ -58,9 +60,10 @@ class User(AbstractUser):
         self.save()
 
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_reviews')
+    giver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_reviews')
     content = models.TextField()
-    rating = models.DecimalField(default=0.0, max_digits=3, decimal_places=1, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def save(self, *args, **kwargs):
@@ -68,4 +71,4 @@ class Review(models.Model):
         super().save(*args, **kwargs)
 
         # Update the associated user's rating
-        self.user.update_rating()
+        self.receiver.update_rating()
