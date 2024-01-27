@@ -41,14 +41,31 @@ class User(AbstractUser):
     lastname = models.CharField(max_length=30, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     reset_code = models.CharField(max_length=6, blank=True, null=True)
-    rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    rating = models.DecimalField(default=0.0, max_digits=3, decimal_places=1, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
+    
+    def update_rating(self):
+        # Calculate the average rating from all reviews associated with this user
+        reviews = self.reviews.all()
+        total_rating = sum(review.rating for review in reviews) if reviews else 0
+        average_rating = total_rating / len(reviews) if reviews else 0
+
+        # Update the user's rating
+        self.rating = average_rating
+        self.save()
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     content = models.TextField()
-    rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    rating = models.DecimalField(default=0.0, max_digits=3, decimal_places=1, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwargs):
+        # Save the review instance
+        super().save(*args, **kwargs)
+
+        # Update the associated user's rating
+        self.user.update_rating()
