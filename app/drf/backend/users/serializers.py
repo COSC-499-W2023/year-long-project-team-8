@@ -1,12 +1,19 @@
 from rest_framework.serializers import ModelSerializer
  
-from .models import User
+from .models import User, Review
  
+class ReviewSerializer(ModelSerializer):
+    
+    class Meta:
+        model = Review
+        fields = ["user", "content", "rating", "timestamp"]
+        
 class UserSerializer(ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
      
     class Meta:
         model = User
-        fields = ["url", "email", "password", "firstname", "lastname", "phone"]
+        fields = ["url", "email", "password", "firstname", "lastname", "phone", "reviews", "rating"]
         extra_kwargs = {"password": {"write_only": True}}
         
     def create(self, validated_data):
@@ -14,3 +21,4 @@ class UserSerializer(ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+    
