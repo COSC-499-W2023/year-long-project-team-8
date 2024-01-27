@@ -42,8 +42,6 @@ class User(AbstractUser):
    phone = models.CharField(max_length=15, blank=True, null=True)
    reset_code = models.CharField(max_length=6, blank=True, null=True)
    rating = models.FloatField(default=0.0)
-#    received_reviews = models.ManyToManyField('Review', related_name='receiver_reviews', blank=True)
-#    given_reviews = models.ManyToManyField('Review', related_name='giver_reviews', blank=True)
    
    USERNAME_FIELD = "email"
    REQUIRED_FIELDS = []
