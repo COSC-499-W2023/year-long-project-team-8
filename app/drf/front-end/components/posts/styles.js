@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems:"center",
     justifyContent:"flex-start",
+    marginBottom: 10, 
   },
   profilePic:{
     width:50,
@@ -171,11 +172,11 @@ const styles = StyleSheet.create({
     flexDirection:"row",
   },
   rating:{
-    marginLeft: 10,
+    marginLeft: 7,
   },
   reviews:{
     marginLeft: 5,
-    color:"#6676f2"
+    color:"#9ba5f1"
   },
   allergenText:{
     fontSize: 16,
@@ -184,9 +185,9 @@ const styles = StyleSheet.create({
   },
   allergenTitle:{
     fontSize:17,
+    marginBottom: 10, 
   },
   allergenContainer:{
-    marginTop:10,
     marginHorizontal:5
   },
   paginationOverlay: {
@@ -225,6 +226,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20, 
   },
+  postedContainer:{
+    
+  }
 });
 
 

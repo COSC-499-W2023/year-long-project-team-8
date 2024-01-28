@@ -18,12 +18,8 @@ const PostDetails = ({ route, navigation }) => {
   const [message, onChangeMesage] = React.useState("Hi! Can I get this plate?");
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens } = useContext(AuthContext); 
   
-  const formatWithSpacesAfterCommas = (text) => {
-    if (!text) return '';
-    return Array.isArray(text) ? text.join(', ') : text.split(',').join(', ');
-  };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -31,25 +27,33 @@ const PostDetails = ({ route, navigation }) => {
     return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
   }; 
 
+  // function to get username or first name for user that did the listing
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const userData = await getUserData(listing.owner, authTokens);
-        setUserDetails(userData);
+        const data = await getUserData(listing.owner, authTokens);
+        setUserDetails(data);
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
     };
 
-    if (listing.owner && authTokens) {
-      fetchUserDetails();
-    }
-  }, [listing.owner, authTokens]);
+    fetchUserDetails();
+  }, [listing.owner]);
 
-  console.log(userDetails); // Can't access user's rating. Need to add field profile picture too.
+  const getDisplayName = () => {
+    if (userDetails) {
+      return userDetails.firstname || userDetails.email.split('@')[0];
+    }
+    return "Unknown";
+  }; // Can't access user's rating. Need to add field profile picture too.
 
   // Helper function to display name or email
-  const displayName = userDetails ? (userDetails.firstname || userDetails.email.split('@')[0]) : 'Unknown...';
+  const displayName = getDisplayName();
+
+  //get user rating from userDetails or set to 5 if null
+  const userRating = userDetails && userDetails.rating ? parseFloat(userDetails.rating).toFixed(1) : '5.0';
+
 
   // function to reset fields when user navigates out of listing
   useFocusEffect(
@@ -80,7 +84,10 @@ const PostDetails = ({ route, navigation }) => {
           </CustomText>
 
           {/*Chat Section*/}
-          <ChatComponent/>
+          <ChatComponent
+            initialMessage="Hi! Can I get this plate?"
+            listing = {listing}
+          />
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />
@@ -92,10 +99,13 @@ const PostDetails = ({ route, navigation }) => {
             setShowFullDescription={setShowFullDescription}         
           />
 
+
+          {/*Giver details Section*/}
           <DetailsComponent
             displayName={displayName}
-            rating={4.5} // Replace with actual rating variable if available
-            reviews={8}  // Replace with actual reviews count variable if available
+            rating={userRating} 
+            reviews={8}
+            userProfilePicture={userDetails && userDetails.picture ? userDetails.picture : null}
           />
         
           {/* Conditionally display allergens */}
@@ -105,7 +115,7 @@ const PostDetails = ({ route, navigation }) => {
             </>
           )}
 
-          <View style={styles.allergenContainer}>
+          <View style={styles.dividerContainer}>
             <CustomText fontType={"subHeader"} style={styles.bestBefore}>
               Posted {formatDate(listing.created_at)}
             </CustomText>

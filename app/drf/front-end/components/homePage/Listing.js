@@ -33,6 +33,15 @@ const Listing = ({ listing, navigation }) => {
     return "Unknown";
   };
 
+  const getDisplayRating = () => {
+    if (userDetails && userDetails.rating) {
+      return userDetails.rating;
+    }
+    return 5;
+  };
+
+  
+
   const zoomIn = () => {
     Animated.spring(scaleValue, {
       toValue: 1.05, // Zoom in to 105%
@@ -76,7 +85,7 @@ const Listing = ({ listing, navigation }) => {
 
             <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
             <CustomText fontType={"subHeader"} style={styles.rating}>
-              {1} {/* Replace this with the actual rating */}
+              {getDisplayRating()}
             </CustomText>
           </View>
 
@@ -85,7 +94,7 @@ const Listing = ({ listing, navigation }) => {
               {listing.date || "Just now"}
             </CustomText>
             <CustomText fontType={"subHeader"} style={styles.distanceText}>
-              {"0" /* Replace this with the actual distance */}
+              {"0" /* TODO: Replace this with the actual distance */}
             </CustomText>
           </View>
         </Card>
@@ -95,8 +104,6 @@ const Listing = ({ listing, navigation }) => {
 };
 
 export default Listing;
-
-
 
 const styles = StyleSheet.create({
   card: {

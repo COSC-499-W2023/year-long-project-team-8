@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Image, TextInput, TouchableOpacity, Share, Linking } from 'react-native';
 import CustomText from '../CustomText'; 
 import ChatButton from './ChatButton'; 
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 
-const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?" }) => {
+const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [message, setMessage] = useState(initialMessage);
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
@@ -28,16 +28,29 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?" }) => {
     // TODO: Open chat page
   };
 
-  const handleSharePress = () => {
-    console.log(`Share listing`);
-    // TODO: Open chat page
+  //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
+  const handleSharePress = async () => {
+    try {
+      const listingDeepLink = `http://tinyurl.com/mr39a6wr`; // Create your own in the browser with the format exp://ip-address/passtheplate/posts/${listing.id}
+      const shareMessage = `Check out this${listing.title} from Pass The O \n\n${listingDeepLink}`;
+  
+      await Share.share({
+        title: listing.title,
+        message: shareMessage,
+        url: listingDeepLink,
+      });
+  
+      console.log('Shared successfully');
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
   };
-
+  
+  
   const handleUserPress = () => {
     console.log(`View user`);
     // TODO: Open user's page
   };
-
 
 
   return (
