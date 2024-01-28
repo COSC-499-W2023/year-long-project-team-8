@@ -156,7 +156,7 @@ const EditProfilePage = () => {
         <TouchableOpacity style={styles.deleteAccountButton}>
           <Text style={styles.deleteAccountText}>Delete Account</Text>
         </TouchableOpacity>
-      */}
+      */}y
         </View>
     </SafeAreaView>
   );
