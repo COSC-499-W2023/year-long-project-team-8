@@ -20,11 +20,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   chatCard: {
-    marginVertical: 10, 
+    marginVertical: 10,
     borderRadius: 15,
-    elevation: 3,
+    elevation: 3, 
     padding: 10,
     backgroundColor: "#fff",
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.1, 
+    shadowRadius: 3.84, 
   },
   chatHeader: {
     flexDirection: "row",
@@ -32,13 +36,36 @@ const styles = StyleSheet.create({
     marginHorizontal: 5, 
   },
   chatTitle: {
-    fontSize: 15,
+    fontSize: 18,
     color: "#5c5c5c",
   },
   chatIcon: {
     width: 28,
     height: 28,
     marginRight:5
+  },
+  chatButtonsContainer:{
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: 5,
+    marginHorizontal:10, 
+    alignContent:"center",
+  },
+  chatButton: {
+    alignItems: "center", 
+    justifyContent: "center",
+    borderRadius: 20,
+    padding: 5,
+    marginHorizontal: 5, 
+  },
+  chatButtonIcon:{
+    width: 30, 
+    height: 30
+  },
+  chatButtonText:{
+    textAlign: 'center',
+    fontSize:13,
+    marginTop:2,
   },
   messageBox: {
     flexDirection: "row",
@@ -63,11 +90,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 10, 
+    marginBottom: 10,
+    marginHorizontal:5 
   },
   bestBefore: {
     fontSize: 14,
     marginBottom: 10, 
+    marginHorizontal:5 
   },
   detailRow: {
     flexDirection: "row",
@@ -76,9 +105,12 @@ const styles = StyleSheet.create({
     marginVertical: 10, 
     marginHorizontal: 10,
   },
+  categoryContainer:{
+    marginHorizontal:5,
+  },
   categoryTitle: {
     fontSize: 17,
-    marginBottom: 5, 
+    marginBottom: 10, 
   },
   categoryItem: {
     alignItems: 'center',
@@ -117,14 +149,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },  
+  giverDetailsContainer:{
+    marginHorizontal:5,
+  },
   giverTitle:{
-    fontSize:17,
+    fontSize: 17,
+    marginBottom: 10, 
   },
   giverContent:{
     flexDirection: "row",
     alignItems:"center",
     justifyContent:"flex-start",
-    marginVertical:10,
   },
   profilePic:{
     width:50,
@@ -149,6 +184,10 @@ const styles = StyleSheet.create({
   },
   allergenTitle:{
     fontSize:17,
+  },
+  allergenContainer:{
+    marginTop:10,
+    marginHorizontal:5
   },
   paginationOverlay: {
     position: 'absolute',
