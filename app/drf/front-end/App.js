@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { StatusBar, View, Linking } from "react-native";
+import { StatusBar, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./components/landing/Landing";
@@ -14,8 +14,24 @@ import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
+import * as Linking from "expo-linking";
+import CustomText from "./components/CustomText";
+
+const prefix = Linking.createURL("/");
 
 const Stack = createStackNavigator();
+
+// To test deep linking in emulator RUN IN COMMAND LINE: adb shell am start -a android.intent.action.VIEW -d "exp://[IP AND PORT WERE EXPO IS RUNNING]/--/Landing" host.exp.exponent
+// To test in phone, transform this: exp://IP-ADDRESS:PORT/--/Landing into a tinyurl and then click on url
+const linking = {
+  prefixes: [prefix],
+  config: {
+    screens: {
+      Landing: "Landing",
+      MainApp: "MainApp",
+    },
+  },
+};
 
 const App = () => {
   return (
@@ -24,13 +40,14 @@ const App = () => {
       <View style={{ flex: 1 }}>
         <StatusBar />
         <AuthProvider>
-          <NavigationContainer>
+          <NavigationContainer linking={linking} fallback={<CustomText>Loading...</CustomText>}>
             <Stack.Navigator
               initialRouteName="Landing"
               screenOptions={{
                 headerShown: false,
               }}
-            >
+            > 
+
               <Stack.Screen name="Landing" component={Landing} />
               <Stack.Screen name="Details" component={Details} />
               <Stack.Screen name="MainApp" component={MainApp} />
