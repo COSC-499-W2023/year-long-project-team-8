@@ -34,9 +34,10 @@ const styles = StyleSheet.create({
   },
   // Styling for the back arrow image
   backArrow: {
-    height: 30,
-    width: 30,
+    height: 40,
+    width: 40,
     transform: [{ translateY: -15 }],
+    top: 5,
   },
   // Styling for the save button text
   saveButton: {
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   buttonFieldContainer: {
-    marginTop: 95,
+    marginTop: 55,
     flex: 0.4,
     alignItems: 'center',
     justifyContent: 'center',

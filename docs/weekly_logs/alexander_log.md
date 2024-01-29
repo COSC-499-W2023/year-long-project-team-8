@@ -271,4 +271,31 @@
 |   1    |           |    ✓       |
 |   2    | ✓         |            |
 
+### Work Period
+ - January 22 - 28, 2024
+
+### Task Types
+![Alt text](img/ar_w16.png)
+
+### Recap of Students Goals
+
+- Front end Add Listing feature
+- Front end Post details feature
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/62f232a7-09fc-49a9-aba0-7cd4ed2b1157
+
+### Student Tasks on Project Board
+
+- #1 Add listing fe 
+- #2 Post details fe
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |     ✓     |            |
+|   2    |           |    ✓       |
+
+
 

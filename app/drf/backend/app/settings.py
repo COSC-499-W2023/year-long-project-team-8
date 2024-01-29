@@ -42,7 +42,7 @@ local_ip = get_local_ip()
 
 # Set up path for media(images)
 # Actual directory user files go to
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/postImages')
 
 # URL used to access the media
 MEDIA_URL = '/media/'
@@ -50,7 +50,8 @@ MEDIA_URL = '/media/'
 ALLOWED_HOSTS = [local_ip,
                  '127.0.0.1',
                  'localhost',
-                 '142.231.67.157',]
+                 '142.231.67.157',
+                 '0.0.0.0',]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
@@ -247,5 +248,5 @@ EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'passtheplate9@gmail.com'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = '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'
 #'passtheplate9@gmail.com' && Projectorange

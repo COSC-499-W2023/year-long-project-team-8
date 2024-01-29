@@ -3,14 +3,20 @@ from rest_framework import status
 from django.core import mail
 from unittest.mock import patch
 from rest_framework.test import APITestCase,URLPatternsTestCase
-from products.models import Product
+from products.models import Product, ProductImages
 from users.models import User
 from django.test import TestCase
-from products.serializers import ProductSerializer
+from products.serializers import ProductImageSerializer, ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+import os
+from django.core.files import File
+from pathlib import Path
+from django.conf import settings
+from unittest.mock import Mock, mock_open
+import io
 
         
 class UserExistenceTest(TestCase):
@@ -281,3 +287,86 @@ class ProductValidityTests(TestCase):
             )
             self.product.full_clean() 
         self.assertEqual(Product.objects.count(), 0)
+            
+class ImageViewSetTest(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        future_date = timezone.now() + timezone.timedelta(days=30)
+
+        # Create a product with a mocked image
+        self.product = Product.objects.create(
+            title='Test Product',
+            content='Test content',
+            owner=self.user,
+            best_before=future_date,
+        )
+
+        # Mock the file-related operations
+        mock_image_data = b'Test image data'  # Replace with your mock image data
+        self.mock_image_file = mock_open(read_data=mock_image_data)
+
+        with patch('builtins.open', self.mock_image_file):
+            # Use the mocked file directly when creating ProductImages
+            self.product_image = ProductImages.objects.create(
+                product=self.product,
+                image=File(self.mock_image_file.return_value)
+            )
+
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+
+    def test_create_product_image(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+
+        # Use the correct URL for image creation endpoint
+        response = self.client.get(f'/api/products/{self.product.id}/')
+        print(f"Received response: {response.content}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        response_data = response.json()
+        image_url = response_data['images'][0]['image']
+        
+        self.assertIsNotNone(response_data['images'][0]['image'])
+
+        expected_url_part = 'http://testserver/media/MagicMock/open().name/'
+        self.assertTrue(image_url.startswith(expected_url_part))
+
+    def tearDown(self):
+        # Clean up any created files
+        for image in ProductImages.objects.all():
+            image.image.delete()
+            image.delete()
+            
+class ReviewViewSetTest(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+          
+    def test_create_user_review(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+
+        data = {
+            "user": self.user.id,
+            "content": "This is a test review for the user",
+            "rating": '4.5'  # Change this to the desired rating value
+        }
+
+        # Make a POST request to create a review for the user
+        response = self.client.post('/api/reviews/', data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check if the review was created successfully
+        self.assertIn("user", response.data)
+        self.assertEqual(response.data["content"], data["content"])
+        self.assertEqual(response.data["rating"], data["rating"])
+        self.assertEqual(response.data["user"], self.user.id)

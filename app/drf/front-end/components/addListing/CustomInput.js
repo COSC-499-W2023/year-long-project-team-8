@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     marginHorizontal: 10,
     paddingTop: 5,
+    paddingBottom: 20, 
     textAlignVertical: "top",
   },
   charCount: {

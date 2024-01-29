@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
   // Rating container style
   ratingContainer: {
     alignItems: 'center',
-    top: 20,
+    top: 30,
   },
 
   // Profile container style
   profileContainer: {
-    top: 40,
+    top: 50,
     alignItems: 'center',
   },
 
@@ -113,11 +113,12 @@ const styles = StyleSheet.create({
   // "View All" button style
   viewAllButton: {
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.lightOrange,
     borderRadius: 10,
     marginTop: 20,
-    height: 40,
-    width: 120,
+    height: 45,
+    width: 140,
   },
 
   // "View All" button text style
@@ -125,7 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     color: 'white',
-    marginTop: 10,
   },
 });
 

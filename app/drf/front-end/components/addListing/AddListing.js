@@ -11,13 +11,14 @@ import DatePickerSelector from "./DatePickerSelector";
 import MissingFieldsModal from "./MissingFieldsModal"; // import the modal
 import { createProductImages } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
+import { useAppState } from "../../context/AppStateContext";
 
-const AddListing = () => {
+const AddListing = ({ navigation, onPostCreation }) => {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isAllergenModalVisible, setAllergenModalVisible] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date(Date.now() + 86400000));
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
@@ -32,20 +33,20 @@ const AddListing = () => {
 
   const [showMissingFieldsModal, setShowMissingFieldsModal] = useState(false);
 
+  const { updatePostCreated } = useAppState();
+
   //Form submittion logic
-  const handlePost = () => {
+  const handlePost = async () => {
     let newMissingFields = [];
 
     // Check each field and add to missingFields if empty
     if (!title.trim()) newMissingFields.push("Title");
     if (!description.trim()) newMissingFields.push("Description");
     if (selectedCategories.length === 0) newMissingFields.push("Categories");
-    if (selectedAllergens.length === 0) newMissingFields.push("allergens");
     if (images.length === 0) newMissingFields.push("Images");
     setTitleMissing(!title.trim());
     setDescriptionMissing(!description.trim());
     setCategoriesMissing(selectedCategories.length === 0);
-    setAllergensMissing(selectedAllergens.length === 0);
     setImagesMissing(images.length === 0);
     setMissingFields(newMissingFields);
 
@@ -61,16 +62,24 @@ const AddListing = () => {
       title: title,
       content: description,
       categories: selectedCategories,
-      //allergens: selectedAllergens,
+      allergens: selectedAllergens,
       best_before: selectedDate.toISOString().split("T")[0],
       owner: userId,
-      //images: images,
     };
 
     console.log("Form Data:", JSON.stringify(formData, null, 2));
     console.log("Image Data:", JSON.stringify(images, null, 2));
-    //TODO: Backend implementation
-    createProductImages(formData, images, authTokens);
+    try {
+      // Wait for createProductImages to finish before proceeding
+      await createProductImages(formData, images, authTokens);
+
+      // If createProductImages is successful, update postCreated and navigate
+      await updatePostCreated();
+      navigation.navigate("Home");
+    } catch (error) {
+      // Handle error if createProductImages fails
+      console.error("Error creating product images:", error);
+    }
   };
 
   // Function to reset the form
@@ -80,7 +89,7 @@ const AddListing = () => {
     setSelectedCategories([]);
     setAllergenModalVisible(false);
     setSelectedAllergens([]);
-    setSelectedDate(new Date());
+    setSelectedDate(new Date(Date.now() + 86400000));
     setTitle("");
     setDescription("");
     setImages([]);
@@ -144,7 +153,7 @@ const AddListing = () => {
       />
       <CustomInput
         title={"Description"}
-        maxLength={100}
+        maxLength={800}
         height={150}
         fontSize={18}
         multiline={true}
@@ -158,7 +167,7 @@ const AddListing = () => {
         onPress={() => setCategoryModalVisible(true)}
         isFieldMissing={isCategoriesMissing}
       />
-      <Selector
+      <Selector 
         title={"Allergens"}
         desc={allergenDescription}
         onPress={() => setAllergenModalVisible(true)}
@@ -167,7 +176,9 @@ const AddListing = () => {
       <DatePickerSelector
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
+        minimumDate={new Date(Date.now() + 86400000)} // Set to tomorrow's date
       />
+
       <ImageUpload
         images={images}
         setImages={setImages}

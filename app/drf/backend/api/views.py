@@ -53,7 +53,7 @@ class ForgotPasswordView(APIView):
 
              # Send the reset code to the user's email using SendGrid
             try:
-                sg = sendgrid.SendGridAPIClient(api_key='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')
+                sg = sendgrid.SendGridAPIClient(api_key='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')
                 from_email = 'passtheplate9@gmail.com'
                 to_email = email
                 subject = 'Password Reset'
