@@ -22,7 +22,7 @@ const Stack = createStackNavigator();
 const prefix = Linking.createURL("/");
 
 // To test deep linking in emulator RUN IN COMMAND LINE: adb shell am start -a android.intent.action.VIEW -d "exp://IP:PORT/--/passtheplate/posts/[1 OR 2 OR 3, ...]" 
-// To test in phone, transform this:    exp://IP ADDRESS:PORT/--/passtheplate/posts/1     into a tinyurl and then click on url
+// To test in phone, transform this:    exp://192.168.1.67:8081/--/passtheplate/posts/6     into a qrcode and then scan it or into tiny url and click on it
 const linking = {
   prefixes: [prefix],
   config: {
