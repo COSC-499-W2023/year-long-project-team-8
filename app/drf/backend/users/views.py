@@ -7,6 +7,9 @@ from .serializers import UserSerializer
 from .permissions import UserPermission
 from .models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .models import Review
+from .serializers import ReviewSerializer
+from rest_framework.permissions import IsAuthenticated
  
 class UserViewSet(ModelViewSet):
  
@@ -22,3 +25,9 @@ class UserViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+    
+class ReviewViewSet(ModelViewSet):
+    serializer_class = ReviewSerializer
+    queryset = Review.objects.all()
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
