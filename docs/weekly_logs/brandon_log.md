@@ -406,28 +406,30 @@ January 7 - January 14, 2024
 <!-- 
 - start/end dates of the week
 -->
-January 14 - 21 2024
+January 21 - 28 2024
 ### Individual Peer Evaluation
 <!-- 
 - screenshot of the weekly peer evaluation
 -->
-![alt-text](./img/bm_t2_w2.png)
+![alt-text](./img/bm_t2_w3.png)
 
 ### Recap of Students Goals
 <!--
 - what tasks are you aiming to have completed by the end of the week
 -->
--
--
--
+- fix an issue where the map distance circle is not working on android
+- find a way to link the sliders on the map and on the home page modal
+- help implement the reviews function onto the profile page
 
 ### Student Tasks on Project Board
 <!-- 
 - Tasks undertaken on the project board
 -->
-- 
--
--
+- #21 link slider and modal on home page
+- #20 calculate the distance from the users location to a post
+- #183 fix issues that arose with the map on android
+- #193 edit profile is not updating the profile page information
+- #194 review stars having functionality issues
 
 ### Which Tasks Are Completed vs. In Progress
 <!--
@@ -436,13 +438,14 @@ January 14 - 21 2024
 ✓ x
 -->
 
-| Item # | Completed  | To Be Done |
-|:------:|:-----------|:-----------|
-| 1      |            |            |
-| 2      |            |            |
-| 3      |            |            |
-| 4      |            |            |
-| 5      |            |            |
+| Item # |  Completed  |  To Be Done  |
+|:------:|:-----------:|:------------:|
+|   21   |             |      ✓       |
+|   20   |             |      ✓       |
+|  183   |             |      ✓       |
+|  193   |      ✓      |              |
+|  194   |      ✓      |              |
+
 
 
 
