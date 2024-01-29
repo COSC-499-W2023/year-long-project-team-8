@@ -32,7 +32,6 @@ const PostDetails = ({ route, navigation }) => {
             AsyncStorage.removeItem('pendingListingId'); // Clear the stored listingId after fetching
           } catch (error) {
             console.error('Error fetching listing by ID:', error);
-            // Handle error, e.g., show an error message or navigate back
           }
         }
       }

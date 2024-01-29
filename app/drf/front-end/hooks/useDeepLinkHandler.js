@@ -8,7 +8,6 @@ export const useDeepLinkHandler = (navigation) => {
   const [receivedDeepLinkInBackground, setReceivedDeepLinkInBackground] = useState(false);
 
   const handleDeepLink = async (event) => {
-    console.log("Received deep link URL:", event.url);
     if (event.url) {
       setReceivedDeepLinkInBackground(true); // Mark that a deep link was received while in background
       const data = Linking.parse(event.url);
@@ -35,7 +34,6 @@ export const useDeepLinkHandler = (navigation) => {
       if (!receivedDeepLinkInBackground) {
         const initialURL = await Linking.getInitialURL();
         if (initialURL) {
-          console.log("Initial URL:", initialURL);
           handleDeepLink({ url: initialURL });
         }
       }
