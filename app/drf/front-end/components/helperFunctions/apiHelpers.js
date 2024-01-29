@@ -289,15 +289,19 @@ async function fetchListingById(listingId, authTokens) {
     if (response.ok) {
       const listingData = await response.json();
       return listingData;
+    } else if (response.status === 404) {
+      // If the listing is not found, throw a specific error
+      throw new Error("Listing not found");
     } else {
-      // Handle HTTP errors
+      // Handle other HTTP errors
       throw new Error("Failed to fetch listing data. Status: " + response.status);
     }
   } catch (error) {
-    console.error("Error fetching listing by ID:", error);
+    console.error("Error fetching listing by ID:", error.message);
     throw error; // Rethrow the error for handling in the calling context
   }
 }
+
 
 
 // Export all the functions

@@ -121,6 +121,7 @@ const Login = ({ onSwitch, navigation }) => {
           if (listingId) {
             // Fetch the listing details with the listing ID
             const listing = await fetchListingById(listingId, authTokens);
+            console.log(listing);
             // Navigate to PostDetails with the fetched listing as a parameter
             navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
             await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
