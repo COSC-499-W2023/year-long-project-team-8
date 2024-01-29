@@ -1,11 +1,46 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { View, TouchableOpacity, StyleSheet, Animated} from "react-native";
 import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
+import { getUserData } from '../helperFunctions/apiHelpers'; 
+import AuthContext from '../../context/AuthContext'; 
+
 
 const Listing = ({ listing, navigation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
+  const [userDetails, setUserDetails] = useState(null);
+  const { authTokens } = useContext(AuthContext); 
+
+  // function to get username or first name for user that did the listing
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const data = await getUserData(listing.owner, authTokens);
+        setUserDetails(data);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [listing.owner]);
+
+  const getDisplayName = () => {
+    if (userDetails) {
+      return userDetails.firstname || userDetails.email.split('@')[0];
+    }
+    return "Unknown";
+  };
+
+  const getDisplayRating = () => {
+    if (userDetails && userDetails.rating) {
+      return userDetails.rating;
+    }
+    return 5;
+  };
+
+  
 
   const zoomIn = () => {
     Animated.spring(scaleValue, {
@@ -45,12 +80,12 @@ const Listing = ({ listing, navigation }) => {
 
           <View style={styles.nameAndRatingContainer}>
             <CustomText fontType={"text"} style={styles.byName}>
-              By {listing.owner}
+              By {getDisplayName()}
             </CustomText>
 
             <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
             <CustomText fontType={"subHeader"} style={styles.rating}>
-              {1} {/* Replace this with the actual rating */}
+              {getDisplayRating()}
             </CustomText>
           </View>
 
@@ -59,7 +94,7 @@ const Listing = ({ listing, navigation }) => {
               {listing.date || "Just now"}
             </CustomText>
             <CustomText fontType={"subHeader"} style={styles.distanceText}>
-              {"0" /* Replace this with the actual distance */}
+              {"0" /* TODO: Replace this with the actual distance */}
             </CustomText>
           </View>
         </Card>
@@ -69,8 +104,6 @@ const Listing = ({ listing, navigation }) => {
 };
 
 export default Listing;
-
-
 
 const styles = StyleSheet.create({
   card: {

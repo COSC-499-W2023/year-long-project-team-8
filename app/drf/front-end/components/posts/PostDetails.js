@@ -1,129 +1,126 @@
-import React, { useState } from "react";
-import { View, Image, ScrollView, Dimensions, TouchableOpacity } from "react-native";
+import React, { useState,  useContext, useEffect } from "react";
+import { View, ScrollView} from "react-native";
 import { Divider } from "react-native-paper";
 import CustomText from "../CustomText";
-import Carousel from 'react-native-reanimated-carousel';
 import styles from "./styles";
-import ChatButton from "../loginSignup/ButtonLanding";
-
-const { width: windowWidth } = Dimensions.get('window');
+import { getUserData } from '../helperFunctions/apiHelpers';
+import AuthContext from '../../context/AuthContext';
+import { useFocusEffect } from '@react-navigation/native';
+import DetailsComponent from "./DetailsComponent";
+import ChatComponent from "./ChatComponent";
+import CarouselComponent from "./CarouselComponent";
+import CategoriesComponent from "./CategoriesComponent"
+import DescriptionComponent from "./DescriptionComponent";
+import AllergensComponent from "./AllergensComponent";
 
 const PostDetails = ({ route, navigation }) => {
   const { listing } = route.params;
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.imageContainer}>
-      <Image source={{ uri: item.image }} style={styles.image} />
-    </View>
-  );  
-
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationOverlay}>
-        <View style={styles.paginationContainer}>
-          {listing.images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
+  const [message, onChangeMesage] = React.useState("Hi! Can I get this plate?");
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+  const { authTokens } = useContext(AuthContext); 
   
-
-  const formatWithSpacesAfterCommas = (text) => {
-    if (!text) return '';
-    return Array.isArray(text) ? text.join(', ') : text.split(',').join(', ');
-  };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
-  };
+  }; 
+
+  // function to get username or first name for user that did the listing
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const data = await getUserData(listing.owner, authTokens);
+        setUserDetails(data);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [listing.owner]);
+
+  const getDisplayName = () => {
+    if (userDetails) {
+      return userDetails.firstname || userDetails.email.split('@')[0];
+    }
+    return "Unknown";
+  }; // Can't access user's rating. Need to add field profile picture too.
+
+  // Helper function to display name or email
+  const displayName = getDisplayName();
+
+  //get user rating from userDetails or set to 5 if null
+  const userRating = userDetails && userDetails.rating ? parseFloat(userDetails.rating).toFixed(1) : '5.0';
+
+
+  // function to reset fields when user navigates out of listing
+  useFocusEffect(
+    React.useCallback(() => {
+      // No operation when the screen comes into focus
+      return () => {
+        // Reset the message and the view more/less toggle when the screen goes out of focus
+        onChangeMesage("Hi! Can I get this plate?");
+        setShowFullDescription(false);
+      };
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollview}>
-        <View style={styles.carouselContainer}>
-          {/* Check if there are multiple images */}
-          {listing.images && listing.images.length > 1 ? (
-            <>
-              <Carousel
-                loop={false}
-                width={windowWidth}
-                height={250}
-                data={listing.images}
-                renderItem={renderItem}
-                autoPlay={false}
-                parallaxScrollingOffset={50}
-                parallaxScrollingScale={0.9}
-                scrollEnabled
-                onSnapToItem={index => setActiveIndex(index)}
-              />
-              {/* Render pagination only if there are multiple images */}
-              <View style={styles.paginationOverlay}>
-                <View style={styles.paginationContainer}>
-                {listing.images.map((_, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.paginationDot,
-                      activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
-                    ]}
-                  />
-                ))}
-                </View>
-              </View>
-            </>
-          ) : listing.images && listing.images.length === 1 ? (
-            // Directly render the single image without the carousel
-            <Image source={{ uri: listing.images[0].image }} style={styles.image} />
-          ) : null}
-        </View>
+
+        {/*Carousel*/}
+        <CarouselComponent images={listing.images}/>
 
         <View style={styles.card}>
           <CustomText fontType={"title"} style={styles.title}>
             {listing.title}
           </CustomText>
 
-          <View style={styles.detailRow}>
-            <CustomText fontType={"text"} style={styles.detail}>
-              Categories: {formatWithSpacesAfterCommas(listing.categories)}
-            </CustomText>
-          </View>
-
-          <CustomText fontType={"subHeader"} style={styles.detail}>
+          <CustomText fontType={"subHeader"} style={styles.bestBefore}>
             Best Before: {formatDate(listing.best_before)}
           </CustomText>
 
+          {/*Chat Section*/}
+          <ChatComponent
+            initialMessage="Hi! Can I get this plate?"
+            listing = {listing}
+          />
+
+          {/*Category Section*/}
+          <CategoriesComponent categories={listing.categories} />
+
+          {/*Description Section*/}
+          <DescriptionComponent
+            content={listing.content}
+            showFullDescription = {showFullDescription} 
+            setShowFullDescription={setShowFullDescription}         
+          />
+
+
+          {/*Giver details Section*/}
+          <DetailsComponent
+            displayName={displayName}
+            rating={userRating} 
+            reviews={8}
+            userProfilePicture={userDetails && userDetails.picture ? userDetails.picture : null}
+          />
+        
           {/* Conditionally display allergens */}
           {listing.allergens && listing.allergens.length > 0 && (
             <>
-              <Divider style={styles.divider} />
-              <CustomText fontType={"subHeader"} style={styles.distanceText}>
-                Allergens: {formatWithSpacesAfterCommas(listing.allergens)}
-              </CustomText>
+              <AllergensComponent allergens={listing.allergens}/>
             </>
           )}
-          <CustomText fontType={"text"} style={styles.description}>
-            {listing.content}
-          </CustomText>
-        </View>
-        <View style={styles.buttonContainer}>
-          {/* Chat Button */}
-          <View style={styles.chatButtonContainer}>
-            <ChatButton
-              title="CHAT"
-              onPress={() => console.log("chat")}
-            />     
+
+          <View style={styles.dividerContainer}>
+            <CustomText fontType={"subHeader"} style={styles.bestBefore}>
+              Posted {formatDate(listing.created_at)}
+            </CustomText>
           </View>
+
         </View>
       </ScrollView>
     </View>
