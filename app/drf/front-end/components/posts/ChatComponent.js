@@ -31,12 +31,18 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
   const handleSharePress = async () => {
     try {
-      const listingDeepLink = `http://tinyurl.com/mr39a6wr`; // Create your own in the browser with the format exp://ip-address/passtheplate/posts/${listing.id}
-      const shareMessage = `Check out this${listing.title} from Pass The O \n\n${listingDeepLink}`;
+      // Replace 'listing.id' with the actual property name used to access the listing's unique identifier
+      const listingId = listing.id;
+  
+      // Construct the deep link. 
+      const listingDeepLink = `exp://192.168.1.67:8000/--/passtheplate/posts/${listingId}`;
+  
+      const shareMessage = `Check out this ${listing.title} from Pass The Plate \n\n${listingDeepLink}`;
   
       await Share.share({
-        title: listing.title,
+        title: `Listing: ${listing.title}`,
         message: shareMessage,
+        // Some platforms may use this 'url' field to attach the link
         url: listingDeepLink,
       });
   

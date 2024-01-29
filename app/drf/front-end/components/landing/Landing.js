@@ -6,7 +6,6 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-
 import Login from "../loginSignup/Login";
 import Signup from "../loginSignup/Signup.js";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"; // Importing the library

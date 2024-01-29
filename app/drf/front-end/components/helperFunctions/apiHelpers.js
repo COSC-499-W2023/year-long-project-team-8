@@ -275,6 +275,31 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
+// Helper function to retrieve a specific listing by its ID
+async function fetchListingById(listingId, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/${listingId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens.access}`,
+      },
+    });
+
+    if (response.ok) {
+      const listingData = await response.json();
+      return listingData;
+    } else {
+      // Handle HTTP errors
+      throw new Error("Failed to fetch listing data. Status: " + response.status);
+    }
+  } catch (error) {
+    console.error("Error fetching listing by ID:", error);
+    throw error; // Rethrow the error for handling in the calling context
+  }
+}
+
+
 // Export all the functions
 export {
   filterCategory,
@@ -284,4 +309,5 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
+  fetchListingById,
 };

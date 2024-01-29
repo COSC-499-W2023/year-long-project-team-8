@@ -1,28 +1,27 @@
-
 import React, { useEffect } from "react";
-import { StatusBar, View } from "react-native";
+import { View, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Linking from "expo-linking";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Landing from "./components/landing/Landing";
 import Details from "./components/loginSignup/Details";
 import MainApp from "./components/drawer/DrawerNav";
 import PasswordReset from "./components/loginSignup/PasswordReset";
 import SettingsNav from "./components/settingsPage/Settings";
 import EditProfile from "./components/editProfile/editProfileMain";
-import ProfilePage from "./components/profilePage/profilePage";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
-import * as Linking from "expo-linking";
 import CustomText from "./components/CustomText";
-
-const prefix = Linking.createURL("/");
+import { useDeepLinkHandler } from "./hooks/useDeepLinkHandler";
 
 const Stack = createStackNavigator();
+const prefix = Linking.createURL("/");
 
-// To test deep linking in emulator RUN IN COMMAND LINE: adb shell am start -a android.intent.action.VIEW -d "exp://[IP AND PORT WERE EXPO IS RUNNING]/--/Landing" host.exp.exponent
-// To test in phone, transform this: exp://IP-ADDRESS:PORT/--/Landing into a tinyurl and then click on url
+// To test deep linking in emulator RUN IN COMMAND LINE: adb shell am start -a android.intent.action.VIEW -d "exp://IP ADDRESS:PORT/--/passtheplate/posts/1"
+// To test in phone, transform this:    exp://IP ADDRESS:PORT/--/passtheplate/posts/1     into a tinyurl and then click on url
 const linking = {
   prefixes: [prefix],
   config: {
@@ -34,20 +33,16 @@ const linking = {
 };
 
 const App = () => {
-  return (
 
+  useDeepLinkHandler(); 
+
+  return (
     <AppStateProvider>
       <View style={{ flex: 1 }}>
         <StatusBar />
         <AuthProvider>
           <NavigationContainer linking={linking} fallback={<CustomText>Loading...</CustomText>}>
-            <Stack.Navigator
-              initialRouteName="Landing"
-              screenOptions={{
-                headerShown: false,
-              }}
-            > 
-
+            <Stack.Navigator initialRouteName="Landing" screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Landing" component={Landing} />
               <Stack.Screen name="Details" component={Details} />
               <Stack.Screen name="MainApp" component={MainApp} />
@@ -61,7 +56,6 @@ const App = () => {
         </AuthProvider>
       </View>
     </AppStateProvider>
-
   );
 };
 
