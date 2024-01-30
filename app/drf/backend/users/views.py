@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
  
 from .serializers import UserSerializer
-from .permissions import UserPermission
+from .permissions import UserPermission,IsSelfOrReadOnly
 from .models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Review
@@ -15,7 +15,7 @@ class UserViewSet(ModelViewSet):
  
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by("-date_joined")
-    permission_classes = [UserPermission,]
+    permission_classes = [UserPermission]
     authentication_classes = [JWTAuthentication]
 
     def update(self, request, *args, **kwargs):
