@@ -163,7 +163,6 @@ const EditProfileForm = ({
         <TextInput
           style={styles.emailInput}
           value={email}
-          autoCapitalize={"none"}
           onFocus={() => setPrevEmail(email)}
           onChangeText={(text) => setEmail(text)}
           onEndEditing={() => emailValidation()}

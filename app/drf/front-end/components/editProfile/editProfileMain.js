@@ -21,9 +21,9 @@ const EditProfilePage = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [phone, setPhone] = useState("");
+  const [prevPhone, setPrevPhone] = useState("");
   const [email, setEmail] = useState("");
   const [prevEmail, setPrevEmail] = useState("");
-  const [prevPhone, setPrevPhone] = useState("");
   const [prevFirstName, setPrevFirstName] = useState("");
   const [prevLastName, setPrevLastName] = useState("");
 
