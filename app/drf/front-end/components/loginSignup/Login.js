@@ -16,7 +16,7 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
-
+import { fetchListingById } from '../helperFunctions/apiHelpers';
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,17 +31,15 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
-  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] =
-    useState(false);
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordError, setForgotPasswordError] = useState("");
 
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
 
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser, authTokens } = useContext(AuthContext);
 
-  // new login call from AuthContext - can refactor to include the front end validation
   const login = async () => {
     await loginUser(email, password); // loginUser should return a Promise
     navigation.navigate("Tabs");
@@ -99,43 +97,50 @@ const Login = ({ onSwitch, navigation }) => {
   const loginEndpoint = `${baseEndpoint}/token/`;
 
   const handleLogin = async () => {
-    let isValid = true;
     Keyboard.dismiss();
-
-    // If the provided email and password are valid, add login logic
+    let isValid = email && password; // Basic validation 
+  
     if (isValid) {
       try {
-        let bodyObj = {
-          email: email,
-          password: password,
-        };
-
-        // need to pass the data as JSON for our API to deal with
-        const bodyStr = JSON.stringify(bodyObj);
-        //console.log(bodyStr);
+        const bodyStr = JSON.stringify({ email: email, password: password });
         const options = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: bodyStr,
         };
-
-        const response = await fetch(loginEndpoint, options);
-        //console.log(response);
+  
+        const response = await fetch(`${baseEndpoint}/token/`, options);
         const authData = await response.json();
-
-        if (authData && authData.access) {
+  
+        if (response.ok) {
           await loginUser(email, password);
-          navigation.navigate("MainApp");
-          //navigation.navigate("Tabs");
-          // handleAuthData(authData, getProductList);
+  
+          // Check for a pending listing ID after a successful login
+          const listingId = await AsyncStorage.getItem('pendingListingId');
+
+          if (listingId) {
+            // Fetch the listing details with the listing ID
+            const listing = await fetchListingById(listingId, authTokens);
+            console.log(listing);
+            // Navigate to PostDetails with the fetched listing as a parameter
+            navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
+            await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
+          } else {
+            // Navigate to MainApp or another screen if no pending listing ID is found
+            navigation.navigate('MainApp');
+          }
         } else {
-          if (password && email) setAuthError("Wrong email or password");
+          // Handle login errors (e.g., wrong credentials)
+          setAuthError("Wrong email or password");
         }
       } catch (err) {
-        console.log("err", err);
+        // Handle other errors (e.g., network issues)
+        console.error("Login error:", err);
+        setAuthError("An error occurred during login. Please try again.");
       }
+    } else {
+      // Handle invalid input
+      setAuthError("Please enter both email and password.");
     }
   };
 
@@ -271,11 +276,11 @@ const Login = ({ onSwitch, navigation }) => {
         </View>
         {/* Forgot Password Modal */}
         <Modal
-  animationType="slide"
-  transparent={true}
-  visible={isForgotPasswordModalVisible}
-  onRequestClose={handleCloseForgotPasswordModal}
->
+          animationType="slide"
+          transparent={true}
+          visible={isForgotPasswordModalVisible}
+          onRequestClose={handleCloseForgotPasswordModal}
+        >
   <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <KeyboardAvoidingView 

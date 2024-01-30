@@ -19,6 +19,26 @@ const PostDetails = ({ route, navigation }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const { authTokens } = useContext(AuthContext); 
+
+  useEffect(() => {
+    const fetchListingData = async () => {
+      // Check if listing is already provided, if not, fetch it using the listingId
+      if (!listing) {
+        const storedListingId = await AsyncStorage.getItem('pendingListingId');
+        if (storedListingId) {
+          try {
+            const fetchedListing = await fetchListingById(storedListingId, authTokens);
+            setListing(fetchedListing);
+            AsyncStorage.removeItem('pendingListingId'); // Clear the stored listingId after fetching
+          } catch (error) {
+            console.error('Error fetching listing by ID:', error);
+          }
+        }
+      }
+    };
+
+    fetchListingData();
+  }, [listing, authTokens]);
   
 
   const formatDate = (dateString) => {

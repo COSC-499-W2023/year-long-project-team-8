@@ -4,6 +4,7 @@ import CustomText from '../CustomText';
 import ChatButton from './ChatButton'; 
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
+import { ipAndPort } from '../../config/config';
 
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [message, setMessage] = useState(initialMessage);
@@ -28,23 +29,33 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
     // TODO: Open chat page
   };
 
-  //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
+  //TODO: Shorten url implementation to be done in backend, not safe to user tinyurl api
   const handleSharePress = async () => {
     try {
-      const listingDeepLink = `http://tinyurl.com/mr39a6wr`; // Create your own in the browser with the format exp://ip-address/passtheplate/posts/${listing.id}
-      const shareMessage = `Check out this${listing.title} from Pass The O \n\n${listingDeepLink}`;
+      const listingId = listing.id;
+      const listingDeepLink = `exp://${ipAndPort}/--/passtheplate/posts/${listingId}`;
   
-      await Share.share({
-        title: listing.title,
-        message: shareMessage,
-        url: listingDeepLink,
-      });
+      // TinyURL's API to shorten the URL
+      const response = await fetch(`http://tinyurl.com/api-create.php?url=${encodeURIComponent(listingDeepLink)}`);
+      const shortUrl = await response.text();
   
-      console.log('Shared successfully');
+      if (shortUrl) {
+        const shareMessage = `Check out this listing in Pass The Plate!\n${listing.title}\n\n${shortUrl}`;
+  
+        await Share.share({
+          title: `${listing.title}`,
+          message: shareMessage,
+          url: shortUrl,
+        });
+        console.log('Shared successfully');
+      } else {
+        console.error('Failed to shorten URL');
+      }
     } catch (error) {
       console.error('Error sharing:', error);
     }
   };
+  
   
   
   const handleUserPress = () => {

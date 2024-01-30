@@ -21,7 +21,7 @@ const DrawerNav = () => {
       initialRouteName="Tabs"
       drawerContent={(props) => <DrawerProps {...props} />}
       screenOptions={{
-        swipeEnabled: true, // Consider enabling swipe for a more intuitive navigation experience
+        swipeEnabled: true, 
       }}
     >
       <Drawer.Screen
