@@ -16,7 +16,7 @@ class UserPermission(permissions.BasePermission):
             return True # anyone can create user, no additional checks needed.
         if view.action == "list":
             return request.user.is_authenticated and request.user.is_staff
-        elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
+        elif view.action in ["retrieve", "update", "partial_update", "destroy", "details"]:
             return True  # defer to has_object_permission
         else:
             return False
@@ -28,12 +28,15 @@ class UserPermission(permissions.BasePermission):
         if not request.user.is_authenticated:
             return False
  
-        if view.action in ["retrieve", "update", "partial_update"]:
-            return obj == request.user or request.user.is_staff
-        elif view.action == "destroy":
-            return request.user.is_staff
+        # if view.action in ["retrieve", "update", "partial_update"]:
+        if view.action in ["retrieve"]:
+            return True  # Allow users to retrieve other users' data
+        elif view.action in ["destroy", "update", "partial_update"]:
+            return False  # Users cannot delete other users, ou update their data
         else:
-            return False
+            return obj == request.user or request.user.is_staff
+
+        
 class IsSelfOrReadOnly(BasePermission):
     """
     Custom permission to only allow users to edit their own details.
