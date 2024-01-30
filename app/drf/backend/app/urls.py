@@ -19,7 +19,7 @@ from rest_framework import routers
  
 
 from api.views import ForgotPasswordView, ResetPasswordView
-from users.views import UserViewSet
+from users.views import UserViewSet, ReviewViewSet
 from products.views import ProductViewSet, ImageViewSet
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,6 +28,7 @@ router = routers.DefaultRouter()
 router.register("users", UserViewSet)
 router.register("products", ProductViewSet)
 router.register('images', ImageViewSet)
+router.register('reviews', ReviewViewSet, basename='review')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
