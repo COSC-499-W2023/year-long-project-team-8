@@ -160,8 +160,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       if (response.ok) {
         // Password reset email sent successfully
         setIsButtonDisabled(true); // Disable the button
-        showToastSuccess("Password reset email sent successfully") 
-        setCountdown(15); // Initialize countdown     
+        showToastSuccess("Password reset email sent successfully")
+        setCountdown(15); // Initialize countdown
         navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
         setIsButtonDisabled(false)
@@ -194,13 +194,13 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
-  
+
 
   const validateInputs = () => {
     let isValid = true;
     setEmailError("");
     setPasswordError("");
-  
+
     // Email validation
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!email || !emailRegex.test(email)) {
@@ -210,7 +210,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     } else {
       setIsEmailErrorIcon(false);  // Reset email icon error state if email is valid
     }
-  
+
     // Password validation
     if (!password) {
       setPasswordError("Password cannot be empty");
@@ -219,14 +219,14 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     } else {
       setIsPassErrorIcon(false);  // Reset password icon error state if password is not empty
     }
-  
+
     return isValid;
   };
-  
-  
+
+
   useEffect(() => {
     let interval = null;
-  
+
     if (countdown > 0) {
       interval = setInterval(() => {
         setCountdown(countdown - 1);
@@ -235,7 +235,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       setIsButtonDisabled(false);
       clearInterval(interval);
     }
-  
+
     return () => clearInterval(interval); // Cleanup the interval on component unmount
   }, [countdown]);
 
@@ -246,7 +246,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     setIsPassErrorIcon(false);
 
     let isValid = validateInputs(); // Validate inputs first
-    
+
     if (isValid) {
       const lowercaseEmail = email.toLowerCase();
       try {
@@ -256,13 +256,13 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
           headers: { "Content-Type": "application/json" },
           body: bodyStr,
         };
-  
+
         const response = await fetch(`${baseEndpoint}/token/`, options);
         const authData = await response.json();
-  
+
         if (response.ok) {
           await loginUser(lowercaseEmail, password);
-  
+
           // Check for a pending listing ID after a successful login
           const listingId = await AsyncStorage.getItem('pendingListingId');
 
@@ -292,7 +292,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
         setIsEmailErrorIcon(true);
         setIsPassErrorIcon(true);
       }
-    } 
+    }
   };
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -356,14 +356,14 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
           isErrorIcon={isEmailErrorIcon}
           onChangeText={(text) => {
             setEmail(text.trim());
-            setEmailError(""); 
+            setEmailError("");
             setIsEmailErrorIcon(false);
           }}
           onFocus={() => {
-            setEmailError(""); 
+            setEmailError("");
             setIsEmailErrorIcon(false);
           }}
-            errorText={emailError} 
+            errorText={emailError}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
@@ -377,13 +377,13 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
             isErrorIcon={isPassErrorIcon}
             onChangeText={(text) => {
               setPassword(text);
-              setPasswordError(""); 
+              setPasswordError("");
               setAuthError("");
               setIsPassErrorIcon(false);
             }}
             onFocus={() => {
-              setPasswordError(""); 
-              setAuthError(""); 
+              setPasswordError("");
+              setAuthError("");
               setIsPassErrorIcon(false);
             }}
             secureTextEntry={!showPassword}
@@ -446,14 +446,14 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
         >
           <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <KeyboardAvoidingView 
+              <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
               >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <View style={LoginStyles.modalContainer}>
-                <ImageBackground 
-                    source={require('../../assets/modal_wave.png')} 
+                <ImageBackground
+                    source={require('../../assets/modal_wave.png')}
                     style={LoginStyles.floatingBubble}
                     resizeMode="cover"
                     imageStyle={{ borderRadius: 10}}
@@ -465,8 +465,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
                           >
                             <MaterialIcons
                                 name="close"
-                                size={22} 
-                                color="white" 
+                                size={22}
+                                color="white"
                               />
                           </Pressable>
                           <CustomText style={LoginStyles.forgotPasswordModalHeader}>
@@ -506,7 +506,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
                               onPress={handleForgotPassword}
                               disabled={isButtonDisabled}
                               style={isButtonDisabled ? LoginStyles.buttonDisabled : LoginStyles.forgotPasswordsendButton}
-                            />                      
+                            />
                       </ImageBackground>
                       </View>
                 </TouchableWithoutFeedback>

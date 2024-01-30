@@ -158,8 +158,8 @@ const LoginStyles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonDisabled: {
-    backgroundColor: '#CCCCCC', 
-    opacity: 0.6, 
+    backgroundColor: '#CCCCCC',
+    opacity: 0.6,
 },
 
 countContainer: {

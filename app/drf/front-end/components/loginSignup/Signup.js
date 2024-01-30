@@ -277,7 +277,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
                   />
                 </Pressable>
                 <Pressable
-                  onPress={() => setChecklistModalVisible(true)} 
+                  onPress={() => setChecklistModalVisible(true)}
                   testID="password-info-icon"
                 >
                   <MaterialIcons
