@@ -41,11 +41,15 @@ const Signup = ({ onSwitch, navigation }) => {
   const handleSignup = async () => {
     let isValid = true;
     Keyboard.dismiss();
-
+  
+    // Trim the email input to remove leading/trailing spaces
+    const trimmedEmail = signupEmail.trim();
+    setSignupEmail(trimmedEmail); // Update the state with the trimmed email
+  
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-    // Validate email
-    if (!signupEmail || !emailRegex.test(signupEmail)) {
+  
+    // Validate trimmed email
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
       setSignupEmailError("Invalid email");
       isValid = false;
     } else {
@@ -77,7 +81,7 @@ const Signup = ({ onSwitch, navigation }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: signupEmail,
+            email: trimmedEmail,
             password: signupPassword,
           }),
         });
@@ -93,7 +97,7 @@ const Signup = ({ onSwitch, navigation }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: signupEmail,
+            email: trimmedEmail,
             password: signupPassword,
           }),
         });
