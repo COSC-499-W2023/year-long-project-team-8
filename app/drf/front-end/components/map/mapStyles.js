@@ -2,32 +2,33 @@ import { StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
 
-    backButton: {
-        position: "absolute",
-        height: 40,
-        width: 40,
-        alignSelf: "flex-start",
-    },
-    backButtonImage: {
-        height: 40,
-        width: 40,
-        top: 50,
-        left: 20,
-    },
-    sliderContainer: {
-        alignContent: "center",
-        justifyContent: "flex-end",
+    map: {
+        width: '100%',
         height: '100%',
     },
+    mainContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black',
+    },
+    backArrow: {
+        position: 'absolute',
+        height: 40,
+        width: 40,
+        left: 15,
+        top: 15,
+    },
     slider: {
+        position: 'absolute',
+        alignSelf: 'center',
         width: '80%',
-        alignSelf: "center",
-        bottom: 40,
-
+        bottom: 35,
     },
     sliderText: {
-        alignSelf: "center",
-        bottom: 40,
+        position: 'absolute',
+        bottom: 20,
+        alignSelf: 'center',
     }
 
 });
