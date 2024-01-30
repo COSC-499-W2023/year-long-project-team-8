@@ -58,12 +58,12 @@ const LoginStyles = StyleSheet.create({
     color: "#DB6D2A",
     fontSize: 17,
     fontWeight: "bold",
-    
+
   },
   modalContainer:{
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     width:"85%",
     borderRadius: 10,
     backgroundColor:"transparent"
@@ -86,7 +86,7 @@ const LoginStyles = StyleSheet.create({
       },
     }),
   },
-  
+
   forgotPasswordModalHeader: {
     fontSize: 40,
     fontWeight: "bold",
@@ -113,8 +113,8 @@ const LoginStyles = StyleSheet.create({
   },
   forgotPasswordModalButton: {
     position: "absolute",
-    right: 10, 
-    bottom: 10, 
+    right: 10,
+    bottom: 10,
   },
   forgotPasswordModalButtonText: {
     color: "white",
@@ -123,10 +123,10 @@ const LoginStyles = StyleSheet.create({
   },
   forgotPasswordModalCloseButton: {
     position: "absolute",
-    right: 10, 
-    top: 10, 
+    right: 10,
+    top: 10,
     backgroundColor: "#F8B951",
-    padding: 8, 
+    padding: 8,
     borderRadius: 20,
     width: 40,
     height: 40,
