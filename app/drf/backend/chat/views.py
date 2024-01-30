@@ -1,13 +1,12 @@
-# chat/views.py
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Chat
+from users.models import User
 from .serializers import ChatSerializer
 from products.models import Product 
 
 class ChatList(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
-
 
     # Returning chat object
     def get_queryset(self):
@@ -15,13 +14,12 @@ class ChatList(generics.ListCreateAPIView):
         if self.request.user.is_authenticated:
             return Chat.objects.filter(sender=self.request.user) | Chat.objects.filter(receiver=self.request.user)
         else:
+            print("No chat objects")
             return Chat.objects.none() 
 
     # Creating chat
     def perform_create(self, serializer):
         sender = self.request.user
-        # product_id = self.request.data.get('product_id')
-        #placeholder for testing
         product_id = self.request.data.get('product_id') 
         message = self.request.data.get('message')
 
@@ -30,7 +28,6 @@ class ChatList(generics.ListCreateAPIView):
             # Verify this product_id
             product = Product.objects.get(pk=product_id)
             receiver = product.owner
-            
 
             # Check if a chat room already exists for the given sender, receiver, and product
             existing_chat = Chat.objects.filter(sender=sender, receiver=receiver, product_id=product_id).first()

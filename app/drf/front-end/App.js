@@ -10,6 +10,7 @@ import PasswordReset from './components/loginSignup/PasswordReset';
 import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
 import Chat from "./components/chat/chat.js";
+import ChatList from "./components/chat/ChatList.js";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
@@ -35,6 +36,7 @@ const App = () => {
             <Stack.Screen name="Settings" component={SettingsNav} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="ChatList" component={ChatList} />
             <Stack.Screen name="mapView" component={mapView} />
               <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
           </Stack.Navigator>

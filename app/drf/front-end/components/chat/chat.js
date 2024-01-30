@@ -4,7 +4,7 @@ import { baseEndpoint } from '../../config/config';
 import AuthContext from "../../context/AuthContext";
 import { getChatMessages, sendChatMessage } from "../helperFunctions/apiHelpers";
 
-const chat = () => {
+const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const { authTokens, userId } = useContext(AuthContext);
@@ -40,7 +40,7 @@ const chat = () => {
         keyExtractor={(item) => (item.id ? item.id.toString() : "1")}
         renderItem={({ item }) => (
           <View style={{ marginBottom: 8 }}>
-            <Text>{item.sender.username}: {item.message}</Text>
+            <Text>{item.sender.firstname}: {item.message}</Text>
           </View>
         )}
       />
@@ -57,4 +57,4 @@ const chat = () => {
   );
 };
 
-export default chat;
+export default Chat;

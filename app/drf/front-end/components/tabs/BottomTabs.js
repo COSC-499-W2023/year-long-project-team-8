@@ -4,6 +4,7 @@ import HomePage from "../homePage/HomePage.js";
 import Profile from "../profilePage/profilePage.js";
 import AddListing from "../addListing/AddListing.js";
 import Chat from "../chat/chat.js";
+import ChatList from "../chat/ChatList.js";
 import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -115,7 +116,7 @@ function BottomTabs({ route }) {
         />
         <Tab.Screen
           name="Chat"
-          component={Chat}
+          component={ChatList}
           options={{
             tabBarLabel: "Chat",
             tabBarIcon: ({ focused, size }) => (
