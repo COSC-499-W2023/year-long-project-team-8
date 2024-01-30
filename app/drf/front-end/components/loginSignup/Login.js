@@ -54,9 +54,13 @@ const Login = ({ onSwitch, navigation }) => {
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
     try {
+      // Trim the email input to remove leading/trailing spaces
+      const trimmedEmail = forgotPasswordEmail.trim();
+      setForgotPasswordEmail(trimmedEmail); // Update the state with the trimmed email
+  
       // Validate email format
       const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      if (!emailRegex.test(forgotPasswordEmail)) {
+      if (!emailRegex.test(trimmedEmail)) {
         setForgotPasswordError("Invalid email format");
         return;
       }
@@ -67,7 +71,7 @@ const Login = ({ onSwitch, navigation }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: forgotPasswordEmail }),
+        body: JSON.stringify({ email: trimmedEmail }),
       });
 
       const responseData = await response.json();
@@ -271,75 +275,74 @@ const Login = ({ onSwitch, navigation }) => {
         </View>
         {/* Forgot Password Modal */}
         <Modal
-  animationType="slide"
-  transparent={true}
-  visible={isForgotPasswordModalVisible}
-  onRequestClose={handleCloseForgotPasswordModal}
->
-  <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={LoginStyles.modalContainer}>
-        <ImageBackground 
-            source={require('../../assets/modal_wave.png')} 
-            style={LoginStyles.floatingBubble}
-            resizeMode="cover"
-            imageStyle={{ borderRadius: 10}}
+          animationType="slide"
+          transparent={true}
+          visible={isForgotPasswordModalVisible}
+          onRequestClose={handleCloseForgotPasswordModal}
+        >
+          <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+              <KeyboardAvoidingView 
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+              >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={LoginStyles.modalContainer}>
+                <ImageBackground 
+                    source={require('../../assets/modal_wave.png')} 
+                    style={LoginStyles.floatingBubble}
+                    resizeMode="cover"
+                    imageStyle={{ borderRadius: 10}}
 
-          >
-                  <Pressable
-                    style={LoginStyles.forgotPasswordModalCloseButton}
-                    onPress={handleCloseForgotPasswordModal}
                   >
-                    <MaterialIcons
-                        name="close"
-                        size={22} 
-                        color="white" 
-                      />
-                  </Pressable>
-                  <CustomText style={LoginStyles.forgotPasswordModalHeader}>
-                    Forgot Password?
-                  </CustomText>
-                  <CustomText style={LoginStyles.forgotPasswordModalsubHeader}>
-                    Don't worry, a code will be sent to your email!
-                  </CustomText>
-                  <View style={LoginStyles.containerInputModal}>
-                  <InputField
-                      style={LoginStyles.forgotPasswordModalInput}
-                      placeholder="Enter your email"
-                      placeholderTextColor="grey"
-                      onChangeText={(text) => {
-                        setForgotPasswordEmail(text);
-                        setForgotPasswordError(""); // Clear the error message when user starts typing
-                      }}
-                      value={forgotPasswordEmail}
-                    />
+                          <Pressable
+                            style={LoginStyles.forgotPasswordModalCloseButton}
+                            onPress={handleCloseForgotPasswordModal}
+                          >
+                            <MaterialIcons
+                                name="close"
+                                size={22} 
+                                color="white" 
+                              />
+                          </Pressable>
+                          <CustomText style={LoginStyles.forgotPasswordModalHeader}>
+                            Forgot Password?
+                          </CustomText>
+                          <CustomText style={LoginStyles.forgotPasswordModalsubHeader}>
+                            Don't worry, a code will be sent to your email!
+                          </CustomText>
+                          <View style={LoginStyles.containerInputModal}>
+                          <InputField
+                              style={LoginStyles.forgotPasswordModalInput}
+                              placeholder="Enter your email"
+                              placeholderTextColor="grey"
+                              onChangeText={(text) => {
+                                setForgotPasswordEmail(text);
+                                setForgotPasswordError(""); // Clear the error message when user starts typing
+                              }}
+                              value={forgotPasswordEmail}
+                            />
 
-                  </View>
-                  {forgotPasswordError && (
-                    <CustomText style={LoginStyles.forgotPasswordModalError}>
-                      {forgotPasswordError === "Invalid email format"
-                        ? "Invalid email"
-                        : forgotPasswordError}
-                    </CustomText>
-                  )}
-                  <ButtonLogin
-                    title="SEND"
-                    onPress={handleForgotPassword}
-                    style={LoginStyles.forgotPasswordsendButton}
-                  />              
-              
-              </ImageBackground>
-              </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </View>
-  </TouchableWithoutFeedback>
-</Modal>
+                          </View>
+                          {forgotPasswordError && (
+                            <CustomText style={LoginStyles.forgotPasswordModalError}>
+                              {forgotPasswordError === "Invalid email format"
+                                ? "Invalid email"
+                                : forgotPasswordError}
+                            </CustomText>
+                          )}
+                          <ButtonLogin
+                            title="SEND"
+                            onPress={handleForgotPassword}
+                            style={LoginStyles.forgotPasswordsendButton}
+                          />              
+                      </ImageBackground>
+                      </View>
+                </TouchableWithoutFeedback>
+              </KeyboardAvoidingView>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -6,7 +6,7 @@
 //modify baseendpoint ip to test on expo, else use localhost
 
 //export const baseEndpoint = "http://192.168.1.67:8000/api";
-export const baseEndpoint = "http://142.231.71.184:8000/api";
+export const baseEndpoint = "http://142.231.161.57:8000/api";
 //export const baseEndpoint = "http://localhost:8000/api";
 
 //export const baseEndpoint = "http://192.168.1.135:8000/api";
