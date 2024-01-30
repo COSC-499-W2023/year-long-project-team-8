@@ -13,6 +13,7 @@ import Chat from "./components/chat/chat.js";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
+import MainStack from "./components/mainStackNav/MainStack";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ const App = () => {
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="mapView" component={mapView} />
+              <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>

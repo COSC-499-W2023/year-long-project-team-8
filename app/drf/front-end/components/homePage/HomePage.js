@@ -29,7 +29,6 @@ import { useAppState } from "../../context/AppStateContext";
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
 
-
 const HomePage = ({ navigation }) => {
 
 
@@ -79,18 +78,18 @@ const HomePage = ({ navigation }) => {
     } finally {
       setLoading(false);
     }
-  }
+  };
+
   const handleMapPress = async () => {
     navigation.navigate('mapView');
-
   };
+
   useEffect(() => {
     fetchFoodListings();
   }, []);
 
   useEffect(() => {
     console.log("FOOD LISTINGS IN HOME:", foodListing);
-    console.log("FOOD LISTINGS FROM DATA:", foodListings);
   }, [foodListing]);
 
   useEffect(() => {
@@ -342,7 +341,7 @@ const HomePage = ({ navigation }) => {
           <View style={styles.listingsContainer}>
             {filteredAndSortedListings.length ? (
               filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.title} listing={listing} idx={idx} />
+                <Listing key={listing.title} listing={listing} idx={idx} navigation={navigation}/>
               ))
             ) : (
               <CustomText fontType={"text"} style={styles.noMatchesText}>

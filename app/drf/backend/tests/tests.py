@@ -335,3 +335,33 @@ class ChatTests(TestCase):
         self.assertEqual(response.data['results'][0]['receiver'], self.receiver)
         # Remove if initially testing without product relation
         self.assertEqual(response.data['results'][0]['product'], self.product.id)
+            
+class ReviewViewSetTest(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+          
+    def test_create_user_review(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+
+        data = {
+            "user": self.user.id,
+            "content": "This is a test review for the user",
+            "rating": '4.5'  # Change this to the desired rating value
+        }
+
+        # Make a POST request to create a review for the user
+        response = self.client.post('/api/reviews/', data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check if the review was created successfully
+        self.assertIn("user", response.data)
+        self.assertEqual(response.data["content"], data["content"])
+        self.assertEqual(response.data["rating"], data["rating"])
+        self.assertEqual(response.data["user"], self.user.id)
