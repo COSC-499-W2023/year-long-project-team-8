@@ -3,6 +3,7 @@ from users.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib import admin
+from datetime import timedelta
 
 # Create your models here.
 class ProductManager(models.Manager):
@@ -28,9 +29,9 @@ class Product(models.Model):
     objects = ProductManager()
     
     def clean(self):
-        # Ensure best_before is set to a value after the current date
-        if self.best_before and self.best_before <= timezone.now():
-            raise ValidationError("The best before date must be after today's date.")
+        # Ensure best_before is set to a value after yesterday's date
+        if self.best_before and self.best_before <= timezone.now() - timedelta(days=1):
+            raise ValidationError("The best before date cannot be in the past!")
 
     def save(self, *args, **kwargs):
         # Call clean to perform validation

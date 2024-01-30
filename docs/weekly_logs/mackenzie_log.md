@@ -559,3 +559,54 @@ It turns out not to be trivial to deal with images in a mobile app.
 |  174   | ✓         |            |
 |  175   | ✓         |            |
 |        |           |            |
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+January 22, 2023 - January 28, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![Alt text](img/mk_t2_w3.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] image handling!
+- [x] front end refactor to handle images in mobile
+- [x] display post images in front end
+- [x] create review model
+- [x] link reviews to users by giver and receiver
+- [x] create API endpoints for Review CRUD
+- [x] test the API in isolation (POSTMAN) / DRF gui
+- [x] unit testing for Review
+- [x] add function to auto update user rating when new review is received
+- [x] permissions refactor to allow access of user data -> populates fields such as rating, name, etc on posts.
+- [x] create global app state context - handles updated data, flags app to re-render when new data comes in. For example, when a new post is made, the homepage will re-render will the new post.
+- [x] add review model to admin view for gui interaction
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#190](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/190)
+- [ ] [#195](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/195)
+- [x] [#172](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/172)
+- [x] [#180](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/180)
+
+### Gauged effort
+
+- I felt like I went beyond the average weekly contribution this week. Handling the images, creating a global state management, and dynamically re-rendering the app was non-trivial for me. It was also front-end work I was unfamiliar with.
+- After finishing off the images tasks, I was able to complete an additional feature of Reviews, with a auto-updating rating for the user.
