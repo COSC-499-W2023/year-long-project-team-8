@@ -21,7 +21,7 @@ import { fetchListingById } from '../helperFunctions/apiHelpers';
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Preloader from '../../context/Preloader'; 
+import Preloader from '../../context/Preloader';
 import Toast from 'react-native-root-toast';
 
 
