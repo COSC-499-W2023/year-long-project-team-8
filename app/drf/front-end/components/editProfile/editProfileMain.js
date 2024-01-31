@@ -92,6 +92,15 @@ const EditProfilePage = () => {
     navigation.goBack();
   };
 
+  const toHome = () => {
+    navigation.goBack();
+  }
+
+  const saveButtonPress = () => {
+    toHome();
+    handleSaveDetails();
+  }
+
   // Effect hook to handle the hardware back button press
   useEffect(() => {
     const handleBackPress = () => {
@@ -117,7 +126,7 @@ const EditProfilePage = () => {
             style={styles.backArrow}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSaveDetails}>
+        <TouchableOpacity onPress={saveButtonPress}>
           <Text style={styles.saveButton}>Save</Text>
         </TouchableOpacity>
       </View>
