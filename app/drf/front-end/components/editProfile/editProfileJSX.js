@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, Text, TextInput } from "react-native";
+import {View, Text, TextInput} from "react-native";
 
 import styles from "./editProfileStyles";
 
@@ -122,6 +122,7 @@ const phoneValidation = () => {
           onEndEditing={() => firstNameValidation()}
           onFocus={() => setPrevFirstName(firstname)}
           onChangeText={(text) => setFirstName(text)}
+
         />
         {/* Input field for last name */}
         <TextInput

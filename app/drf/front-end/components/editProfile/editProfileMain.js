@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  BackHandler,
+  BackHandler, ScrollView, KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./editProfileStyles";
@@ -112,6 +112,9 @@ const EditProfilePage = () => {
   }, []);
 
   return (
+
+
+      //put keyboard avoiding view and scrollview here so that users can move through the page
     <SafeAreaView style={styles.safeAreaView}>
       {/* Top navigation bar with back button and save button */}
       <View style={styles.topBarContainer}>
@@ -134,6 +137,8 @@ const EditProfilePage = () => {
         />
       </View>
 
+      <ScrollView>
+        <KeyboardAvoidingView>
       {/* EditProfileForm component */}
       <EditProfileForm
         firstname={firstname}
@@ -153,6 +158,9 @@ const EditProfilePage = () => {
         prevEmail={prevEmail}
         setPrevEmail={setPrevEmail}
       />
+          </KeyboardAvoidingView>
+
+      </ScrollView>
       <View style={styles.buttonFieldContainer}>
         <TouchableOpacity style={styles.changePasswordButton}>
           <Text style={styles.changePasswordText}>Change Password</Text>
@@ -164,6 +172,8 @@ const EditProfilePage = () => {
       */}
         </View>
     </SafeAreaView>
+
+
   );
 };
 
