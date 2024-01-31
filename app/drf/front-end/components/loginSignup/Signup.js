@@ -54,7 +54,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
     return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
   };
 
-  
+
   // Function to reset form fields
   const resetFields = () => {
     // Reset error states and icons

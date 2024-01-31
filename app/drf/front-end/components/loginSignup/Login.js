@@ -51,7 +51,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  
+
 
   const { loginUser, authTokens } = useContext(AuthContext);
 
@@ -61,7 +61,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   // Function to reset form fields
   const resetFields = () => {
     setPassword("");
-    setPasswordError(""); 
+    setPasswordError("");
     setAuthError("");
     setIsPassErrorIcon(false);
     setEmail("");
@@ -69,7 +69,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     setIsAuthErrorIcon(false);
     setIsEmailErrorIcon(false);
   };
-  
+
   // Export the reset function for the parent to call
   useImperativeHandle(ref, () => ({
     resetFields,
@@ -83,7 +83,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   const handleOpenForgotPasswordModal = () => {
     setForgotPasswordModalVisible(true);
     setPassword("");
-    setPasswordError(""); 
+    setPasswordError("");
     setAuthError("");
     setIsPassErrorIcon(false);
     setEmail("");
@@ -104,7 +104,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       opacity: 1,
     });
   };
-  
+
   const showToastError = (message) => {
     Toast.show(message, {
       duration: Toast.durations.SHORT,
@@ -117,7 +117,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       opacity: 1,
     });
   };
-  
+
   const showToastWarning = (message) => {
     Toast.show(message, {
       duration: Toast.durations.SHORT,
@@ -130,8 +130,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       opacity: 1,
     });
   };
-  
-  
+
+
 
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
