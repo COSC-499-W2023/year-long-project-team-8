@@ -33,6 +33,7 @@ const InputField = ({
         <TextInput
           style={[InputStyles.input, errorText ? InputStyles.inputError : null]}
           placeholder={placeholder.toUpperCase()}
+          placeholderTextColor="#808080"
           value={value}
           onChangeText={onChangeText}
           onFocus={onFocus}
