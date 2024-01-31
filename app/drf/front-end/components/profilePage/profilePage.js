@@ -1,36 +1,85 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import * as Location from 'expo-location';
-import { Rating } from '@kolking/react-native-rating';
-
-import { getUserData } from '../helperFunctions/apiHelpers';
-import AuthContext from '../../context/AuthContext';
-import styles from './profilePageStyles';
+import React, { useContext, useEffect, useState, useRef } from "react";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  ImageBackground,
+  ActivityIndicator,
+} from "react-native";
+import * as Location from "expo-location";
+import { Rating } from "@kolking/react-native-rating";
+import PostCard from "./PostCard";
+import {
+  getUserData,
+  getUserProductList,
+  updateProfilePicture,
+} from "../helperFunctions/apiHelpers";
+import AuthContext from "../../context/AuthContext";
+import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
 import CustomText from "../CustomText";
-import { useNavigation } from "@react-navigation/native";
+import PostReview from "./PostReview";
+import * as ImagePicker from "expo-image-picker";
+import { useAppState } from "../../context/AppStateContext";
 
-const ProfilePage = ({ ratings, reviews, navigation }) => {
-  const isFocused = useIsFocused();
-  const { userId, authTokens } = useContext(AuthContext);
-  const [userData, setUserData] = useState("");
-  const [rating] = useState(5);
-  const [currentPosition, setCurrentPosition] = useState(null);
+//TODO: Location, dummy pfp icon resolution increase, change profile picture, loader
 
-  const onReviewsPress = () => {
-    console.log('Navigate to review!');
-  };
+const ProfilePage = ({ navigation }) => {
+  const isFocused = useIsFocused(); // Tracks if the screen is focused.
+  const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
+  const [userData, setUserData] = useState(null); // State to store user data.
+  const [userPosts, setUserPosts] = useState([]); // State to store user's posts.
+  const [selectedTab, setSelectedTab] = useState("posts"); // State to manage selected tab between posts and reviews.
+  const [location, setLocation] = useState(null); //State to manage Location
+  const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
+  const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
+  const { profilePicUpdated, updateProfilePic } = useAppState();
+  const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
 
-  const goToSettings = () => {
-    navigation.navigate('EditProfile');
-    console.log('settings button pressed');
+
+
+  useEffect(() => {
+    if (profilePicUpdated) {
+      // Perform re-fetch logic here
+      // fetchFoodListings();
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setUserData(data); // Stores fetched user data in state.
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+
+      // After re-fetching, reset the postCreated state
+      updateProfilePic();
+    }
+  }, [profilePicUpdated, updateProfilePic]);
+
+  // Resets selected tab to 'posts' and scrolls to the top when the screen is re-focused.
+  useEffect(() => {
+    if (!isFocused) {
+      setSelectedTab("posts");
+      scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+    }
+  }, [isFocused]);
+
+  // Request gallery permissions
+  async function requestGalleryPermission() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need gallery permissions to make this work!");
+      return false;
+    }
+    return true;
   }
 
+  // Fetches user data from the backend using userId and authTokens when the screen is focused.
   useEffect(() => {
     if (isFocused && userId && authTokens) {
       getUserData(userId, authTokens)
         .then((data) => {
-          setUserData(data);
+          setUserData(data); // Stores fetched user data in state.
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
@@ -38,96 +87,211 @@ const ProfilePage = ({ ratings, reviews, navigation }) => {
     }
   }, [isFocused, userId, authTokens]);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permission to access location was denied');
-        return;
-      }
+  // Navigates to the EditProfile screen.
+  const goToSettings = () => {
+    navigation.navigate("EditProfile");
+    console.log("Settings button pressed");
+  };
 
-      let location = await Location.getCurrentPositionAsync({});
-      setCurrentPosition(location);
-    })()
-  }, []);
+  // Handle change pfp
+  const handleChangePfp = async () => {
+    // Request gallery permissions
+    const hasPermission = await requestGalleryPermission();
+    if (!hasPermission) return;
+
+    // Launch image picker
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1], // Ensures the cropped image is square
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      // Access the selected asset through the "assets" array
+      const asset = result.assets[0];
+
+      console.log(asset);
+
+      // Display the selected image in UI and prepare for upload
+      try {
+        await updateProfilePicture(userId, authTokens, asset); // Pass the single asset instead of the entire result
+        await updateProfilePic();
+      } catch (error) {
+        // Handle error if updateProfilePicture fails
+        console.error("Error updating profile picture:", error);
+      }
+    }
+  };
+
+
+  // TODO: Requests permission to access the device's location and fetches the current location.
+
+  // Fetches the user's posts from the backend using authTokens.
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const productData = await getUserProductList(authTokens);
+        if (Array.isArray(productData)) {
+          setUserPosts(productData.slice(0, 3)); // Stores the first 3 posts in state.
+        } else {
+          console.error("Product data is not an array:", productData);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    if (userId && authTokens) {
+      fetchPosts();
+    }
+  }, [userId, authTokens, isFocused]);
+
+  const handlePressDropdown = (postId) => {
+    setActiveCard(activeCard === postId ? null : postId);
+  };
+
 
   return (
-    <View style={styles.container}>
-      {/*TODO: get the average rating for the user and implement here*/}
-      <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer}>
-        <Image
-          source={require('../../assets/images/profilePage/settings.png')}
-          style={styles.settingsButton}
-        />
+    <ScrollView style={styles.container} ref={scrollViewRef}>
+      {/* Background image and user's profile information */}
+      <ImageBackground
+        source={require("../../assets/waves_profile.png")}
+        style={styles.coverImage}
+        resizeMode="cover"
+      />
+
+      {/* Settings button to navigate to EditProfile */}
+      <TouchableOpacity
+        onPress={goToSettings}
+        style={styles.settingsButtonContainer}
+        activeOpacity={1}
+      >
+        <View style={styles.circleBackground}>
+          <Image
+            source={require("../../assets/icons/apple.png")}
+            style={styles.settingsIcon}
+          />
+        </View>
       </TouchableOpacity>
 
-      <View style={styles.ratingContainer}>
+      {/* Displays user's profile picture, name, location, and rating */}
+      <View style={styles.profileInfoContainer}>
+        <View style={styles.profilePictureContainer}>
+          <TouchableOpacity onPress={handleChangePfp} activeOpacity={1}>
+            <Image
+              source={
+                userData?.profile_picture
+                  ? { uri: userData.profile_picture }
+                  : require("../../assets/icons/profile.png")
+              }
+              style={styles.profilePicture}
+            />
+
+            {/* Edit Icon for updating profile picture */}
+            <View style={styles.editIconContainer}>
+              <Image
+                source={require("../../assets/icons/plus.png")}
+                style={styles.editIcon}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+
         <Rating
-          size={25}
-          rating={rating}
+          size={18}
+          rating={Math.round(userData?.rating || 5)}
           fillColor="orange"
           spacing={5}
           disabled={true}
-        />
-        <View style={styles.ratingTextContainer}>
-          <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
-          <TouchableOpacity onPress={onReviewsPress}>
-            <CustomText style={styles.reviews} fontType={"text"}> ({reviews} reviews)</CustomText>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Section for displaying user profile information */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={require('../../assets/images/profilePage/pfp.png')}
-          style={styles.profilePicture}
+          style={styles.rating}
         />
 
-        {/* Displaying user's name */}
-        <Text style={styles.name}>
+        <CustomText style={styles.name} fontType={"subHeader"}>
           {getUserDisplayName(userData)}
-        </Text>
-
-        {/* Displaying user's location */}
-        <View style={styles.locationContainer}>
-          {/*TODO: get user's location and input it here*/}
-          <Text style={styles.location}>Kelowna, BC</Text>
-        </View>
+        </CustomText>
+        <CustomText style={styles.location} fontType={"subHeader"}>
+          {"Location Not Available"}
+        </CustomText>
       </View>
 
-      {/* Section for displaying recent posts */}
-      <View style={styles.centeredPostsContainer}>
-        <Text style={styles.recentPostsText}>Recent Posts</Text>
-        {/* Container for displaying multiple post components */}
-        <View style={styles.postsContainer}>
-          {renderRecentPosts()}
-        </View>
-
-        {/* Button to view all posts */}
-        {/*TODO: once page with all posts is built, link this button with it*/}
-        <TouchableOpacity style={styles.viewAllButton}>
-          <Text style={styles.viewAllButtonText}>View All</Text>
+      {/* Tabs for switching between posts and reviews */}
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            selectedTab === "posts" ? styles.selectedTab : null,
+          ]}
+          onPress={() => setSelectedTab("posts")}
+        >
+          <CustomText style={styles.tabText} fontType={"subHeader"}>
+            Posts
+          </CustomText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            selectedTab === "reviews" ? styles.selectedTab : null,
+          ]}
+          onPress={() => setSelectedTab("reviews")}
+        >
+          <CustomText style={styles.tabText} fontType={"subHeader"}>
+            Reviews
+          </CustomText>
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* Container for displaying user's posts, shown only when 'posts' tab is selected */}
+      <View
+        style={[
+          styles.postsContainer,
+          selectedTab !== "posts" && { display: "none" },
+        ]}
+      >
+        {userPosts.map((post, index) => (
+          <View key={index} style={styles.postCardContainer}>
+            <PostCard
+              post={post}
+              onPress={() =>
+                navigation.navigate("PostDetails", { listing: post })
+              }
+              onPressDropdown={() => handlePressDropdown(post.id)}
+              isDropdownVisible={activeCard === post.id}
+            />
+          </View>
+        ))}
+      </View>
+
+      {/* Container for displaying user's reviews, shown only when 'reviews' tab is selected */}
+      <View
+        style={[
+          styles.reviewsContainer,
+          selectedTab !== "reviews" && { display: "none" },
+        ]}
+      >
+        {userData &&
+        userData.received_reviews &&
+        userData.received_reviews.length > 0 ? (
+          userData.received_reviews.map((review, index) => (
+            <PostReview key={index} review={review} />
+          ))
+        ) : (
+          <CustomText style={styles.noReviewsText}>No reviews yet</CustomText>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
+// Formats user's display name by capitalizing the first letter of the first name and appending the first letter of the last name in uppercase.
 const getUserDisplayName = (userData) => {
-  const firstName = userData?.firstname || '';
-  const lastName = userData?.lastname || '';
-  return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
-};
+  const firstName = userData?.firstname || "";
+  const lastName = userData?.lastname || "";
+  const formattedFirstName =
+    firstName.charAt(0).toUpperCase() + firstName.slice(1);
+  const initialOfLastName = lastName.charAt(0).toUpperCase();
 
-const renderRecentPosts = () => {
-  return [1, 2, 3].map((index) => (
-    <View key={index} style={styles.postContainer}>
-      {/* Individual post component */}
-      {/*TODO: once posts page is complete, add the three most recent posts here*/}
-      <View style={styles.post}></View>
-    </View>
-  ));
+  return `${formattedFirstName} ${initialOfLastName}`;
 };
 
 export default ProfilePage;
