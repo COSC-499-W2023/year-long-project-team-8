@@ -23,11 +23,12 @@ const styles = StyleSheet.create({
   ratingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    top: 30,
+    top: 20
   },
   ratingTextContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 5,
+
   },
 
   // Profile container style
@@ -66,17 +67,14 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
 
-  // Settings button style
-  settingsButton: {
-    position: 'absolute',
-  },
-
   // Settings icon style
   settingsIcon: {
-    width: 30,
-    height: 30,
+    width: 38,
+    height: 38,
+    position: "absolute",
+    left: 335,
+    top: 15,
   },
-
    // Centered posts container style
   centeredPostsContainer: {
     flex: 1,
