@@ -20,12 +20,16 @@ import { fetchListingById } from '../helperFunctions/apiHelpers';
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Preloader from '../../context/Preloader'; // Ensure this path is correct
 
 // Login component for user authentication
 const Login = ({ onSwitch, navigation }) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // State variable to manage preloader visibility
+  const [loading, setLoading] = useState(false);
 
   // State variables for validation error messages
   const [emailError, setEmailError] = useState("");
@@ -44,6 +48,9 @@ const Login = ({ onSwitch, navigation }) => {
 
 
   const { loginUser, authTokens } = useContext(AuthContext);
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
   const login = async () => {
     await loginUser(email, password); // loginUser should return a Promise
@@ -138,7 +145,6 @@ const Login = ({ onSwitch, navigation }) => {
     setIsEmailErrorIcon(false);
     setIsPassErrorIcon(false);
 
-
     let isValid = validateInputs(); // Validate inputs first
     
     if (isValid) {
@@ -189,16 +195,24 @@ const Login = ({ onSwitch, navigation }) => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const loadFont = async () => {
       await Font.loadAsync({
         titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
         subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
         textFont: require("../../assets/fonts/Inter-Medium.ttf"),
       });
+      const timer = delay(3000); // 3-second delay loading
+      await timer;
+      setLoading(false);
       setFontLoaded(true);
     };
     loadFont();
   }, []);
+
+  if (loading) {
+    return <Preloader />; // Show the preloader while loading
+  }
 
   return (
     <KeyboardAvoidingView
