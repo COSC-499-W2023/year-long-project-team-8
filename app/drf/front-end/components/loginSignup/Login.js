@@ -8,7 +8,7 @@ import {
   ScrollView,
   Platform,
   TouchableWithoutFeedback,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
-import { fetchListingById } from '../helperFunctions/apiHelpers';
+import { fetchListingById } from "../helperFunctions/apiHelpers";
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,7 +31,8 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
-  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] =
+    useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordError, setForgotPasswordError] = useState("");
 
@@ -98,8 +99,8 @@ const Login = ({ onSwitch, navigation }) => {
 
   const handleLogin = async () => {
     Keyboard.dismiss();
-    let isValid = email && password; // Basic validation 
-  
+    let isValid = email && password; // Basic validation
+
     if (isValid) {
       try {
         const bodyStr = JSON.stringify({ email: email, password: password });
@@ -108,26 +109,44 @@ const Login = ({ onSwitch, navigation }) => {
           headers: { "Content-Type": "application/json" },
           body: bodyStr,
         };
-  
+
         const response = await fetch(`${baseEndpoint}/token/`, options);
         const authData = await response.json();
-  
+
         if (response.ok) {
           await loginUser(email, password);
-  
+
           // Check for a pending listing ID after a successful login
-          const listingId = await AsyncStorage.getItem('pendingListingId');
+          const listingId = await AsyncStorage.getItem("pendingListingId");
 
           if (listingId) {
-            // Fetch the listing details with the listing ID
-            const listing = await fetchListingById(listingId, authTokens);
-            console.log(listing);
-            // Navigate to PostDetails with the fetched listing as a parameter
-            navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
-            await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
+            try {
+              // Fetch the listing details with the listing ID
+              const listing = await fetchListingById(listingId, authTokens);
+              console.log(listing);
+              if (listing) {
+                console.log(listing);
+                // Navigate to PostDetails with the fetched listing as a parameter
+                navigation.navigate("MainApp", {
+                  screen: "PostDetails",
+                  params: { listing: listing },
+                });
+                await AsyncStorage.removeItem("pendingListingId"); // Clear the pending listing ID after navigation
+              } else {
+                console.log("Product not found");
+                navigation.navigate("MainApp");
+                await AsyncStorage.removeItem("pendingListingId"); // Clear the pending listing ID after navigation
+              }
+            } catch (err) {
+              // Handle fetch errors (e.g., network issues)
+              console.error("Listing fetch error:", err);
+              setAuthError("An error occurred during listing fetch.");
+              navigation.navigate("MainApp");
+              await AsyncStorage.removeItem("pendingListingId");
+            }
           } else {
             // Navigate to MainApp or another screen if no pending listing ID is found
-            navigation.navigate('MainApp');
+            navigation.navigate("MainApp");
           }
         } else {
           // Handle login errors (e.g., wrong credentials)
@@ -259,18 +278,9 @@ const Login = ({ onSwitch, navigation }) => {
             {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
           </View>
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
-            <CustomText
-              style={
-                LoginStyles.signupText}
-            >
+            <CustomText style={LoginStyles.signupText}>
               Don't have an account?{" "}
-              <CustomText
-                style={
-                  LoginStyles.signup
-                 }
-              >
-                Sign up!
-              </CustomText>
+              <CustomText style={LoginStyles.signup}>Sign up!</CustomText>
             </CustomText>
           </Pressable>
         </View>
@@ -281,70 +291,74 @@ const Login = ({ onSwitch, navigation }) => {
           visible={isForgotPasswordModalVisible}
           onRequestClose={handleCloseForgotPasswordModal}
         >
-  <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={LoginStyles.modalContainer}>
-        <ImageBackground 
-            source={require('../../assets/modal_wave.png')} 
-            style={LoginStyles.floatingBubble}
-            resizeMode="cover"
-            imageStyle={{ borderRadius: 10}}
-
-          >
-                  <Pressable
-                    style={LoginStyles.forgotPasswordModalCloseButton}
-                    onPress={handleCloseForgotPasswordModal}
-                  >
-                    <MaterialIcons
-                        name="close"
-                        size={22} 
-                        color="white" 
+          <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+              >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={LoginStyles.modalContainer}>
+                    <ImageBackground
+                      source={require("../../assets/modal_wave.png")}
+                      style={LoginStyles.floatingBubble}
+                      resizeMode="cover"
+                      imageStyle={{ borderRadius: 10 }}
+                    >
+                      <Pressable
+                        style={LoginStyles.forgotPasswordModalCloseButton}
+                        onPress={handleCloseForgotPasswordModal}
+                      >
+                        <MaterialIcons name="close" size={22} color="white" />
+                      </Pressable>
+                      <CustomText style={LoginStyles.forgotPasswordModalHeader}>
+                        Forgot Password?
+                      </CustomText>
+                      <CustomText
+                        style={LoginStyles.forgotPasswordModalsubHeader}
+                      >
+                        Don't worry, a code will be sent to your email!
+                      </CustomText>
+                      <View style={LoginStyles.containerInputModal}>
+                        <InputField
+                          style={LoginStyles.forgotPasswordModalInput}
+                          placeholder="Enter your email"
+                          placeholderTextColor="grey"
+                          onChangeText={(text) => {
+                            setForgotPasswordEmail(text);
+                            setForgotPasswordError(""); // Clear the error message when user starts typing
+                          }}
+                          value={forgotPasswordEmail}
+                        />
+                      </View>
+                      {forgotPasswordError && (
+                        <CustomText
+                          style={LoginStyles.forgotPasswordModalError}
+                        >
+                          {forgotPasswordError === "Invalid email format"
+                            ? "Invalid email"
+                            : forgotPasswordError}
+                        </CustomText>
+                      )}
+                      <ButtonLogin
+                        title="SEND"
+                        onPress={handleForgotPassword}
+                        style={LoginStyles.forgotPasswordsendButton}
                       />
-                  </Pressable>
-                  <CustomText style={LoginStyles.forgotPasswordModalHeader}>
-                    Forgot Password?
-                  </CustomText>
-                  <CustomText style={LoginStyles.forgotPasswordModalsubHeader}>
-                    Don't worry, a code will be sent to your email!
-                  </CustomText>
-                  <View style={LoginStyles.containerInputModal}>
-                  <InputField
-                      style={LoginStyles.forgotPasswordModalInput}
-                      placeholder="Enter your email"
-                      placeholderTextColor="grey"
-                      onChangeText={(text) => {
-                        setForgotPasswordEmail(text);
-                        setForgotPasswordError(""); // Clear the error message when user starts typing
-                      }}
-                      value={forgotPasswordEmail}
-                    />
-
+                    </ImageBackground>
                   </View>
-                  {forgotPasswordError && (
-                    <CustomText style={LoginStyles.forgotPasswordModalError}>
-                      {forgotPasswordError === "Invalid email format"
-                        ? "Invalid email"
-                        : forgotPasswordError}
-                    </CustomText>
-                  )}
-                  <ButtonLogin
-                    title="SEND"
-                    onPress={handleForgotPassword}
-                    style={LoginStyles.forgotPasswordsendButton}
-                  />              
-              
-              </ImageBackground>
-              </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </View>
-  </TouchableWithoutFeedback>
-</Modal>
+                </TouchableWithoutFeedback>
+              </KeyboardAvoidingView>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
       </ScrollView>
     </KeyboardAvoidingView>
   );
