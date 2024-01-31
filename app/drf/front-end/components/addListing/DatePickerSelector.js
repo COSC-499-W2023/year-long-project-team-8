@@ -174,9 +174,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  button:{
+    paddingVertical: 15,
+    paddingLeft:60,
+  },
   infoIcon: {
     marginLeft: 10,
-    marginTop: 5,
   },
   modalOverlay: {
     flex: 1,
