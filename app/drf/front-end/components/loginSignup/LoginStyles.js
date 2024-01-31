@@ -145,10 +145,11 @@ const LoginStyles = StyleSheet.create({
     marginTop:10,
   },
   backButton:{
+    fontWeight:"bold",
     textDecorationLine: "none",
     fontSize: 20,
     color: "#525252",
-    opacity: 0.6,
+    opacity: 0.7,
   }
 });
 

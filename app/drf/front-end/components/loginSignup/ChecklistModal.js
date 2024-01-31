@@ -1,37 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import PasswordChecklist from "./PasswordChecklist";
 import Modal from "react-native-modal";
 
-const ChecklistModal = ({ password }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
+const ChecklistModal = ({ password, isVisible, onClose }) => {
   return (
-    <View>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <MaterialIcons name="info-outline" size={25} color="gray" />
-      </TouchableOpacity>
-
       <Modal
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
+        isVisible={isVisible}
+        onBackdropPress={onClose}
         animationIn="slideInUp"
         animationOut="slideOutDown"
         style={modalStyles.bottomModal}
       >
         <View style={modalStyles.modalView}>
           <PasswordChecklist password={password} />
-
           <TouchableOpacity
             style={modalStyles.closeButton}
-            onPress={() => setModalVisible(false)}
+            onPress={onClose}
           >
             <Text style={modalStyles.textStyle}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
-    </View>
   );
 };
 
