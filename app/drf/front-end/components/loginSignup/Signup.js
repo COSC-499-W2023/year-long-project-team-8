@@ -69,14 +69,8 @@ const Signup = ({ onSwitch, navigation }) => {
     setIsEmailErrorIcon(false);
     setIsPassErrorIcon(false);
     setIsConfPassErrorIcon(false);
-  
-    // Check if all fields are empty
-  if (!signupEmail.trim() && !signupPassword && !confirmPassword) {
-    setSignupEmailError("Email is required");
-    setIsEmailErrorIcon(true);
-    isValid = false;
-  } else {
-    // Validate email if it's not empty
+
+    // Validate email
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!signupEmail.trim() || !emailRegex.test(signupEmail.trim())) {
       setSignupEmailError("Invalid email");
@@ -84,21 +78,19 @@ const Signup = ({ onSwitch, navigation }) => {
       isValid = false;
     }
 
-    // Validate password if it's not empty
+    // Validate password
     if (!isPasswordValid(signupPassword)) {
       setSignupPasswordError("Password doesn't meet the requirements");
       setIsPassErrorIcon(true);
-      setChecklistModalVisible(true);
       isValid = false;
     }
 
-    // Validate password confirmation if password fields are not empty
-    if (signupPassword && confirmPassword && signupPassword !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+    // Validate confirm password - Check both that it's not empty and matches the password
+    if (!confirmPassword || signupPassword !== confirmPassword) {
+      setConfirmPasswordError(confirmPassword ? "Passwords do not match" : "Confirm password is required");
       setIsConfPassErrorIcon(true);
       isValid = false;
     }
-  }
 
     if (isValid) {
       try {
@@ -109,7 +101,7 @@ const Signup = ({ onSwitch, navigation }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: trimmedEmail,
+            email: signupEmail,
             password: signupPassword,
           }),
         });
@@ -125,7 +117,7 @@ const Signup = ({ onSwitch, navigation }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: trimmedEmail,
+            email: signupEmail,
             password: signupPassword,
           }),
         });
@@ -151,7 +143,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
       } catch (error) {
         console.log("Error during signup:", error);
-        setConfirmPasswordError("Somethign went wrong")
+        setConfirmPasswordError("Something went wrong")
       }
     }
   };
@@ -179,7 +171,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, paddingTop: 50 }}
+      style={{ flex: 1, paddingTop: 30 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -214,7 +206,7 @@ const Signup = ({ onSwitch, navigation }) => {
             placeholder="email"
             value={signupEmail}
             onChangeText={(text) => {
-              setSignupEmail(text);
+              setSignupEmail(text.trim());
               setSignupEmailError("");
               setIsEmailErrorIcon(false);
             }}
@@ -239,6 +231,7 @@ const Signup = ({ onSwitch, navigation }) => {
               setSignupPasswordError("");
               setConfirmPasswordError("");
               setIsPassErrorIcon(false);
+              setChecklistModalVisible(false); // Hide checklist modal when user starts typing
             }}
             onFocus={() => {
               setSignupPasswordError("");
@@ -250,7 +243,7 @@ const Signup = ({ onSwitch, navigation }) => {
             autoCorrect={false}
             name="password"
             rightComponent={
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Pressable
                   onPress={() => setShowPassword(!showPassword)}
                   style={{ marginRight: 10 }}
@@ -262,15 +255,26 @@ const Signup = ({ onSwitch, navigation }) => {
                     color="gray"
                   />
                 </Pressable>
-                <ChecklistModal
-                  password={signupPassword}
-                  isVisible={isChecklistModalVisible}
-                  onClose={() => setChecklistModalVisible(false)}
-                />
+                <Pressable
+                  onPress={() => setChecklistModalVisible(true)} 
+                  testID="password-info-icon"
+                >
+                  <MaterialIcons
+                    name="info-outline"
+                    size={25}
+                    color="gray"
+                  />
+                </Pressable>
               </View>
             }
             errorText={signupPasswordError}
-            isErrorIcon = {isPassErrorIcon}
+            isErrorIcon={isPassErrorIcon}
+          />
+
+          <ChecklistModal
+            password={signupPassword}
+            isVisible={isChecklistModalVisible}
+            onClose={() => setChecklistModalVisible(false)}
           />
 
           <PasswordStrengthBar password={signupPassword} />

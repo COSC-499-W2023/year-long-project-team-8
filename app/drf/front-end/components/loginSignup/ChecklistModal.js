@@ -6,11 +6,6 @@ import Modal from "react-native-modal";
 
 const ChecklistModal = ({ password, isVisible, onClose }) => {
   return (
-    <View>
-      <TouchableOpacity onPress={() => onClose && onClose()}>
-        <MaterialIcons name="info-outline" size={25} color="gray" />
-      </TouchableOpacity>
-
       <Modal
         isVisible={isVisible}
         onBackdropPress={onClose}
@@ -28,7 +23,6 @@ const ChecklistModal = ({ password, isVisible, onClose }) => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </View>
   );
 };
 
