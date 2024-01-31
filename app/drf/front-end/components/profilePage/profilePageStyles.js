@@ -22,7 +22,12 @@ const styles = StyleSheet.create({
   // Rating container style
   ratingContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     top: 30,
+  },
+  ratingTextContainer: {
+    flexDirection: "row",
+    margin: 5,
   },
 
   // Profile container style
