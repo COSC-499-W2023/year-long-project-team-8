@@ -1,24 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
+import { Rating } from '@kolking/react-native-rating';
 
 import { getUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
-import StarRating from './ratingIcons';
 import styles from './profilePageStyles';
 import {useIsFocused} from "@react-navigation/native";
+import CustomText from "../CustomText";
 
 /**
  * ProfilePage component represents the user's profile page.
  * It displays user information, rating, recent posts, and provides an option to view all posts.
  */
-const ProfilePage = () => {
+const ProfilePage = ({ratings, reviews}) => {
 
     const isFocused = useIsFocused();
     const { userId, authTokens} = useContext(AuthContext);
-  const [userData, setUserData] = useState("");
-  const [rating] = useState(5);
-  const [currentPosition, setCurrentPosition] = useState(null);
+    const [userData, setUserData] = useState("");
+    const [rating] = useState(5);
+    const [currentPosition, setCurrentPosition] = useState(null);
+
+    const onReviewsPress = () => {
+    console.log('Navigate to review!');
+  };
 
   useEffect(() => {
     if (isFocused && userId && authTokens) {
@@ -49,7 +54,19 @@ useEffect(() => {
         {/*TODO: get the average rating for the user and implement here*/}
       {/* Section for displaying user rating */}
       <View style={styles.ratingContainer}>
-        <StarRating rating={rating} />
+            <Rating
+             size={25}
+             rating={rating}
+             fillColor="orange"
+             spacing={5}
+             disabled={true}
+             />
+          <View style={styles.ratingTextContainer}>
+            <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
+            <TouchableOpacity onPress={onReviewsPress}>
+                <CustomText style={styles.reviews} fontType={"text"}> ({reviews}reviews)</CustomText>
+            </TouchableOpacity>
+          </View>
       </View>
 
       {/* Section for displaying user profile information */}
