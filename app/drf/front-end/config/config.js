@@ -16,4 +16,4 @@
 //export const baseEndpoint = "http://206.87.16.244:8000/api";
 
 // brandon
-export const baseEndpoint = "http://192.168.1.132:8000/api";
+export const baseEndpoint = "http://142.231.71.43:8000/api";
