@@ -33,22 +33,20 @@ const EditProfileForm = ({
     return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 - $3');
   };
 
-  // Check if phone number matches the pattern /^\(\d{3}\) \d{3} - \d{4}/
-  const isPhoneValid = (phone) => {
-    const phonePattern = /^ \(\d{3}\) \d{3} - \d{4}/;
-    return phonePattern.test(phone);
-  };
+  const isPhoneValid = (cleanedPhone) => {
+  return cleanedPhone.length === 10;
+};
 
-  // Validate phone number and revert to the previous value if invalid
-  const phoneValidation = () => {
-    if (isPhoneValid(phone)) {
-      setPhone(phone);
-    } else {
-      // TODO: Implement error modal to give user feedback
-      setPhone(prevPhone);
-      console.log("Phone is invalid");
-    }
-  };
+const phoneValidation = () => {
+  if (isPhoneValid(phone)) {
+    setPhone(phone);
+  } else {
+    // TODO: Implement error modal to give user feedback
+    setPhone(prevPhone);
+    console.log("Phone is invalid");
+  }
+};
+
 
   // Check if email matches the proper format
   const isEmailValid = (email) => {
@@ -166,6 +164,7 @@ const EditProfileForm = ({
           onFocus={() => setPrevEmail(email)}
           onChangeText={(text) => setEmail(text)}
           onEndEditing={() => emailValidation()}
+          autoCapitalize={"none"}
         />
       </View>
     </>
