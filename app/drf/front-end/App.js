@@ -14,6 +14,7 @@ import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
+import HomePage from "./components/homePage/HomePage.js";
 
 const Stack = createStackNavigator();
 
@@ -38,7 +39,9 @@ const App = () => {
               <Stack.Screen name="Settings" component={SettingsNav} />
               <Stack.Screen name="EditProfile" component={EditProfile} />
               <Stack.Screen name="mapView" component={mapView} />
+               <Stack.Screen name="HomePage" component={HomePage}/>
               <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
+
             </Stack.Navigator>
           </NavigationContainer>
         </AuthProvider>
