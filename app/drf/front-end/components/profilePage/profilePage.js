@@ -8,6 +8,7 @@ import AuthContext from '../../context/AuthContext';
 import styles from './profilePageStyles';
 import {useIsFocused} from "@react-navigation/native";
 import CustomText from "../CustomText";
+import { useNavigation } from "@react-navigation/native";
 
 /**
  * ProfilePage component represents the user's profile page.
@@ -21,9 +22,16 @@ const ProfilePage = ({ratings, reviews}) => {
     const [rating] = useState(5);
     const [currentPosition, setCurrentPosition] = useState(null);
 
+    const navigation = useNavigation();
+
     const onReviewsPress = () => {
     console.log('Navigate to review!');
   };
+
+    const goToSettings = () => {
+        navigation.navigate('Settings')
+
+    }
 
   useEffect(() => {
     if (isFocused && userId && authTokens) {
@@ -53,6 +61,9 @@ useEffect(() => {
     <View style={styles.container}>
         {/*TODO: get the average rating for the user and implement here*/}
       {/* Section for displaying user rating */}
+        <TouchableOpacity onPress={goToSettings}>
+            <Image style={styles.settingsIcon} source={require('../../assets/images/profilePage/settings.png')}/>
+        </TouchableOpacity>
       <View style={styles.ratingContainer}>
             <Rating
              size={25}
@@ -66,6 +77,7 @@ useEffect(() => {
             <TouchableOpacity onPress={onReviewsPress}>
                 <CustomText style={styles.reviews} fontType={"text"}> ({reviews}reviews)</CustomText>
             </TouchableOpacity>
+
           </View>
       </View>
 
