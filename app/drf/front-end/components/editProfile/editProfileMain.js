@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./editProfileStyles";
 import { getUserData, updateUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
-import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
+import EditProfileForm from "./editProfileJSX";
 
 const EditProfilePage = () => {
   const { authTokens, userId } = useContext(AuthContext);
@@ -65,10 +65,8 @@ const EditProfilePage = () => {
       updatedData.email = email;
     }
 
-    // Updating user data via API call
     updateUserData(userId, authTokens, updatedData)
       .then(() => {
-        // Fetching updated user data after a successful update
         getUserData(userId, authTokens)
           .then((data) => {
             setUserData(data);
@@ -87,7 +85,6 @@ const EditProfilePage = () => {
       });
   };
 
-  // Function to navigate back to the previous screen
   const goBack = () => {
     navigation.goBack();
   };
@@ -99,9 +96,8 @@ const EditProfilePage = () => {
   const saveButtonPress = () => {
     toHome();
     handleSaveDetails();
-  }
+  };
 
-  // Effect hook to handle the hardware back button press
   useEffect(() => {
     const handleBackPress = () => {
       goBack();
@@ -110,7 +106,6 @@ const EditProfilePage = () => {
 
     BackHandler.addEventListener("hardwareBackPress", handleBackPress);
 
-    // Cleanup function to remove the event listener when the component is unmounted
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
     };
@@ -129,6 +124,7 @@ const EditProfilePage = () => {
         <TouchableOpacity onPress={saveButtonPress}>
           <Text style={styles.saveButton}>Save</Text>
         </TouchableOpacity>
+
       </View>
 
       <View style={styles.profilePictureContainer}>
