@@ -34,43 +34,71 @@ const Signup = ({ onSwitch, navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isEmailErrorIcon, setIsEmailErrorIcon] = useState(false);
+  const [isPassErrorIcon, setIsPassErrorIcon] = useState(false);
+  const [isConfPassErrorIcon, setIsConfPassErrorIcon] = useState(false);
+  const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
 
- const { loginUser } = useContext(AuthContext);
+
+  const { loginUser } = useContext(AuthContext);
+
+  // Password validation criteria
+  const hasUpperCase = (password) => /[A-Z]/.test(password);
+  const hasLowerCase = (password) => /[a-z]/.test(password);
+  const hasDigits = (password) => /\d/.test(password);
+  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isLongEnough = (password) => password.length >= 8;
+
+  // Combined password validation check
+  const isPasswordValid = (password) => {
+    return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
+  };
+
 
   // Function to handle signup validation and submission
+
+  //TODO: Check if email is already in use
   const handleSignup = async () => {
     let isValid = true;
     Keyboard.dismiss();
+
+    // Reset error states and icons
+    setSignupEmailError("");
+    setSignupPasswordError("");
+    setConfirmPasswordError("");
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+    setIsConfPassErrorIcon(false);
   
-    // Trim the email input to remove leading/trailing spaces
-    const trimmedEmail = signupEmail.trim();
-    setSignupEmail(trimmedEmail); // Update the state with the trimmed email
-  
+    // Check if all fields are empty
+  if (!signupEmail.trim() && !signupPassword && !confirmPassword) {
+    setSignupEmailError("Email is required");
+    setIsEmailErrorIcon(true);
+    isValid = false;
+  } else {
+    // Validate email if it's not empty
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  
-    // Validate trimmed email
-    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+    if (!signupEmail.trim() || !emailRegex.test(signupEmail.trim())) {
       setSignupEmailError("Invalid email");
+      setIsEmailErrorIcon(true);
       isValid = false;
-    } else {
-      setSignupEmailError("");
     }
 
-    // Validate password
-    if (!signupPassword) {
-      setSignupPasswordError("Password required");
+    // Validate password if it's not empty
+    if (!isPasswordValid(signupPassword)) {
+      setSignupPasswordError("Password doesn't meet the requirements");
+      setIsPassErrorIcon(true);
+      setChecklistModalVisible(true);
       isValid = false;
-    } else {
-      setSignupPasswordError("");
     }
 
-    // Validate password confirmation
-    if (signupPassword !== confirmPassword) {
+    // Validate password confirmation if password fields are not empty
+    if (signupPassword && confirmPassword && signupPassword !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
+      setIsConfPassErrorIcon(true);
       isValid = false;
-    } else {
-      setConfirmPasswordError("");
     }
+  }
 
     if (isValid) {
       try {
@@ -123,6 +151,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
       } catch (error) {
         console.log("Error during signup:", error);
+        setConfirmPasswordError("Somethign went wrong")
       }
     }
   };
@@ -187,15 +216,18 @@ const Signup = ({ onSwitch, navigation }) => {
             onChangeText={(text) => {
               setSignupEmail(text);
               setSignupEmailError("");
+              setIsEmailErrorIcon(false);
             }}
             onFocus={() => {
               setSignupEmailError("");
+              setIsEmailErrorIcon(false);
             }}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
             name="email"
             errorText={signupEmailError}
+            isErrorIcon={isEmailErrorIcon}
           />
 
           <InputField
@@ -206,10 +238,12 @@ const Signup = ({ onSwitch, navigation }) => {
               setSignupPassword(text);
               setSignupPasswordError("");
               setConfirmPasswordError("");
+              setIsPassErrorIcon(false);
             }}
             onFocus={() => {
               setSignupPasswordError("");
               setConfirmPasswordError("");
+              setIsPassErrorIcon(false);
             }}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -228,10 +262,15 @@ const Signup = ({ onSwitch, navigation }) => {
                     color="gray"
                   />
                 </Pressable>
-                <ChecklistModal password={signupPassword} />
+                <ChecklistModal
+                  password={signupPassword}
+                  isVisible={isChecklistModalVisible}
+                  onClose={() => setChecklistModalVisible(false)}
+                />
               </View>
             }
             errorText={signupPasswordError}
+            isErrorIcon = {isPassErrorIcon}
           />
 
           <PasswordStrengthBar password={signupPassword} />
@@ -243,15 +282,19 @@ const Signup = ({ onSwitch, navigation }) => {
             onChangeText={(text) => {
               setConfirmPassword(text);
               setConfirmPasswordError("");
+              setIsConfPassErrorIcon(false);
             }}
             onFocus={() => {
               setConfirmPasswordError("");
+              setIsConfPassErrorIcon(false);
             }}
             autoCapitalize="none"
             secureTextEntry={true}
             autoCorrect={false}
             name="confirmPassword"
             errorText={confirmPasswordError}
+            isErrorIcon = {isConfPassErrorIcon}
+
           />
 
           <ButtonSignup title="SIGN UP" onPress={handleSignup} />
