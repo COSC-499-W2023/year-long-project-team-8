@@ -170,10 +170,14 @@ const Login = ({ onSwitch, navigation }) => {
             const listing = await fetchListingById(listingId, authTokens);
             console.log(listing);
             // Navigate to PostDetails with the fetched listing as a parameter
+            setEmail("");
+            setPassword("");
             navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
             await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
           } else {
             // Navigate to MainApp or another screen if no pending listing ID is found
+            setEmail("");
+            setPassword("");
             navigation.navigate('MainApp');
           }
         } else {

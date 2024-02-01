@@ -5,7 +5,7 @@ const getPasswordStrength = (password) => {
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasDigits = /\d/.test(password);
-  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>_]/.test(password);
 
   const conditionsMet = [
     hasUpperCase,

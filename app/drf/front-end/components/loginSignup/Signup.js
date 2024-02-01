@@ -46,7 +46,7 @@ const Signup = ({ onSwitch, navigation }) => {
   const hasUpperCase = (password) => /[A-Z]/.test(password);
   const hasLowerCase = (password) => /[a-z]/.test(password);
   const hasDigits = (password) => /\d/.test(password);
-  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>_]/.test(password);
   const isLongEnough = (password) => password.length >= 8;
 
   // Combined password validation check
@@ -82,6 +82,7 @@ const Signup = ({ onSwitch, navigation }) => {
     if (!isPasswordValid(signupPassword)) {
       setSignupPasswordError("Password doesn't meet the requirements");
       setIsPassErrorIcon(true);
+      setChecklistModalVisible(true)
       isValid = false;
     }
 
@@ -139,6 +140,9 @@ const Signup = ({ onSwitch, navigation }) => {
         AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
        // navigation.navigate("Details", { userId, accessToken: receivedToken });
        loginUser(signupEmail,signupPassword);
+       setConfirmPassword("");
+       setSignupEmail("");
+       setSignupPassword("");
         navigation.navigate("Details");
 
       } catch (error) {
@@ -328,3 +332,4 @@ const Signup = ({ onSwitch, navigation }) => {
 };
 
 export default Signup;
+
