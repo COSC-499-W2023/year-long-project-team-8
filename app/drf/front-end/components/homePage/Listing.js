@@ -23,7 +23,7 @@ const Listing = ({ listing, navigation }) => {
 
   // Assuming 'listing' now includes 'ownerDetails' fetched in HomePage
   const getDisplayName = () => listing.ownerDetails?.firstname || listing.ownerDetails?.email.split('@')[0] || "Unknown";
-  const getDisplayRating = () => listing.ownerDetails?.rating || 5;
+  const getDisplayRating = () => listing.ownerDetails?.rating || "New User";
 
   const timeAgo = (dateString) => {
     const date = new Date(dateString);
