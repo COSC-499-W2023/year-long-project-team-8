@@ -79,6 +79,7 @@ const HomePage = ({ navigation }) => {
         }
       }));
       setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
+      console.log(listingsWithAdditionalData)
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
@@ -131,28 +132,33 @@ const HomePage = ({ navigation }) => {
 
   // Function to handle the selection of food categories
   const handleCategoryPress = (category) => {
-    // If the category is already selected, remove it; else add it
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
-    } else {
-      setSelectedCategories((prev) => [...prev, category]);
-    }
+    setSelectedCategories(prevCategories => 
+      prevCategories.includes(category)
+        ? prevCategories.filter(cat => cat !== category)
+        : [...prevCategories, category]
+    );
   };
+  
+  
 
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
     selectedCategories.includes(category);
 
   // Function to check if a category matches the search query
-  const isCategoryMatching = (categories, query) => {
-    // Check if the categories variable is an array or not
-    if (!Array.isArray(categories)) {
-      return categories.toLowerCase().includes(query.toLowerCase());
+  const isCategoryMatching = (listingCategories, selectedCategories) => {
+    if (selectedCategories.length === 0) {
+      return true; // If no categories are selected, all listings match
     }
-    return categories.some((category) =>
-      category.toLowerCase().includes(query.toLowerCase())
+  
+    if (!Array.isArray(listingCategories)) {
+      return false; // Return false if listingCategories is undefined or not an array
+    }
+    return listingCategories.some(category =>
+      selectedCategories.includes(category)
     );
   };
+  
   
   // TODO: Use fetched data
   // In order to revert to old data, add return foodListings
@@ -164,20 +170,30 @@ const HomePage = ({ navigation }) => {
     return foodListing.filter((listing) => {
      
       // Apply filters 
+      const listingCategoriesArray = listing.categories.split(',');
       const isDishMatching = listing.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const isCategoryMatchingSearch = isCategoryMatching(listing.categories, searchQuery);
-      const isListingCategorySelected = selectedCategories.some(cat => isCategoryMatching(listing.categories, cat));
+      const isCategoryMatchingSearch = isCategoryMatching(listingCategoriesArray, searchQuery); 
+      const isCategoryMatch = isCategoryMatching(listingCategoriesArray, selectedCategories);
 
       //TODO: DISTANCE FILTERING
       const withinDistance = true; // Assuming all listings are within distance for now
 
       const meetsRating = listing.ownerDetails && listing.ownerDetails.rating >= ratingFilter;
       const doesNotContainAllergens = !allergensFilter.some(allergen => listing.allergens?.includes(allergen));
+
+      console.log("Listing Title:", listing.title);
+      console.log("Search Query:", searchQuery);
+      console.log("isDishMatching:", isDishMatching);
+      console.log("isCategoryMatchingSearch:", isCategoryMatchingSearch);
+      console.log("Selected Categories:", selectedCategories);
+      console.log("isCategoryMatch:", isCategoryMatch);
+      console.log("categories to match:", listing.categories.split(','));
+
   
-      return isDishMatching && (isCategoryMatchingSearch || isListingCategorySelected) && withinDistance && meetsRating && doesNotContainAllergens;
+      return (isDishMatching || isCategoryMatchingSearch) && isCategoryMatch && withinDistance && meetsRating && doesNotContainAllergens;
     }).sort((a, b) => {
       if (selectedSortOption === "Distance") {
-        // Implement your sorting logic based on distance
+        // Implement sorting logic based on distance
       } else if (selectedSortOption === "Rating") {
         return b.ownerDetails.rating - a.ownerDetails.rating;
       } else if (selectedSortOption === "Date") {
@@ -285,17 +301,15 @@ const HomePage = ({ navigation }) => {
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {loading ? (
-              <ActivityIndicator size="large" color="orange" style={styles.loader}/> // Display loader while fetching
-            ) : filteredAndSortedListings.length ? (
-              filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={idx} listing={listing} navigation={navigation} />
-              ))
-            ) : (
-              <CustomText fontType={"text"} style={styles.noMatchesText}>
-                Nothing like that for now...
-              </CustomText>
-            )}
+          {loading ? (
+            <ActivityIndicator size="large" color="orange" style={styles.loader}/>
+          ) : filteredAndSortedListings.length > 0 ? (
+            filteredAndSortedListings.map((listing, idx) => (
+              <Listing key={idx} listing={listing} navigation={navigation} />
+            ))
+          ) : (
+            <CustomText style={styles.noMatchesText}>No matches found.</CustomText>
+          )}
           </View>
         </View>
       </ScrollView>
