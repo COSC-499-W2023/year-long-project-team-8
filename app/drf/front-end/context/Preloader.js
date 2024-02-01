@@ -27,9 +27,13 @@ const styles = StyleSheet.create({
   loader:{
     width:200,
     height:200,
+    marginLeft:10,
   },
   text:{
     fontSize:18,
+    textAlign:"center",
+    marginTop: -40, 
+
   }
 });
 

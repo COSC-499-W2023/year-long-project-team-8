@@ -1,46 +1,11 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { View, TouchableOpacity, StyleSheet, Animated} from "react-native";
+import React, { useRef } from "react";
+import { View, TouchableOpacity, StyleSheet, Animated } from "react-native";
 import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
-import { getUserData } from '../helperFunctions/apiHelpers'; 
-import AuthContext from '../../context/AuthContext'; 
-
 
 const Listing = ({ listing, navigation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
-  const [userDetails, setUserDetails] = useState(null);
-  const { authTokens } = useContext(AuthContext); 
-
-  // function to get username or first name for user that did the listing
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const data = await getUserData(listing.owner, authTokens);
-        setUserDetails(data);
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-
-    fetchUserDetails();
-  }, [listing.owner]);
-
-  const getDisplayName = () => {
-    if (userDetails) {
-      return userDetails.firstname || userDetails.email.split('@')[0];
-    }
-    return "Unknown";
-  };
-
-  const getDisplayRating = () => {
-    if (userDetails && userDetails.rating) {
-      return userDetails.rating;
-    }
-    return 5;
-  };
-
-  
 
   const zoomIn = () => {
     Animated.spring(scaleValue, {
@@ -55,46 +20,68 @@ const Listing = ({ listing, navigation }) => {
       useNativeDriver: true,
     }).start();
   };
+
+  // Assuming 'listing' now includes 'ownerDetails' fetched in HomePage
+  const getDisplayName = () => listing.ownerDetails?.firstname || listing.ownerDetails?.email.split('@')[0] || "Unknown";
+  const getDisplayRating = () => listing.ownerDetails?.rating || 5;
+
+  const timeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.round((now - date) / 1000);
+    const minutes = Math.round(seconds / 60);
+    const hours = Math.round(minutes / 60);
+    const days = Math.round(hours / 24);
+    const months = Math.round(days / 30);
+    const years = Math.round(months / 12);
+
+    if (seconds < 60) {
+      return `Just Now`;
+    } else if (minutes < 60) {
+      return `Just Now`;
+    } else if (hours < 2) {
+      return `${hours} hour ago`;
+    } else if (hours < 24) {
+      return `${hours} hours ago`;
+    } else if (days < 30) {
+      return `${days} days ago`;
+    } else if (months < 12) {
+      return `${months} months ago`;
+    } else {
+      return `${years} years ago`;
+    }
+  };
+
   return (
     <TouchableOpacity
-        activeOpacity={1}
-        onPressIn={zoomIn} // Trigger zoom-in on press in
-        onPressOut={zoomOut} // Trigger zoom-out on press release
-        onPress={() => {
-          navigation.navigate('PostDetails', { listing: listing });
-        }}
-      >
-        <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-          <Card key={listing.title} style={styles.card}>
-            {/* Card content */}
-            {listing.images && listing.images.length > 0 && (
-              <Card.Cover
-                source={{ uri: listing.images[0].image }}
-                style={styles.cardImage}
-              />
-            )}
-
+      activeOpacity={1}
+      onPressIn={zoomIn}
+      onPressOut={zoomOut}
+      onPress={() => navigation.navigate('PostDetails', { listing })}
+    >
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+        <Card style={styles.card}>
+          {listing.images && listing.images.length > 0 && (
+            <Card.Cover source={{ uri: listing.images[0].image }} style={styles.cardImage} />
+          )}
           <CustomText fontType={"title"} style={styles.cardTitle}>
             {listing.title}
           </CustomText>
-
           <View style={styles.nameAndRatingContainer}>
             <CustomText fontType={"text"} style={styles.byName}>
               By {getDisplayName()}
             </CustomText>
-
             <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
             <CustomText fontType={"subHeader"} style={styles.rating}>
               {getDisplayRating()}
             </CustomText>
           </View>
-
           <View>
             <CustomText fontType={"subHeader"} style={styles.datePosted}>
-              {listing.date || "Just now"}
+              {timeAgo(listing.created_at)}
             </CustomText>
             <CustomText fontType={"subHeader"} style={styles.distanceText}>
-              {"0" /* TODO: Replace this with the actual distance */}
+              {"0" /* Replace with actual distance if available */}
             </CustomText>
           </View>
         </Card>
@@ -102,6 +89,7 @@ const Listing = ({ listing, navigation }) => {
     </TouchableOpacity>
   );
 };
+
 
 export default Listing;
 

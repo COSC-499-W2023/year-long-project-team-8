@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import SortModal from "./SortModal";
 import CustomText from "../CustomText";
@@ -65,17 +66,29 @@ const HomePage = ({ navigation }) => {
 
   const fetchFoodListings = async () => {
     try {
-      setLoading(true);
-      const productList = await getProductList(authTokens);
-      console.log("Fetched Product List:", productList);
-      console.log("Created Post?:", postCreated);
-      setFoodListing(productList.results);
+      setLoading(true); // Start the loader
+      const productList = await getProductList(authTokens); // Fetch listings
+      const listingsWithAdditionalData = await Promise.all(productList.results.map(async (listing) => {
+        try {
+          // Fetch additional data for each listing here (e.g., owner details)
+          const ownerDetails = await getUserData(listing.owner, authTokens);
+          console.log(listing);
+          // Combine the listing with its additional data
+          return { ...listing, ownerDetails };
+        } catch (error) {
+          console.error('Error fetching additional data for listing:', listing.id, error);
+          // Return the listing without additional data if there's an error
+          return listing;
+        }
+      }));
+      setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop the loader once all listings and their additional data have been fetched
     }
   };
+  
 
   const handleMapPress = async () => {
     navigation.navigate('mapView');
@@ -336,9 +349,11 @@ const HomePage = ({ navigation }) => {
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {filteredAndSortedListings.length ? (
-              filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.title} listing={listing} idx={idx} navigation={navigation}/>
+            {loading ? (
+              <ActivityIndicator size="large" color="orange" style={styles.loader}/> // Display loader while fetching
+            ) : foodListing.length ? (
+              foodListing.map((listing, idx) => (
+                <Listing key={idx} listing={listing} navigation={navigation} />
               ))
             ) : (
               <CustomText fontType={"text"} style={styles.noMatchesText}>
