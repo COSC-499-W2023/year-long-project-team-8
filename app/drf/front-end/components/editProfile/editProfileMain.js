@@ -5,7 +5,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  BackHandler, ScrollView, KeyboardAvoidingView,
+  BackHandler,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./editProfileStyles";
@@ -129,7 +131,8 @@ const EditProfilePage = () => {
         </TouchableOpacity>
 
       </View>
-
+<KeyboardAvoidingView keyboardVerticalOffset={100}>
+          <ScrollView style={styles.scrollView} contentContainerStyle={{minHeight: 875}}>
       <View style={styles.profilePictureContainer}>
         <Image
           source={require("../../assets/images/profilePage/pfp.png")}
@@ -137,8 +140,6 @@ const EditProfilePage = () => {
         />
       </View>
 
-      <ScrollView>
-        <KeyboardAvoidingView>
       {/* EditProfileForm component */}
       <EditProfileForm
         firstname={firstname}
@@ -158,19 +159,20 @@ const EditProfilePage = () => {
         prevEmail={prevEmail}
         setPrevEmail={setPrevEmail}
       />
+            </ScrollView>
           </KeyboardAvoidingView>
 
-      </ScrollView>
+{/*
       <View style={styles.buttonFieldContainer}>
         <TouchableOpacity style={styles.changePasswordButton}>
           <Text style={styles.changePasswordText}>Change Password</Text>
         </TouchableOpacity>
-        {/*
+
         <TouchableOpacity style={styles.deleteAccountButton}>
           <Text style={styles.deleteAccountText}>Delete Account</Text>
         </TouchableOpacity>
-      */}
-        </View>
+
+        </View>*/}
     </SafeAreaView>
 
 
