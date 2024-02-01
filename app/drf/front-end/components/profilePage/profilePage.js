@@ -1,24 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
+import { Rating } from '@kolking/react-native-rating';
 
 import { getUserData } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
-import StarRating from './ratingIcons';
 import styles from './profilePageStyles';
-import {useIsFocused} from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+import CustomText from "../CustomText";
+import { useNavigation } from "@react-navigation/native";
 
-/**
- * ProfilePage component represents the user's profile page.
- * It displays user information, rating, recent posts, and provides an option to view all posts.
- */
-const ProfilePage = () => {
-
-    const isFocused = useIsFocused();
-    const { userId, authTokens} = useContext(AuthContext);
+const ProfilePage = ({ ratings, reviews, navigation }) => {
+  const isFocused = useIsFocused();
+  const { userId, authTokens } = useContext(AuthContext);
   const [userData, setUserData] = useState("");
   const [rating] = useState(5);
   const [currentPosition, setCurrentPosition] = useState(null);
+
+  const onReviewsPress = () => {
+    console.log('Navigate to review!');
+  };
+
+  const goToSettings = () => {
+    navigation.navigate('EditProfile');
+    console.log('settings button pressed');
+  }
 
   useEffect(() => {
     if (isFocused && userId && authTokens) {
@@ -32,7 +38,7 @@ const ProfilePage = () => {
     }
   }, [isFocused, userId, authTokens]);
 
-useEffect(() => {
+  useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -44,12 +50,31 @@ useEffect(() => {
       setCurrentPosition(location);
     })()
   }, []);
+
   return (
     <View style={styles.container}>
-        {/*TODO: get the average rating for the user and implement here*/}
-      {/* Section for displaying user rating */}
+      {/*TODO: get the average rating for the user and implement here*/}
+      <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer}>
+        <Image
+          source={require('../../assets/images/profilePage/settings.png')}
+          style={styles.settingsButton}
+        />
+      </TouchableOpacity>
+
       <View style={styles.ratingContainer}>
-        <StarRating rating={rating} />
+        <Rating
+          size={25}
+          rating={rating}
+          fillColor="orange"
+          spacing={5}
+          disabled={true}
+        />
+        <View style={styles.ratingTextContainer}>
+          <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
+          <TouchableOpacity onPress={onReviewsPress}>
+            <CustomText style={styles.reviews} fontType={"text"}> ({reviews} reviews)</CustomText>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Section for displaying user profile information */}
@@ -66,7 +91,7 @@ useEffect(() => {
 
         {/* Displaying user's location */}
         <View style={styles.locationContainer}>
-            {/*TODO: get users location and input it here*/}
+          {/*TODO: get user's location and input it here*/}
           <Text style={styles.location}>Kelowna, BC</Text>
         </View>
       </View>
@@ -80,7 +105,7 @@ useEffect(() => {
         </View>
 
         {/* Button to view all posts */}
-          {/*TODO: once page with all posts is built link this button with it*/}
+        {/*TODO: once page with all posts is built, link this button with it*/}
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllButtonText}>View All</Text>
         </TouchableOpacity>
@@ -99,7 +124,7 @@ const renderRecentPosts = () => {
   return [1, 2, 3].map((index) => (
     <View key={index} style={styles.postContainer}>
       {/* Individual post component */}
-        {/*TODO: once posts page is complete add the three most recent posts here*/}
+      {/*TODO: once posts page is complete, add the three most recent posts here*/}
       <View style={styles.post}></View>
     </View>
   ));
