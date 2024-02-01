@@ -16,7 +16,7 @@ import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
-
+import { fetchListingById } from '../helperFunctions/apiHelpers';
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,17 +31,20 @@ const Login = ({ onSwitch, navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
-  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] =
-    useState(false);
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordError, setForgotPasswordError] = useState("");
 
   //State variable for show password
   const [showPassword, setShowPassword] = useState(false);
 
-  const { loginUser } = useContext(AuthContext);
+  const [isAuthErrorIcon, setIsAuthErrorIcon] = useState(false);
+  const [isEmailErrorIcon, setIsEmailErrorIcon] = useState(false);
+  const [isPassErrorIcon, setIsPassErrorIcon] = useState(false);
 
-  // new login call from AuthContext - can refactor to include the front end validation
+
+  const { loginUser, authTokens } = useContext(AuthContext);
+
   const login = async () => {
     await loginUser(email, password); // loginUser should return a Promise
     navigation.navigate("Tabs");
@@ -54,14 +57,11 @@ const Login = ({ onSwitch, navigation }) => {
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
     try {
-      // Trim the email input to remove leading/trailing spaces
-      const trimmedEmail = forgotPasswordEmail.trim();
-      setForgotPasswordEmail(trimmedEmail); // Update the state with the trimmed email
-  
       // Validate email format
       const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      if (!emailRegex.test(trimmedEmail)) {
+      if (!emailRegex.test(forgotPasswordEmail)) {
         setForgotPasswordError("Invalid email format");
+        setIsEmailErrorIcon(true);
         return;
       }
 
@@ -71,7 +71,7 @@ const Login = ({ onSwitch, navigation }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: trimmedEmail }),
+        body: JSON.stringify({ email: forgotPasswordEmail }),
       });
 
       const responseData = await response.json();
@@ -102,45 +102,88 @@ const Login = ({ onSwitch, navigation }) => {
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
-  const handleLogin = async () => {
-    let isValid = true;
-    Keyboard.dismiss();
+  
 
-    // If the provided email and password are valid, add login logic
+  const validateInputs = () => {
+    let isValid = true;
+    setEmailError("");
+    setPasswordError("");
+  
+    // Email validation
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!email || !emailRegex.test(email)) {
+      setEmailError("Invalid email format");
+      setIsEmailErrorIcon(true);
+      isValid = false;
+    } else {
+      setIsEmailErrorIcon(false);  // Reset email icon error state if email is valid
+    }
+  
+    // Password validation
+    if (!password) {
+      setPasswordError("Password cannot be empty");
+      setIsPassErrorIcon(true);
+      isValid = false;
+    } else {
+      setIsPassErrorIcon(false);  // Reset password icon error state if password is not empty
+    }
+  
+    return isValid;
+  };
+  
+  
+
+  const handleLogin = async () => {
+    Keyboard.dismiss();
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+
+
+    let isValid = validateInputs(); // Validate inputs first
+    
     if (isValid) {
       try {
-        let bodyObj = {
-          email: email,
-          password: password,
-        };
-
-        // need to pass the data as JSON for our API to deal with
-        const bodyStr = JSON.stringify(bodyObj);
-        //console.log(bodyStr);
+        const bodyStr = JSON.stringify({ email: email, password: password });
         const options = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: bodyStr,
         };
-
-        const response = await fetch(loginEndpoint, options);
-        //console.log(response);
+  
+        const response = await fetch(`${baseEndpoint}/token/`, options);
         const authData = await response.json();
-
-        if (authData && authData.access) {
+  
+        if (response.ok) {
           await loginUser(email, password);
-          navigation.navigate("MainApp");
-          //navigation.navigate("Tabs");
-          // handleAuthData(authData, getProductList);
+  
+          // Check for a pending listing ID after a successful login
+          const listingId = await AsyncStorage.getItem('pendingListingId');
+
+          if (listingId) {
+            // Fetch the listing details with the listing ID
+            const listing = await fetchListingById(listingId, authTokens);
+            console.log(listing);
+            // Navigate to PostDetails with the fetched listing as a parameter
+            navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
+            await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
+          } else {
+            // Navigate to MainApp or another screen if no pending listing ID is found
+            navigation.navigate('MainApp');
+          }
         } else {
-          if (password && email) setAuthError("Wrong email or password");
+          // Handle login errors (wrong credentials)
+          setIsEmailErrorIcon(true);
+          setIsPassErrorIcon(true);
+          setPasswordError("Wrong email or password");
         }
       } catch (err) {
-        console.log("err", err);
+        // Handle other errors (e.g., network issues)
+        console.error("Login error:", err);
+        setAuthError("An error occurred during login. Please try again.");
+        setIsEmailErrorIcon(true);
+        setIsPassErrorIcon(true);
       }
-    }
+    } 
   };
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -189,20 +232,21 @@ const Login = ({ onSwitch, navigation }) => {
         </View>
 
         <View style={LoginStyles.fields}>
-          <InputField
-            icon={"email"}
-            placeholder="email"
-            value={email}
-            onChangeText={(text) => {
-              setEmail(text);
-              setEmailError("");
-              setAuthError("");
-            }}
-            onFocus={() => {
-              setAuthError("");
-              setEmailError("");
-            }}
-            errorText={emailError}
+        <InputField
+          icon={"email"}
+          placeholder="Email"
+          value={email}
+          isErrorIcon={isEmailErrorIcon}
+          onChangeText={(text) => {
+            setEmail(text.trim());
+            setEmailError(""); 
+            setIsEmailErrorIcon(false);
+          }}
+          onFocus={() => {
+            setEmailError(""); 
+            setIsEmailErrorIcon(false);
+          }}
+            errorText={emailError} 
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
@@ -211,16 +255,19 @@ const Login = ({ onSwitch, navigation }) => {
 
           <InputField
             icon={"lock"}
-            placeholder="password"
+            placeholder="Password"
             value={password}
+            isErrorIcon={isPassErrorIcon}
             onChangeText={(text) => {
               setPassword(text);
-              setPasswordError("");
+              setPasswordError(""); 
               setAuthError("");
+              setIsPassErrorIcon(false);
             }}
             onFocus={() => {
-              setAuthError("");
-              setPasswordError("");
+              setPasswordError(""); 
+              setAuthError(""); 
+              setIsPassErrorIcon(false);
             }}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -240,7 +287,7 @@ const Login = ({ onSwitch, navigation }) => {
               </Pressable>
             }
             errorText={passwordError || authError}
-          />
+            />
           <View style={LoginStyles.forgotLoginContainer}>
             <Pressable
               style={LoginStyles.forgotPasswordContainer}
@@ -317,7 +364,7 @@ const Login = ({ onSwitch, navigation }) => {
                               placeholder="Enter your email"
                               placeholderTextColor="grey"
                               onChangeText={(text) => {
-                                setForgotPasswordEmail(text);
+                                setForgotPasswordEmail(text.trim());
                                 setForgotPasswordError(""); // Clear the error message when user starts typing
                               }}
                               value={forgotPasswordEmail}
@@ -336,6 +383,7 @@ const Login = ({ onSwitch, navigation }) => {
                             onPress={handleForgotPassword}
                             style={LoginStyles.forgotPasswordsendButton}
                           />              
+                      
                       </ImageBackground>
                       </View>
                 </TouchableWithoutFeedback>
