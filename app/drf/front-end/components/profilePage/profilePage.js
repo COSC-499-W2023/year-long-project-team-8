@@ -109,7 +109,7 @@ const ProfilePage = ({ navigation }) => {
 
     if (!result.canceled) {
       // Access the selected asset through the "assets" array
-      const asset = result.assets[0];
+      const asset = result.assets[0]; 
 
       console.log(asset);
 
