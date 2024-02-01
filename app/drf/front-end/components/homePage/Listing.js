@@ -23,7 +23,14 @@ const Listing = ({ listing, navigation }) => {
 
   // Assuming 'listing' now includes 'ownerDetails' fetched in HomePage
   const getDisplayName = () => listing.ownerDetails?.firstname || listing.ownerDetails?.email.split('@')[0] || "Unknown";
-  const getDisplayRating = () => listing.ownerDetails?.rating || "New User";
+  const getDisplayRating = () => {
+    // Check if ownerDetails and rating exist
+    if (listing.ownerDetails && listing.ownerDetails.rating) {
+      // Round the rating to the nearest whole number
+      return Math.round(listing.ownerDetails.rating);
+    }
+    return "New User"; // Default text if rating is not available
+  };
 
   const timeAgo = (dateString) => {
     const date = new Date(dateString);
