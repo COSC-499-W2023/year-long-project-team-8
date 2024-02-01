@@ -72,13 +72,15 @@ const Login = ({ onSwitch, navigation }) => {
         return;
       }
 
+      const lowercaseEmail = forgotPasswordEmail.toLowerCase();
+
       // Make API call to initiate password reset
       const response = await fetch(`${baseEndpoint}/auth/forgot-password/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: forgotPasswordEmail }),
+        body: JSON.stringify({ email: lowercaseEmail }),
       });
 
       const responseData = await response.json();
@@ -86,7 +88,7 @@ const Login = ({ onSwitch, navigation }) => {
       if (response.ok) {
         // Password reset email sent successfully
         console.log("Password reset email sent successfully");
-        navigation.navigate("PasswordReset", { email: forgotPasswordEmail });
+        navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
       } else {
         // Handle error response
@@ -148,8 +150,9 @@ const Login = ({ onSwitch, navigation }) => {
     let isValid = validateInputs(); // Validate inputs first
     
     if (isValid) {
+      const lowercaseEmail = email.toLowerCase();
       try {
-        const bodyStr = JSON.stringify({ email: email, password: password });
+        const bodyStr = JSON.stringify({ email: lowercaseEmail, password: password });
         const options = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -160,7 +163,7 @@ const Login = ({ onSwitch, navigation }) => {
         const authData = await response.json();
   
         if (response.ok) {
-          await loginUser(email, password);
+          await loginUser(lowercaseEmail, password);
   
           // Check for a pending listing ID after a successful login
           const listingId = await AsyncStorage.getItem('pendingListingId');
