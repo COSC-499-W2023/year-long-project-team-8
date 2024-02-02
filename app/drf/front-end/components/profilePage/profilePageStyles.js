@@ -22,12 +22,17 @@ const styles = StyleSheet.create({
   // Rating container style
   ratingContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     top: 30,
+  },
+  ratingTextContainer: {
+    flexDirection: 'row',
+    margin: 5,
   },
 
   // Profile container style
   profileContainer: {
-    top: 50,
+    top: 40,
     alignItems: 'center',
   },
 
@@ -61,23 +66,12 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
 
-  // Settings button style
-  settingsButton: {
-    position: 'absolute',
-  },
-
-  // Settings icon style
-  settingsIcon: {
-    width: 30,
-    height: 30,
-  },
-
-   // Centered posts container style
+  // Centered posts container style
   centeredPostsContainer: {
     flex: 1,
-    top: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    top: 20,
   },
 
   // Container for multiple posts style
@@ -96,7 +90,7 @@ const styles = StyleSheet.create({
   // Individual post container style
   postContainer: {
     width: windowWidth * 0.3,
-    height: '90%',
+    height: '95%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#e8e8e8',
@@ -116,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.lightOrange,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 25,
     height: 45,
     width: 140,
   },
@@ -126,6 +120,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     color: 'white',
+  },
+
+  // Settings button container style
+  settingsButtonContainer: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    zIndex: 1,
+  },
+
+  // Settings button style
+  settingsButton: {
+    height: 30,
+    width: 30,
+    resizeMode: 'contain',
   },
 });
 

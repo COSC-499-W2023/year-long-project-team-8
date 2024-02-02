@@ -22,8 +22,6 @@ const DrawerProps = ({ navigation, state }) => {
    * Logout handler function
    */
   const handleLogout = () => {
-    // TODO: Implement back-end logic for logging out here.
-    console.log("Logout pressed");
     logoutUser();
     navigation.closeDrawer();
     navigation.navigate('Landing');

@@ -151,7 +151,7 @@ const PasswordResetScreen = ({ navigation }) => {
             style={LoginStyles.backButton}
             onPress={() => navigation.navigate('Landing')}
           >
-            <CustomText style={LoginStyles.backButton} fontType="text">Back</CustomText>
+            <CustomText style={LoginStyles.backButton} fontType="text">BACK</CustomText>
           </Pressable>
         </View>
       </ScrollView>

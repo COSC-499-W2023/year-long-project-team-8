@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import SortModal from "./SortModal";
 import CustomText from "../CustomText";
@@ -50,15 +51,13 @@ const HomePage = ({ navigation }) => {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   const [distanceFilter, setDistanceFilter] = useState(10); // in kilometers
-  const [ratingFilter, setRatingFilter] = useState(3.5); // rating out of 5
-  const [hoursFilter, setHoursFilter] = useState(24); // hours since published
+  const [ratingFilter, setRatingFilter] = useState(0); // rating out of 5
   const [allergensFilter, setAllergensFilter] = useState([]); // list of allergens to filter out
 
   // Add state to manage the selected sort option
-  const [selectedSortOption, setSelectedSortOption] = useState("Distance");
+  const [selectedSortOption, setSelectedSortOption] = useState("Date");
 
   // State for holding the fetched food listings
-  // const [foodListings, setFoodListings] = useState([]);
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -68,17 +67,29 @@ const HomePage = ({ navigation }) => {
 
   const fetchFoodListings = async () => {
     try {
-      setLoading(true);
-      const productList = await getProductList(authTokens);
-      console.log("Fetched Product List:", productList);
-      console.log("Created Post?:", postCreated);
-      setFoodListing(productList.results);
+      setLoading(true); // Start the loader
+      const productList = await getProductList(authTokens); // Fetch listings
+      const listingsWithAdditionalData = await Promise.all(productList.results.map(async (listing) => {
+        try {
+          // Fetch additional data for each listing here (e.g., owner details)
+          const ownerDetails = await getUserData(listing.owner, authTokens);
+          // Combine the listing with its additional data
+          return { ...listing, ownerDetails };
+        } catch (error) {
+          console.error('Error fetching additional data for listing:', listing.id, error);
+          // Return the listing without additional data if there's an error
+          return listing;
+        }
+      }));
+      setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
+      console.log(listingsWithAdditionalData)
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop the loader once all listings and their additional data have been fetched
     }
   };
+  
 
   const handleMapPress = async () => {
     navigation.navigate('mapView');
@@ -89,14 +100,8 @@ const HomePage = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log("FOOD LISTINGS IN HOME:", foodListing);
-  }, [foodListing]);
-
-  useEffect(() => {
     if (postCreated) {
       // Perform re-fetch logic here
-      console.log("Re-fetching data in HomePage");
-      console.log("postCreated changed:", postCreated);
       fetchFoodListings();
 
       // After re-fetching, reset the postCreated state
@@ -130,127 +135,87 @@ const HomePage = ({ navigation }) => {
 
   // Function to handle the selection of food categories
   const handleCategoryPress = (category) => {
-    // If the category is already selected, remove it; else add it
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
-    } else {
-      setSelectedCategories((prev) => [...prev, category]);
-    }
+    setSelectedCategories(prevCategories => 
+      prevCategories.includes(category)
+        ? prevCategories.filter(cat => cat !== category)
+        : [...prevCategories, category]
+    );
   };
+  
+  
 
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
     selectedCategories.includes(category);
 
   // Function to check if a category matches the search query
-  const isCategoryMatching = (categories, query) => {
-    // Check if the categories variable is an array or not
-    if (!Array.isArray(categories)) {
-      return categories.toLowerCase().includes(query.toLowerCase());
+  const isCategoryMatching = (listingCategories, selectedCategories) => {
+    if (selectedCategories.length === 0) {
+      return true; // If no categories are selected, all listings match
     }
-    return categories.some((category) =>
-      category.toLowerCase().includes(query.toLowerCase())
+  
+    if (!Array.isArray(listingCategories)) {
+      return false; // Return false if listingCategories is undefined or not an array
+    }
+    return listingCategories.some(category =>
+      selectedCategories.includes(category)
     );
   };
-
-  const convertRelativeTimeToHours = (relativeTime) => {
-    if (!relativeTime) return 0; // If the date is not provided, return 0 hours
-
-    const match = relativeTime.match(
-      /(\d+)\s*(hours?|days?|minutes?|seconds?)\s*ago/
-    );
-
-    if (!match) return 0; // If the format is unknown, return 0 hours
-
-    const value = parseInt(match[1], 10);
-    const unit = match[2];
-
-    if (unit.startsWith("day")) {
-      return value * 24;
-    } else if (unit.startsWith("hour")) {
-      return value;
-    } else if (unit.startsWith("minute")) {
-      return value / 60;
-    } else if (unit.startsWith("second")) {
-      return value / 3600;
-    }
-
-    return 0; // Default return if none of the conditions match
-  };
+  
+  
   // TODO: Use fetched data
   // In order to revert to old data, add return foodListings
   const filteredAndSortedListings = useMemo(() => {
     if (loading) {
       return <CustomText>Loading...</CustomText>;
     }
-    // return foodListings
-    return foodListing
-      .filter((listing) => {
-        const isDishMatching = listing.title
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-        const isCategoryMatchingSearch = isCategoryMatching(
-          listing.categories,
-          searchQuery
-        );
-        const isListingCategorySelected = selectedCategories.some((cat) =>
-          isCategoryMatching(listing.categories, cat)
-        );
-        // Distance filter
-        //const listingDistance = parseFloat(listing.distance.replace("km", ""));
-        // TODO: Update Logic to filter distance
-        const listingDistance = 1.0;
-        const withinDistance = listingDistance <= distanceFilter;
+  
+    return foodListing.filter((listing) => {
+     
+      // Apply filters 
+      const listingCategoriesArray = listing.categories.split(',');
+      const isDishMatching = listing.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const isCategoryMatchingSearch = isCategoryMatching(listingCategoriesArray, searchQuery); 
+      const isCategoryMatch = isCategoryMatching(listingCategoriesArray, selectedCategories);
 
-        // Rating filter
-        // TODO: update logic to filter based on rating
-        //const meetsRating = listing.rating >= ratingFilter;
-        const meetsRating = 6 >= ratingFilter;
+      //TODO: DISTANCE FILTERING
+      const withinDistance = true; // Assuming all listings are within distance for now
 
-        // Hours filter
-        // TODO: Update time filter from created_at field on product
-        const hoursSincePublished = convertRelativeTimeToHours(listing.date);
-        //const withinTimeFrame = hoursSincePublished <= hoursFilter;
-        const withinTimeFrame = 0 <= hoursFilter;
+      const meetsRating = listing.ownerDetails && listing.ownerDetails.rating >= ratingFilter;
+      const doesNotContainAllergens = !allergensFilter.some(allergen => listing.allergens?.includes(allergen));
 
-        // Allergens filter
-        const doesNotContainAllergens = !allergensFilter.some((allergen) =>
-          listing.allergens?.includes(allergen)
-        );
+      console.log("Listing Title:", listing.title);
+      console.log("Search Query:", searchQuery);
+      console.log("isDishMatching:", isDishMatching);
+      console.log("isCategoryMatchingSearch:", isCategoryMatchingSearch);
+      console.log("Selected Categories:", selectedCategories);
+      console.log("isCategoryMatch:", isCategoryMatch);
+      console.log("categories to match:", listing.categories.split(','));
 
-        return (
-          (isDishMatching || isCategoryMatchingSearch) &&
-          (!selectedCategories.length || isListingCategorySelected) &&
-          withinDistance &&
-          meetsRating &&
-          withinTimeFrame &&
-          doesNotContainAllergens
-        );
-      })
-      .sort((a, b) => {
-        if (selectedSortOption === "Distance") {
-          return parseFloat(a.distance) - parseFloat(b.distance);
-        } else if (selectedSortOption === "Rating") {
-          return b.rating - a.rating;
-        } else if (selectedSortOption === "Date") {
-          const hoursA = convertRelativeTimeToHours(a.date);
-          const hoursB = convertRelativeTimeToHours(b.date);
-          return hoursA - hoursB;
-        }
-        return 0;
-      });
+  
+      return (isDishMatching || isCategoryMatchingSearch) && isCategoryMatch && withinDistance && meetsRating && doesNotContainAllergens;
+    }).sort((a, b) => {
+      if (selectedSortOption === "Distance") {
+        // Implement sorting logic based on distance
+      } else if (selectedSortOption === "Rating") {
+        return b.ownerDetails.rating - a.ownerDetails.rating;
+      } else if (selectedSortOption === "Date") {
+        return new Date(b.created_at) - new Date(a.created_at); // Sort by date from newest to oldest
+      }
+      return 0;
+    });
   }, [
     searchQuery,
     selectedCategories,
     distanceFilter,
     ratingFilter,
-    hoursFilter,
     allergensFilter,
     selectedSortOption,
     foodListing,
     loading,
     postCreated,
   ]);
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -329,25 +294,25 @@ const HomePage = ({ navigation }) => {
               </CustomText>
             </TouchableOpacity>
             <View style={styles.sortDropdownContainer}>
-              <SortModal
-                data={sortOptions}
-                onSelect={setSelectedSortOption}
-                placeholder="Distance"
-              />
+            <SortModal
+              data={sortOptions}
+              onSelect={setSelectedSortOption}
+              placeholder="Date" // Updated this line
+            />
             </View>
           </View>
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {filteredAndSortedListings.length ? (
-              filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.title} listing={listing} idx={idx} navigation={navigation}/>
-              ))
-            ) : (
-              <CustomText fontType={"text"} style={styles.noMatchesText}>
-                Nothing like that for now...
-              </CustomText>
-            )}
+          {loading ? (
+            <ActivityIndicator size="large" color="orange" style={styles.loader}/>
+          ) : filteredAndSortedListings.length > 0 ? (
+            filteredAndSortedListings.map((listing, idx) => (
+              <Listing key={idx} listing={listing} navigation={navigation} />
+            ))
+          ) : (
+            <CustomText style={styles.noMatchesText}>No matches found.</CustomText>
+          )}
           </View>
         </View>
       </ScrollView>
@@ -359,7 +324,6 @@ const HomePage = ({ navigation }) => {
         onClose={closeFilterModal}
         setDistanceFilter={setDistanceFilter}
         setRatingFilter={setRatingFilter}
-        setHoursFilter={setHoursFilter}
         setAllergensFilter={setAllergensFilter}
       />
     </SafeAreaView>

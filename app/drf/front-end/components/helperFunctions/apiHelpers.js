@@ -279,12 +279,13 @@ async function getChatList(authTokens) {
     const response = await fetch(`${baseEndpoint}/chat/list/`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authTokens?.access}`,
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
       },
     });
     
     if (!response.ok){
+      console.log("Access token for chat list", authTokens.access);
       throw new Error('Failed to fetch chat list');
     }
     const data = await response.json();

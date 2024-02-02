@@ -1,10 +1,20 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from .models import Chat
 from users.models import User
 from .serializers import ChatSerializer
 from products.models import Product 
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_chat_list(request):
+    user = request.user
+    chat_list = Chat.objects.filter(sender=user) | Chat.objects.filter(receiver=user)
+    serializer = ChatSerializer(chat_list, many=True)
+    return Response(serializer.data)
 class ChatList(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
 
@@ -45,4 +55,3 @@ class ChatList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except Product.DoesNotExist:
             return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
-

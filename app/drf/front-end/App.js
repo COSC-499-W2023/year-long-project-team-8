@@ -15,6 +15,8 @@ import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
+import HomePage from "./components/homePage/HomePage.js";
+
 
 const Stack = createStackNavigator();
 

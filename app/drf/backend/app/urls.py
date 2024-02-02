@@ -20,6 +20,7 @@ from rest_framework import routers
 
 from api.views import ForgotPasswordView, ResetPasswordView
 from users.views import UserViewSet, ReviewViewSet
+from chat.views import get_chat_list
 from chat.views import ChatList
 from products.views import ProductViewSet, ImageViewSet
 from django.conf import settings
@@ -39,4 +40,5 @@ urlpatterns = [
     path('api/auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('api/auth/reset-password/', ResetPasswordView.as_view(), name='reset_password'),
     path('api/chat/', ChatList.as_view(), name='chat_list'),
+    path('api/chat/list/', get_chat_list, name='get_chat_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
