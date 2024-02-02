@@ -54,6 +54,25 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
     return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
   };
 
+  
+  // Function to reset form fields
+  const resetFields = () => {
+    // Reset error states and icons
+    setSignupEmailError("");
+    setSignupPasswordError("");
+    setConfirmPasswordError("");
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+    setIsConfPassErrorIcon(false);
+    setSignupEmail("");
+    setSignupPassword("");
+    setConfirmPassword("");
+  };
+
+  // Export the reset function for the parent to call
+  useImperativeHandle(ref, () => ({
+    resetFields,
+  }));
 
   // Function to reset form fields
   const resetFields = () => {
