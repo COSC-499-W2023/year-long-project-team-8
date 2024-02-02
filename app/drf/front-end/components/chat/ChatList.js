@@ -1,41 +1,42 @@
-// ChatListScreen.js
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import AuthContext from "../../context/AuthContext";
-import { getChatMessages } from "../helperFunctions/apiHelpers";
+import { getChatList } from '../helperFunctions/apiHelpers'; 
+import { useNavigation } from '@react-navigation/native';
 
-const ChatList = ({ navigation }) => {
-  const { authTokens } = useContext(AuthContext);
-  const [chats, setChats] = useState([]);
+const ChatList = ({ authTokens }) => {
+  const [chatList, setChatList] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    // Fetch chat list for the user
     const fetchChatList = async () => {
       try {
-        const chatListData = await getChatMessages(authTokens);
-        setChats(chatListData);
+        const chats = await getChatList(authTokens);
+        console.log('Fetched chat list:', chats);
+        setChatList(chats);
       } catch (error) {
         console.error('Error fetching chat list:', error);
       }
     };
-
     fetchChatList();
   }, [authTokens]);
 
-  const navigateToChat = (chatId) => {
-    // Navigate to the ChatScreen with the selected chat ID
-    navigation.navigate('Chat', { chatId });
+  const navigateToChat = (chat) => {
+    navigation.navigate('Chat', { chatId: chat.id });
   };
 
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
+    {/* Header Text for testing */}
+    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
+        Messages
+      </Text>
       <FlatList
-        data={chats}
+        data={chatList}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigateToChat(item.id)}>
-            <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-              <Text>{item.title}</Text>
+          <TouchableOpacity onPress={() => navigateToChat(item)}>
+            <View style={{ marginBottom: 8 }}>
+              <Text>{item.sender.firstname}: {item.message}</Text>
             </View>
           </TouchableOpacity>
         )}

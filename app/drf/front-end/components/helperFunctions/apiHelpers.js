@@ -273,7 +273,28 @@ async function createProductImages(productData, imageFiles, authTokens) {
     throw new Error("Something went wrong creating post with images");
   }
 }
-// Helper function to get chat messages
+
+async function getChatList(authTokens) {
+  try{
+    const response = await fetch(`${baseEndpoint}/chat/list/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens?.access}`,
+      },
+    });
+    
+    if (!response.ok){
+      throw new Error('Failed to fetch chat list');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Helper function to get chat messages within chat instance
 async function getChatMessages(authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/chat/`, {
@@ -332,6 +353,7 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
+  getChatList,
   getChatMessages,
   sendChatMessage,
 };

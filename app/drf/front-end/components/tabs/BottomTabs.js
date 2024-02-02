@@ -2,9 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
 import Profile from "../profilePage/profilePage.js";
-import AddListing from "../addListing/AddListing.js";
-import Chat from "../chat/chat.js";
 import ChatList from "../chat/ChatList.js";
+import AddListing from "../addListing/AddListing.js";
 import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -23,6 +22,13 @@ const Browse = () => (
     <Text style={styles.title}>Dummy Browse</Text>
   </View>
 );
+
+// Screen for Chat
+const Chat = () => (
+  <ChatList/>
+);
+
+// Screen for Profile
 
 // Main Bottom Tabs Component
 function BottomTabs({ route }) {
