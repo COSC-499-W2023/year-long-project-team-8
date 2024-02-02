@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
+import CustomText from '../CustomText';
 
 const ResetPassword = ({ route, navigation }) => {
   const [token, setToken] = useState('');
@@ -38,8 +39,8 @@ const ResetPassword = ({ route, navigation }) => {
 
   return (
     <View>
-      <Text>Reset Password</Text>
-      <Text>Token: {token}</Text>
+      <CustomText>Reset Password</CustomText>
+      <CustomText>Token: {token}</CustomText>
       {/* Your password reset form */}
       <TextInput
         placeholder="Enter new password"
