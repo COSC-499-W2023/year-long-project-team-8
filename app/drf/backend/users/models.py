@@ -63,6 +63,7 @@ class Review(models.Model):
     content = models.TextField()
     rating = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     timestamp = models.DateTimeField(auto_now_add=True)
+    profile_picture = models.ImageField(upload_to="",null=True, blank=True)
     
     def save(self, *args, **kwargs):
         # Save the review instance
