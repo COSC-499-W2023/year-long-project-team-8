@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -23,7 +23,7 @@ import AuthContext from '../../context/AuthContext'
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
-const Signup = ({ onSwitch, navigation }) => {
+const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
   // State for form fields
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -54,6 +54,25 @@ const Signup = ({ onSwitch, navigation }) => {
     return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
   };
 
+  
+  // Function to reset form fields
+  const resetFields = () => {
+    // Reset error states and icons
+    setSignupEmailError("");
+    setSignupPasswordError("");
+    setConfirmPasswordError("");
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+    setIsConfPassErrorIcon(false);
+    setSignupEmail("");
+    setSignupPassword("");
+    setConfirmPassword("");
+  };
+
+  // Export the reset function for the parent to call
+  useImperativeHandle(ref, () => ({
+    resetFields,
+  }));
 
   // Function to handle signup validation and submission
 
@@ -82,6 +101,7 @@ const Signup = ({ onSwitch, navigation }) => {
     if (!isPasswordValid(signupPassword)) {
       setSignupPasswordError("Password doesn't meet the requirements");
       setIsPassErrorIcon(true);
+      setChecklistModalVisible(true);
       isValid = false;
     }
 
@@ -139,6 +159,7 @@ const Signup = ({ onSwitch, navigation }) => {
         AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
        // navigation.navigate("Details", { userId, accessToken: receivedToken });
        loginUser(signupEmail,signupPassword);
+       resetFields();
         navigation.navigate("Details");
 
       } catch (error) {
@@ -325,6 +346,6 @@ const Signup = ({ onSwitch, navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
 
 export default Signup;
