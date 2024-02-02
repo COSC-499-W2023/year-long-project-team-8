@@ -22,22 +22,3 @@ class UserSerializer(ModelSerializer):
         receiver.set_password(validated_data["password"])
         receiver.save()
         return receiver
-    
-    def update(self, instance, validated_data):
-        profile_picture = validated_data.pop("profile_picture", None)  # Extract profile picture data if present
-
-        # Update the user fields
-        instance.email = validated_data.get("email", instance.email)
-        instance.firstname = validated_data.get("firstname", instance.firstname)
-        instance.lastname = validated_data.get("lastname", instance.lastname)
-        instance.phone = validated_data.get("phone", instance.phone)
-
-        # Update the profile picture if it exists
-        if profile_picture:
-            instance.profile_picture = profile_picture
-
-        # Save the changes
-        instance.save()
-
-        return instance
-    
