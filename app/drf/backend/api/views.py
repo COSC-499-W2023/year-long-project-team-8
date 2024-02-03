@@ -61,9 +61,11 @@ class ForgotPasswordView(APIView):
                 mail = Mail(from_email, to_email, subject, content)
                 sg.send(mail)
             except Exception as e:
-                print("error")
+                print("error email api")
 
-        return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Password reset email sent'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'User not found with the provided email'}, status=status.HTTP_404_NOT_FOUND)
     
 
 @permission_classes([AllowAny])
