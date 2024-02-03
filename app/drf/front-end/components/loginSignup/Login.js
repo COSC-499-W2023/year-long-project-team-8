@@ -167,9 +167,13 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
         setIsButtonDisabled(false)
       } else {
         // Handle error response
-        console.error("Error:", responseData);
+        if (response.status === 404) {
+        showToastWarning("User not found with the provided email");
+        setForgotPasswordError("User not found with the provided email");
+        } else {
         showToastWarning("Error initiating password reset")
         setForgotPasswordError("Error initiating password reset");
+        }
         setIsButtonDisabled(false)
       }
     } catch (error) {
