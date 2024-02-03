@@ -99,8 +99,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#00C851', // Green for success
-      textColor: '#ffffff',
+      backgroundColor: '#D5FDCE', // Green for success
+      textColor: 'black',
       opacity: 1,
     });
   };
@@ -112,8 +112,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#ff4444', // Red for error
-      textColor: '#ffffff',
+      backgroundColor: '#FDCECE', // Red for error
+      textColor: 'black',
       opacity: 1,
     });
   };
@@ -125,8 +125,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#ffbb33', // Yellow for warning
-      textColor: '#ffffff',
+      backgroundColor: '#FDF9CE', // Yellow for warning
+      textColor: '#black',
       opacity: 1,
     });
   };
@@ -160,20 +160,24 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       if (response.ok) {
         // Password reset email sent successfully
         setIsButtonDisabled(true); // Disable the button
-        showToastSuccess("Password reset email sent successfully")       
+        showToastSuccess("Password reset email sent successfully") 
+        setCountdown(15); // Initialize countdown     
         navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
+        setIsButtonDisabled(false)
       } else {
         // Handle error response
         console.error("Error:", responseData);
         showToastWarning("Error initiating password reset")
         setForgotPasswordError("Error initiating password reset");
+        setIsButtonDisabled(false)
       }
     } catch (error) {
       // Handle network or other errors
       console.error("Network error:", error);
       showToastError("Network error. Please try again.")
       setForgotPasswordError("Network error. Please try again.");
+      setIsButtonDisabled(false)
     }
   };
 
@@ -478,20 +482,21 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
                               }}
                               value={forgotPasswordEmail}
                             />
-                            <View style={LoginStyles.countContainer}>
-                              <CustomText style={LoginStyles.countdownText} fontType={"title"}>
-                                {countdown > 0 ? `Try again in: ${countdown} seconds` : ""}
-                              </CustomText>
-                            </View>
 
                           </View>
-                          {forgotPasswordError && (
-                            <CustomText style={LoginStyles.forgotPasswordModalError}>
-                              {forgotPasswordError === "Invalid email format"
-                                ? "Invalid email"
-                                : forgotPasswordError}
-                            </CustomText>
-                          )}
+                          <View style={LoginStyles.messageContainer}>
+                            {countdown > 0 ? (
+                              <CustomText style={LoginStyles.countdownText}>
+                                Try again in: {countdown} seconds
+                              </CustomText>
+                            ) : (
+                              forgotPasswordError && (
+                                <CustomText style={LoginStyles.forgotPasswordModalError}>
+                                  {forgotPasswordError}
+                                </CustomText>
+                              )
+                            )}
+                          </View>
                             <ButtonLogin
                               title="SEND"
                               onPress={handleForgotPassword}
