@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useImperativeHandle, forwardRef } from "react";
 import {
   View,
   Pressable,
@@ -23,7 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Preloader from '../../context/Preloader'; // Ensure this path is correct
 
 // Login component for user authentication
-const Login = ({ onSwitch, navigation }) => {
+const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,6 +51,23 @@ const Login = ({ onSwitch, navigation }) => {
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  // Reset form fields
+  // Function to reset form fields
+  const resetFields = () => {
+    setPassword("");
+    setPasswordError(""); 
+    setAuthError("");
+    setIsPassErrorIcon(false);
+    setEmail("");
+    setEmailError("");
+    setIsAuthErrorIcon(false);
+    setIsEmailErrorIcon(false);
+  };
+  
+  // Export the reset function for the parent to call
+  useImperativeHandle(ref, () => ({
+    resetFields,
+  }));
 
   const login = async () => {
     await loginUser(email, password); // loginUser should return a Promise
@@ -59,6 +76,14 @@ const Login = ({ onSwitch, navigation }) => {
   // Handle opening and closing the forgot password modal
   const handleOpenForgotPasswordModal = () => {
     setForgotPasswordModalVisible(true);
+    setPassword("");
+    setPasswordError(""); 
+    setAuthError("");
+    setIsPassErrorIcon(false);
+    setEmail("");
+    setEmailError("");
+    setIsAuthErrorIcon("");
+    setIsEmailErrorIcon("");
   };
 
   // Handle sending forgot password email
@@ -72,13 +97,15 @@ const Login = ({ onSwitch, navigation }) => {
         return;
       }
 
+      const lowercaseEmail = forgotPasswordEmail.toLowerCase();
+
       // Make API call to initiate password reset
       const response = await fetch(`${baseEndpoint}/auth/forgot-password/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: forgotPasswordEmail }),
+        body: JSON.stringify({ email: lowercaseEmail }),
       });
 
       const responseData = await response.json();
@@ -86,7 +113,7 @@ const Login = ({ onSwitch, navigation }) => {
       if (response.ok) {
         // Password reset email sent successfully
         console.log("Password reset email sent successfully");
-        navigation.navigate("PasswordReset", { email: forgotPasswordEmail });
+        navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
       } else {
         // Handle error response
@@ -148,8 +175,9 @@ const Login = ({ onSwitch, navigation }) => {
     let isValid = validateInputs(); // Validate inputs first
     
     if (isValid) {
+      const lowercaseEmail = email.toLowerCase();
       try {
-        const bodyStr = JSON.stringify({ email: email, password: password });
+        const bodyStr = JSON.stringify({ email: lowercaseEmail, password: password });
         const options = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -160,7 +188,7 @@ const Login = ({ onSwitch, navigation }) => {
         const authData = await response.json();
   
         if (response.ok) {
-          await loginUser(email, password);
+          await loginUser(lowercaseEmail, password);
   
           // Check for a pending listing ID after a successful login
           const listingId = await AsyncStorage.getItem('pendingListingId');
@@ -170,10 +198,12 @@ const Login = ({ onSwitch, navigation }) => {
             const listing = await fetchListingById(listingId, authTokens);
             console.log(listing);
             // Navigate to PostDetails with the fetched listing as a parameter
+            resetFields();
             navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
             await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
           } else {
             // Navigate to MainApp or another screen if no pending listing ID is found
+            resetFields();
             navigation.navigate('MainApp');
           }
         } else {
@@ -408,7 +438,7 @@ const Login = ({ onSwitch, navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
 
 export default Login;
 

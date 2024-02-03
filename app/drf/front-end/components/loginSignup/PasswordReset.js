@@ -17,13 +17,27 @@ const PasswordResetScreen = ({ navigation }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
+  const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
+
+  // Password validation criteria
+  const hasUpperCase = (password) => /[A-Z]/.test(password);
+  const hasLowerCase = (password) => /[a-z]/.test(password);
+  const hasDigits = (password) => /\d/.test(password);
+  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isLongEnough = (password) => password.length >= 8;
+
+  // Combined password validation check
+  const isPasswordValid = (password) => {
+    return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
+  };
 
   const handleResetPassword = async () => {
     try {
       // Check if the password field is empty
-      if (!password) {
-        setErrorMessage('Please enter a new password');
-        setSuccessMessage('');
+      // Validate password
+      if (!isPasswordValid(password)) {
+        setErrorMessage("Password doesn't meet the requirements");
++        setChecklistModalVisible(true);
         return;
       }
 
@@ -105,14 +119,22 @@ const PasswordResetScreen = ({ navigation }) => {
             icon="email" 
             placeholder="Enter code"
             value={reset_code}
-            onChangeText={(text) => setCode(text)}
+            onChangeText={(text) => {
+              setCode(text);
+              setErrorMessage(''); // Clear error message
+              setChecklistModalVisible(false); // Hide checklist modal
+            }}
           />
          
           <InputField
             icon="lock" 
             placeholder="Enter new password"
             value={password}
-            onChangeText={(text) => setNewPassword(text)}
+            onChangeText={(text) => {
+              setNewPassword(text);
+              setErrorMessage(''); // Clear error message
+              setChecklistModalVisible(false); // Hide checklist modal
+            }}
             secureTextEntry={!showPassword} 
             rightComponent={ 
               <View style={{ flexDirection: 'row' }}>
@@ -127,6 +149,16 @@ const PasswordResetScreen = ({ navigation }) => {
                     color="gray"
                   />
                 </Pressable>
+                <Pressable
+                  onPress={() => setChecklistModalVisible(true)} 
+                  testID="password-info-icon"
+                >
+                  <MaterialIcons
+                    name="info-outline"
+                    size={25}
+                    color="gray"
+                  />
+                </Pressable>
                 <ChecklistModal password={password} />
                 
               </View>
@@ -137,7 +169,11 @@ const PasswordResetScreen = ({ navigation }) => {
             icon="lock" 
             placeholder="Confirm new password"
             value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              setErrorMessage(''); // Clear error message
+              setChecklistModalVisible(false); // Hide checklist modal
+            }}
             secureTextEntry={!showPassword} 
           />
           {successMessage ? (
@@ -155,7 +191,12 @@ const PasswordResetScreen = ({ navigation }) => {
           </Pressable>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+        <ChecklistModal
+            password={password}
+            isVisible={isChecklistModalVisible}
+            onClose={() => setChecklistModalVisible(false)}
+          />    
+        </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
