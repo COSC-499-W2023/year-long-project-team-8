@@ -139,10 +139,16 @@ const LoginStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  forgotPasswordModalError:{
-    color:"red",
+  messageContainer: {
     marginLeft:10,
     marginTop:10,
+  },
+  countdownText: {
+    color: 'grey',
+    fontSize: 14,
+  },
+  forgotPasswordModalError: {
+    color: 'red',
   },
   backButton:{
     fontWeight:"bold",
@@ -161,10 +167,7 @@ countContainer: {
   marginTop:10,
   marginLeft:10,
 },
-countdownText: {
-  color: 'grey', 
-  fontSize: 14, 
-},
+
 
 });
 
