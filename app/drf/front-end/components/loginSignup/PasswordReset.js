@@ -72,7 +72,7 @@ const PasswordResetScreen = ({ navigation }) => {
       setSuccessMessage('');
     }
   };
-
+ 
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {

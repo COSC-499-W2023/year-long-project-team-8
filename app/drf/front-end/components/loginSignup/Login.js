@@ -8,7 +8,8 @@ import {
   ScrollView,
   Platform,
   TouchableWithoutFeedback,
-  ImageBackground
+  ImageBackground,
+  Alert
 } from "react-native";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +21,9 @@ import { fetchListingById } from '../helperFunctions/apiHelpers';
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Preloader from '../../context/Preloader'; // Ensure this path is correct
+import Preloader from '../../context/Preloader'; 
+import Toast from 'react-native-root-toast';
+
 
 // Login component for user authentication
 const Login = forwardRef(({ onSwitch, navigation }, ref) => {
@@ -46,6 +49,9 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   const [isEmailErrorIcon, setIsEmailErrorIcon] = useState(false);
   const [isPassErrorIcon, setIsPassErrorIcon] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  
 
   const { loginUser, authTokens } = useContext(AuthContext);
 
@@ -86,6 +92,47 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     setIsEmailErrorIcon("");
   };
 
+  const showToastSuccess = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: '#00C851', // Green for success
+      textColor: '#ffffff',
+      opacity: 1,
+    });
+  };
+  
+  const showToastError = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: '#ff4444', // Red for error
+      textColor: '#ffffff',
+      opacity: 1,
+    });
+  };
+  
+  const showToastWarning = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: '#ffbb33', // Yellow for warning
+      textColor: '#ffffff',
+      opacity: 1,
+    });
+  };
+  
+  
+
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
     try {
@@ -112,17 +159,20 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
 
       if (response.ok) {
         // Password reset email sent successfully
-        console.log("Password reset email sent successfully");
+        setIsButtonDisabled(true); // Disable the button
+        showToastSuccess("Password reset email sent successfully")       
         navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
       } else {
         // Handle error response
         console.error("Error:", responseData);
+        showToastWarning("Error initiating password reset")
         setForgotPasswordError("Error initiating password reset");
       }
     } catch (error) {
       // Handle network or other errors
       console.error("Network error:", error);
+      showToastError("Network error. Please try again.")
       setForgotPasswordError("Network error. Please try again.");
     }
   };
@@ -166,6 +216,21 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   };
   
   
+  useEffect(() => {
+    let interval = null;
+  
+    if (countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      setIsButtonDisabled(false);
+      clearInterval(interval);
+    }
+  
+    return () => clearInterval(interval); // Cleanup the interval on component unmount
+  }, [countdown]);
+
 
   const handleLogin = async () => {
     Keyboard.dismiss();
@@ -413,6 +478,11 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
                               }}
                               value={forgotPasswordEmail}
                             />
+                            <View style={LoginStyles.countContainer}>
+                              <CustomText style={LoginStyles.countdownText} fontType={"title"}>
+                                {countdown > 0 ? `Try again in: ${countdown} seconds` : ""}
+                              </CustomText>
+                            </View>
 
                           </View>
                           {forgotPasswordError && (
@@ -422,12 +492,12 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
                                 : forgotPasswordError}
                             </CustomText>
                           )}
-                          <ButtonLogin
-                            title="SEND"
-                            onPress={handleForgotPassword}
-                            style={LoginStyles.forgotPasswordsendButton}
-                          />              
-                      
+                            <ButtonLogin
+                              title="SEND"
+                              onPress={handleForgotPassword}
+                              disabled={isButtonDisabled}
+                              style={isButtonDisabled ? LoginStyles.buttonDisabled : LoginStyles.forgotPasswordsendButton}
+                            />                      
                       </ImageBackground>
                       </View>
                 </TouchableWithoutFeedback>
