@@ -610,3 +610,44 @@ January 22, 2023 - January 28, 2023
 
 - I felt like I went beyond the average weekly contribution this week. Handling the images, creating a global state management, and dynamically re-rendering the app was non-trivial for me. It was also front-end work I was unfamiliar with.
 - After finishing off the images tasks, I was able to complete an additional feature of Reviews, with a auto-updating rating for the user.
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+January 29, 2023 - February 04, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![Alt text](img/mk-t2-w4.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] set up backend for profile picture handling
+- [x] implement api function for sending image data to backend
+- [x] test cases for profile picture (backend)
+- [x] current api fetch for user data should handle image data as is
+- [x] bug fixes for handling login and "share" links when post being linked to no longer exists
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#195](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/195)
+- [x] [#215](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/215)
+
+### Gauged effort
+
+- This week's effort and implementation was on par with expectations. I was able to implement a new feature, profile picture handling in the backend, supported by test cases, and implemented an API call to update the user's info with profile picture data. This is now ready for plug and chug when the front-end is set up.
