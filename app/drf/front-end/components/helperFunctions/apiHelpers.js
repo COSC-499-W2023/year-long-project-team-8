@@ -275,6 +275,39 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
+async function updateProfilePicture(userId, authTokens, imageFile) {
+  try {
+    const formData = new FormData();
+    formData.append("profile_picture", {
+      uri: imageFile.uri,
+      type: imageFile.type,
+      name: `profile_picture_${userId}.jpg`, // Use template literals correctly
+    });
+
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: "PATCH", // Using PATCH for partial updates
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.status === 200) {
+      const userData = await response.json();
+      return userData; // Return the updated data to the caller
+    } else {
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - updateProfilePicture()`
+      );
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong uploading Profile Picture!");
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,

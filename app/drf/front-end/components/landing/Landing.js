@@ -18,6 +18,9 @@ const { width } = Dimensions.get("window");
 const { height } = Dimensions.get("screen");
 
 const Landing = ({ navigation }) => {
+  const loginRef = useRef(null);
+  const signupRef = useRef(null);
+
   // Ref for the animated value for the translation along X-axis
   const translateXValue = useRef(new Animated.Value(width / 2)).current;
 
@@ -27,7 +30,11 @@ const Landing = ({ navigation }) => {
       toValue: -width / 2,
       duration: 300,
       useNativeDriver: true,
-    }).start();
+    }).start(() => {
+      if (loginRef.current) {
+        loginRef.current.resetFields();
+      }
+    });
   };
 
   // Animation to show Login screen
@@ -36,7 +43,11 @@ const Landing = ({ navigation }) => {
       toValue: width / 2,
       duration: 300,
       useNativeDriver: true,
-    }).start();
+    }).start(() => {
+      if (signupRef.current) {
+        signupRef.current.resetFields();
+      }
+    });
   };
 
   return (
@@ -65,10 +76,10 @@ const Landing = ({ navigation }) => {
               }}
             >
               <View style={{ width: width }}>
-                <Login onSwitch={animateToSignup} navigation={navigation} />
+                <Login onSwitch={animateToSignup} navigation={navigation} ref={loginRef}/>
               </View>
               <View style={{ width: width, height: height }}>
-                <Signup onSwitch={animateToLogin} navigation={navigation} />
+                <Signup onSwitch={animateToLogin} navigation={navigation} ref={signupRef}/>
               </View>
             </Animated.View>
           </ImageBackground>

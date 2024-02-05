@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -23,7 +23,7 @@ import AuthContext from '../../context/AuthContext'
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
-const Signup = ({ onSwitch, navigation }) => {
+const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
   // State for form fields
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -34,38 +34,82 @@ const Signup = ({ onSwitch, navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isEmailErrorIcon, setIsEmailErrorIcon] = useState(false);
+  const [isPassErrorIcon, setIsPassErrorIcon] = useState(false);
+  const [isConfPassErrorIcon, setIsConfPassErrorIcon] = useState(false);
+  const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
 
- const { loginUser } = useContext(AuthContext);
+
+  const { loginUser } = useContext(AuthContext);
+
+  // Password validation criteria
+  const hasUpperCase = (password) => /[A-Z]/.test(password);
+  const hasLowerCase = (password) => /[a-z]/.test(password);
+  const hasDigits = (password) => /\d/.test(password);
+  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isLongEnough = (password) => password.length >= 8;
+
+  // Combined password validation check
+  const isPasswordValid = (password) => {
+    return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
+  };
+
+  
+  // Function to reset form fields
+  const resetFields = () => {
+    // Reset error states and icons
+    setSignupEmailError("");
+    setSignupPasswordError("");
+    setConfirmPasswordError("");
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+    setIsConfPassErrorIcon(false);
+    setSignupEmail("");
+    setSignupPassword("");
+    setConfirmPassword("");
+  };
+
+  // Export the reset function for the parent to call
+  useImperativeHandle(ref, () => ({
+    resetFields,
+  }));
 
   // Function to handle signup validation and submission
+
+  //TODO: Check if email is already in use
   const handleSignup = async () => {
     let isValid = true;
     Keyboard.dismiss();
 
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    // Reset error states and icons
+    setSignupEmailError("");
+    setSignupPasswordError("");
+    setConfirmPasswordError("");
+    setIsEmailErrorIcon(false);
+    setIsPassErrorIcon(false);
+    setIsConfPassErrorIcon(false);
 
     // Validate email
-    if (!signupEmail || !emailRegex.test(signupEmail)) {
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!signupEmail.trim() || !emailRegex.test(signupEmail.trim())) {
       setSignupEmailError("Invalid email");
+      setIsEmailErrorIcon(true);
       isValid = false;
-    } else {
-      setSignupEmailError("");
     }
 
     // Validate password
-    if (!signupPassword) {
-      setSignupPasswordError("Password required");
+    if (!isPasswordValid(signupPassword)) {
+      setSignupPasswordError("Password doesn't meet the requirements");
+      setIsPassErrorIcon(true);
+      setChecklistModalVisible(true);
       isValid = false;
-    } else {
-      setSignupPasswordError("");
     }
 
-    // Validate password confirmation
-    if (signupPassword !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+    // Validate confirm password - Check both that it's not empty and matches the password
+    if (!confirmPassword || signupPassword !== confirmPassword) {
+      setConfirmPasswordError(confirmPassword ? "Passwords do not match" : "Confirm password is required");
+      setIsConfPassErrorIcon(true);
       isValid = false;
-    } else {
-      setConfirmPasswordError("");
     }
 
     if (isValid) {
@@ -115,10 +159,12 @@ const Signup = ({ onSwitch, navigation }) => {
         AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
        // navigation.navigate("Details", { userId, accessToken: receivedToken });
        loginUser(signupEmail,signupPassword);
+       resetFields();
         navigation.navigate("Details");
 
       } catch (error) {
         console.log("Error during signup:", error);
+        setConfirmPasswordError("Something went wrong")
       }
     }
   };
@@ -146,7 +192,7 @@ const Signup = ({ onSwitch, navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, paddingTop: 50 }}
+      style={{ flex: 1, paddingTop: 30 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -181,17 +227,20 @@ const Signup = ({ onSwitch, navigation }) => {
             placeholder="email"
             value={signupEmail}
             onChangeText={(text) => {
-              setSignupEmail(text);
+              setSignupEmail(text.trim());
               setSignupEmailError("");
+              setIsEmailErrorIcon(false);
             }}
             onFocus={() => {
               setSignupEmailError("");
+              setIsEmailErrorIcon(false);
             }}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
             name="email"
             errorText={signupEmailError}
+            isErrorIcon={isEmailErrorIcon}
           />
 
           <InputField
@@ -202,17 +251,20 @@ const Signup = ({ onSwitch, navigation }) => {
               setSignupPassword(text);
               setSignupPasswordError("");
               setConfirmPasswordError("");
+              setIsPassErrorIcon(false);
+              setChecklistModalVisible(false); // Hide checklist modal when user starts typing
             }}
             onFocus={() => {
               setSignupPasswordError("");
               setConfirmPasswordError("");
+              setIsPassErrorIcon(false);
             }}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCorrect={false}
             name="password"
             rightComponent={
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Pressable
                   onPress={() => setShowPassword(!showPassword)}
                   style={{ marginRight: 10 }}
@@ -224,10 +276,26 @@ const Signup = ({ onSwitch, navigation }) => {
                     color="gray"
                   />
                 </Pressable>
-                <ChecklistModal password={signupPassword} />
+                <Pressable
+                  onPress={() => setChecklistModalVisible(true)} 
+                  testID="password-info-icon"
+                >
+                  <MaterialIcons
+                    name="info-outline"
+                    size={25}
+                    color="gray"
+                  />
+                </Pressable>
               </View>
             }
             errorText={signupPasswordError}
+            isErrorIcon={isPassErrorIcon}
+          />
+
+          <ChecklistModal
+            password={signupPassword}
+            isVisible={isChecklistModalVisible}
+            onClose={() => setChecklistModalVisible(false)}
           />
 
           <PasswordStrengthBar password={signupPassword} />
@@ -239,15 +307,19 @@ const Signup = ({ onSwitch, navigation }) => {
             onChangeText={(text) => {
               setConfirmPassword(text);
               setConfirmPasswordError("");
+              setIsConfPassErrorIcon(false);
             }}
             onFocus={() => {
               setConfirmPasswordError("");
+              setIsConfPassErrorIcon(false);
             }}
             autoCapitalize="none"
             secureTextEntry={true}
             autoCorrect={false}
             name="confirmPassword"
             errorText={confirmPasswordError}
+            isErrorIcon = {isConfPassErrorIcon}
+
           />
 
           <ButtonSignup title="SIGN UP" onPress={handleSignup} />
@@ -274,6 +346,6 @@ const Signup = ({ onSwitch, navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
 
 export default Signup;

@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "grey",
   },
+  loader:{
+    marginTop: 20,
+  }
 });
 
 export default styles;
