@@ -15,6 +15,23 @@ def get_chat_list(request):
     serializer = ChatSerializer(chat_list, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_chat_messages(request, chatId):  # Change argument name to chatId
+    try:
+        user = request.user
+        chat = Chat.objects.get(pk=chatId)
+
+        # Check if the user is a participant in the chat
+        if user == chat.sender or user == chat.receiver:
+            messages = Message.objects.filter(chat=chat)
+            serializer = MessageSerializer(messages, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    except Chat.DoesNotExist:
+        return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
+    
 class ChatList(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
 

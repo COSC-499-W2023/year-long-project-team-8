@@ -295,21 +295,26 @@ async function getChatList(authTokens) {
     throw error;
   }
 }
-
-// Helper function to get chat messages within chat instance
-async function getChatMessages(authTokens) {
+//Helper function to get chat messages
+async function getChatMessages(authTokens, chatId) {
+  console.log(chatId);
   try {
-    const response = await fetch(`${baseEndpoint}/chat/`, {
+    const response = await fetch(`${baseEndpoint}/chat/${chatId}/`, {
       headers: {
-        Authorization: `Bearer ${authTokens?.access}`,
+        Authorization: `Bearer ${authTokens.access}`,
       },
     });
 
     if (response.ok) {
       const data = await response.json();
-      return data.results;
+      console.log("API Response:", data);
+
+      return {
+        messages: data.results,
+        sender: data.sender,
+        receiver: data.receiver,
+      };
     } else {
-      console.log("Auth data", authTokens)
       throw new Error("Error fetching chat messages");
     }
   } catch (error) {
@@ -317,6 +322,7 @@ async function getChatMessages(authTokens) {
     throw error;
   }
 }
+
 
 // Helper function to send a chat message
 async function sendChatMessage(userId, authTokens, newMessage) {
