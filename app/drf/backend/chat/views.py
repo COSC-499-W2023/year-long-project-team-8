@@ -22,6 +22,7 @@ class ChatList(generics.ListCreateAPIView):
     def get_queryset(self):
         # Check if the user is authenticated before querying the chat list
         if self.request.user.is_authenticated:
+            print("User req", self.request.user)
             return Chat.objects.filter(sender=self.request.user) | Chat.objects.filter(receiver=self.request.user)
         else:
             print("No chat objects")
@@ -30,17 +31,21 @@ class ChatList(generics.ListCreateAPIView):
     # Creating chat
     def perform_create(self, serializer):
         sender = self.request.user
-        product_id = self.request.data.get('product_id') 
+        product = self.request.data.get('product') 
         message = self.request.data.get('message')
+        
+        print('Sender', sender)
+        print('Product', product)
+        print('Message', message)
 
         # Retrieve the product and its owner
         try:
             # Verify this product_id
-            product = Product.objects.get(pk=product_id)
+            product = Product.objects.get(pk=product)
             receiver = product.owner
-
+            
             # Check if a chat room already exists for the given sender, receiver, and product
-            existing_chat = Chat.objects.filter(sender=sender, receiver=receiver, product_id=product_id).first()
+            existing_chat = Chat.objects.filter(sender=sender, receiver=receiver, product=product).first()
 
             if existing_chat:
                 # If a chat room already exists, add the new message to the existing chat
@@ -49,7 +54,7 @@ class ChatList(generics.ListCreateAPIView):
                 serializer.instance = existing_chat
             else:
                 # If no chat room exists, create a new chat room
-                serializer.save(sender=sender, receiver=receiver, product_id=product_id, message=message)
+                serializer.save(sender=sender, receiver=receiver, product=product, message=message)
 
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

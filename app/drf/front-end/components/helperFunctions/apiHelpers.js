@@ -320,6 +320,7 @@ async function getChatMessages(authTokens) {
 // Helper function to send a chat message
 async function sendChatMessage(userId, authTokens, newMessage) {
   try {
+    //Need to dynamically send product and owner (receiver instead of placeholders)
     const response = await fetch(`${baseEndpoint}/chat/`, {
       method: 'POST',
       headers: {
@@ -328,16 +329,17 @@ async function sendChatMessage(userId, authTokens, newMessage) {
       },
       body: JSON.stringify({ 
       sender: userId, 
-      receiver: 3,  // 3 is a placeholder
-      product: 1,           // 1 is a placeholder product
+      receiver: 3, 
+      product: 2,           
       message: newMessage, }),
     });
 
     if (response.ok) {
       const data = await response.json();
+   
       return data;
     } else {
-      throw new Error("Error sending chat message");
+      throw new Error("Error sending chat message API");
     }
   } catch (error) {
     console.error("Error:", error);
