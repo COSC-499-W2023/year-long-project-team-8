@@ -1022,6 +1022,10 @@ January 29 - February 04, 2024
 - [x] [#215](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/215)
 - [x] [#205](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/205)
 - [x] [#201](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/201)  
+- #208 change the rating system to match post page
+- #206 when saving edit profile details, should provide success message or revert user back to home screen
+- #203 edit details input fields sometimes delete or revert to blank despite correct format
+- #202 cant scroll and keyboard blocks edit profile fields
 
 ### In Progress Tasks
 

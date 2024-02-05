@@ -446,6 +446,62 @@ January 21 - 28 2024
 |  193   |      ✓      |              |
 |  194   |      ✓      |              |
 
+# Team_Member_Name Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+January 28 - Feb 4 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_t2_w4.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- #20
+- #21
+- #183
+- #232
+- please see below for what these refer to on project board
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #208 change the rating system to match post page
+- #206 when saving edit profile details, should provide success message or revert user back to home screen
+- #203 edit details input fields sometimes delete or revert to blank despite correct format
+- #202 cant scroll and keyboard blocks edit profile fields
+- #20 calculate distance from location to post
+- #21 link slider and radius modal on home page
+- #183 fix issue where map features are not showing up on android
+- #232 add character limits in the edit profile page
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done  |
+|:------:|:----------:|:-----------:|
+|  208   |     ✓      |             |
+|  206   |     ✓      |             |
+|  203   |     ✓      |             |
+|  202   |     ✓      |             |
+|   20   |            |      ✓      |
+|   21   |            |      ✓      |
+|  183   |            |      ✓      |
+|  232   |            |      ✓      |
+
 
 
 
