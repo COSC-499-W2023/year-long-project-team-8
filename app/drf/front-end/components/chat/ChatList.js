@@ -22,7 +22,6 @@ const ChatList = () => {
     fetchChatList();
   }, [authTokens]);
 
-  //for debugging ( getChatList is returning array of length zero despite chats)
   const handleFetchAllChats = async () => {
     try {
       const allChats = await getChatList(authTokens); 
@@ -38,8 +37,8 @@ const ChatList = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
-    {/* Header Text for testing */}
-    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
+      {/* Header Text for testing */}
+      <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
         Messages
       </Text>
       <Button title="Fetch All Chats" onPress={handleFetchAllChats} />
@@ -48,8 +47,10 @@ const ChatList = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigateToChat(item)}>
-            <View style={{ marginBottom: 8 }}>
-              <Text>{item.sender.firstname}: {item.message}</Text>
+            <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
+              <Text>Receiver: {item.receiver}</Text>
+              <Text>Time: {item.timestamp}</Text>
+              {/* Add more details as needed */}
             </View>
           </TouchableOpacity>
         )}
