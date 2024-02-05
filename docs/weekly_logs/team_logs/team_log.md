@@ -1003,8 +1003,8 @@ January 29 - February 04, 2024
 
 - Set up backend to handle profile pictures
 - Create API function to upload profile picture in front end
--
-- Prepare app for peer testing
+- Continue progress on chat function
+- Prepare app for peer testing (bug fixes)
 - Welcome peer feedback and begin working on implementing changes based on said feedback
 
 ## Bug fixes
@@ -1020,6 +1020,8 @@ January 29 - February 04, 2024
 
 - [x] [#195](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/195)
 - [x] [#215](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/215)
+- [x] [#205](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/205)
+- [x] [#201](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/201)  
 
 ### In Progress Tasks
 
@@ -1042,6 +1044,7 @@ January 29 - February 04, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+![burnup-chart](../img/t2_burnup_w4.png)
 
 ### Test Report
 
