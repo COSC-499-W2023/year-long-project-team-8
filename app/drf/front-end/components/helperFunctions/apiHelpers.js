@@ -307,13 +307,19 @@ async function getChatMessages(authTokens, chatId) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("API Response:", data);
-
+      // Map the chat data to a more suitable format
+      const messages = data.map(message => ({
+        id: message.id,
+        sender: message.sender,
+        receiver: message.receiver,
+        message: message.message,
+        timestamp: message.timestamp,
+      }));
       return {
-        messages: data.results,
-        sender: data.sender,
-        receiver: data.receiver,
-      };
+        messages: messages,
+        sender: data[0].sender, // Assuming sender is the same for all messages in the chat
+        receiver: data[0].receiver, // Assuming receiver is the same for all messages in the chat
+      };   
     } else {
       throw new Error("Error fetching chat messages");
     }
@@ -322,7 +328,6 @@ async function getChatMessages(authTokens, chatId) {
     throw error;
   }
 }
-
 
 // Helper function to send a chat message
 async function sendChatMessage(userId, authTokens, newMessage) {

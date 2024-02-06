@@ -28,20 +28,21 @@ const Chat = () => {
 
     fetchChatMessages();
   }, [authTokens, chatId]);
-
-  const isSender = (message) => message.sender.id === userId;
+  console.log("User id", userId);
+  
+  const isSender = (message) => message.sender === userId;
 
   const renderMessageBubble = ({ item }) => (
     <View style={{ marginBottom: 8, alignSelf: isSender(item) ? 'flex-end' : 'flex-start' }}>
       <View
         style={{
           padding: 8,
-          backgroundColor: isSender(item) ? '#FFA500' : '#ddd', 
+          backgroundColor: isSender(item) ? '#FFA500' : '#ddd',
           borderRadius: 8,
         }}>
-        <Text> {item.chat.chatId}</Text>
+        <Text>Sender Id: {item.sender}</Text>
         <Text style={{ color: isSender(item) ? 'white' : 'black' }}>
-          {item.sender}: {item.message}
+          {item.message}
         </Text>
       </View>
     </View>
