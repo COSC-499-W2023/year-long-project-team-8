@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
 import { getChatList } from '../helperFunctions/apiHelpers'; 
 import AuthContext from '../../context/AuthContext';
-import { useNavigation } from '@react-navigation/native';
 
-const ChatList = () => {
+const ChatList = (navigation) => {
   const [chatList, setChatList] = useState([]);
-  const navigation = useNavigation();
   const { authTokens } = useContext(AuthContext);
 
   useEffect(() => {
@@ -32,6 +30,7 @@ const ChatList = () => {
   };
 
   const navigateToChat = (chat) => {
+    console.log("trying to navigate to chat with id", chat.id);
     navigation.navigate('Chat', { chatId: chat.id });
   };
 
@@ -50,7 +49,6 @@ const ChatList = () => {
             <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
               <Text>Receiver: {item.receiver}</Text>
               <Text>Time: {item.timestamp}</Text>
-              {/* Add more details as needed */}
             </View>
           </TouchableOpacity>
         )}

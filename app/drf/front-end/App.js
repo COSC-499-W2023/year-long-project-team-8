@@ -34,11 +34,12 @@ const App = () => {
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="MainApp" component={MainApp} />
+            <Stack.Screen name="HomePage" component={HomePage} />
             <Stack.Screen name="PasswordReset" component={PasswordReset} />
             <Stack.Screen name="Settings" component={SettingsNav} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="ChatList" component={ChatList} />
+            <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="mapView" component={mapView} />
               <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
           </Stack.Navigator>

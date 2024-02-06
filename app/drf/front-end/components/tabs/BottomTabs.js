@@ -9,10 +9,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AuthContext from "../../context/AuthContext";
 import { baseEndpoint } from "../../config/config";
+import { useNavigation } from "@react-navigation/native";
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();
-
 // Individual screens for each tab:
 // These are placeholders and can be replaced with actual screens when developed
 
@@ -23,7 +23,7 @@ const Browse = () => (
   </View>
 );
 
-// Screen for Chat
+// Screen for Chat (do i need to pass navigation here?)
 const Chat = () => (
   <ChatList/>
 );

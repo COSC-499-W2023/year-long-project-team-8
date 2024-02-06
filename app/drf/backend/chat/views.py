@@ -17,7 +17,7 @@ def get_chat_list(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_chat_messages(request, chatId):  # Change argument name to chatId
+def get_chat_messages(request, chatId):  
     try:
         user = request.user
         chat = Chat.objects.get(pk=chatId)
@@ -54,6 +54,7 @@ class ChatList(generics.ListCreateAPIView):
             # Verify this product_id
             product = Product.objects.get(pk=product)
             receiver = product.owner
+            
 
             # Check if a chat room already exists for the given sender, receiver, and product
             existing_chat = Chat.objects.filter(sender=sender, receiver=receiver, product=product).first()

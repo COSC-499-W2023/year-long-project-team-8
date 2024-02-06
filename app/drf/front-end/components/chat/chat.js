@@ -2,23 +2,23 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button, FlatList } from 'react-native';
 import { baseEndpoint } from '../../config/config';
 import AuthContext from '../../context/AuthContext';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { getChatMessages, sendChatMessage } from '../helperFunctions/apiHelpers';
 
-const Chat = () => {
+const Chat = ({navigation}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
   const route = useRoute();
-  //const chatId = route.params?.id; (need to pass chatId when navigating to this screen)
-  const chatId = 3;
+  const chatId = route.params?.chatId; //(need to pass chatId when navigating to this screen)
+  //const chatId = 3;
 
   useEffect(() => {
     const fetchChatMessages = async () => {
       try {
         const chatData = await getChatMessages(authTokens, chatId);
         setMessages(chatData.messages);
-        console.log("Message", chatData.messages);
+        console.log("Message objects fetched from getChatMessages");
         console.log("Sender:", chatData.sender);
         console.log("Receiver:", chatData.receiver);
       } catch (error) {
