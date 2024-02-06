@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
   // User's name style
   name: {
-    fontSize: 24,
+    fontSize: 20,
     color: 'black',
     fontWeight: '500',
     marginTop: 15,

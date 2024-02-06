@@ -122,6 +122,7 @@ const phoneValidation = () => {
           onEndEditing={() => firstNameValidation()}
           onFocus={() => setPrevFirstName(firstname)}
           onChangeText={(text) => setFirstName(text)}
+          maxLength={20}
 
         />
         {/* Input field for last name */}
@@ -131,6 +132,7 @@ const phoneValidation = () => {
           onEndEditing={() => lastNameValidation()}
           onFocus={() => setPrevLastName(lastname)}
           onChangeText={(text) => setLastName(text)}
+          maxLength={20}
         />
       </View>
 
@@ -166,6 +168,7 @@ const phoneValidation = () => {
           onChangeText={(text) => setEmail(text)}
           onEndEditing={() => emailValidation()}
           autoCapitalize={"none"}
+          maxLength={30}
         />
       </View>
     </>
