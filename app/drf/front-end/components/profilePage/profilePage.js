@@ -72,7 +72,7 @@ const ProfilePage = ({ ratings, reviews, navigation }) => {
         <View style={styles.ratingTextContainer}>
           <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
           <TouchableOpacity onPress={onReviewsPress}>
-            <CustomText style={styles.reviews} fontType={"text"}> ({reviews} reviews)</CustomText>
+            <CustomText style={styles.reviews} fontType={"text"}> ({reviews}reviews)</CustomText>
           </TouchableOpacity>
         </View>
       </View>

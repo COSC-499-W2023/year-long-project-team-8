@@ -85,6 +85,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
+    borderColor: '#F8B951',
+    borderWidth: 1,
   },
   // Styling for the last name input field
   lastNameInput: {
@@ -96,6 +98,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
+    borderColor: '#F8B951',
+    borderWidth: 1,
+
   },
   // Styling for the container of phone number text
   phoneNumberTextContainer: {
@@ -129,6 +134,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
+    borderColor: '#F8B951',
+    borderWidth: 1,
   },
   // Styling for the container of email text
   emailTextContainer: {
@@ -162,6 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
+    borderColor: '#F8B951',
+    borderWidth: 1,
   },
   buttonFieldContainer: {
     marginTop: 55,
