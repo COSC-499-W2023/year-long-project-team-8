@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   categoryScroll: {
     flexDirection: "row",
     marginVertical: 5,
+    alignContent:"center"
   },
   categoryContainer: {
     alignItems: "center",
@@ -45,6 +46,11 @@ const styles = StyleSheet.create({
   iconImage: {
     width: 40,
     height: 40,
+  },
+  iconImageClear: {
+    width: 35,
+    height: 35,
+    marginTop:10,
   },
   categoryText: {
     fontWeight: "600",
