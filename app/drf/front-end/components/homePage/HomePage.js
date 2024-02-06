@@ -29,6 +29,8 @@ import { useAppState } from "../../context/AppStateContext";
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
+const ClearAllIcon = require("../../assets/icons/cancel.png");
+
 
 const HomePage = ({ navigation }) => {
   //const navigation = useNavigation();
@@ -138,8 +140,10 @@ const HomePage = ({ navigation }) => {
         : [...prevCategories, category]
     );
   };
-  
-  
+
+  const handleClearPress = () => {
+    setSelectedCategories([]);
+  };
 
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
@@ -246,9 +250,20 @@ const HomePage = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             style={styles.categoryScroll}
           >
+            <View style={styles.categoryContainer}>
+              <TouchableOpacity
+                style={styles.categoryButton} 
+                onPress={handleClearPress}
+              >
+                <Image source={ClearAllIcon} style={styles.iconImageClear} />
+              </TouchableOpacity>
+              <CustomText fontType={"text"} style={styles.categoryText}>Clear All</CustomText>
+            </View>
+
             {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
+                
                 <TouchableOpacity
                   style={[
                     styles.categoryButton,
