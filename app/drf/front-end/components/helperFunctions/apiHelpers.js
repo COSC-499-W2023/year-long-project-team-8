@@ -341,8 +341,8 @@ async function sendChatMessage(userId, authTokens, newMessage) {
       },
       body: JSON.stringify({ 
       sender: userId, 
-      receiver: 3, 
-      product: 2,           
+      receiver: 1, 
+      product: 5,           
       message: newMessage, }),
     });
 

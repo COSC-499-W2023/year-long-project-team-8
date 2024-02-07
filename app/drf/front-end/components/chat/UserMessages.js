@@ -5,13 +5,13 @@ import AuthContext from '../../context/AuthContext';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { getChatMessages, sendChatMessage } from '../helperFunctions/apiHelpers';
 
-const Chat = ({navigation}) => {
+const UserMessages = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
-  const route = useRoute();
   const chatId = route.params?.chatId; //(need to pass chatId when navigating to this screen)
-  //const chatId = 3;
+  //const chatId = 4;
+  console.log("chat doesnt render");
 
   useEffect(() => {
     const fetchChatMessages = async () => {
@@ -78,4 +78,4 @@ const Chat = ({navigation}) => {
   );
 };
 
-export default Chat;
+export default UserMessages;

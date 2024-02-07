@@ -5,7 +5,7 @@ import Tabs from "../tabs/BottomTabs";
 import DrawerProps from "./DrawerProps.js";
 import SettingsPage from "../settingsPage/Settings";
 import Profile from "../profilePage/profilePage.js";
-import Chat from "../chat/chat.js";
+import ChatList from "../chat/ChatList.js";
 import PostDetails from "../posts/PostDetails.js";
 
 // Assets for icons and logos
@@ -86,7 +86,7 @@ const DrawerNav = () => {
       />
       <Drawer.Screen
         name="Chat"
-        component={Chat}
+        component={ChatList}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (

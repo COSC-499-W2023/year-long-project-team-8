@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
 import { getChatList } from '../helperFunctions/apiHelpers'; 
 import AuthContext from '../../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
-const ChatList = (navigation) => {
+const ChatList = () => {
   const [chatList, setChatList] = useState([]);
   const { authTokens } = useContext(AuthContext);
-
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchChatList = async () => {
       try {
@@ -31,7 +32,7 @@ const ChatList = (navigation) => {
 
   const navigateToChat = (chat) => {
     console.log("trying to navigate to chat with id", chat.id);
-    navigation.navigate('Chat', { chatId: chat.id });
+    navigation.navigate('UserMessages', { chatId: chat.id });
   };
 
   return (
@@ -47,6 +48,7 @@ const ChatList = (navigation) => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigateToChat(item)}>
             <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
+              <Text>Chat ID: {item.id}</Text>
               <Text>Receiver: {item.receiver}</Text>
               <Text>Time: {item.timestamp}</Text>
             </View>

@@ -24,14 +24,14 @@ const Browse = () => (
 );
 
 // Screen for Chat (do i need to pass navigation here?)
-const Chat = () => (
-  <ChatList/>
+const Chat = ({ navigation }) => (
+  <ChatList navigation={navigation} />
 );
 
 // Screen for Profile
 
 // Main Bottom Tabs Component
-function BottomTabs({ route }) {
+function BottomTabs({ route, navigation }) {
   // use Authcontext to get our token, query the database, and use logout if query fails
   let { authTokens, logoutUser } = useContext(AuthContext);
   useEffect(() => {
