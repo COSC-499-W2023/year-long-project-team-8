@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Image, TextInput, TouchableOpacity, Share, Linking } from 'react-native';
 import CustomText from '../CustomText'; 
 import ChatButton from './ChatButton'; 
-import { sendChatMessage } from '../helperFunctions/apiHelpers';
+import { sendChatMessage, getChatList } from '../helperFunctions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
@@ -11,6 +11,7 @@ const chatBubble = require("../../assets/icons/chat-bubbles.png");
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
+  const [chatId, setChatId] = useState('');
   const navigation = useNavigation();
   const chatListing = listing;
   const prodOwner = listing.owner;
@@ -21,6 +22,30 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const user = require("../../assets/icons/user-profile.png");
   const save = require("../../assets/icons/ribbon.png");
 
+  useEffect(() => {
+    const fetchChatId = async () => {
+      try {
+        // Fetch chat list
+        const chats = await getChatList(authTokens);
+        console.log("CHats obtained from getChatList", chats);
+        console.log("Prod owner", prodOwner);
+        console.log("chat.receiver", chats.receiver);
+        // Find the chat with the matching userId and listing owner
+        const chat = chats.find(chat => chat.receiver === prodOwner);
+  
+        if (chat) {
+          // Set the chat ID if found
+          setChatId(chat.id);
+        } else {
+          console.warn('No chat found for the specified user and listing owner');
+        }
+      } catch (error) {
+        console.error('Error fetching chat ID:', error);
+      }
+    };
+  
+    fetchChatId();
+  }, [authTokens, userId, prodOwner]);
 
   const handleSend = async () => {
     console.log("Message to send:", messages);
@@ -32,7 +57,8 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
       console.error('Error sending message:', error);
     }
     //need to change this to navigate to correct chatId
-    navigation.navigate('UserMessages', {chatId : 4});
+    console.log("Chat id", chatId);
+    navigation.navigate('UserMessages', {chatId : chatId});
     
   };
 
