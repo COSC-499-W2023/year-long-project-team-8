@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Rating } from '@kolking/react-native-rating';
-import CustomText from '../CustomText';
+import { Rating } from '@kolking/react-native-rating'; // Import Rating component from kolking/react-native-rating
+import CustomText from '../CustomText'; // CustomText component for consistent text styling
 
+// ProfileReview component displays an individual review with content, rating, and timestamp
 const ProfileReview = ({ review }) => {
-
+  // Function to format date strings into a more readable format
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString); // Convert string to Date object
+    // Format date to 'Month Day, Year' (e.g., 'January 1, 2024')
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -16,17 +18,20 @@ const ProfileReview = ({ review }) => {
 
   return (
     <View style={styles.container}>
-    <CustomText style={styles.content} numberOfLines={2} ellipsizeMode="tail">
+      {/* Review content with text truncation after 2 lines */}
+      <CustomText style={styles.content} numberOfLines={2} ellipsizeMode="tail">
         {review.content}
-      </CustomText>      
+      </CustomText>
+      {/* Rating component displaying the review's rating */}
       <Rating
         rating={review.rating}
         size={20}
         fillColor="orange"
         spacing={5}
-        disabled={true}
+        disabled={true} // Make the rating read-only
         style={styles.rating}
       />
+      {/* Formatted timestamp of the review */}
       <CustomText style={styles.timestamp}>{formatDate(review.timestamp)}</CustomText>
     </View>
   );

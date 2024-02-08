@@ -88,8 +88,20 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     borderRadius: 50,
     borderWidth: 12,  
-    borderColor: 'white',  
-    
+    borderColor: 'white', 
+    position: 'relative', 
+  },
+
+  editIconContainer: {
+    position: 'absolute', 
+    bottom: 0, 
+    right: 0, 
+    borderRadius: 15, 
+    padding: 2, 
+  },
+  editIcon: {
+    width: 20, 
+    height: 20,
   },
 
   profileAndRatingContainer: {
