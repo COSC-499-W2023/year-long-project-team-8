@@ -85,10 +85,12 @@ const PostDetails = ({ route, navigation }) => {
           </CustomText>
 
           {/*Chat Section*/}
-          <ChatComponent
-            initialMessage="Hi! Can I get this plate?"
-            listing = {listing}
+          <ChatComponent 
+            navigation={navigation} 
+            initialMessage="Hi! Can I get this plate?" 
+            listing={listing} 
           />
+
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />
