@@ -12,6 +12,10 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
   const navigation = useNavigation();
+  const chatListing = listing;
+  const prodOwner = listing.owner;
+  console.log("Chat listing", chatListing);
+  console.log("Product owner (receiver)", prodOwner);
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
