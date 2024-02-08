@@ -9,9 +9,8 @@ const UserMessages = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
-  const chatId = route.params?.chatId; //(need to pass chatId when navigating to this screen)
+  const chatId = route.params?.chatId; 
   //const chatId = 4;
-  console.log("chat doesnt render");
 
   useEffect(() => {
     const fetchChatMessages = async () => {

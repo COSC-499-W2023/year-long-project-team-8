@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Image, TextInput, TouchableOpacity, Share, Linking } from 'react-native';
 import CustomText from '../CustomText'; 
 import ChatButton from './ChatButton'; 
+import { sendChatMessage } from '../helperFunctions/apiHelpers';
+import { useNavigation } from '@react-navigation/native';
+import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
-  const [message, setMessage] = useState(initialMessage);
+  const [messages, setMessages] = useState(initialMessage);
+  const [newMessage, setNewMessage] = useState('');
+  const { authTokens, userId } = useContext(AuthContext);
+  const navigation = useNavigation();
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
   const save = require("../../assets/icons/ribbon.png");
 
 
-  const handleSend = () => {
-    console.log("Message to send:", message);
-    // TODO: send message functionality
+  const handleSend = async () => {
+    console.log("Message to send:", messages);
+    try {
+      const data = await sendChatMessage(userId, authTokens, newMessage);
+      setMessages([...messages, data]);
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+    //need to change this to navigate to correct chatId
+    navigation.navigate('UserMessages', {chatId : 4});
+    
   };
 
   const handleSavePress = () => {
@@ -25,6 +40,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
 
   const handleChatPress = () => {
     console.log(`Open chat page`);
+    navigation.navigate('ChatList');
     // TODO: Open chat page
   };
 
@@ -62,8 +78,8 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
       <View style={styles.messageBox}>
         <TextInput
           style={styles.messageInput}
-          onChangeText={setMessage}
-          value={message}
+          onChangeText={setMessages}
+          value={messages}
           maxLength={50}
         />
         <ChatButton

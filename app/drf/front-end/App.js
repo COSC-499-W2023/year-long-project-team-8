@@ -40,6 +40,7 @@ const App = () => {
             <Stack.Screen name="mapView" component={mapView} />
             <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
             <Stack.Screen name="UserMessages" component={UserMessages}/>
+            <Stack.Screen name="ChatList" component={ChatList}/>
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>
