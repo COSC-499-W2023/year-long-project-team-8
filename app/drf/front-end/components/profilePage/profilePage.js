@@ -11,8 +11,7 @@ import CustomText from "../CustomText";
 import PostReview from './PostReview';
 import * as ImagePicker from "expo-image-picker";
 
-//TODO: Location, dummy pfp icon resolution increase, change profile picture, change background, loader
-// Upload new profile image to database and background image.
+//TODO: Location, dummy pfp icon resolution increase, change profile picture, loader
 
 const ProfilePage = ({ navigation }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
@@ -86,33 +85,7 @@ const ProfilePage = ({ navigation }) => {
   
 
   // TODO: Requests permission to access the device's location and fetches the current location.
-  // and sets the city based on the location.
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Location Permission Denied');
-        return;
-      }
 
-      const currentLocation = await Location.getCurrentPositionAsync({});
-      const reverseGeo = await Location.reverseGeocodeAsync({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
-
-      // reverseGeo is an array of addresses. You can pick the first one and extract the city.
-      const city = reverseGeo[0]?.city;
-
-      // Set the location state to include the city information
-      setLocation({
-        ...location,
-        city: city,
-      });
-    };
-
-    requestLocationPermission().then(() => setErrorMsg(null));
-  }, []);
 
 
 
@@ -183,7 +156,7 @@ const ProfilePage = ({ navigation }) => {
         <CustomText style={styles.name} fontType={'subHeader'}>
           {getUserDisplayName(userData)}
         </CustomText>
-        <CustomText style={styles.location} fontType={"subHeader"}>{userData?.location || 'Location Not Available'}</CustomText>
+        <CustomText style={styles.location} fontType={"subHeader"}>{'Location Not Available'}</CustomText>
       </View>
 
       {/* Tabs for switching between posts and reviews */}
