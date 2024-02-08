@@ -10,7 +10,6 @@ const chatBubble = require("../../assets/icons/chat-bubbles.png");
 
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
-  const [newMessage, setNewMessage] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
   const navigation = useNavigation();
   const chat = require("../../assets/icons/speech-bubble.png");
@@ -22,9 +21,9 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const handleSend = async () => {
     console.log("Message to send:", messages);
     try {
-      const data = await sendChatMessage(userId, authTokens, newMessage);
+      const data = await sendChatMessage(userId, authTokens, messages);
       setMessages([...messages, data]);
-      setNewMessage('');
+      setMessages(initialMessage);
     } catch (error) {
       console.error('Error sending message:', error);
     }
