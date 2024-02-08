@@ -19,38 +19,74 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 
-  // Rating container style
-  ratingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 30,
-  },
-  ratingTextContainer: {
-    flexDirection: 'row',
-    margin: 5,
+  ratingAndReviewRow: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
   },
 
-  // Profile container style
+  reviews:{
+    fontSize:17,
+  },
+
+  reviewPressable: {
+    marginLeft: 10, 
+  },
+
   profileContainer: {
-    top: 40,
-    alignItems: 'center',
+    flexDirection: 'row', 
+    alignItems: 'flex-start', 
+    marginTop: 5,
+    paddingLeft: 10,
+    marginBottom:10,
   },
 
-  // Profile picture style
+  userInfo: {
+    marginTop:5,
+    justifyContent: 'center', 
+
+  },
+
+  locationAndReviews: {
+    // Style to contain location and reviews below the name
+  },
+
+  profilePictureContainer:{
+    alignContent:"center",
+    justifyContent:"center"
+  },
+
+  profileAndRatingContainer: {
+    alignItems: 'center', 
+    paddingLeft: 10,
+  },
+
   profilePicture: {
-    width: 130,
-    height: 130,
-    borderRadius: 70,
-    borderWidth: 2,
-    borderColor: 'black',
+    width: 55,
+    height: 55,
+    borderRadius: 50,
   },
 
-  // User's name style
+  rating: {
+    marginTop: 5, 
+  },
+
+  reviewPressable: {
+  },
+
   name: {
-    fontSize: 24,
+    fontSize: 17,
     color: 'black',
-    fontWeight: '500',
-    marginTop: 15,
+  },
+
+  // Location and Reviews style
+  location: {
+    fontSize: 16,
+    color: colors.mediumOrange,
+  },
+
+  reviews: {
+    fontSize: 16,
+    color:"#9ba5f1",   
   },
 
   // Location container style
@@ -59,24 +95,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  // Location text style
-  location: {
-    fontSize: 16,
-    color: colors.mediumOrange,
-    marginLeft: 2,
-  },
-
   // Centered posts container style
   centeredPostsContainer: {
-    flex: 1,
+    marginTop:10,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 20,
-  },
-
-  // Container for multiple posts style
-  postsContainer: {
-    flexDirection: 'row',
   },
 
   // "Recent Posts" text style
@@ -85,56 +108,78 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'black',
     marginBottom: 20,
+    alignSelf:"center"
   },
 
-  // Individual post container style
-  postContainer: {
-    width: windowWidth * 0.3,
-    height: '95%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e8e8e8',
-    borderWidth: 2,
-    marginLeft: 5,
-    marginRight: 5,
-    borderRadius: 10,
-    shadowOpacity: 0.5,
-    shadowColor: 'black',
-    shadowRadius: 3,
-    shadowOffset: { width: 2, height: 2 },
+  recentPostsContainer: {
+    paddingHorizontal: 10,
+    marginTop:5,
+  },
+  postsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  postCardContainer: {
+    width: '50%', 
+    marginBottom: 10,
   },
 
   // "View All" button style
   viewAllButton: {
-    alignItems: 'center',
+    backgroundColor: '#F8B951', // Assuming post cards have a white background
+    borderRadius: 10, // Match the borderRadius of post cards
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    margin: 5,
+    width: (windowWidth / 2) - 20, // Assuming post cards take half the width minus some margin
+    height: 120, // Assuming a fixed height for post cards
     justifyContent: 'center',
-    backgroundColor: colors.lightOrange,
-    borderRadius: 10,
-    marginTop: 25,
-    height: 45,
-    width: 140,
+    alignItems: 'center',
   },
 
   // "View All" button text style
   viewAllButtonText: {
     fontSize: 16,
-    fontWeight: '400',
     color: 'white',
   },
 
   // Settings button container style
   settingsButtonContainer: {
     position: 'absolute',
-    top: 15,
-    right: 15,
+    top: 13,
+    right: 20,
     zIndex: 1,
   },
 
   // Settings button style
   settingsButton: {
-    height: 30,
-    width: 30,
+    height: 26,
+    width: 26,
     resizeMode: 'contain',
+  },
+
+  seeReviewsButton: {
+    marginTop: 10,
+    marginBottom:20,
+    backgroundColor: '#F8B951', 
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3, 
+    alignSelf: 'center', 
+  },
+  
+  seeReviewsText: {
+    color: '#fff', 
+    fontSize: 16,
   },
 });
 

@@ -1,30 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import * as Location from 'expo-location';
 import { Rating } from '@kolking/react-native-rating';
-
-import { getUserData } from '../helperFunctions/apiHelpers';
+import PostCard from './PostCard';
+import { getUserData, getUserProductList } from '../helperFunctions/apiHelpers';
 import AuthContext from '../../context/AuthContext';
 import styles from './profilePageStyles';
 import { useIsFocused } from "@react-navigation/native";
 import CustomText from "../CustomText";
-import { useNavigation } from "@react-navigation/native";
+import ProfileReview from './PostReview';
 
-const ProfilePage = ({ ratings, reviews, navigation }) => {
+const ProfilePage = ({ navigation }) => {
   const isFocused = useIsFocused();
   const { userId, authTokens } = useContext(AuthContext);
-  const [userData, setUserData] = useState("");
-  const [rating] = useState(5);
+  const [userData, setUserData] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
 
-  const onReviewsPress = () => {
-    console.log('Navigate to review!');
-  };
-
-  const goToSettings = () => {
-    navigation.navigate('EditProfile');
-    console.log('settings button pressed');
-  }
 
   useEffect(() => {
     if (isFocused && userId && authTokens) {
@@ -37,6 +29,15 @@ const ProfilePage = ({ ratings, reviews, navigation }) => {
         });
     }
   }, [isFocused, userId, authTokens]);
+
+  const onReviewsPress = () => {
+    console.log('Navigate to review!');
+  };
+
+  const goToSettings = () => {
+    navigation.navigate('EditProfile');
+    console.log('settings button pressed');
+  }
 
   useEffect(() => {
     (async () => {
@@ -51,68 +52,101 @@ const ProfilePage = ({ ratings, reviews, navigation }) => {
     })()
   }, []);
 
+  const getReviewMessage = (reviews) => {
+    const count = reviews?.length || 0; // Handle null or undefined
+    if (count === 0) return "New User!";
+    if (count === 1) return "1 review";
+    return `${count} reviews`;
+  };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        // Use getUserProductList instead of fetchUserPosts
+        const productData = await getUserProductList(authTokens);
+        if (Array.isArray(productData)) {
+          setUserPosts(productData.slice(0, 3)); // limit to top 4 posts
+        } else {
+          console.error('Product data is not an array:', productData);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+  
+    if (userId && authTokens) {
+      fetchPosts();
+    }
+  }, [userId, authTokens, isFocused]); 
+
+  console.log(userData);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/*TODO: get the average rating for the user and implement here*/}
-      <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer}>
-        <Image
-          source={require('../../assets/images/profilePage/settings.png')}
-          style={styles.settingsButton}
-        />
-      </TouchableOpacity>
 
-      <View style={styles.ratingContainer}>
-        <Rating
-          size={25}
-          rating={rating}
-          fillColor="orange"
-          spacing={5}
-          disabled={true}
-        />
-        <View style={styles.ratingTextContainer}>
-          <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
-          <TouchableOpacity onPress={onReviewsPress}>
-            <CustomText style={styles.reviews} fontType={"text"}> ({reviews} reviews)</CustomText>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Section for displaying user profile information */}
+      {/* User Profile Information */}
       <View style={styles.profileContainer}>
-        <Image
-          source={require('../../assets/images/profilePage/pfp.png')}
-          style={styles.profilePicture}
-        />
-
-        {/* Displaying user's name */}
-        <Text style={styles.name}>
-          {getUserDisplayName(userData)}
-        </Text>
-
-        {/* Displaying user's location */}
-        <View style={styles.locationContainer}>
-          {/*TODO: get user's location and input it here*/}
-          <Text style={styles.location}>Kelowna, BC</Text>
+        <View style={styles.profileAndRatingContainer}>
+          <Image
+            source={userData?.profile_picture ? { uri: userData.profile_picture } : require('../../assets/icons/profile.png')}
+            style={styles.profilePicture}
+          />
+          <Rating
+            size={15} // Adjust size as needed
+            rating={userData?.rating || 5}
+            fillColor="orange"
+            spacing={5}
+            disabled={true}
+            style={styles.rating}
+          />
+          
         </View>
-      </View>
-
-      {/* Section for displaying recent posts */}
-      <View style={styles.centeredPostsContainer}>
-        <Text style={styles.recentPostsText}>Recent Posts</Text>
-        {/* Container for displaying multiple post components */}
-        <View style={styles.postsContainer}>
-          {renderRecentPosts()}
+        <View style={styles.userInfo}>
+          <CustomText style={styles.name} fontType={'subHeader'}>
+            {getUserDisplayName(userData)}
+          </CustomText>
+          <CustomText style={styles.location}>{userData?.location || 'Kelowna, Canada'}</CustomText>
         </View>
-
-        {/* Button to view all posts */}
-        {/*TODO: once page with all posts is built, link this button with it*/}
-        <TouchableOpacity style={styles.viewAllButton}>
-          <Text style={styles.viewAllButtonText}>View All</Text>
+        <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer}>
+          <Image
+            source={require('../../assets/icons/edit.png')}
+            style={styles.settingsButton}
+          />
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* Recent Posts */}
+      <View style={styles.recentPostsContainer}>
+        <View style={styles.postsGrid}>
+          {userPosts.map((post, index) => (
+            <PostCard key={index} post={post} onPress={() => navigation.navigate('PostDetails', { listing: post })} />
+          ))}
+          {userPosts.length > 0 && (
+            <TouchableOpacity style={styles.viewAllButton} onPress={() => {/* Navigate to the page with all posts */}}>
+              <CustomText style={styles.viewAllButtonText} fontType={'title'}>See More</CustomText>
+            </TouchableOpacity>
+          )}
+        </View>
+     
+
+        {/* Profile Reviews Section */}
+      {userData && userData.received_reviews && (
+        <View style={styles.reviewsContainer}>
+          {userData.received_reviews.slice(0, 3).map((review, index) => (
+            <ProfileReview key={index} review={review} />
+          ))}
+          {userData.received_reviews.length > 3 && (
+            <TouchableOpacity style={styles.seeReviewsButton} onPress={onReviewsPress}>
+              <CustomText style={styles.seeReviewsText}>See More Reviews</CustomText>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+      </View>
+    </ScrollView>
   );
 };
+
 
 const getUserDisplayName = (userData) => {
   const firstName = userData?.firstname || '';
@@ -120,14 +154,5 @@ const getUserDisplayName = (userData) => {
   return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
 };
 
-const renderRecentPosts = () => {
-  return [1, 2, 3].map((index) => (
-    <View key={index} style={styles.postContainer}>
-      {/* Individual post component */}
-      {/*TODO: once posts page is complete, add the three most recent posts here*/}
-      <View style={styles.post}></View>
-    </View>
-  ));
-};
 
 export default ProfilePage;

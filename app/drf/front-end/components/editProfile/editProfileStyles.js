@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderColor: "black",
     borderWidth: 1,
+    marginTop:10,
   },
   modalContainer: {
     flex: 1,
