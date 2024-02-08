@@ -5,7 +5,7 @@ import ChatButton from './ChatButton';
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 
-const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
+const ChatComponent = ({navigation, initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [message, setMessage] = useState(initialMessage);
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
@@ -40,7 +40,6 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         url: listingDeepLink,
       });
   
-      console.log('Shared successfully');
     } catch (error) {
       console.error('Error sharing:', error);
     }
@@ -48,8 +47,10 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   
   
   const handleUserPress = () => {
-    console.log(`View user`);
-    // TODO: Open user's page
+    navigation.navigate('OtherProfile', {
+      listing: listing,  
+      userId: listing.owner 
+    });
   };
 
 

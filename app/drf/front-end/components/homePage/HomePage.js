@@ -60,7 +60,6 @@ const HomePage = ({ navigation }) => {
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log("postCreated in HomePage:", postCreated);
 
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
 
@@ -81,7 +80,6 @@ const HomePage = ({ navigation }) => {
         }
       }));
       setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
-      console.log(listingsWithAdditionalData)
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
@@ -184,14 +182,6 @@ const HomePage = ({ navigation }) => {
 
       const meetsRating = listing.ownerDetails && listing.ownerDetails.rating >= ratingFilter;
       const doesNotContainAllergens = !allergensFilter.some(allergen => listing.allergens?.includes(allergen));
-
-      console.log("Listing Title:", listing.title);
-      console.log("Search Query:", searchQuery);
-      console.log("isDishMatching:", isDishMatching);
-      console.log("isCategoryMatchingSearch:", isCategoryMatchingSearch);
-      console.log("Selected Categories:", selectedCategories);
-      console.log("isCategoryMatch:", isCategoryMatch);
-      console.log("categories to match:", listing.categories.split(','));
 
   
       return (isDishMatching || isCategoryMatchingSearch) && isCategoryMatch && withinDistance && meetsRating && doesNotContainAllergens;
