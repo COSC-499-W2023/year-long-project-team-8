@@ -302,6 +302,8 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
   }
 }
 
+
+//TODO: Fix for fetching only products for that user
 async function getProductListById(authTokens, userId) {
   try {
     const response = await fetch(`${baseEndpoint}/products?owner=${userId}`, {
@@ -314,7 +316,8 @@ async function getProductListById(authTokens, userId) {
 
     if (response.status === 200) {
       const productData = await response.json();
-      return productData; // Ensure this returns the correct user's products
+      console.log("product data:", productData);
+      return productData; 
     } else {
       // Handle errors
       throw new Error("Failed to fetch user products");

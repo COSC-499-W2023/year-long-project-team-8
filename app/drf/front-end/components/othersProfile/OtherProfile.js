@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, TouchableOpacity, ScrollView, ImageBackground  } from 'react-native';
 import * as Location from 'expo-location';
 import { Rating } from '@kolking/react-native-rating';
@@ -10,16 +10,30 @@ import styles from '../profilePage/profilePageStyles';
 import { useIsFocused } from "@react-navigation/native";
 import CustomText from "../CustomText";
 import { HeaderBackButton } from '@react-navigation/elements';
-import ProfileReview from '../profilePage/PostReview';
+import PostReview from '../profilePage/PostReview';
 
-const OtherProfile = ({ route, navigation }) => { // Now accepting userId as a pro
-    const { listing, userId } = route.params;
+//TODO: Location, fetch posts for specific user, dummy pfp icon resolution increase, loader
+
+const OtherProfile = ({ route, navigation }) => { 
+  const { userId } = route.params;
   const isFocused = useIsFocused();
-  const { authTokens } = useContext(AuthContext); // Only authTokens is needed from AuthContext
+  const { authTokens } = useContext(AuthContext); 
   const [userData, setUserData] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState('posts');
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    if (!isFocused) {
+      // Reset to 'posts' tab
+      setSelectedTab('posts');
+  
+      // Scroll to the top
+      scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+    }
+  }, [isFocused]);
+
 
   const backArrowIcon = require('../../assets/icons/back-arrow.png');
 
@@ -49,17 +63,10 @@ const OtherProfile = ({ route, navigation }) => { // Now accepting userId as a p
     })()
   }, []);
 
-  const getReviewMessage = (reviews) => {
-    const count = reviews?.length || 0; 
-    if (count === 0) return "New User!";
-    if (count === 1) return "1 review";
-    return `${count} reviews`;
-  };
-
   //TODO: Fetch posts for specific id not working.
   useEffect(() => {
     const fetchPosts = async () => {
-      console.log("Fetching products for user ID:", userId); // Debugging log
+      console.log("Fetching products for user ID:", userId); // LOG 
       try {
         const productData = await getProductListById(authTokens, userId);
   
@@ -92,35 +99,35 @@ const OtherProfile = ({ route, navigation }) => { // Now accepting userId as a p
   }, [navigation]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}   ref={scrollViewRef}>
       <ImageBackground
         source={require('../../assets/waves_profile.png')} 
         style={styles.coverImage}
         resizeMode="cover"
       />
-      {/* User Profile Information */}
-      <View style={styles.profileContainer}>
-        <View style={styles.profileAndRatingContainer}>
+
+      {/* Profile Information */}
+      <View style={styles.profileInfoContainer}>
+        <View style={styles.profilePictureContainer}>
           <Image
             source={userData?.profile_picture ? { uri: userData.profile_picture } : require('../../assets/icons/profile.png')}
             style={styles.profilePicture}
           />
-          <Rating
-            size={15} 
-            rating={userData?.rating || 5}
-            fillColor="orange"
-            spacing={5}
-            disabled={true}
-            style={styles.rating}
-          />
-          
         </View>
-        <View style={styles.userInfo}>
-          <CustomText style={styles.name} fontType={'subHeader'}>
-            {getUserDisplayName(userData)}
-          </CustomText>
-          <CustomText style={styles.location}>{userData?.location || 'Kelowna, Canada'}</CustomText>
-        </View>
+
+        <Rating
+          size={18}
+          rating={Math.round(userData?.rating || 5)}
+          fillColor="orange"
+          spacing={5}
+          disabled={true}
+          style={styles.rating}
+        />
+
+        <CustomText style={styles.name} fontType={'subHeader'}>
+          {getUserDisplayName(userData)}
+        </CustomText>
+        <CustomText style={styles.location} fontType={"subHeader"}>{userData?.location || 'Kelowna, Canada'}</CustomText>
       </View>
 
       {/*Tabs*/}
@@ -139,32 +146,36 @@ const OtherProfile = ({ route, navigation }) => { // Now accepting userId as a p
         </TouchableOpacity>
       </View>
 
-      {/* Conditional Rendering for Posts */}
-      {selectedTab === 'posts' && userPosts.map((post, index) => (
+      {/* Posts Container */}
+      <View style={[styles.postsContainer, selectedTab !== 'posts' && { display: 'none' }]}>
+        {userPosts.map((post, index) => (
           <View key={index} style={styles.postCardContainer}>
             <PostCard post={post} onPress={() => navigation.navigate('PostDetails', { listing: post })} />
           </View>
         ))}
+      </View>
 
-        {/* Conditional Rendering for Reviews */}
-        {selectedTab === 'reviews' && (
-          userData && userData.received_reviews && userData.received_reviews.length > 0 ? (
-            userData.received_reviews.map((review, index) => (
-              <ProfileReview key={index} review={review} />
-            ))
-          ) : (
-            <CustomText style={styles.noReviewsText}>No reviews yet...</CustomText>
-          )
+      {/* Reviews Container */}
+      <View style={[styles.reviewsContainer, selectedTab !== 'reviews' && { display: 'none' }]}>
+        {userData && userData.received_reviews && userData.received_reviews.length > 0 ? (
+          userData.received_reviews.map((review, index) => (
+            <PostReview key={index} review={review} />
+          ))
+        ) : (
+          <CustomText style={styles.noReviewsText}>No reviews yet</CustomText>
         )}
+      </View>
     </ScrollView>
   );
 };
 
-
 const getUserDisplayName = (userData) => {
   const firstName = userData?.firstname || '';
   const lastName = userData?.lastname || '';
-  return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
+  const formattedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+  const initialOfLastName = lastName.charAt(0).toUpperCase();
+  
+  return `${formattedFirstName} ${initialOfLastName}`;
 };
 
 
