@@ -8,7 +8,7 @@ const windowWidth = Dimensions.get('window').width;
 const PostCard = ({ post, onPress }) => {
   
   // Function to shorten the description text
-  const shortenText = (text, maxLength = 25) => {
+  const shortenText = (text, maxLength = 50) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
     }
@@ -33,6 +33,7 @@ const PostCard = ({ post, onPress }) => {
     }).start();
   };
 
+
   return (
     <TouchableOpacity
       onPressIn={onCardPressIn}
@@ -42,6 +43,10 @@ const PostCard = ({ post, onPress }) => {
     >
       <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
         <Image source={{ uri: post?.images[0]?.image }} style={styles.image} />
+        <View style={styles.content}>
+          <CustomText style={styles.title}>{post.title}</CustomText>
+          <CustomText style={styles.description}>{shortenText(post.content)}</CustomText>
+        </View>
       </Animated.View>
     </TouchableOpacity>
   );
@@ -57,12 +62,15 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     margin: 5,
-    width: (windowWidth / 2) - 20, // Adjust the width to fit two columns
+    width: windowWidth - 10, 
+    marginBottom: 10,  
+    height:280,  
   },
   image: {
     width: '100%',
-    height: 120, 
-    borderRadius: 10,
+    height: 200, // Reduced image height
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   content: {
     padding: 10,

@@ -302,6 +302,31 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
   }
 }
 
+async function getProductListById(authTokens, userId) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products?owner=${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 200) {
+      const productData = await response.json();
+      return productData; // Ensure this returns the correct user's products
+    } else {
+      // Handle errors
+      throw new Error("Failed to fetch user products");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+
+
 // Export all the functions
 export {
   filterCategory,
@@ -311,4 +336,5 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
+  getProductListById
 };

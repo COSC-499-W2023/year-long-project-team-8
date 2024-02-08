@@ -1,8 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-// Get window dimensions for responsive styling
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 // Define color constants
 export const colors = {
@@ -13,10 +11,52 @@ export const colors = {
 };
 
 const styles = StyleSheet.create({
-  // Main container style
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+
+  coverImage: {
+    width: '100%',
+    height: 200, 
+  },
+
+  profileInfoContainer: {
+    alignItems: 'center',
+    marginTop: -52, 
+    marginBottom:10,
+  },
+
+  settingsButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    right: 15,
+    zIndex: 100,
+  },
+
+  circleBackground: {
+    backgroundColor: 'white', 
+    borderRadius: 20, 
+    width: 40, 
+    height: 40, 
+    justifyContent: 'center',
+    alignItems: 'center', 
+    elevation: 5,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+  },
+
+  settingsIcon:{
+    width:25,
+    height:25,
+  },
+
+  postCardContainer: {
+    width: windowWidth * 0.95, 
+    alignSelf: 'center', 
+    marginBottom: 10, 
   },
 
   ratingAndReviewRow: {
@@ -33,55 +73,45 @@ const styles = StyleSheet.create({
   },
 
   profileContainer: {
-    flexDirection: 'row', 
-    alignItems: 'flex-start', 
-    marginTop: 5,
-    paddingLeft: 10,
-    marginBottom:10,
+    flexDirection: 'column', 
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
   },
-
+  
   userInfo: {
-    marginTop:5,
-    justifyContent: 'center', 
-
-  },
-
-  locationAndReviews: {
-    // Style to contain location and reviews below the name
+    alignItems: 'center', 
   },
 
   profilePictureContainer:{
     alignContent:"center",
-    justifyContent:"center"
+    justifyContent:"center",
+    borderRadius: 50,
+    borderWidth: 12,  
+    borderColor: 'white',  
+    
   },
 
   profileAndRatingContainer: {
     alignItems: 'center', 
-    paddingLeft: 10,
+    marginBottom: 10, 
   },
 
   profilePicture: {
-    width: 55,
-    height: 55,
+    width: 75,
+    height: 75,
     borderRadius: 50,
   },
 
-  rating: {
-    marginTop: 5, 
-  },
-
-  reviewPressable: {
-  },
-
   name: {
-    fontSize: 17,
+    fontSize: 20,
     color: 'black',
+    marginTop:5,
   },
 
-  // Location and Reviews style
   location: {
-    fontSize: 16,
-    color: colors.mediumOrange,
+    fontSize: 15,
+    color: "grey",
   },
 
   reviews: {
@@ -89,20 +119,37 @@ const styles = StyleSheet.create({
     color:"#9ba5f1",   
   },
 
-  // Location container style
   locationContainer: {
     flexDirection: 'row',
     marginTop: 5,
   },
 
-  // Centered posts container style
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  tab: {
+    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+
+  selectedTab: {
+    borderBottomColor: '#F8B951', 
+    borderBottomWidth: 2
+  },
+
+  tabText: {
+    fontSize: 16,
+  },
+
   centeredPostsContainer: {
     marginTop:10,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
-  // "Recent Posts" text style
   recentPostsText: {
     fontSize: 20,
     fontWeight: '500',
@@ -111,10 +158,11 @@ const styles = StyleSheet.create({
     alignSelf:"center"
   },
 
-  recentPostsContainer: {
-    paddingHorizontal: 10,
-    marginTop:5,
+  rrecentPostsContainer: {
+    width: '100%', 
+    alignItems: 'center', 
   },
+
   postsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -125,29 +173,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  // "View All" button style
-  viewAllButton: {
-    backgroundColor: '#F8B951', // Assuming post cards have a white background
-    borderRadius: 10, // Match the borderRadius of post cards
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-    margin: 5,
-    width: (windowWidth / 2) - 20, // Assuming post cards take half the width minus some margin
-    height: 120, // Assuming a fixed height for post cards
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // "View All" button text style
-  viewAllButtonText: {
-    fontSize: 16,
-    color: 'white',
-  },
-
-  // Settings button container style
   settingsButtonContainer: {
     position: 'absolute',
     top: 13,
@@ -155,31 +180,17 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 
-  // Settings button style
   settingsButton: {
     height: 26,
     width: 26,
     resizeMode: 'contain',
   },
 
-  seeReviewsButton: {
-    marginTop: 10,
-    marginBottom:20,
-    backgroundColor: '#F8B951', 
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10, 
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3, 
-    alignSelf: 'center', 
-  },
-  
-  seeReviewsText: {
-    color: '#fff', 
-    fontSize: 16,
+  noReviewsText:{
+    fontSize:18,
+    color:"grey",
+    textAlign:"center",
+    marginTop:10
   },
 });
 

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { View, Image, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
 import * as Location from 'expo-location';
 import { Rating } from '@kolking/react-native-rating';
 import PostCard from './PostCard';
@@ -8,7 +8,7 @@ import AuthContext from '../../context/AuthContext';
 import styles from './profilePageStyles';
 import { useIsFocused } from "@react-navigation/native";
 import CustomText from "../CustomText";
-import ProfileReview from './PostReview';
+import PostReview from './PostReview';
 
 const ProfilePage = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -16,6 +16,18 @@ const ProfilePage = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+  const [selectedTab, setSelectedTab] = useState('posts'); 
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    if (!isFocused) {
+      // Reset to 'posts' tab
+      setSelectedTab('posts');
+  
+      // Scroll to the top
+      scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+    }
+  }, [isFocused]);
 
 
   useEffect(() => {
@@ -79,69 +91,82 @@ const ProfilePage = ({ navigation }) => {
     }
   }, [userId, authTokens, isFocused]); 
 
-  console.log(userData);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}   ref={scrollViewRef}>
       {/*TODO: get the average rating for the user and implement here*/}
+      <ImageBackground
+        source={require('../../assets/waves_profile.png')} // Replace with your actual background image
+        style={styles.coverImage}
+        resizeMode="cover"
+      />
+  
+      <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer} activeOpacity={1}>
+        <View style={styles.circleBackground}>
+          <Image
+            source={require('../../assets/icons/document-editor.png')} // Ensure this is the correct path to your icon
+            style={styles.settingsIcon}
+          />
+        </View>
+      </TouchableOpacity>
 
-      {/* User Profile Information */}
-      <View style={styles.profileContainer}>
-        <View style={styles.profileAndRatingContainer}>
+      {/* Profile Information */}
+      <View style={styles.profileInfoContainer}>
+        <View style={styles.profilePictureContainer}>
           <Image
             source={userData?.profile_picture ? { uri: userData.profile_picture } : require('../../assets/icons/profile.png')}
             style={styles.profilePicture}
           />
-          <Rating
-            size={15} // Adjust size as needed
-            rating={userData?.rating || 5}
-            fillColor="orange"
-            spacing={5}
-            disabled={true}
-            style={styles.rating}
-          />
-          
         </View>
-        <View style={styles.userInfo}>
-          <CustomText style={styles.name} fontType={'subHeader'}>
-            {getUserDisplayName(userData)}
-          </CustomText>
-          <CustomText style={styles.location}>{userData?.location || 'Kelowna, Canada'}</CustomText>
-        </View>
-        <TouchableOpacity onPress={goToSettings} style={styles.settingsButtonContainer}>
-          <Image
-            source={require('../../assets/icons/edit.png')}
-            style={styles.settingsButton}
-          />
+
+        <Rating
+          size={18}
+          rating={userData?.rating || 5}
+          fillColor="orange"
+          spacing={5}
+          disabled={true}
+          style={styles.rating}
+        />
+
+        <CustomText style={styles.name} fontType={'subHeader'}>
+          {getUserDisplayName(userData)}
+        </CustomText>
+        <CustomText style={styles.location} fontType={"subHeader"}>{userData?.location || 'Kelowna, Canada'}</CustomText>
+      </View>
+
+      {/*Tabs*/}
+      <View style={styles.tabsContainer}>
+        <TouchableOpacity
+          style={[styles.tab, selectedTab === 'posts' ? styles.selectedTab : null]}
+          onPress={() => setSelectedTab('posts')}
+        >
+          <CustomText style={styles.tabText} fontType={'subHeader'}>Posts</CustomText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, selectedTab === 'reviews' ? styles.selectedTab : null]}
+          onPress={() => setSelectedTab('reviews')}
+        >
+          <CustomText style={styles.tabText} fontType={'subHeader'}>Reviews</CustomText>
         </TouchableOpacity>
       </View>
 
-      {/* Recent Posts */}
-      <View style={styles.recentPostsContainer}>
-        <View style={styles.postsGrid}>
-          {userPosts.map((post, index) => (
-            <PostCard key={index} post={post} onPress={() => navigation.navigate('PostDetails', { listing: post })} />
-          ))}
-          {userPosts.length > 0 && (
-            <TouchableOpacity style={styles.viewAllButton} onPress={() => {/* Navigate to the page with all posts */}}>
-              <CustomText style={styles.viewAllButtonText} fontType={'title'}>See More</CustomText>
-            </TouchableOpacity>
-          )}
-        </View>
-     
+      {/* Posts Container */}
+      <View style={[styles.postsContainer, selectedTab !== 'posts' && { display: 'none' }]}>
+        {userPosts.map((post, index) => (
+          <View key={index} style={styles.postCardContainer}>
+            <PostCard post={post} onPress={() => navigation.navigate('PostDetails', { listing: post })} />
+          </View>
+        ))}
+      </View>
 
-        {/* Profile Reviews Section */}
-      {userData && userData.received_reviews && (
-        <View style={styles.reviewsContainer}>
-          {userData.received_reviews.slice(0, 3).map((review, index) => (
-            <ProfileReview key={index} review={review} />
-          ))}
-          {userData.received_reviews.length > 3 && (
-            <TouchableOpacity style={styles.seeReviewsButton} onPress={onReviewsPress}>
-              <CustomText style={styles.seeReviewsText}>See More Reviews</CustomText>
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+      {/* Reviews Container */}
+      <View style={[styles.reviewsContainer, selectedTab !== 'reviews' && { display: 'none' }]}>
+        {userData && userData.received_reviews && userData.received_reviews.length > 0 ? (
+          userData.received_reviews.map((review, index) => (
+            <PostReview key={index} review={review} />
+          ))
+        ) : (
+          <CustomText style={styles.noReviewsText}>No reviews yet</CustomText>
+        )}
       </View>
     </ScrollView>
   );
