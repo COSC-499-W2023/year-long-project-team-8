@@ -16,6 +16,7 @@ from rest_framework.filters import SearchFilter
 # Product filter to filter for CSV filter list
 class ProductFilter(django_filters.FilterSet):
     categories = django_filters.CharFilter(method='filter_categories')
+    owner = django_filters.NumberFilter(field_name='owner_id')
 
     class Meta:
         model = Product
@@ -33,7 +34,7 @@ class ProductFilter(django_filters.FilterSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
     authentication_classes = [JWTAuthentication]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['categories']
