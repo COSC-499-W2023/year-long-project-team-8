@@ -304,7 +304,7 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
 //TODO: Fix for fetching only products for that user
 async function getProductListById(authTokens, userId) {
   try {
-    const response = await fetch(`${baseEndpoint}/products?owner=${userId}`, {
+    const response = await fetch(`${baseEndpoint}/products/?owner=${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
