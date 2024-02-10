@@ -12,6 +12,8 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
   const [chatId, setChatId] = useState('');
+  const [receiver, setReceiver] = useState('');
+  const [product, setProduct] = useState('');
   const navigation = useNavigation();
   const chatListing = listing;
   const prodOwner = listing.owner;
@@ -29,13 +31,14 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         const chats = await getChatList(authTokens);
         console.log("CHats obtained from getChatList", chats);
         console.log("Prod owner", prodOwner);
-        console.log("chat.receiver", chats.receiver);
         // Find the chat with the matching userId and listing owner
         const chat = chats.find(chat => chat.receiver === prodOwner);
-  
+        console.log("chat from product owner in prod details:", chat);
         if (chat) {
-          // Set the chat ID if found
+          // Setting parameters for sendChat call
           setChatId(chat.id);
+          setReceiver(chat.receiver);
+          setProduct(chat.product);
         } else {
           console.warn('No chat found for the specified user and listing owner');
         }
@@ -50,7 +53,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const handleSend = async () => {
     console.log("Message to send:", messages);
     try {
-      const data = await sendChatMessage(userId, authTokens, messages);
+      const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
       setMessages([...messages, data]);
       setMessages(initialMessage);
     } catch (error) {

@@ -330,7 +330,7 @@ async function getChatMessages(authTokens, chatId) {
 }
 
 // Helper function to send a chat message
-async function sendChatMessage(userId, authTokens, newMessage) {
+async function sendChatMessage(userId, authTokens, newMessage, receiver, product) {
   try {
     //Need to dynamically send product and owner (receiver instead of placeholders)
     const response = await fetch(`${baseEndpoint}/chat/`, {
@@ -341,8 +341,8 @@ async function sendChatMessage(userId, authTokens, newMessage) {
       },
       body: JSON.stringify({ 
       sender: userId, 
-      receiver: 1, 
-      product: 5,           
+      receiver: receiver, 
+      product: product,           
       message: newMessage, }),
     });
 
