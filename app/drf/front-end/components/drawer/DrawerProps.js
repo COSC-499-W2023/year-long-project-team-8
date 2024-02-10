@@ -1,50 +1,37 @@
-import React, {useContext} from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import React, { useContext } from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CustomText from "../CustomText";
-import DrawerItem from "./DrawerItem";
-import AuthContext from '../../context/AuthContext'
-// Logo asset
+import CustomText from "../CustomText"; 
+import DrawerItem from "./DrawerItem"; 
+import AuthContext from '../../context/AuthContext'; 
+
 const logo = require("../../assets/logo.png");
 
-/**
- * Custom Drawer Content component
- * @param {object} navigation - React Navigation's navigation prop.
- * @param {object} state - Current navigation state.
- */
-const DrawerProps = ({ navigation, state }) => {
-  // import logout function from AuthContext
+const DrawerProps = ({ navigation, activeRouteName }) => {
   const { logoutUser } = useContext(AuthContext);
-  // Extract the name of the currently active route
-  const activeRouteName = state.routes[state.index].name;
 
-  /**
-   * Logout handler function
-   */
   const handleLogout = () => {
     logoutUser();
     navigation.closeDrawer();
-    navigation.navigate('Landing');
+    navigation.navigate('Landing'); 
   };
 
   return (
     <View style={styles.container}>
-      {/* Drawer header containing the logo */}
       <View style={styles.header}>
         <Image source={logo} style={styles.logo} resizeMode="contain" />
       </View>
 
-      {/* Drawer items for navigation */}
       <DrawerItem
         iconName="home"
         label="Home"
-        onPress={() => navigation.navigate("Home")}
-        isActive={activeRouteName === "Tabs"}
+        onPress={() => navigation.navigate("Tabs", { screen: "Home" })}
+        isActive={activeRouteName === "Home" || activeRouteName === "Tabs"}
       />
       <DrawerItem
         iconName="person"
         label="Profile"
-        onPress={() => navigation.navigate("Tabs", { screen: "Profile" })}
+        onPress={() => navigation.navigate("Profile")}
         isActive={activeRouteName === "Profile"}
       />
       <DrawerItem
@@ -54,34 +41,20 @@ const DrawerProps = ({ navigation, state }) => {
         isActive={activeRouteName === "Settings"}
       />
 
-      {/* Push the logout button to the bottom */}
       <View style={styles.flexGrow} />
-
-      {/* Help button */}
       <DrawerItem
         iconName="help-circle"
         label="Help & Support"
-        onPress={() => console.log("HelpSupport")}
-        isActive={activeRouteName === "HelpSupport"}
+        onPress={() => console.log("HelpSupport")} // Implement actual navigation or action
+        isActive={activeRouteName === "HelpSupport"} // Adjust according to navigation structure
       />
-
-      {/* Logout button */}
-      <TouchableOpacity
-        style={[styles.drawerItem, styles.logout]}
-        onPress={handleLogout}
-      >
+      <TouchableOpacity style={[styles.drawerItem, styles.logout]} onPress={handleLogout}>
         <Ionicons name="log-out" size={24} style={styles.logoutIcon} />
-        <CustomText
-          style={[styles.drawerText, styles.logoutText]}
-          fontType="text"
-        >
-          Logout
-        </CustomText>
+        <CustomText style={[styles.drawerText, styles.logoutText]}>Logout</CustomText>
       </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
