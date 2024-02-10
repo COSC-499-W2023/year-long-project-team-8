@@ -31,7 +31,7 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
       <DrawerItem
         iconName="person"
         label="Profile"
-        onPress={() => navigation.navigate("Profile")}
+        onPress={() => navigation.navigate("Tabs", { screen: "Profile" })}
         isActive={activeRouteName === "Profile"}
       />
       <DrawerItem
