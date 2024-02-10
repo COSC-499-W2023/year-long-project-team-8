@@ -63,9 +63,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   filterAllContainer: {
-    marginTop: 10,
+    marginHorizontal: 10,
+    marginTop:10,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   filterContainer: {
@@ -76,50 +77,60 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
-    height: 45,
-    width: 110,
-    marginLeft: 8,
-    backgroundColor: "#FCBF3D",
+    padding: 10,
+    backgroundColor: "white",
+    elevation: 2, 
     borderRadius: 10,
-    shadowColor: "#000", // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // X, Y offset of the shadow
-    shadowOpacity: 0.25, // Opacity of the shadow
-    shadowRadius: 3.84, // Blur radius of the shadow
-    elevation: 5, // Elevation for Android
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+      },
+    }),
   },
   filter: {
     alignItems: "center",
     justifyContent: "center",
     width: 90,
     height: 31,
-    marginLeft: 8,
-    marginBottom: 10,
-    backgroundColor: "#FCBF3D",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25, // Opacity of the shadow
-    shadowRadius: 3.84, // Blur radius of the shadow
-    elevation: 5, // Elevation for Android
   },
   filterIcon: {
-    marginRight: 8,
-    width: 30,
-    height: 30,
+    width:25,
+    height:25,
   },
-  filterText: {
-    fontWeight: "600",
-    color: "white",
+  luckyContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    elevation: 3, // Existing elevation for Android
+    borderRadius: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+      },
+    }),
   },
-  sortDropdownContainer: {
-    flex: 1,
+  luckyIcon: {
+    width:30,
+    height:30,
+  },
+  luckyText:{
+    fontSize:20,
+    marginLeft:10,
+    alignSelf:"center"
+
   },
   listingsContainer: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
+    padding:10
   },
   noMatchesText: {
     textAlign: "center",

@@ -143,6 +143,20 @@ const HomePage = ({ navigation }) => {
     setSelectedCategories([]);
   };
 
+  const handleLucky = () => {
+    if (foodListing.length > 0) {
+        // Select a random post from the foodListing array
+        const randomIndex = Math.floor(Math.random() * foodListing.length);
+        const randomPost = foodListing[randomIndex];
+
+        // Navigate to the PostDetails screen with the selected random post
+        navigation.navigate('PostDetails', { listing: randomPost });
+    } else {
+        console.log("No listings available to select a random post from.");
+    }
+};
+
+
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
     selectedCategories.includes(category);
@@ -290,17 +304,18 @@ const HomePage = ({ navigation }) => {
               style={styles.mainFilter}
               onPress={openFilterModal}
             >
-              <Image source={filterIcon} style={styles.filterIcon} />
-              <CustomText fontType={"title"} style={styles.filterText}>
-                Filter
-              </CustomText>
+              <Image source={require("../../assets/icons/filter.png")} style={styles.filterIcon}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.luckyContainer} onPress={handleLucky}>
+              <Image source={require("../../assets/icons/dice.png")} style={styles.luckyIcon}/>
+              <CustomText fontType={"subHeader"} style={styles.luckyText}>Mistery Meal</CustomText>
             </TouchableOpacity>
             <View style={styles.sortDropdownContainer}>
-            <SortModal
-              data={sortOptions}
-              onSelect={setSelectedSortOption}
-              placeholder="Date" // Updated this line
-            />
+              <SortModal
+                data={sortOptions}
+                onSelect={setSelectedSortOption}
+                placeholder="Date" // Updated this line
+              />
             </View>
           </View>
 

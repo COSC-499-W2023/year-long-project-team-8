@@ -5,9 +5,10 @@ import {
   StyleSheet,
   FlatList,
   SafeAreaView,
+  Image
 } from "react-native";
 import Modal from "react-native-modal";
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomText from "../CustomText";
 
 const RadioButton = ({ isSelected }) => (
@@ -20,17 +21,25 @@ const RadioButton = ({ isSelected }) => (
     {isSelected && <View style={styles.radioButtonInner} />}
   </View>
 );
+
 const DropdownItem = React.memo(({ item, onSelect, isSelected }) => (
   <TouchableOpacity
     onPress={() => onSelect(item)}
     style={[styles.dropdownItem, isSelected && styles.selectedItem]}
   >
     <RadioButton isSelected={isSelected} />
-    <CustomText style={styles.dropdownItemText} fontType={"text"}>
+    <CustomText
+      style={[
+        styles.dropdownItemText,
+        isSelected && styles.selectedItemStyle // Apply the style when the item is selected
+      ]}
+      fontType={"text"}
+    >
       {item.label}
     </CustomText>
   </TouchableOpacity>
 ));
+
 
 const Dropdown = ({ data, onSelect, placeholder }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -51,25 +60,22 @@ const Dropdown = ({ data, onSelect, placeholder }) => {
         onPress={() => setIsVisible(true)}
         style={styles.dropdownButton}
       >
-        <CustomText fontType={"title"} style={styles.dropdownButtonText}>
-          Sort by: {selectedOption}
-        </CustomText>
+        <Image source={require("../../assets/icons/sort.png")} style={styles.icon}/>
       </TouchableOpacity>
       <Modal
         isVisible={isVisible}
         onBackdropPress={() => setIsVisible(false)}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        style={styles.modalStyle}
-        useNativeDriver={true}
-        hideModalContentWhileAnimating={true}
+        style={styles.modal}
+        backdropColor={"#000"}
+        backdropOpacity={0.95}
       >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <CustomText fontType={"title"} style={styles.title}>
-              SORT BY
-            </CustomText>
-          </View>
+        <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsVisible(false)}
+            >
+            <Ionicons name="close" size={30} color="white" /> 
+        </TouchableOpacity>
+        <View style={styles.modalContainer}>
           <FlatList
             data={data}
             keyExtractor={(item) => item.value}
@@ -81,7 +87,7 @@ const Dropdown = ({ data, onSelect, placeholder }) => {
               />
             )}
           />
-        </SafeAreaView>
+        </View>
       </Modal>
     </View>
   );
@@ -96,23 +102,25 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     justifyContent: "center",
-    marginHorizontal: 10,
+    backgroundColor:"white",
+    elevation:2,
+    borderRadius:10,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3.84,
+      },
+    }),
   },
   dropdownButton: {
     alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 13,
-    borderRadius: 10,
-    backgroundColor: "#FCBF3D",
-    shadowColor: "#000", // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // X, Y offset of the shadow
-    shadowOpacity: 0.25, // Opacity of the shadow
-    shadowRadius: 3.84, // Blur radius of the shadow
-    elevation: 5, // Elevation for Android
+    padding: 10,
   },
-  dropdownButtonText: {
-    color: "white",
-    fontWeight: "600",
+  icon: {
+    width:25,
+    height:25
   },
   modalOverlay: {
     flex: 1,
@@ -125,19 +133,11 @@ const styles = StyleSheet.create({
     color: "#2e2e2e",
   },
   modalContainer: {
-    backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   selectedItem: {
     borderRadius: 20,
-    backgroundColor: "rgba(57, 147, 248, 0.32)",
-  },
-  checkIcon: {
-    width: 24,
-    height: 24,
-    position: "absolute",
-    right: 20,
   },
   modalHeader: {
     marginTop: 10,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   dropdown: {
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     width: "100%",
     elevation: 5,
   },
@@ -187,34 +187,35 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: "white",
-    justifyContent: "flex-start",
+    paddingVertical:10,
+    backgroundColor: "transparent",
+    justifyContent: "center",
     height: 60,
     marginBottom: 10,
     borderRadius: 20,
   },
+  selectedItemStyle: {
+    borderBottomWidth: 1, 
+    borderRadius:5,
+    borderBottomColor: "orange", 
+    paddingBottom: 5, 
+
+  },
   dropdownItemText: {
-    fontSize: 16,
-    color: "#333333",
+    fontSize: 20,
+    color: "white",
     marginLeft: 10,
   },
-  radioButtonOuter: {
-    height: 24,
-    width: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: "#333333",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10,
-  },
-  radioButtonOuterSelected: {
-    borderColor: "#1E90FF", // Change this to your desired color
-  },
-  radioButtonInner: {
-    height: 12,
-    width: 12,
-    borderRadius: 6,
-    backgroundColor: "#1E90FF", // Change this to your desired color
+  closeButton: {
+    position: "absolute",
+    zIndex: 1000,
+    top: 10,
+    right: 10,
+    width: 40, 
+    height: 40, 
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center', 
+    padding: 0, 
   },
 });
