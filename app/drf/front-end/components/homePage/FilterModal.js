@@ -39,11 +39,19 @@ const FilterModal = ({
   setDistanceFilter,
   setRatingFilter,
   setAllergensFilter,
+  updateSortOption
 }) => {
   const [distance, setDistance] = useState(25);
   const [rating, setRating] = useState(0);
   const [allergens, setAllergens] = useState([]);
+  const [selectedSort, setSelectedSort] = useState('Date');
 
+  const sortOptions = [
+    { label: 'Date', value: 'Date' },
+    { label: 'Distance', value: 'Distance' },
+    { label: 'Rating', value: 'Rating' },
+  ];
+  
   const allergenDatabase = [
     "Peanuts",
     "Tree nuts",
@@ -60,17 +68,14 @@ const FilterModal = ({
     setDistanceFilter(distance);
     setRatingFilter(rating);
     setAllergensFilter(allergens);
+    updateSortOption(selectedSort); 
     onClose();
   };
 
-  const resetFilters = () => {
-    setDistance(25); 
-    setRating(0); 
-    setAllergens([]); 
-    setDistanceFilter(25); 
-    setRatingFilter(0); 
-    setAllergensFilter([]); 
-    };
+  const handleSelectSort = (option) => {
+    setSelectedSort(option.value);
+  };
+  
 
 
   const getRatingLabel = (value) => `${value} Star(s)`;
@@ -90,7 +95,16 @@ const FilterModal = ({
     );
   }, [setAllergens, allergens]);
   
-  
+  const resetFilters = () => {
+    setDistance(25); // Reset to default value
+    setRating(0); // Reset to default value
+    setAllergens([]); // Reset to default value
+    setSelectedSort('Date'); // Reset to default sort option
+    // Reset external filters as well if needed
+    setDistanceFilter(25);
+    setRatingFilter(0);
+    setAllergensFilter([]);
+  };
   
   
 
@@ -125,6 +139,33 @@ const FilterModal = ({
               </TouchableOpacity>
 
             <View style={styles.modalContent}>
+
+              <View>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
+                    Sort By
+                </CustomText>
+                <View style={styles.sortOptionsContainer}>
+                  {sortOptions.map((option) => (
+                    <TouchableOpacity
+                      key={option.value}
+                      style={[
+                        styles.sortOptionButton,
+                        selectedSort === option.value && styles.sortOptionButtonSelected,
+                      ]}
+                      onPress={() => handleSelectSort(option)}
+                    >
+                      <CustomText
+                        style={[
+                          styles.sortOptionText,
+                          selectedSort === option.value && styles.sortOptionTextSelected,
+                        ]}
+                      >
+                        {option.label}
+                      </CustomText>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
 
               {/* Distance Filter with Slider */}
               <View style={styles.filterOption}>
@@ -188,13 +229,11 @@ const FilterModal = ({
 
               {/* Apply Filters Button */}
               <View style={styles.buttonsContainer}>
-                <ButtonLanding onPress={applyFilters} title={"APPLY"} style={styles.applyButton} showIcon={false}/>
-                <TouchableOpacity onPress={resetFilters} style={styles.resetButton}>
-                  <CustomText style={styles.resetButtonText} fontType={"subheader"}>
-                    RESET
-                  </CustomText>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={resetFilters} style={styles.resetButton}>
+                <CustomText style={styles.resetButtonText}>RESET</CustomText>
+              </TouchableOpacity>
+              <ButtonLanding onPress={applyFilters} title={"APPLY"} style={styles.applyButton} showIcon={false}/>
+            </View>
             </View>
           </ScrollView>
         </View>
@@ -219,6 +258,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "stretch",    
   },
+  sortOptionsContainer: {
+    marginBottom:20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  sortOptionButton: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  sortOptionButtonSelected: {
+    borderBottomColor: 'orange',
+    borderBottomWidth:2 
+  }, 
+  sortOptionText: {
+    color: 'white', 
+  },
+
   filterOptionFirst: {
     width: "100%",
     marginBottom: 20,
@@ -270,20 +327,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#F5F5F5", 
   },
+  buttonsContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems:"center",
+    padding: 20, 
+  },
   applyButton:{
     paddingHorizontal:50,
     textAlign:"center"
   },
   resetButton: {
-    marginTop:20,
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 35,
-    width: "auto",
+    marginTop:25,
+    paddingHorizontal:30,
+    textAlign:"center",
+    justifyContent:"center",
+    alignItems:"center",
   },
   resetButtonText: {
     color: "#ff5c5c",
-    fontSize: 17,
+    fontSize: 18,
     textAlign:"center",
   },
   closeButton: {
@@ -346,11 +409,6 @@ const styles = StyleSheet.create({
     color: "black", 
     textAlign: "center", 
   },
-  buttonsContainer:{
-    alignContent:"center",
-    alignItems:"center",
-    justifyContent:"center"
-  }
 });
 
 export default FilterModal;
