@@ -103,16 +103,7 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     justifyContent: "center",
     backgroundColor:"white",
-    elevation:2,
     borderRadius:10,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-      },
-    }),
   },
   dropdownButton: {
     alignItems: "center",

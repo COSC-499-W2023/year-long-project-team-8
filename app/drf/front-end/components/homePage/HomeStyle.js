@@ -15,12 +15,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  mapIconContainer: {
+  luckyIconContainer: {
     marginLeft: 10,
-  },
-  mapIconImage: {
-    width: 47,
-    height: 47,
+    padding:10
   },
   categoryScroll: {
     flexDirection: "row",
@@ -64,10 +61,7 @@ const styles = StyleSheet.create({
   },
   filterAllContainer: {
     marginHorizontal: 10,
-    marginTop:10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    marginTop:10
   },
   filterContainer: {
     flexDirection: "row",
@@ -77,18 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    backgroundColor: "white",
-    elevation: 2, 
-    borderRadius: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-      },
-    }),
+    padding: 10,   
   },
   filter: {
     alignItems: "center",
@@ -101,33 +84,21 @@ const styles = StyleSheet.create({
     width:25,
     height:25,
   },
-  luckyContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 25,
-    elevation: 3, // Existing elevation for Android
-    borderRadius: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-      },
-    }),
-  },
   luckyIcon: {
-    width:30,
-    height:30,
+    width:35,
+    height:35,
   },
   luckyText:{
     fontSize:20,
     marginLeft:10,
     alignSelf:"center"
 
+  },
+  quickFiltersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: 10, 
   },
   listingsContainer: {
     padding:10
