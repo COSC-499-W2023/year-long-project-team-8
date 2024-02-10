@@ -365,3 +365,28 @@ class ReviewViewSetTest(APITestCase):
         self.assertEqual(response.data["content"], data["content"])
         self.assertEqual(response.data["rating"], data["rating"])
         self.assertEqual(response.data["user"], self.user.id)
+        
+    class ProfilePictureTest(APITestCase):
+        def setUp(self):
+            self.client = APIClient()
+            self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+            
+        def get_auth_header(self, user):
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            return access_token
+        
+        def test_update_user_authenticated(self):
+            access_token = self.get_auth_header(self.user)
+            self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+            
+            mock_image_data = b'Test image data'  # Replace with your mock image data
+            self.mock_image_file = mock_open(read_data=mock_image_data)
+
+            data = {"profile_picture": self.mock_image_file}
+            response = self.client.patch(f'/api/users/{self.user.id}/', data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.user.refresh_from_db()
+            self.assertIsNotNone(self.user.profile_picture)
+            
+            

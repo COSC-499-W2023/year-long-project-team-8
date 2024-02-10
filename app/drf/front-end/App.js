@@ -16,6 +16,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
 import HomePage from "./components/homePage/HomePage.js";
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 
 const Stack = createStackNavigator();
@@ -23,29 +24,33 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <AppStateProvider>
-    <View style={{ flex: 1 }}>
-      <StatusBar />
-      <AuthProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Landing"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen name="Landing" component={Landing} />
-            <Stack.Screen name="Details" component={Details} />
-            <Stack.Screen name="MainApp" component={MainApp} />
-            <Stack.Screen name="PasswordReset" component={PasswordReset} />
-            <Stack.Screen name="Settings" component={SettingsNav} />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="mapView" component={mapView} />
-            <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
-            <Stack.Screen name="UserMessages" component={UserMessages}/>
-            <Stack.Screen name="ChatList" component={ChatList}/>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </AuthProvider>
-    </View>
-</AppStateProvider>
+      <RootSiblingParent>
+      <View style={{ flex: 1 }}>
+          <StatusBar />
+          <AuthProvider>
+              <NavigationContainer>
+                <Stack.Navigator
+                  initialRouteName="Landing"
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                >
+                  <Stack.Screen name="Landing" component={Landing} />
+                  <Stack.Screen name="Details" component={Details} />
+                  <Stack.Screen name="MainApp" component={MainApp} />
+                  <Stack.Screen name="PasswordReset" component={PasswordReset} />
+                  <Stack.Screen name="Settings" component={SettingsNav} />
+                  <Stack.Screen name="EditProfile" component={EditProfile} />
+                  <Stack.Screen name="mapView" component={mapView} />
+                  <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
+                  <Stack.Screen name="UserMessages" component={UserMessages}/>
+                  <Stack.Screen name="ChatList" component={ChatList}/>
+                </Stack.Navigator>
+              </NavigationContainer>
+          </AuthProvider>
+        </View>
+      </RootSiblingParent>
+    </AppStateProvider>
   );
 };
 

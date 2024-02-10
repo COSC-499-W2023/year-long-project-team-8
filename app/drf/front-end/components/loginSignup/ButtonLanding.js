@@ -18,9 +18,15 @@ const screenWidth = Dimensions.get("window").width;
 const translateValue = screenWidth * 0.5;
 
 // Animated button component with a shiny effect for landing pages
-const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
+const ButtonLanding = ({ title, onPress, showIcon = true, style, disabled }) => {
   // Initial scaling value for the button's press-in animation
-  const scaleValue = new Animated.Value(1);
+const scaleValue = new Animated.Value(1);
+
+const handlePress = () => {
+  if (!disabled) {
+    onPress();
+  }
+};
 
   // Animation function for when the button is pressed in
   const animatePressIn = () => {
@@ -83,7 +89,7 @@ const ButtonLanding = ({ title, onPress, showIcon = true, style }) => {
         end={{ x: 1, y: 0 }}
       >
         <Pressable
-          onPress={onPress}
+          onPress={handlePress}
           onPressIn={animatePressIn}
           onPressOut={animatePressOut}
           style={[styles.buttonContent, style]}

@@ -29,6 +29,8 @@ import { useAppState } from "../../context/AppStateContext";
 
 const map = require("../../assets/icons/map.png");
 const filterIcon = require("../../assets/icons/filter.png");
+const ClearAllIcon = require("../../assets/icons/cancel.png");
+
 
 const HomePage = ({ navigation }) => {
 
@@ -61,7 +63,6 @@ const HomePage = ({ navigation }) => {
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log("postCreated in HomePage:", postCreated);
 
   // Function to handle map press !!currently using an imported function for testing!!! REMOVE
 
@@ -82,7 +83,6 @@ const HomePage = ({ navigation }) => {
         }
       }));
       setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
-      console.log(listingsWithAdditionalData)
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
@@ -141,8 +141,10 @@ const HomePage = ({ navigation }) => {
         : [...prevCategories, category]
     );
   };
-  
-  
+
+  const handleClearPress = () => {
+    setSelectedCategories([]);
+  };
 
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
@@ -183,14 +185,6 @@ const HomePage = ({ navigation }) => {
 
       const meetsRating = listing.ownerDetails && listing.ownerDetails.rating >= ratingFilter;
       const doesNotContainAllergens = !allergensFilter.some(allergen => listing.allergens?.includes(allergen));
-
-      console.log("Listing Title:", listing.title);
-      console.log("Search Query:", searchQuery);
-      console.log("isDishMatching:", isDishMatching);
-      console.log("isCategoryMatchingSearch:", isCategoryMatchingSearch);
-      console.log("Selected Categories:", selectedCategories);
-      console.log("isCategoryMatch:", isCategoryMatch);
-      console.log("categories to match:", listing.categories.split(','));
 
   
       return (isDishMatching || isCategoryMatchingSearch) && isCategoryMatch && withinDistance && meetsRating && doesNotContainAllergens;
@@ -249,9 +243,20 @@ const HomePage = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             style={styles.categoryScroll}
           >
+            <View style={styles.categoryContainer}>
+              <TouchableOpacity
+                style={styles.categoryButton} 
+                onPress={handleClearPress}
+              >
+                <Image source={ClearAllIcon} style={styles.iconImageClear} />
+              </TouchableOpacity>
+              <CustomText fontType={"text"} style={styles.categoryText}>Clear All</CustomText>
+            </View>
+
             {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
+                
                 <TouchableOpacity
                   style={[
                     styles.categoryButton,

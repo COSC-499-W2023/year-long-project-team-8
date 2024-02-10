@@ -42,6 +42,7 @@ class User(AbstractUser):
    phone = models.CharField(max_length=15, blank=True, null=True)
    reset_code = models.CharField(max_length=6, blank=True, null=True)
    rating = models.FloatField(default=0.0)
+   profile_picture = models.ImageField(upload_to="profile_pictures/",null=True, blank=True)
    
    USERNAME_FIELD = "email"
    REQUIRED_FIELDS = []

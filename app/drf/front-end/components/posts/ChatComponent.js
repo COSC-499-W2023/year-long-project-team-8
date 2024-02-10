@@ -7,8 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
-
-const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
+const ChatComponent = ({ navigation, initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
   const [chatId, setChatId] = useState('');
@@ -88,7 +87,6 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         url: listingDeepLink,
       });
   
-      console.log('Shared successfully');
     } catch (error) {
       console.error('Error sharing:', error);
     }
@@ -96,8 +94,10 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   
   
   const handleUserPress = () => {
-    console.log(`View user`);
-    // TODO: Open user's page
+    navigation.navigate('OtherProfile', {
+      listing: listing,  
+      userId: listing.owner 
+    });
   };
 
 

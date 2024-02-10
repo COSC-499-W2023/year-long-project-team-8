@@ -7,6 +7,7 @@ import SettingsPage from "../settingsPage/Settings";
 import Profile from "../profilePage/profilePage.js";
 import ChatList from "../chat/ChatList.js";
 import PostDetails from "../posts/PostDetails.js";
+import OtherProfile from "../othersProfile/OtherProfile.js";
 
 // Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
@@ -100,6 +101,16 @@ const DrawerNav = () => {
               />
             </TouchableOpacity>
           ),
+        })}
+      />=
+      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
+      <Drawer.Screen
+        name="OtherProfile"
+        component={OtherProfile}
+        options={({ navigation }) => ({
+          drawerItemStyle: { display: 'none' },
+          headerTitleAlign: "center",
+          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
         })}
       />
     </Drawer.Navigator>
