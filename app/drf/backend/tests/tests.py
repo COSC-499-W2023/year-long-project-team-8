@@ -17,6 +17,7 @@ from pathlib import Path
 from django.conf import settings
 from unittest.mock import Mock, mock_open
 import io
+from datetime import datetime, timedelta
 
         
 class UserExistenceTest(TestCase):
@@ -29,7 +30,7 @@ class UserExistenceTest(TestCase):
                
 class ProductViewSetTest(APITestCase):
     def setUp(self):
-        #self.product = Product.objects.create(title='Test Product', categories='test')
+        # self.product = Product.objects.create(title='Test Product', categories='test')
 
         self.user = User.objects.create_user(
             email="test@example.com",
@@ -55,7 +56,16 @@ class ProductViewSetTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
         # Make a GET request to the product detail view
         response = self.client.get('/api/products/', {'categories': 'test'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)   
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+        
+    # test for filtering API product requests based on category   
+    def test_filter_owner(self):
+        access_token = self.get_auth_header(self.admin_user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Make a GET request to the product detail view
+        response = self.client.get('/api/products/', {'owner': self.user.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+              
     
     # test for my-products endpoint
     # ensures that only 1 item was created for the user and the api hit is successful
@@ -69,8 +79,7 @@ class ProductViewSetTest(APITestCase):
     # test to decline unauthenticated user
     def test_list_my_products_unauthenticated(self):
         # Create a new client without authentication
-        unauthenticated_client = self.client_class()
-        response = unauthenticated_client.get(self.url)
+        response = self.client.get('/api/products/')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
         
@@ -393,5 +402,4 @@ class ReviewViewSetTest(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.user.refresh_from_db()
             self.assertIsNotNone(self.user.profile_picture)
-            
             
