@@ -141,6 +141,11 @@ const ProfilePage = ({ navigation }) => {
     }
   }, [userId, authTokens, isFocused]);
 
+  // Edit post.
+  const onEditPress = () => {
+    console.log("Edit post");
+  };
+
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
       {/* Background image and user's profile information */}
