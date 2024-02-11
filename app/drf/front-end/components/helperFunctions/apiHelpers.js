@@ -268,7 +268,6 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
-
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
     const formData = new FormData();
@@ -302,11 +301,10 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
   }
 }
 
-
 //TODO: Fix for fetching only products for that user
 async function getProductListById(authTokens, userId) {
   try {
-    const response = await fetch(`${baseEndpoint}/products?owner=${userId}`, {
+    const response = await fetch(`${baseEndpoint}/products/?owner=${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +315,7 @@ async function getProductListById(authTokens, userId) {
     if (response.status === 200) {
       const productData = await response.json();
       console.log("product data:", productData);
-      return productData; 
+      return productData;
     } else {
       // Handle errors
       throw new Error("Failed to fetch user products");
@@ -328,8 +326,6 @@ async function getProductListById(authTokens, userId) {
   }
 }
 
-
-
 // Export all the functions
 export {
   filterCategory,
@@ -339,5 +335,6 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
-  getProductListById
+  getProductListById,
+  updateProfilePicture,
 };
