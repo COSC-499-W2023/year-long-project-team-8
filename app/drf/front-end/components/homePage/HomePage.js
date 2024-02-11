@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import SortModal from "./SortModal";
 import CustomText from "../CustomText";
@@ -16,20 +17,25 @@ import FilterModal from "./FilterModal";
 import styles from "./HomeStyle";
 import { sortOptions, foodListings } from "./Data";
 import { categoryIcons } from "../Categories";
+import { useNavigation } from "@react-navigation/native";
 import {
   filterCategory,
   getUserData,
   getUserProductList,
   getProductList,
-} from "../helperFunctions/apiHelpers"; // Import functions
-import AuthContext from "../../context/AuthContext"; // Import AuthContext
+} from "../helperFunctions/apiHelpers"; 
+import AuthContext from "../../context/AuthContext";
+import { useAppState } from "../../context/AppStateContext";
+import QuickFilterChip from './QuickFilterChip'; 
 
-const map = require("../../assets/icons/map.png");
-const filterIcon = require("../../assets/icons/filter.png");
+const ClearAllIcon = require("../../assets/icons/cancel.png");
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
+  //const navigation = useNavigation();
+
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);
+  const { postCreated, updatePostCreated } = useAppState();
 
   // State for holding and managing search queries
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -42,68 +48,70 @@ const HomePage = () => {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   const [distanceFilter, setDistanceFilter] = useState(10); // in kilometers
-  const [ratingFilter, setRatingFilter] = useState(3.5); // rating out of 5
-  const [hoursFilter, setHoursFilter] = useState(24); // hours since published
+  const [ratingFilter, setRatingFilter] = useState(0); // rating out of 5
   const [allergensFilter, setAllergensFilter] = useState([]); // list of allergens to filter out
 
   // Add state to manage the selected sort option
-  const [selectedSortOption, setSelectedSortOption] = useState("Distance");
+  const [selectedSortOption, setSelectedSortOption] = useState("Date");
 
   // State for holding the fetched food listings
-  // const [foodListings, setFoodListings] = useState([]);
   const [foodListing, setFoodListing] = useState([]);
-  // Function to handle map press !!currently using an imported function for testing!!! REMOVE
-  const handleMapPress = async () => {
+  const [loading, setLoading] = useState(true);
+
+  //Quick filterieng options
+  const quickFilters = ['Near Me', 'About to Expire', 'Rare', 'Pantry', 'Healthy'];
+
+  // State to hold the selected quick filters
+  const [selectedQuickFilter, setSelectedQuickFilter] = useState(null);
+
+  // Function to handle quick filter selection
+  const handleQuickFilterSelect = (filter) => {
+    // If the selected filter is already active, deactivate it. Otherwise, activate the selected filter.
+    setSelectedQuickFilter((currentFilter) => (currentFilter === filter ? null : filter));
+  };
+
+   // Function to update the selected sort option from FilterModal
+   const updateSortOption = (newSortOption) => {
+    setSelectedSortOption(newSortOption);
+  };
+
+  const fetchFoodListings = async () => {
     try {
-      // Usage example
-      const data = await filterCategory("pizza", authTokens);
-      console.log(data);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
+      setLoading(true); // Start the loader
+      const productList = await getProductList(authTokens); // Fetch listings
+      const listingsWithAdditionalData = await Promise.all(productList.results.map(async (listing) => {
+        try {
+          // Fetch additional data for each listing here (e.g., owner details)
+          const ownerDetails = await getUserData(listing.owner, authTokens);
+          // Combine the listing with its additional data
+          return { ...listing, ownerDetails };
+        } catch (error) {
+          console.error('Error fetching additional data for listing:', listing.id, error);
+          // Return the listing without additional data if there's an error
+          return listing;
+        }
+      }));
+      setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
     } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      console.log("User Id: ", userId);
-      const userData = await getUserData(userId, authTokens);
-      console.log(userData);
-    } catch (error) {
-      console.log(error);
-      // Handle errors
-    }
-    try {
-      // Usage example
-      const productdata = await getProductList(authTokens);
-      console.log(productdata);
-      console.log("TOKENS:", authTokens);
-      // TODO: Process the data as needed
-      console.log("Map icon pressed!");
-    } catch (error) {
-      console.log(error);
-      // Handle errors
+      console.error("Error fetching food listings:", error);
+    } finally {
+      setLoading(false); // Stop the loader once all listings and their additional data have been fetched
     }
   };
 
   useEffect(() => {
-    const fetchFoodListings = async () => {
-      try {
-        const productList = await getProductList(authTokens);
-        console.log("Fetched Product List:", productList);
-        setFoodListing(productList.results);
-      } catch (error) {
-        console.error("Error fetching food listings:", error);
-      }
-    };
-
     fetchFoodListings();
-  }, [authTokens]);
+  }, []);
 
   useEffect(() => {
-    console.log("FOOD LISTINGS IN HOME:", foodListing);
-    console.log("FOOD LISTINGS FROM DATA:", foodListings);
-  }, [foodListing]);
+    if (postCreated) {
+      // Perform re-fetch logic here
+      fetchFoodListings();
+
+      // After re-fetching, reset the postCreated state
+      updatePostCreated();
+    }
+  }, [postCreated, updatePostCreated]);
 
   // Function to open the filter modal
   const openFilterModal = () => {
@@ -131,121 +139,127 @@ const HomePage = () => {
 
   // Function to handle the selection of food categories
   const handleCategoryPress = (category) => {
-    // If the category is already selected, remove it; else add it
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
-    } else {
-      setSelectedCategories((prev) => [...prev, category]);
-    }
+    setSelectedCategories(prevCategories => 
+      prevCategories.includes(category)
+        ? prevCategories.filter(cat => cat !== category)
+        : [...prevCategories, category]
+    );
   };
+
+  const handleClearPress = () => {
+    setSelectedCategories([]);
+  };
+
+  const handleLucky = () => {
+    if (foodListing.length > 0) {
+        // Select a random post from the foodListing array
+        const randomIndex = Math.floor(Math.random() * foodListing.length);
+        const randomPost = foodListing[randomIndex];
+
+        // Navigate to the PostDetails screen with the selected random post
+        navigation.navigate('PostDetails', { listing: randomPost });
+    } else {
+        console.log("No listings available to select a random post from.");
+    }
+};
+
 
   // Function to check if a category is selected
   const isCategorySelected = (category) =>
     selectedCategories.includes(category);
 
   // Function to check if a category matches the search query
-  const isCategoryMatching = (categories, query) => {
-    // Check if the categories variable is an array or not
-    if (!Array.isArray(categories)) {
-      return categories.toLowerCase().includes(query.toLowerCase());
+  const isCategoryMatching = (listingCategories, selectedCategories) => {
+    if (selectedCategories.length === 0) {
+      return true; // If no categories are selected, all listings match
     }
-    return categories.some((category) =>
-      category.toLowerCase().includes(query.toLowerCase())
+  
+    if (!Array.isArray(listingCategories)) {
+      return false; // Return false if listingCategories is undefined or not an array
+    }
+    return listingCategories.some(category =>
+      selectedCategories.includes(category)
     );
   };
-
-  const convertRelativeTimeToHours = (relativeTime) => {
-    if (!relativeTime) return 0; // If the date is not provided, return 0 hours
-
-    const match = relativeTime.match(
-      /(\d+)\s*(hours?|days?|minutes?|seconds?)\s*ago/
-    );
-
-    if (!match) return 0; // If the format is unknown, return 0 hours
-
-    const value = parseInt(match[1], 10);
-    const unit = match[2];
-
-    if (unit.startsWith("day")) {
-      return value * 24;
-    } else if (unit.startsWith("hour")) {
-      return value;
-    } else if (unit.startsWith("minute")) {
-      return value / 60;
-    } else if (unit.startsWith("second")) {
-      return value / 3600;
-    }
-
-    return 0; // Default return if none of the conditions match
-  };
-  // TODO: Use fetched data
-  // In order to revert to old data, add return foodListings
+  
+  
+  // TODO: Location filtering and sorting
   const filteredAndSortedListings = useMemo(() => {
-    // return foodListings
-    return foodListing
-      .filter((listing) => {
-        const isDishMatching = listing.title
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-        const isCategoryMatchingSearch = isCategoryMatching(
-          listing.categories,
-          searchQuery
-        );
-        const isListingCategorySelected = selectedCategories.some((cat) =>
-          isCategoryMatching(listing.categories, cat)
-        );
-        // Distance filter
-        //const listingDistance = parseFloat(listing.distance.replace("km", ""));
-        // TODO: Update Logic to filter distance
-        const listingDistance = 1.0;
-        const withinDistance = listingDistance <= distanceFilter;
+    if (loading) {
+        return <CustomText>Loading...</CustomText>;
+    }
 
-        // Rating filter
-        // TODO: update logic to filter based on rating
-        //const meetsRating = listing.rating >= ratingFilter;
-        const meetsRating = 6 >= ratingFilter;
+    let filteredListings = foodListing.filter((listing) => {
+        const isDishMatching = listing.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const isCategoryMatch = isCategoryMatching(listing.categories?.split(','), selectedCategories);
+        const meetsRating = listing.ownerDetails && listing.ownerDetails.rating >= ratingFilter;
+        const doesNotContainAllergens = !allergensFilter.some(allergen => listing.allergens?.includes(allergen));
+        return isDishMatching && isCategoryMatch && meetsRating && doesNotContainAllergens;
+    });
 
-        // Hours filter
-        // TODO: Update time filter from created_at field on product
-        const hoursSincePublished = convertRelativeTimeToHours(listing.date);
-        //const withinTimeFrame = hoursSincePublished <= hoursFilter;
-        const withinTimeFrame = 0 <= hoursFilter;
+    switch (selectedQuickFilter) {
+      case 'Near Me':
+          console.log('Filtering listings near the user...');
+          break;
+      case 'About to Expire':
+        const today = new Date();
+        const oneWeekLater = new Date(today);
+        oneWeekLater.setDate(today.getDate() + 7); // Set the date to one week later
+      
+        filteredListings = filteredListings.filter(listing => {
+          const bestBeforeDate = new Date(listing.best_before);
+          return bestBeforeDate >= today && bestBeforeDate <= oneWeekLater; // Check if the best before date is within the next week
+        });
+        filteredListings.sort((a, b) => new Date(a.best_before) - new Date(b.best_before)); 
+        break;
+      case 'Rare':
+          filteredListings = filteredListings.filter(listing => listing.categories?.split(',').length > 5);
+          break;
+      case 'Pantry':
+        // Filter listings to include only those with 'Canned' as their sole category
+        filteredListings = filteredListings.filter(listing => {
+          const categoriesArray = listing.categories?.split(',').map(category => category.trim()); 
+          return categoriesArray.length === 1 && categoriesArray.includes('Canned'); // Check if the array has only one element and that element is 'Canned'
+        });
+        break;
+        case 'Healthy':
+          filteredListings = filteredListings.filter(listing => {
+            const categoriesArray = listing.categories?.split(',').map(category => category.trim()); // Split and trim categories
+            return categoriesArray.length > 0 && categoriesArray.every(category => ['Vegan', 'Produce'].includes(category)); // Ensure every category is either 'Vegan' or 'Produce'
+          });
+          break;       
+      default:
+          break;
+  }
 
-        // Allergens filter
-        const doesNotContainAllergens = !allergensFilter.some((allergen) =>
-          listing.allergens?.includes(allergen)
-        );
+  switch (selectedSortOption) {
+    case 'Distance':
+        console.log("Missing distance sorting option");
+        break;
+    case 'Rating':
+        filteredListings.sort((a, b) => b.ownerDetails.rating - a.ownerDetails.rating);
+        break;
+    case 'Date':
+      filteredListings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      break;
+}
 
-        return (
-          (isDishMatching || isCategoryMatchingSearch) &&
-          (!selectedCategories.length || isListingCategorySelected) &&
-          withinDistance &&
-          meetsRating &&
-          withinTimeFrame &&
-          doesNotContainAllergens
-        );
-      })
-      .sort((a, b) => {
-        if (selectedSortOption === "Distance") {
-          return parseFloat(a.distance) - parseFloat(b.distance);
-        } else if (selectedSortOption === "Rating") {
-          return b.rating - a.rating;
-        } else if (selectedSortOption === "Date") {
-          const hoursA = convertRelativeTimeToHours(a.date);
-          const hoursB = convertRelativeTimeToHours(b.date);
-          return hoursA - hoursB;
-        }
-        return 0;
-      });
-  }, [
+    return filteredListings;
+}, [
     searchQuery,
     selectedCategories,
     distanceFilter,
     ratingFilter,
-    hoursFilter,
     allergensFilter,
     selectedSortOption,
-  ]);
+    foodListing,
+    loading,
+    postCreated,
+    selectedQuickFilter, 
+]);
+
+  
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -265,11 +279,8 @@ const HomePage = () => {
             />
 
             {/* Button to invoke map actions */}
-            <TouchableOpacity
-              onPress={handleMapPress}
-              style={styles.mapIconContainer}
-            >
-              <Image source={map} style={styles.mapIconImage} />
+            <TouchableOpacity style={styles.luckyIconContainer} onPress={handleLucky}>
+              <Image source={require("../../assets/icons/dice1.png")} style={styles.luckyIcon}/>
             </TouchableOpacity>
           </View>
 
@@ -279,9 +290,20 @@ const HomePage = () => {
             showsHorizontalScrollIndicator={false}
             style={styles.categoryScroll}
           >
+            <View style={styles.categoryContainer}>
+              <TouchableOpacity
+                style={styles.categoryButton} 
+                onPress={handleClearPress}
+              >
+                <Image source={ClearAllIcon} style={styles.iconImageClear} />
+              </TouchableOpacity>
+              <CustomText fontType={"text"} style={styles.categoryText}>Clear All</CustomText>
+            </View>
+
             {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
+                
                 <TouchableOpacity
                   style={[
                     styles.categoryButton,
@@ -313,36 +335,39 @@ const HomePage = () => {
             ))}
           </ScrollView>
 
-          <View style={styles.filterAllContainer}>
+          <ScrollView style={styles.filterAllContainer} 
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}>
             <TouchableOpacity
               style={styles.mainFilter}
               onPress={openFilterModal}
             >
-              <Image source={filterIcon} style={styles.filterIcon} />
-              <CustomText fontType={"title"} style={styles.filterText}>
-                Filter
-              </CustomText>
+              <Image source={require("../../assets/icons/filter.png")} style={styles.filterIcon}/>
             </TouchableOpacity>
-            <View style={styles.sortDropdownContainer}>
-              <SortModal
-                data={sortOptions}
-                onSelect={setSelectedSortOption}
-                placeholder="Distance"
-              />
+
+            <View style={styles.quickFiltersContainer}>
+              {quickFilters.map((filter) => (
+                <QuickFilterChip
+                  key={filter}
+                  label={filter}
+                  isSelected={selectedQuickFilter === filter}
+                  onSelect={handleQuickFilterSelect}
+                />
+              ))}
             </View>
-          </View>
+          </ScrollView>
 
           {/* Container for displaying food listings */}
           <View style={styles.listingsContainer}>
-            {filteredAndSortedListings.length ? (
-              filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={listing.title} listing={listing} idx={idx} />
-              ))
-            ) : (
-              <CustomText fontType={"text"} style={styles.noMatchesText}>
-                Nothing like that for now...
-              </CustomText>
-            )}
+          {loading ? (
+            <ActivityIndicator size="large" color="orange" style={styles.loader}/>
+          ) : filteredAndSortedListings.length > 0 ? (
+            filteredAndSortedListings.map((listing, idx) => (
+              <Listing key={idx} listing={listing} navigation={navigation} />
+            ))
+          ) : (
+            <CustomText style={styles.noMatchesText}>Nothing like that for now...</CustomText>
+          )}
           </View>
         </View>
       </ScrollView>
@@ -354,8 +379,8 @@ const HomePage = () => {
         onClose={closeFilterModal}
         setDistanceFilter={setDistanceFilter}
         setRatingFilter={setRatingFilter}
-        setHoursFilter={setHoursFilter}
         setAllergensFilter={setAllergensFilter}
+        updateSortOption={updateSortOption}
       />
     </SafeAreaView>
   );

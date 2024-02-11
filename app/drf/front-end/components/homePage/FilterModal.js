@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   TouchableOpacity,
@@ -11,21 +11,47 @@ import Slider from "@react-native-community/slider";
 import CustomText from "../CustomText";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
-import { SelectList } from "react-native-dropdown-select-list";
+import ButtonLanding from "../loginSignup/ButtonLanding";
+
+const AllergenChip = React.memo(({ allergen, isSelected, onSelect, onDeselect }) => {
+  return (
+    
+    <TouchableOpacity
+      onPress={() => isSelected ? onDeselect(allergen) : onSelect(allergen)}
+      style={[
+        styles.allergenChip,
+        isSelected ? styles.allergenChipSelected : null,
+      ]}
+    >
+      <CustomText style={[
+        styles.allergenChipText,
+        isSelected ? styles.allergenChipTextSelected : null,
+      ]}>
+        {allergen}
+      </CustomText>
+    </TouchableOpacity>
+  );
+});
 
 const FilterModal = ({
   isVisible,
   onClose,
   setDistanceFilter,
   setRatingFilter,
-  setHoursFilter,
   setAllergensFilter,
+  updateSortOption
 }) => {
   const [distance, setDistance] = useState(25);
-  const [rating, setRating] = useState(1);
-  const [hours, setHours] = useState(24);
+  const [rating, setRating] = useState(0);
   const [allergens, setAllergens] = useState([]);
+  const [selectedSort, setSelectedSort] = useState('Date');
 
+  const sortOptions = [
+    { label: 'Date', value: 'Date' },
+    { label: 'Distance', value: 'Distance' },
+    { label: 'Rating', value: 'Rating' },
+  ];
+  
   const allergenDatabase = [
     "Peanuts",
     "Tree nuts",
@@ -38,147 +64,179 @@ const FilterModal = ({
     "Cheese",
   ];
 
-  const allergenOptions = allergenDatabase.map((allergen) => ({
-    key: allergen,
-    value: allergen,
-  }));
-
   const applyFilters = () => {
     setDistanceFilter(distance);
     setRatingFilter(rating);
-    setHoursFilter(hours);
     setAllergensFilter(allergens);
+    updateSortOption(selectedSort); 
     onClose();
   };
 
-  const getHourLabel = (value) =>
-    value >= 24 ? "1+ days" : `${value} Hour(s)`;
+  const handleSelectSort = (option) => {
+    setSelectedSort(option.value);
+  };
+  
+
 
   const getRatingLabel = (value) => `${value} Star(s)`;
 
-  const removeAllergen = (allergenToRemove) => {
-    setAllergens(allergens.filter((allergen) => allergen !== allergenToRemove));
+  const selectAllergen = useCallback((selectedAllergen) => {
+    setAllergens((currentAllergens) => {
+      if (currentAllergens.includes(selectedAllergen)) {
+        return currentAllergens;
+      }
+      return [...currentAllergens, selectedAllergen];
+    });
+  }, [setAllergens, allergens]);
+  
+  const deselectAllergen = useCallback((deselectedAllergen) => {
+    setAllergens((currentAllergens) => 
+      currentAllergens.filter((allergen) => allergen !== deselectedAllergen)
+    );
+  }, [setAllergens, allergens]);
+  
+  const resetFilters = () => {
+    setDistance(25); // Reset to default value
+    setRating(0); // Reset to default value
+    setAllergens([]); // Reset to default value
+    setSelectedSort('Date'); // Reset to default sort option
+    // Reset external filters as well if needed
+    setDistanceFilter(25);
+    setRatingFilter(0);
+    setAllergensFilter([]);
   };
+  
+  
 
   return (
-    <Modal isVisible={isVisible} onBackdropPress={onClose} style={styles.modal}>
-      <KeyboardAvoidingView
+    <Modal
+      isVisible={isVisible}
+      onBackdropPress={onClose}
+      style={styles.modal}
+      backdropColor={"#000"}
+      backdropOpacity={0.95} 
+    >      
+    <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1 }}
+        style={{ flex: 1,borderRadius:12,}}
+        
       >
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-          }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={styles.modalContent}>
-            {/* Close Button at the top right corner */}
+        <View style={{ 
+          borderRadius: 12,
+          overflow: 'hidden',
+          flexGrow: 1,
+          justifyContent: "center",
+          }}>
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "center",
+            }}
+            keyboardShouldPersistTaps="handled"
+          >
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Ionicons name="close" size={24} color="#000" />
-            </TouchableOpacity>
+                <Ionicons name="close" size={30} color="white" />
+              </TouchableOpacity>
 
-            {/* Allergen Filter with Dropdown */}
-            <View style={styles.filterOptionFirst}>
-              <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                Allergens
-              </CustomText>
-              {/* Use SelectList for the dropdown */}
-              <SelectList
-                data={allergenOptions}
-                setSelected={(selected) => {
-                  if (!allergens.includes(selected)) {
-                    setAllergens([...allergens, selected]);
-                  }
-                }}
-                placeholder="Select an allergen"
-              />
-              <ScrollView style={styles.allergensContainer} horizontal>
-                {allergens.map((allergen, index) => (
-                  <View key={index} style={styles.allergenTag}>
-                    <CustomText style={styles.allergenText} fontType={"text"}>
-                      {allergen}
-                    </CustomText>
-                    <TouchableOpacity onPress={() => removeAllergen(allergen)}>
-                      <Ionicons name="close-circle" size={16} color="#000" />
+            <View style={styles.modalContent}>
+
+              <View>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
+                    Sort By
+                </CustomText>
+                <View style={styles.sortOptionsContainer}>
+                  {sortOptions.map((option) => (
+                    <TouchableOpacity
+                      key={option.value}
+                      style={[
+                        styles.sortOptionButton,
+                        selectedSort === option.value && styles.sortOptionButtonSelected,
+                      ]}
+                      onPress={() => handleSelectSort(option)}
+                    >
+                      <CustomText
+                        style={[
+                          styles.sortOptionText,
+                          selectedSort === option.value && styles.sortOptionTextSelected,
+                        ]}
+                      >
+                        {option.label}
+                      </CustomText>
                     </TouchableOpacity>
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
+                  ))}
+                </View>
+              </View>
 
-            {/* Distance Filter with Slider */}
-            <View style={styles.filterOption}>
-              <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                Max Distance
-              </CustomText>
-              <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={25}
-                step={1}
-                value={distance}
-                onValueChange={setDistance}
-                minimumTrackTintColor="#FCBF3D"
-                maximumTrackTintColor="#000000"
-                thumbTintColor="#FCBF3D"
-              />
-              <CustomText style={styles.value} fontType={"text"}>
-                {distance} Km
-              </CustomText>
-            </View>
+              {/* Distance Filter with Slider */}
+              <View style={styles.filterOption}>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
+                  Max Distance
+                </CustomText>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={0}
+                  maximumValue={25}
+                  step={1}
+                  value={distance}
+                  onValueChange={setDistance}
+                  minimumTrackTintColor="#FFFFFF" // Active part of the slider to white
+                  maximumTrackTintColor="#555" // Inactive part slightly lighter than the dark background
+                  thumbTintColor="#FFFFFF" // Thumb color can remain the same or adjust as needed
+                />
+                <CustomText style={styles.value} fontType={"text"}>
+                  {distance} Km
+                </CustomText>
+              </View>
 
-            {/* Rating Filter with Slider */}
-            <View style={styles.filterOption}>
-              <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                Minimum Rating
-              </CustomText>
-              <Slider
-                style={styles.slider}
-                minimumValue={1}
-                maximumValue={5}
-                step={0.5}
-                value={rating}
-                onValueChange={setRating}
-                minimumTrackTintColor="#FCBF3D"
-                maximumTrackTintColor="#000000"
-                thumbTintColor="#FCBF3D"
-              />
-              <CustomText style={styles.value} fontType={"text"}>
-                {getRatingLabel(rating)}
-              </CustomText>
-            </View>
+              {/* Rating Filter with Slider */}
+              <View style={styles.filterOption}>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
+                  Minimum Rating
+                </CustomText>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={0}
+                  maximumValue={5}
+                  step={0.5}
+                  value={rating}
+                  onValueChange={setRating}
+                  minimumTrackTintColor="#FFFFFF" // Active part of the slider to white
+                  maximumTrackTintColor="#555" // Inactive part slightly lighter than the dark background
+                  thumbTintColor="#FFFFFF" // Thumb color can remain the same or adjust as needed
+                />
+                <CustomText style={styles.value} fontType={"text"}>
+                  {getRatingLabel(rating)}
+                </CustomText>
+              </View>
 
-            {/* Time Since Published Filter with Slider */}
-            <View style={styles.filterOption}>
-              <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                Time Since Published
-              </CustomText>
-              <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={24}
-                step={1}
-                value={hours}
-                onValueChange={setHours}
-                minimumTrackTintColor="#FCBF3D"
-                maximumTrackTintColor="#000000"
-                thumbTintColor="#FCBF3D"
-              />
-              <CustomText style={styles.value} fontType={"text"}>
-                {getHourLabel(hours)}
-              </CustomText>
-            </View>
+              {/* Allergen Filter with Dropdown */}
+              <View style={styles.allergenContainer}>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
+                  Allergens
+                  </CustomText>
+                  <View style={styles.allergenChipsContainer}>
+                  {allergenDatabase.map((allergen) => (
+                    <AllergenChip
+                      key={allergen}
+                      allergen={allergen}
+                      isSelected={allergens.includes(allergen)}
+                      onSelect={selectAllergen}
+                      onDeselect={deselectAllergen}
+                    />
+                  ))}
+                </View>
+              </View>
 
-            {/* Apply Filters Button */}
-            <TouchableOpacity onPress={applyFilters} style={styles.applyButton}>
-              <CustomText style={styles.applyButtonText} fontType={"subHeader"}>
-                Apply Filters
-              </CustomText>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+              {/* Apply Filters Button */}
+              <View style={styles.buttonsContainer}>
+              <TouchableOpacity onPress={resetFilters} style={styles.resetButton}>
+                <CustomText style={styles.resetButtonText}>RESET</CustomText>
+              </TouchableOpacity>
+              <ButtonLanding onPress={applyFilters} title={"APPLY"} style={styles.applyButton} showIcon={false}/>
+            </View>
+            </View>
+          </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -188,48 +246,36 @@ const styles = StyleSheet.create({
   modal: {
     marginHorizontal: 10,
     justifyContent: "flex-end",
+    borderRadius: 12,
   },
   scrollView: {
     flex: 1,
+    borderRadius: 12,
   },
   modalContent: {
     padding: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "transparent",
     justifyContent: "space-around",
-    alignItems: "stretch",
-    borderRadius: 12,
-    borderColor: "rgba(0, 0, 0, 0.05)",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    alignItems: "stretch",    
   },
-  dropdown: {
-    backgroundColor: "#fff",
-    position: "absolute",
-    top: 100,
-    left: 10,
-    right: 10,
-    borderWidth: 1,
-    borderColor: "#ced4da",
-    borderRadius: 8,
-    maxHeight: 200,
-    overflow: "hidden",
-    zIndex: 1000,
+  sortOptionsContainer: {
+    marginBottom:20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
   },
-  dropdownItemContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ced4da",
-  },
-  dropdownItem: {
+  sortOptionButton: {
     padding: 10,
-    fontSize: 16,
-    color: "#212529",
+    borderRadius: 5,
   },
+  sortOptionButtonSelected: {
+    borderBottomColor: 'orange',
+    borderBottomWidth:2 
+  }, 
+  sortOptionText: {
+    color: 'white', 
+  },
+
   filterOptionFirst: {
     width: "100%",
     marginBottom: 20,
@@ -241,28 +287,27 @@ const styles = StyleSheet.create({
   },
   filterTitle: {
     fontSize: 28,
-    color: "#212529",
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 25,
   },
   filterLabel: {
-    fontSize: 18,
-    color: "#495057",
+    fontSize: 20,
+    color: "#F5F5F5",
     marginBottom: 10,
+    textAlign: "center",
   },
   slider: {
     width: "100%",
     height: 40,
   },
-
   textInput: {
     height: 40,
-    borderColor: "#ced4da",
+    borderColor: "#F5F5F5",
     borderWidth: 1,
     padding: 10,
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
     marginBottom: 10,
   },
   allergensContainer: {
@@ -271,7 +316,7 @@ const styles = StyleSheet.create({
   },
   allergenTag: {
     flexDirection: "row",
-    backgroundColor: "#e9ecef",
+    backgroundColor: "#444", 
     borderRadius: 15,
     padding: 8,
     marginRight: 10,
@@ -280,29 +325,89 @@ const styles = StyleSheet.create({
   allergenText: {
     marginRight: 6,
     fontSize: 14,
+    color: "#F5F5F5", 
   },
-
-  applyButton: {
-    backgroundColor: "#FCBF3D",
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 35,
-    borderRadius: 20,
-    width: "auto",
+  buttonsContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems:"center",
+    padding: 20, 
   },
-  applyButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  applyButton:{
+    paddingHorizontal:50,
+    textAlign:"center"
+  },
+  resetButton: {
+    marginTop:25,
+    paddingHorizontal:30,
+    textAlign:"center",
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  resetButtonText: {
+    color: "#ff5c5c",
     fontSize: 18,
+    textAlign:"center",
   },
   closeButton: {
     position: "absolute",
     zIndex: 1000,
     top: 10,
     right: 10,
-    backgroundColor: "#dee2e6",
-    padding: 8,
+    width: 40, 
+    height: 40, 
     borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center', 
+    padding: 0, 
+  },
+  value:{
+    color:"#F5F5F5",
+    marginLeft: 10,
+  },
+
+  dropdown: {
+    backgroundColor: "#444", 
+    borderWidth: 1,
+    borderColor: "#555", 
+  },
+  dropdownItemContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#555",
+  },
+  dropdownItem: {
+    padding: 10,
+    fontSize: 16,
+    color: "#F5F5F5", 
+  },
+  allergenChipsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    paddingVertical: 10,
+  },
+  allergenChip: {
+    backgroundColor: "#555", 
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    margin: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center", 
+  },
+  allergenChipSelected: {
+    backgroundColor: "#F5F5F5", 
+    flexDirection: "row", 
+    justifyContent: "center", 
+  },
+  allergenChipText: {
+    color: "#FFF", 
+    textAlign: "center",
+  },
+  allergenChipTextSelected: {
+    color: "black", 
+    textAlign: "center", 
   },
 });
 

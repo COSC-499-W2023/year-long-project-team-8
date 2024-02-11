@@ -42,7 +42,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  button: {},
+  button: {
+    paddingVertical: 15,
+    paddingLeft:60,
+  },
   missingField: {
     borderColor: "red",
     borderWidth: 1,

@@ -195,7 +195,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -248,5 +248,5 @@ EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'passtheplate9@gmail.com'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = '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'
 #'passtheplate9@gmail.com' && Projectorange

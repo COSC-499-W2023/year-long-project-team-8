@@ -406,28 +406,30 @@ January 7 - January 14, 2024
 <!-- 
 - start/end dates of the week
 -->
-January 14 - 21 2024
+January 21 - 28 2024
 ### Individual Peer Evaluation
 <!-- 
 - screenshot of the weekly peer evaluation
 -->
-![alt-text](./img/bm_t2_w2.png)
+![alt-text](./img/bm_t2_w3.png)
 
 ### Recap of Students Goals
 <!--
 - what tasks are you aiming to have completed by the end of the week
 -->
--
--
--
+- fix an issue where the map distance circle is not working on android
+- find a way to link the sliders on the map and on the home page modal
+- help implement the reviews function onto the profile page
 
 ### Student Tasks on Project Board
 <!-- 
 - Tasks undertaken on the project board
 -->
-- 
--
--
+- #21 link slider and modal on home page
+- #20 calculate the distance from the users location to a post
+- #183 fix issues that arose with the map on android
+- #193 edit profile is not updating the profile page information
+- #194 review stars having functionality issues
 
 ### Which Tasks Are Completed vs. In Progress
 <!--
@@ -436,13 +438,70 @@ January 14 - 21 2024
 ✓ x
 -->
 
-| Item # | Completed  | To Be Done |
-|:------:|:-----------|:-----------|
-| 1      |            |            |
-| 2      |            |            |
-| 3      |            |            |
-| 4      |            |            |
-| 5      |            |            |
+| Item # |  Completed  |  To Be Done  |
+|:------:|:-----------:|:------------:|
+|   21   |             |      ✓       |
+|   20   |             |      ✓       |
+|  183   |             |      ✓       |
+|  193   |      ✓      |              |
+|  194   |      ✓      |              |
+
+# Team_Member_Name Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+January 28 - Feb 4 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_t2_w4.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- #20
+- #21
+- #183
+- #232
+- please see below for what these refer to on project board
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #208 change the rating system to match post page
+- #206 when saving edit profile details, should provide success message or revert user back to home screen
+- #203 edit details input fields sometimes delete or revert to blank despite correct format
+- #202 cant scroll and keyboard blocks edit profile fields
+- #20 calculate distance from location to post
+- #21 link slider and radius modal on home page
+- #183 fix issue where map features are not showing up on android
+- #232 add character limits in the edit profile page
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done  |
+|:------:|:----------:|:-----------:|
+|  208   |     ✓      |             |
+|  206   |     ✓      |             |
+|  203   |     ✓      |             |
+|  202   |     ✓      |             |
+|   20   |            |      ✓      |
+|   21   |            |      ✓      |
+|  183   |            |      ✓      |
+|  232   |            |      ✓      |
+
 
 
 

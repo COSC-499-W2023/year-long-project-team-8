@@ -17,6 +17,7 @@ const InputField = ({
   autoCorrect,
   name,
   rightComponent,
+  isErrorIcon, 
 }) => {
   return (
     <View>
@@ -25,19 +26,20 @@ const InputField = ({
           <MaterialIcons
             name={icon}
             size={20}
-            color={errorText ? "red" : "gray"}
+            color={isErrorIcon ? "red" : "gray"} // Use isErrorIcon to determine color
             style={InputStyles.iconForm}
           />
         )}
         <TextInput
           style={[InputStyles.input, errorText ? InputStyles.inputError : null]}
           placeholder={placeholder.toUpperCase()}
+          placeholderTextColor="#808080"
           value={value}
           onChangeText={onChangeText}
           onFocus={onFocus}
           inputMode={inputMode}
           secureTextEntry={secureTextEntry}
-          autoCapitalize={autoCapitalize}
+          autoCapitalize={"none"}
           autoCorrect={autoCorrect}
           name={name}
           underlineColorAndroid="transparent"

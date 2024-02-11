@@ -17,6 +17,7 @@ from pathlib import Path
 from django.conf import settings
 from unittest.mock import Mock, mock_open
 import io
+from datetime import datetime, timedelta
 
         
 class UserExistenceTest(TestCase):
@@ -29,7 +30,7 @@ class UserExistenceTest(TestCase):
                
 class ProductViewSetTest(APITestCase):
     def setUp(self):
-        #self.product = Product.objects.create(title='Test Product', categories='test')
+        # self.product = Product.objects.create(title='Test Product', categories='test')
 
         self.user = User.objects.create_user(
             email="test@example.com",
@@ -55,7 +56,16 @@ class ProductViewSetTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
         # Make a GET request to the product detail view
         response = self.client.get('/api/products/', {'categories': 'test'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)   
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+        
+    # test for filtering API product requests based on category   
+    def test_filter_owner(self):
+        access_token = self.get_auth_header(self.admin_user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Make a GET request to the product detail view
+        response = self.client.get('/api/products/', {'owner': self.user.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK) 
+              
     
     # test for my-products endpoint
     # ensures that only 1 item was created for the user and the api hit is successful
@@ -69,8 +79,7 @@ class ProductViewSetTest(APITestCase):
     # test to decline unauthenticated user
     def test_list_my_products_unauthenticated(self):
         # Create a new client without authentication
-        unauthenticated_client = self.client_class()
-        response = unauthenticated_client.get(self.url)
+        response = self.client.get('/api/products/')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
         
@@ -340,3 +349,57 @@ class ImageViewSetTest(APITestCase):
         for image in ProductImages.objects.all():
             image.image.delete()
             image.delete()
+            
+class ReviewViewSetTest(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+        
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
+          
+    def test_create_user_review(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+
+        data = {
+            "user": self.user.id,
+            "content": "This is a test review for the user",
+            "rating": '4.5'  # Change this to the desired rating value
+        }
+
+        # Make a POST request to create a review for the user
+        response = self.client.post('/api/reviews/', data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check if the review was created successfully
+        self.assertIn("user", response.data)
+        self.assertEqual(response.data["content"], data["content"])
+        self.assertEqual(response.data["rating"], data["rating"])
+        self.assertEqual(response.data["user"], self.user.id)
+        
+    class ProfilePictureTest(APITestCase):
+        def setUp(self):
+            self.client = APIClient()
+            self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
+            
+        def get_auth_header(self, user):
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            return access_token
+        
+        def test_update_user_authenticated(self):
+            access_token = self.get_auth_header(self.user)
+            self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+            
+            mock_image_data = b'Test image data'  # Replace with your mock image data
+            self.mock_image_file = mock_open(read_data=mock_image_data)
+
+            data = {"profile_picture": self.mock_image_file}
+            response = self.client.patch(f'/api/users/{self.user.id}/', data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.user.refresh_from_db()
+            self.assertIsNotNone(self.user.profile_picture)
+            

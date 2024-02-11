@@ -1,99 +1,103 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { View, TouchableOpacity, StyleSheet, Animated } from "react-native";
 import { Card } from "react-native-paper";
-import { MaterialIcons } from "@expo/vector-icons";
 import CustomText from "../CustomText";
-import { Image } from "react-native";
-import React, { useState, useEffect } from "react";
-// import RNFS from "react-native-fs";
+import { MaterialIcons } from "@expo/vector-icons";
 
-// Component to represent a single food listing
-const Listing = ({ listing, idx }) => {
-  const [images, setImages] = useState([]);
+const Listing = ({ listing, navigation }) => {
+  const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
 
-  //TO DO: Refactor this block to load and render images - maybe use uri? adjust path as needed
-  //
-  useEffect(() => {
-    const loadImages = async () => {
-      if (!listing.images || listing.images.length === 0) {
-        console.warn("No images loaded");
-        return;
-      }
-      console.warn("Maybe images");
+  const zoomIn = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1.05, // Zoom in to 105%
+      useNativeDriver: true, // Use native driver for better performance
+    }).start();
+  };
 
-      const loadedImages = await Promise.all(
-        listing.images.map(async (image, index) => {
-          const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/image_0.jpg`;
-          //const imagePath = `C:/Users/mkudr/github-classroom/COSC-499-W2023/year-long-project-team-8/app/drf/front-end/assets/images/postImages/${image.name}image_0.jpg`;
-          if (imagePath) {
-            return (
-              <Card.Cover
-                key={index}
-                //source={{ uri: `file://${imagePath}` }}
-                source={require(imagePath)}
-                style={styles.cardImage}
-              />
-            );
-          } else {
-            console.warn(`Image not found: ${imagePath}`);
-            return null;
-          }
-        })
-      );
+  const zoomOut = () => {
+    Animated.spring(scaleValue, {
+      toValue: 1, // Zoom out back to 100%
+      useNativeDriver: true,
+    }).start();
+  };
 
-      setImages(loadedImages.filter((image) => image !== null));
-    };
+  // Assuming 'listing' now includes 'ownerDetails' fetched in HomePage
+  const getDisplayName = () => listing.ownerDetails?.firstname || listing.ownerDetails?.email.split('@')[0] || "Unknown";
+  const getDisplayRating = () => {
+    // Check if ownerDetails and rating exist
+    if (listing.ownerDetails && listing.ownerDetails.rating) {
+      // Round the rating to the nearest whole number
+      return Math.round(listing.ownerDetails.rating);
+    }
+    return "New User"; // Default text if rating is not available
+  };
+  
+  const timeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.round((now - date) / 1000);
+    const minutes = Math.round(seconds / 60);
+    const hours = Math.round(minutes / 60);
+    const days = Math.round(hours / 24);
+    const months = Math.round(days / 30);
+    const years = Math.round(months / 12);
 
-    loadImages();
-  }, [listing.images]);
+    if (seconds < 60) {
+      return `Just Now`;
+    } else if (minutes < 60) {
+      return `Just Now`;
+    } else if (hours < 2) {
+      return `${hours} hour ago`;
+    } else if (hours < 24) {
+      return `${hours} hours ago`;
+    } else if (days < 30) {
+      return `${days} days ago`;
+    } else if (months < 12) {
+      return `${months} months ago`;
+    } else {
+      return `${years} years ago`;
+    }
+  };
 
   return (
-    // Card component from 'react-native-paper' to visually represent the listing
-    <Card key={listing.title} style={styles.card}>
-      {/* Touchable area to interact with the listing */}
-      <TouchableOpacity
-        onPress={() => {
-          console.log("Card pressed:", listing.title);
-        }}
-        key={listing.title}
-      >
-        {/* Container for the food image listing.image */}
-        <View style={styles.imageContainer}>{images}</View>
-
-        {/* Name of the dish */}
-        <CustomText fontType={"title"} style={styles.cardTitle}>
-          {listing.title}
-        </CustomText>
-        {/* Container for the dish creator's name and rating */}
-        <View style={styles.nameAndRatingContainer}>
-          <CustomText fontType={"text"} style={styles.byName}>
-            By {listing.owner}
+    <TouchableOpacity
+      activeOpacity={1}
+      onPressIn={zoomIn}
+      onPressOut={zoomOut}
+      onPress={() => navigation.navigate('PostDetails', { listing })}
+    >
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+        <Card style={styles.card}>
+          {listing.images && listing.images.length > 0 && (
+            <Card.Cover source={{ uri: listing.images[0].image }} style={styles.cardImage} />
+          )}
+          <CustomText fontType={"title"} style={styles.cardTitle}>
+            {listing.title}
           </CustomText>
-
-          {/* Icon from 'MaterialIcons' to represent star rating */}
-          <MaterialIcons
-            name="star"
-            size={16}
-            color="gold"
-            style={styles.star}
-          />
-          <CustomText fontType={"subHeader"} style={styles.rating}>
-            {/* {listing.rating} */}
-            {1}
-          </CustomText>
-        </View>
-        {/* Container for the date when the listing was posted and distance info */}
-        <View>
-          <CustomText fontType={"subHeader"} style={styles.datePosted}>
-            {listing.date || "Just now"}
-          </CustomText>
-          <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {"0" /* {listing.distance} */}
-          </CustomText>
-        </View>
-      </TouchableOpacity>
-    </Card>
+          <View style={styles.nameAndRatingContainer}>
+            <CustomText fontType={"text"} style={styles.byName}>
+              By {getDisplayName()}
+            </CustomText>
+            <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
+            <CustomText fontType={"subHeader"} style={styles.rating}>
+              {getDisplayRating()}
+            </CustomText>
+          </View>
+          <View>
+            <CustomText fontType={"subHeader"} style={styles.datePosted}>
+              {timeAgo(listing.created_at)}
+            </CustomText>
+            <CustomText fontType={"subHeader"} style={styles.distanceText}>
+              {"0" /* Replace with actual distance if available */}
+            </CustomText>
+          </View>
+        </Card>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
+
+
 export default Listing;
 
 const styles = StyleSheet.create({

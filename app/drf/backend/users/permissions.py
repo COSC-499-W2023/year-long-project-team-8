@@ -15,8 +15,8 @@ class UserPermission(permissions.BasePermission):
         if view.action == "create":
             return True # anyone can create user, no additional checks needed.
         if view.action == "list":
-            return request.user.is_authenticated and request.user.is_staff
-        elif view.action in ["retrieve", "update", "partial_update", "destroy"]:
+            return request.user.is_authenticated
+        elif view.action in ["retrieve", "update", "partial_update", "destroy", "details"]:
             return True  # defer to has_object_permission
         else:
             return False
@@ -28,12 +28,17 @@ class UserPermission(permissions.BasePermission):
         if not request.user.is_authenticated:
             return False
  
-        if view.action in ["retrieve", "update", "partial_update"]:
-            return obj == request.user or request.user.is_staff
-        elif view.action == "destroy":
-            return request.user.is_staff
+        # if view.action in ["retrieve", "update", "partial_update"]:
+        if view.action in ["retrieve", "list"]:
+            return True  # Allow users to retrieve other users' data
+        elif view.action in ["update", "partial_update", "destroy"]:
+            return obj == request.user  # Users can update their own data
+        # elif view.action in ["destroy"]:
+        #     return False  # Users cannot delete other users' data
         else:
-            return False
+            return obj == request.user or request.user.is_staff
+
+        
 class IsSelfOrReadOnly(BasePermission):
     """
     Custom permission to only allow users to edit their own details.
@@ -41,7 +46,7 @@ class IsSelfOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, and OPTIONS requests.
-        if request.method in ["GET", "HEAD", "OPTIONS"]:
+        if request.method in ["GET", "HEAD", "OPTIONS", "PATCH"]:
             return True
 
         # Check if the user making the request is the same as the user being updated.
@@ -53,3 +58,4 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.owner == request.user
+      

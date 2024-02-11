@@ -11,7 +11,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const DatePickerSelector = ({ selectedDate, onDateChange }) => {
+const DatePickerSelector = ({ selectedDate, onDateChange, minimumDate }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   // State for info modal visibility
   const [isInfoModalVisible, setInfoModalVisibility] = useState(false);
@@ -62,9 +62,9 @@ const DatePickerSelector = ({ selectedDate, onDateChange }) => {
         isVisible={isDatePickerVisible}
         mode="date"
         date={selectedDate}
-        minimumDate={new Date()}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        minimumDate={minimumDate}
       />
       {/* Information Modal */}
       <Modal
@@ -174,9 +174,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  button:{
+    paddingVertical: 15,
+    paddingLeft:60,
+  },
   infoIcon: {
     marginLeft: 10,
-    marginTop: 5,
   },
   modalOverlay: {
     flex: 1,

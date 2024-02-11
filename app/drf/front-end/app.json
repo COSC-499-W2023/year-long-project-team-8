@@ -5,6 +5,7 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them."
+
         }
       ]
     ],
@@ -25,7 +26,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to take photos.",
-        "NSPhotoLibraryUsageDescription": "This app needs access to the photo library for photo selection."
+        "NSPhotoLibraryUsageDescription": "This app needs access to the photo library for photo selection.",
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show nearby places."
       }
     },
     "android": {
@@ -35,6 +37,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"

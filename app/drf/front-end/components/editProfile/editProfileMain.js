@@ -6,15 +6,16 @@ import {
   TouchableOpacity,
   Image,
   BackHandler,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./editProfileStyles";
 import { getUserData, updateUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
-import EditProfileForm from "./editProfileJSX"; // Importing the EditProfileForm component
+import EditProfileForm from "./editProfileJSX";
 
 const EditProfilePage = () => {
-  // Destructuring values from the authentication context
   const { authTokens, userId } = useContext(AuthContext);
 
   // State variables to hold user data and form input values
@@ -66,10 +67,8 @@ const EditProfilePage = () => {
       updatedData.email = email;
     }
 
-    // Updating user data via API call
     updateUserData(userId, authTokens, updatedData)
       .then(() => {
-        // Fetching updated user data after a successful update
         getUserData(userId, authTokens)
           .then((data) => {
             setUserData(data);
@@ -88,12 +87,19 @@ const EditProfilePage = () => {
       });
   };
 
-  // Function to navigate back to the previous screen
   const goBack = () => {
     navigation.goBack();
   };
 
-  // Effect hook to handle the hardware back button press
+  const toHome = () => {
+    navigation.goBack();
+  }
+
+  const saveButtonPress = () => {
+    toHome();
+    handleSaveDetails();
+  };
+
   useEffect(() => {
     const handleBackPress = () => {
       goBack();
@@ -102,13 +108,15 @@ const EditProfilePage = () => {
 
     BackHandler.addEventListener("hardwareBackPress", handleBackPress);
 
-    // Cleanup function to remove the event listener when the component is unmounted
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
     };
   }, []);
 
   return (
+
+
+      //put keyboard avoiding view and scrollview here so that users can move through the page
     <SafeAreaView style={styles.safeAreaView}>
       {/* Top navigation bar with back button and save button */}
       <View style={styles.topBarContainer}>
@@ -118,11 +126,13 @@ const EditProfilePage = () => {
             style={styles.backArrow}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSaveDetails}>
+        <TouchableOpacity onPress={saveButtonPress}>
           <Text style={styles.saveButton}>Save</Text>
         </TouchableOpacity>
-      </View>
 
+      </View>
+<KeyboardAvoidingView keyboardVerticalOffset={100}>
+          <ScrollView style={styles.scrollView} contentContainerStyle={{minHeight: 875}}>
       <View style={styles.profilePictureContainer}>
         <Image
           source={require("../../assets/images/profilePage/pfp.png")}
@@ -149,7 +159,10 @@ const EditProfilePage = () => {
         prevEmail={prevEmail}
         setPrevEmail={setPrevEmail}
       />
-      {/*}
+            </ScrollView>
+          </KeyboardAvoidingView>
+
+{/*
       <View style={styles.buttonFieldContainer}>
         <TouchableOpacity style={styles.changePasswordButton}>
           <Text style={styles.changePasswordText}>Change Password</Text>
@@ -158,9 +171,11 @@ const EditProfilePage = () => {
         <TouchableOpacity style={styles.deleteAccountButton}>
           <Text style={styles.deleteAccountText}>Delete Account</Text>
         </TouchableOpacity>
-      </View>
-      */}
+
+        </View>*/}
     </SafeAreaView>
+
+
   );
 };
 

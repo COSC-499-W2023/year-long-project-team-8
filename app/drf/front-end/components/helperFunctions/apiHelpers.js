@@ -116,8 +116,6 @@ function renderProducts(data) {
   // Example function to render the products
   // You can customize this based on your needs
   data.forEach((product) => {
-    console.log("Product Title:", product.title);
-    console.log("Product Content:", product.content);
     // Add your rendering logic here (e.g., append to a list or update the DOM)
   });
 }
@@ -215,7 +213,6 @@ async function createProductImages(productData, imageFiles, authTokens) {
     Object.keys(productData).forEach((key) => {
       formData.append(key, productData[key]);
     });
-    console.log("in function form Data:", JSON.stringify(formData, null, 2));
 
     // Append image files to the FormData
     if (imageFiles) {
@@ -243,13 +240,9 @@ async function createProductImages(productData, imageFiles, authTokens) {
             name: uniqueFilename,
             data: fileContent, // Add the file content here
           });
-
-          console.log(`Image ${index} - URI: ${fileUri}`);
-          console.log(`Image ${index} - Name: ${uniqueFilename}`);
         })
       );
     }
-    console.log("in function form Data:", formData);
     const response = await fetch(`${baseEndpoint}/products/`, {
       method: "POST",
       headers: {
@@ -275,6 +268,64 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
+async function updateProfilePicture(userId, authTokens, imageFile) {
+  try {
+    const formData = new FormData();
+    formData.append("profile_picture", {
+      uri: imageFile.uri,
+      type: imageFile.type,
+      name: `profile_picture_${userId}.jpg`, // Use template literals correctly
+    });
+
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: "PATCH", // Using PATCH for partial updates
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.status === 200) {
+      const userData = await response.json();
+      return userData; // Return the updated data to the caller
+    } else {
+      throw new Error(
+        `Something went wrong! File: apiHelpers.js - updateProfilePicture()`
+      );
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong uploading Profile Picture!");
+  }
+}
+
+//TODO: Fix for fetching only products for that user
+async function getProductListById(authTokens, userId) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/?owner=${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 200) {
+      const productData = await response.json();
+      console.log("product data:", productData);
+      return productData;
+    } else {
+      // Handle errors
+      throw new Error("Failed to fetch user products");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -284,4 +335,6 @@ export {
   getUserProductList,
   productSearch,
   createProductImages,
+  getProductListById,
+  updateProfilePicture,
 };

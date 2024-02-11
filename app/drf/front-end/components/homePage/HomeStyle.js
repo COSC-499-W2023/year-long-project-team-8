@@ -15,16 +15,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  mapIconContainer: {
+  luckyIconContainer: {
     marginLeft: 10,
-  },
-  mapIconImage: {
-    width: 47,
-    height: 47,
+    padding:10
   },
   categoryScroll: {
     flexDirection: "row",
     marginVertical: 5,
+    alignContent:"center"
   },
   categoryContainer: {
     alignItems: "center",
@@ -46,6 +44,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  iconImageClear: {
+    width: 35,
+    height: 35,
+    marginTop:10,
+  },
   categoryText: {
     fontWeight: "600",
     color: "black",
@@ -57,10 +60,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   filterAllContainer: {
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    marginHorizontal: 10,
+    marginTop:10
   },
   filterContainer: {
     flexDirection: "row",
@@ -70,50 +71,37 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
-    height: 45,
-    width: 110,
-    marginLeft: 8,
-    backgroundColor: "#FCBF3D",
-    borderRadius: 10,
-    shadowColor: "#000", // Shadow color
-    shadowOffset: { width: 0, height: 2 }, // X, Y offset of the shadow
-    shadowOpacity: 0.25, // Opacity of the shadow
-    shadowRadius: 3.84, // Blur radius of the shadow
-    elevation: 5, // Elevation for Android
+    padding: 10,   
   },
   filter: {
     alignItems: "center",
     justifyContent: "center",
     width: 90,
     height: 31,
-    marginLeft: 8,
-    marginBottom: 10,
-    backgroundColor: "#FCBF3D",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25, // Opacity of the shadow
-    shadowRadius: 3.84, // Blur radius of the shadow
-    elevation: 5, // Elevation for Android
   },
   filterIcon: {
-    marginRight: 8,
-    width: 30,
-    height: 30,
+    width:25,
+    height:25,
   },
-  filterText: {
-    fontWeight: "600",
-    color: "white",
+  luckyIcon: {
+    width:35,
+    height:35,
   },
-  sortDropdownContainer: {
-    flex: 1,
+  luckyText:{
+    fontSize:20,
+    marginLeft:10,
+    alignSelf:"center"
+
+  },
+  quickFiltersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: 10, 
   },
   listingsContainer: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
+    padding:10
   },
   noMatchesText: {
     textAlign: "center",
@@ -121,6 +109,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "grey",
   },
+  loader:{
+    marginTop: 20,
+  }
 });
 
 export default styles;

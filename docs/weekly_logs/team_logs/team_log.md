@@ -877,3 +877,186 @@ https://github.com/orgs/COSC-499-W2023/projects/39/insights
 ![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+January 21-28, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1
+<br>
+![alt-text](../img/t2projboard_w3.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- fix an issue where the map distance circle is not working on android
+- find a way to link the sliders on the map and on the home page modal
+- help implement the reviews function onto the profile page
+- finish image handling for posts
+- API function calls updated with proper image handling
+- implementing the backend review functionality
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#193](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/193)
+- [x] [#194](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/194)
+- [x] [#190](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/190)
+- [x] [#172](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/172)
+- [x] [#180](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/180)
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #21 link slider and modal on home page
+- #20 calculate the distance from the users location to a post
+- #183 fix issues that arose with the map on android
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #186 Create chat list within chat page
+- #135 Automated testing with GitHub issues
+- front end post details
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/insights<br>
+![burnup-chart](../img/t2_burnup_w3.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![Alt text](../img/backend_tests_w15.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+January 29 - February 04, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+![Alt text](../img/t2-w4-proj.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- Set up backend to handle profile pictures
+- Create API function to upload profile picture in front end
+- Continue progress on chat function
+- Prepare app for peer testing (bug fixes)
+- Welcome peer feedback and begin working on implementing changes based on said feedback
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#195](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/195)
+- [x] [#215](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/215)
+- [x] [#205](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/205)
+- [x] [#201](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/201)
+- #208 change the rating system to match post page
+- #206 when saving edit profile details, should provide success message or revert user back to home screen
+- #203 edit details input fields sometimes delete or revert to blank despite correct format
+- #202 cant scroll and keyboard blocks edit profile fields
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #21 link slider and modal on home page
+- #20 calculate the distance from the users location to a post
+- #183 fix issues that arose with the map on android
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #186 Create chat list within chat page
+- #135 Automated testing with GitHub issues
+- front end post details
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/t2_burnup_w4.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![Alt text](../img/backend_tests_w15.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing

@@ -1,8 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-// Get window dimensions for responsive styling
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 // Define color constants
 export const colors = {
@@ -13,119 +11,198 @@ export const colors = {
 };
 
 const styles = StyleSheet.create({
-  // Main container style
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
 
-  // Rating container style
-  ratingContainer: {
-    alignItems: 'center',
-    top: 20,
+  coverImage: {
+    width: '100%',
+    height: 200, 
   },
 
-  // Profile container style
-  profileContainer: {
+  profileInfoContainer: {
+    alignItems: 'center',
+    marginTop: -52, 
+    marginBottom:10,
+  },
+
+  settingsButtonContainer: {
+    position: 'absolute',
     top: 40,
+    right: 15,
+    zIndex: 100,
+  },
+
+  circleBackground: {
+    backgroundColor: 'white', 
+    borderRadius: 20, 
+    width: 40, 
+    height: 40, 
+    justifyContent: 'center',
+    alignItems: 'center', 
+    elevation: 5,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+  },
+
+  settingsIcon:{
+    width:25,
+    height:25,
+  },
+
+  postCardContainer: {
+    width: windowWidth * 0.95, 
+    alignSelf: 'center', 
+    marginBottom: 10, 
+  },
+
+  ratingAndReviewRow: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+  },
+
+  reviews:{
+    fontSize:17,
+  },
+
+  reviewPressable: {
+    marginLeft: 10, 
+  },
+
+  profileContainer: {
+    flexDirection: 'column', 
     alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  
+  userInfo: {
+    alignItems: 'center', 
   },
 
-  // Profile picture style
+  profilePictureContainer:{
+    alignContent:"center",
+    justifyContent:"center",
+    borderRadius: 50,
+    borderWidth: 12,  
+    borderColor: 'white', 
+    position: 'relative', 
+  },
+
+  editIconContainer: {
+    position: 'absolute', 
+    bottom: 0, 
+    right: 0, 
+    borderRadius: 15, 
+    padding: 2, 
+  },
+  editIcon: {
+    width: 20, 
+    height: 20,
+  },
+
+  profileAndRatingContainer: {
+    alignItems: 'center', 
+    marginBottom: 10, 
+  },
+
   profilePicture: {
-    width: 130,
-    height: 130,
-    borderRadius: 70,
-    borderWidth: 2,
-    borderColor: 'black',
+    width: 75,
+    height: 75,
+    borderRadius: 50,
   },
 
-  // User's name style
   name: {
-    fontSize: 24,
+    fontSize: 20,
     color: 'black',
-    fontWeight: '500',
-    marginTop: 15,
+    marginTop:5,
   },
 
-  // Location container style
+  location: {
+    fontSize: 15,
+    color: "grey",
+  },
+
+  reviews: {
+    fontSize: 16,
+    color:"#9ba5f1",   
+  },
+
   locationContainer: {
     flexDirection: 'row',
     marginTop: 5,
   },
 
-  // Location text style
-  location: {
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  tab: {
+    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+
+  selectedTab: {
+    borderBottomColor: '#F8B951', 
+    borderBottomWidth: 2
+  },
+
+  tabText: {
     fontSize: 16,
-    color: colors.mediumOrange,
-    marginLeft: 2,
   },
 
-  // Settings button style
-  settingsButton: {
-    position: 'absolute',
-  },
-
-  // Settings icon style
-  settingsIcon: {
-    width: 30,
-    height: 30,
-  },
-
-   // Centered posts container style
   centeredPostsContainer: {
-    flex: 1,
-    top: 20,
+    marginTop:10,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
-  // Container for multiple posts style
-  postsContainer: {
-    flexDirection: 'row',
-  },
-
-  // "Recent Posts" text style
   recentPostsText: {
     fontSize: 20,
     fontWeight: '500',
     color: 'black',
     marginBottom: 20,
+    alignSelf:"center"
   },
 
-  // Individual post container style
-  postContainer: {
-    width: windowWidth * 0.3,
-    height: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e8e8e8',
-    borderWidth: 2,
-    marginLeft: 5,
-    marginRight: 5,
-    borderRadius: 10,
-    shadowOpacity: 0.5,
-    shadowColor: 'black',
-    shadowRadius: 3,
-    shadowOffset: { width: 2, height: 2 },
+  rrecentPostsContainer: {
+    width: '100%', 
+    alignItems: 'center', 
   },
 
-  // "View All" button style
-  viewAllButton: {
-    alignItems: 'center',
-    backgroundColor: colors.lightOrange,
-    borderRadius: 10,
-    marginTop: 20,
-    height: 40,
-    width: 120,
+  postsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  postCardContainer: {
+    width: '50%', 
+    marginBottom: 10,
   },
 
-  // "View All" button text style
-  viewAllButtonText: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: 'white',
-    marginTop: 10,
+  settingsButtonContainer: {
+    position: 'absolute',
+    top: 13,
+    right: 20,
+    zIndex: 1,
+  },
+
+  settingsButton: {
+    height: 26,
+    width: 26,
+    resizeMode: 'contain',
+  },
+
+  noReviewsText:{
+    fontSize:18,
+    color:"grey",
+    textAlign:"center",
+    marginTop:10
   },
 });
 

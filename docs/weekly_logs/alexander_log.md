@@ -271,4 +271,67 @@
 |   1    |           |    ✓       |
 |   2    | ✓         |            |
 
+### Work Period
+ - January 22 - 28, 2024
+
+### Task Types
+![Alt text](img/ar_w16.png)
+
+### Recap of Students Goals
+
+- Front end Add Listing feature
+- Front end Post details feature
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/62f232a7-09fc-49a9-aba0-7cd4ed2b1157
+
+### Student Tasks on Project Board
+
+- #1 Add listing fe 
+- #2 Post details fe
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |     ✓     |            |
+|   2    |           |    ✓       |
+
+### Work Period
+ - January 29 - February 04, 2024
+
+### Task Types
+![Alt text](img/ar_w17.png)
+
+### Recap of Students Goals
+
+- Fixing issues discovered in peer testing
+- Front end Post details feature
+- Fixing issues before peer testing
+
+
+### Student Tasks on Project Board
+
+- #1 Sharing posts fe 
+- #2 Post details fe
+
+  
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/a403b794-33c9-4a89-bb8a-cdb7e2ab2a6f
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/f6e96346-3086-4a6d-b950-ed2bbd05bc5d
+
+
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |     ✓     |            |
+|   2    |           |    ✓       |
+
+
+
+
 
