@@ -34,6 +34,12 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
         onPress={() => navigation.navigate("Tabs", { screen: "Profile" })}
         isActive={activeRouteName === "Profile"}
       />
+       <DrawerItem
+        iconName="bar-chart"
+        label="Metrics"
+        onPress={() => navigation.navigate("Metrics")}
+        isActive={activeRouteName === "Metrics"}
+      />
       <DrawerItem
         iconName="settings"
         label="Settings"

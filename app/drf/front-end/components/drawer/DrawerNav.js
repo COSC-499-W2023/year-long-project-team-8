@@ -7,6 +7,7 @@ import SettingsPage from "../settingsPage/Settings";
 import Profile from "../profilePage/profilePage"; 
 import PostDetails from "../posts/PostDetails"; 
 import OtherProfile from "../othersProfile/OtherProfile"; 
+import Metrics from "../metrics/Metrics";
 
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
@@ -62,6 +63,19 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="Profile"
         component={Profile}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image source={customHamburgerIcon} style={{ width: 22, height: 22, marginLeft: 20 }} />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Metrics"
+        component={Metrics}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,

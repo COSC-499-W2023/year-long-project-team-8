@@ -91,33 +91,38 @@ const ProfilePage = ({ navigation }) => {
   };
 
   // Handle change pfp
-  const handleChangePfp = async () => {
-    // Request gallery permissions
-    const hasPermission = await requestGalleryPermission();
-    if (!hasPermission) return;
+  // Handle change profile picture
+const handleChangePfp = async () => {
+  // Request gallery permissions
+  const hasPermission = await requestGalleryPermission();
+  if (!hasPermission) return;
 
-    // Launch image picker
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1], // Ensures the cropped image is square
-      quality: 1,
-    });
+  // Launch image picker
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1], // Ensures the cropped image is square
+    quality: 1,
+  });
 
-    if (!result.canceled) {
-      // Handle the selected image URI
-      console.log(result.assets);
-      // Display the selected image in UI and prepare for upload
-      // TODO: Upload to server
-      try {
-        await updateProfilePicture(userId, authTokens, result);
-        await updateProfilePic();
-      } catch (error) {
-        // Handle error if createProductImages fails
-        console.error("Error updating profile picture images:", error);
-      }
+  if (!result.canceled) {
+    // Access the selected asset through the "assets" array
+    const asset = result.assets[0]; // Assuming a single image is picked
+
+    console.log(asset);
+
+    // Display the selected image in UI and prepare for upload
+    // Note: Ensure your updateProfilePicture function is adapted to handle the new asset structure
+    try {
+      await updateProfilePicture(userId, authTokens, asset); // Pass the single asset instead of the entire result
+      await updateProfilePic();
+    } catch (error) {
+      // Handle error if updateProfilePicture fails
+      console.error("Error updating profile picture:", error);
     }
-  };
+  }
+};
+
 
   // TODO: Requests permission to access the device's location and fetches the current location.
 

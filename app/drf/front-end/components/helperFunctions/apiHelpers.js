@@ -271,37 +271,39 @@ async function createProductImages(productData, imageFiles, authTokens) {
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
     const formData = new FormData();
+    // Use only the uri, type, and name properties for the image
     formData.append("profile_picture", {
       uri: imageFile.uri,
-      type: imageFile.type,
-      name: `profile_picture_${userId}.jpg`, // Use template literals correctly
+      type: 'image/jpeg', // Assuming the image is JPEG, change accordingly if needed
+      name: `profile_picture_${userId}.jpg`,
     });
 
     const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
-      method: "PATCH", // Using PATCH for partial updates
+      method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + String(authTokens.access),
+        Authorization: `Bearer ${authTokens.access}`,
       },
       body: formData,
     });
 
-    if (response.status === 200) {
+    if (response.ok) {
       const userData = await response.json();
-      return userData; // Return the updated data to the caller
+      return userData; // Return the updated user data
     } else {
-      throw new Error(
-        `Something went wrong! File: apiHelpers.js - updateProfilePicture()`
-      );
+      // Handle non-200 responses
+      const errorText = await response.text();
+      throw new Error(`Failed to update profile picture: ${errorText}`);
     }
   } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Something went wrong uploading Profile Picture!");
+    console.error("Error updating profile picture:", error);
+    throw new Error("Something went wrong updating Profile Picture!");
   }
 }
 
-//TODO: Fix for fetching only products for that user
+
+
 async function getProductListById(authTokens, userId) {
   try {
     const response = await fetch(`${baseEndpoint}/products/?owner=${userId}`, {
