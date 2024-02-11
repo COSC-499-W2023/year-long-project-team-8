@@ -105,19 +105,22 @@ const ProfilePage = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      // Handle the selected image URI
-      console.log(result.assets);
+      // Access the selected asset through the "assets" array
+      const asset = result.assets[0]; 
+
+      console.log(asset);
+
       // Display the selected image in UI and prepare for upload
-      // TODO: Upload to server
       try {
-        await updateProfilePicture(userId, authTokens, result);
+        await updateProfilePicture(userId, authTokens, asset); // Pass the single asset instead of the entire result
         await updateProfilePic();
       } catch (error) {
-        // Handle error if createProductImages fails
-        console.error("Error updating profile picture images:", error);
+        // Handle error if updateProfilePicture fails
+        console.error("Error updating profile picture:", error);
       }
     }
   };
+
 
   // TODO: Requests permission to access the device's location and fetches the current location.
 
