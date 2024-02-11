@@ -270,12 +270,31 @@ async function createProductImages(productData, imageFiles, authTokens) {
 
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
+    // Extract the file extension from the URI
+    const fileExtension = imageFile.uri.split('.').pop();
+    let mimeType = 'image/jpeg'; // Default MIME type
+
+    // Determine the MIME type based on the file extension
+    switch (fileExtension.toLowerCase()) {
+      case 'png':
+        mimeType = 'image/png';
+        break;
+      case 'jpg':
+      case 'jpeg':
+        mimeType = 'image/jpeg';
+        break;
+      case 'gif':
+        mimeType = 'image/gif';
+        break;
+        
+      // Add more cases for other file types if necessary
+    }
+
     const formData = new FormData();
-    // Use only the uri, type, and name properties for the image
     formData.append("profile_picture", {
       uri: imageFile.uri,
-      type: 'image/jpeg', // Assuming the image is JPEG, change accordingly if needed
-      name: `profile_picture_${userId}.jpg`,
+      type: mimeType, // Set the determined MIME type
+      name: `profile_picture_${userId}.${fileExtension}`, // Use the actual file extension
     });
 
     const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
@@ -301,6 +320,7 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
     throw new Error("Something went wrong updating Profile Picture!");
   }
 }
+
 
 
 //TODO: Fix for fetching only products for that user
