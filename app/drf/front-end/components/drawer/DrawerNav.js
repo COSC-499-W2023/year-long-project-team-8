@@ -102,7 +102,7 @@ const DrawerNav = () => {
             </TouchableOpacity>
           ),
         })}
-      />=
+      />
       {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="OtherProfile"

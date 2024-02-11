@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
-const ChatComponent = ({ navigation, initialMessage = "Hi! Can I get this plate?", listing}) => {
+const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
   const [chatId, setChatId] = useState('');

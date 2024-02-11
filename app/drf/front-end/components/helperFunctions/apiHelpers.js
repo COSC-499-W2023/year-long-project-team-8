@@ -345,6 +345,13 @@ async function sendChatMessage(userId, authTokens, newMessage, receiver, product
       return data;
     } else {
       throw new Error("Error sending chat message API");
+    }
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+  }
+}
+
 
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
@@ -416,5 +423,5 @@ export {
   getChatList,
   getChatMessages,
   sendChatMessage,
-  getProductListById
+  getProductListById,
 };
