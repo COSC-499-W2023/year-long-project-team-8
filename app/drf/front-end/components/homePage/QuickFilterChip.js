@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     elevation:3
   },
   chipSelected: {
-    backgroundColor: '#3381ff',
+    backgroundColor: '#eb9e34',
   },
   chipText: {
     color: '#000',
