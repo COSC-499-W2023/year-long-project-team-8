@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { View, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Text, Alert  } from 'react-native';
 import CustomText from '../CustomText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -93,6 +93,15 @@ const PostCard = ({ post, onPress }) => {
     </TouchableOpacity>
   );
 
+  useEffect(() => {
+    // Start the rotation animation based on the visibility of the dropdown
+    Animated.timing(rotateAnim, {
+      toValue: dropdownVisible ? 1 : 0, // Rotate to 180deg if visible, else rotate back to 0deg
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [dropdownVisible]);
+
   return (
     <>
       <TouchableOpacity onPressIn={onCardPressIn} onPressOut={onCardPressOut} onPress={onPress} activeOpacity={1}>
@@ -101,7 +110,7 @@ const PostCard = ({ post, onPress }) => {
 
           {/* Edit button */}
           <TouchableOpacity onPress={onToggleDropdown} style={styles.editButton} activeOpacity={1}>
-            <CustomText style={styles.editButtonText}>Actions</CustomText>
+            <CustomText style={styles.editButtonText}>Options</CustomText>
             <Animated.View
               style={{
                 transform: [{ rotate: rotationDegree }],
