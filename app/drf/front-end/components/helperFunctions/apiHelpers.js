@@ -326,6 +326,28 @@ async function getProductListById(authTokens, userId) {
   }
 }
 
+async function deletePost(postId, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/posts/${postId}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
+      },
+    });
+
+    if (response.status === 204) {
+      console.log("Post deleted successfully");
+    } else {
+      // Handle error response
+      throw new Error("Failed to delete post");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong while deleting the post");
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -337,4 +359,5 @@ export {
   createProductImages,
   getProductListById,
   updateProfilePicture,
+  deletePost
 };
