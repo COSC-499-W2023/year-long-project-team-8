@@ -331,6 +331,44 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/f6e96
 |   1    |     ✓     |            |
 |   2    |           |    ✓       |
 
+### Work Period
+ - February 5 - February 11, 2024
+
+### Task Types
+![Alt text](img/ar_w18.png)
+
+### Recap of Students Goals
+
+- Profile page user front end
+- Profile page other users front end
+- Modal enhance in homepage
+- Edit posts
+- Homepage quick filter tags
+- Homepage Mystery Meal
+
+  
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/d1396aa4-1fe8-404b-98b7-7fb4b51a6c78
+
+
+
+
+### Student Tasks on Project Board
+
+- #1 Edit post details
+- #2 Display user's reviews fe
+- #3 Filtering and ordering posts
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |   ✓        |
+|   2    |    ✓     |            |
+|   3    |    ✓      |            |
+
+
 
 
 
