@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { Rating } from "@kolking/react-native-rating";
-import PostCard from "../profilePage/PostCard";
+import PostCardOther from "./PostCardOther";
 import { getUserData, getProductListById } from "../helperFunctions/apiHelpers";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
@@ -177,7 +177,7 @@ const OtherProfile = ({ route, navigation }) => {
       >
         {userPosts.map((post, index) => (
           <View key={index} style={styles.postCardContainer}>
-            <PostCard
+            <PostCardOther
               post={post}
               onPress={() =>
                 navigation.navigate("PostDetails", { listing: post })
