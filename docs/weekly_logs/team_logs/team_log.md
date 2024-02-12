@@ -1112,6 +1112,8 @@ February 05 - February 11, 2024
 - [x] [#236](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/236)
 - [x] [#238](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/238)
 - [x] [#239](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/239)
+- [x] [#219](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/219)
+- [x] [#225](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/225)
 
 ### In Progress Tasks
 
@@ -1128,6 +1130,8 @@ February 05 - February 11, 2024
 - #135 Automated testing with GitHub issues
 - #240 Clean up chat list and user messages
 - #235 deletion of chat if product is marked as picked up or deleted
+- #225 Display user's reviews fe
+- #219 Filtering and ordering posts
 
 
 ### Burnup Chart
