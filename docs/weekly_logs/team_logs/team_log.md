@@ -1105,6 +1105,10 @@ February 05 - February 11, 2024
 
 - [x] [#242](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/242)
 - [x] [#196](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/196)
+- [x] [#186](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/186)
+- [x] [#236](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/236)
+- [x] [#238](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/238)
+- [x] [#239](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/239)
 
 ### In Progress Tasks
 
@@ -1118,10 +1122,10 @@ February 05 - February 11, 2024
 - #162 Change password in Profile page
 - #165 Chat API tests
 - #187 Initiate chat instance between sender and receiver from Product details page
-- #186 Create chat list within chat page
 - #135 Automated testing with GitHub issues
-- front end post details
-- refactor review unit test
+- #240 Clean up chat list and user messages
+- #235 deletion of chat if product is marked as picked up or deleted
+
 
 ### Burnup Chart
 
