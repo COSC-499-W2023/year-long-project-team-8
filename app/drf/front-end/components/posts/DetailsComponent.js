@@ -14,6 +14,9 @@ const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture }) 
     console.log('Navigate to review!');
   };
 
+  const reviewText = reviews === 1 ? "review" : "reviews";
+
+
   return (
     <View style={styles.giverDetailsContainer}>
       <CustomText style={styles.giverTitle} fontType={"title"}>Giver</CustomText>
@@ -32,7 +35,7 @@ const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture }) 
              />
             <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
             <TouchableOpacity onPress={onReviewsPress}>
-              <CustomText style={styles.reviews} fontType={"text"}>({reviews} reviews)</CustomText>
+              <CustomText style={styles.reviews} fontType={"text"}>({reviews} {reviewText})</CustomText>
             </TouchableOpacity>
           </View>
         </View>

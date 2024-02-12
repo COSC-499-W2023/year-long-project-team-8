@@ -12,13 +12,19 @@ export const useAppState = () => {
 
 export const AppStateProvider = ({ children }) => {
   const [postCreated, setPostCreated] = useState(false);
+  const [profilePicUpdated, setProfilePicUpdated] = useState(false);
 
   const updatePostCreated = () => {
     setPostCreated((prevPostCreated) => !prevPostCreated);
   };
+  const updateProfilePic = () => {
+    setProfilePicUpdated((prevPicCreated) => !prevPicCreated);
+  };
   const value = {
     postCreated,
     updatePostCreated,
+    profilePicUpdated,
+    updateProfilePic,
   };
 
   return (

@@ -19,7 +19,7 @@ const CustomText = ({ fontType, style, children, ...rest }) => {
   }, []);
 
   if (!fontLoaded) {
-    return null; // or some placeholder while fonts are loading
+    return null; // placeholder while fonts are loading
   }
 
   // Determine the font family based on the fontType prop

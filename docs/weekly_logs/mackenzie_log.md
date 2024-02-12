@@ -651,3 +651,45 @@ January 29, 2023 - February 04, 2023
 ### Gauged effort
 
 - This week's effort and implementation was on par with expectations. I was able to implement a new feature, profile picture handling in the backend, supported by test cases, and implemented an API call to update the user's info with profile picture data. This is now ready for plug and chug when the front-end is set up.
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 5, 2023 - February 11, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk_t2_w5.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] integrate profile picture logic into front end
+- [x] allow posts to be filtered by id (backend)
+- [x] integrate post filtering in front end (Alex did most of the work, just wrapping up loose ends)
+- [x] refactor global state to listen for profile picture update and re-render on change
+- [x] unit testing
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#242](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/242)
+- [x] [#196](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/196)
+-
+
+### Gauged effort
+
+- This week's effort and implementation was on par with expectations. I was able to implement a 2 new features, profile picture handling in the font end (big portion was Alex, I just connected some API calls and other logic to update), and filter posts by owner ID, supported by test cases. Minimal code contributions for adding filtering, but necessary for app functionality. Getting profile picture to re-render when changed went smooth as I followed the same logic for adding images to posts.

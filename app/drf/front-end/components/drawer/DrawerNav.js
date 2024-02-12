@@ -1,13 +1,13 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Tabs from "../tabs/BottomTabs";
-import DrawerProps from "./DrawerProps.js";
-import SettingsPage from "../settingsPage/Settings";
-import Profile from "../profilePage/profilePage.js";
-import PostDetails from "../posts/PostDetails.js";
+import Tabs from "../tabs/BottomTabs"; 
+import DrawerProps from "./DrawerProps"; 
+import SettingsPage from "../settingsPage/Settings"; 
+import Profile from "../profilePage/profilePage"; 
+import PostDetails from "../posts/PostDetails"; 
+import OtherProfile from "../othersProfile/OtherProfile"; 
 
-// Assets for icons and logos
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -15,19 +15,36 @@ const backArrowIcon = require('../../assets/icons/back-arrow.png');
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNav = () => {
+const DrawerNav = ({ navigation }) => {
+
+  // Function to determine the active route name
+  const getActiveRouteName = (navigationState) => {
+    if (!navigationState) {
+      return null;
+    }
+    const route = navigationState.routes[navigationState.index];
+    // Dive into nested navigators
+    if (route.state) {
+      return getActiveRouteName(route.state);
+    }
+    return route.name;
+  };
+  
+
+  const activeRouteName = getActiveRouteName(navigation.getState());
+
   return (
     <Drawer.Navigator
       initialRouteName="Tabs"
-      drawerContent={(props) => <DrawerProps {...props} />}
+      drawerContent={(props) => <DrawerProps {...props} activeRouteName={activeRouteName} />}      
       screenOptions={{
-        swipeEnabled: true, // Consider enabling swipe for a more intuitive navigation experience
+        swipeEnabled: true, 
       }}
     >
       <Drawer.Screen
         name="Tabs"
         component={Tabs}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           headerTitleAlign: "center",
           headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
           headerLeft: () => (
@@ -81,6 +98,16 @@ const DrawerNav = () => {
               <Image source={backArrowIcon} style={{ width: 25, height: 25, marginLeft: 20 }} />
             </TouchableOpacity>
           ),
+        })}
+      />
+      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
+      <Drawer.Screen
+        name="OtherProfile"
+        component={OtherProfile}
+        options={({ navigation }) => ({
+          drawerItemStyle: { display: 'none' },
+          headerTitleAlign: "center",
+          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
         })}
       />
     </Drawer.Navigator>

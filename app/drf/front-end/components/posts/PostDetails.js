@@ -41,6 +41,7 @@ const PostDetails = ({ route, navigation }) => {
     fetchUserDetails();
   }, [listing.owner]);
 
+
   const getDisplayName = () => {
     if (userDetails) {
       return userDetails.firstname || userDetails.email.split('@')[0];
@@ -53,7 +54,7 @@ const PostDetails = ({ route, navigation }) => {
 
   //get user rating from userDetails or set to 5 if null
   const userRating = userDetails && userDetails.rating ? parseFloat(userDetails.rating).toFixed(1) : '5.0';
-
+  
 
   // function to reset fields when user navigates out of listing
   useFocusEffect(
@@ -84,10 +85,12 @@ const PostDetails = ({ route, navigation }) => {
           </CustomText>
 
           {/*Chat Section*/}
-          <ChatComponent
-            initialMessage="Hi! Can I get this plate?"
-            listing = {listing}
+          <ChatComponent 
+            navigation={navigation} 
+            initialMessage="Hi! Can I get this plate?" 
+            listing={listing} 
           />
+
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />
@@ -104,8 +107,8 @@ const PostDetails = ({ route, navigation }) => {
           <DetailsComponent
             displayName={displayName}
             rating={userRating} 
-            reviews={8}
-            userProfilePicture={userDetails && userDetails.picture ? userDetails.picture : null}
+            reviews={userDetails && userDetails.received_reviews ? userDetails.received_reviews.length : 0}
+            userProfilePicture={userDetails && userDetails.profile_picture ? userDetails.profile_picture : null}
           />
         
           {/* Conditionally display allergens */}
