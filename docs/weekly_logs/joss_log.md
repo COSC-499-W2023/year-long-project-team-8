@@ -571,10 +571,10 @@
 |   10  |           ✓     |      |
 
 ### Work Period
- - January 29 - Feb 11, 2024
+ - Feb 5 - Feb 11, 2024
 
 ### Individual Peer Evaluation
-![Alt text](img/t2week_45_eval_joss.png)
+![Alt text](img/t2week_5_eval_joss.png)
 
 ### Recap of Students Goals
 <!--
@@ -620,9 +620,9 @@
 |   3  |       ✓     |          |
 |   4 |       ✓     |          |
 |   5   |     ✓       |          |
-|   6 |           |      ✓     |
+|   6 |        ✓     |         |
 |   7  |           |      ✓     |
-|   8 |          ✓      |         |
-|   9  |          ✓      |         |
+|   8 |               |     ✓     |
+|   9  |              |       ✓    |
 
 
