@@ -1060,3 +1060,84 @@ January 29 - February 04, 2024
 ![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 05 - February 11, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- Refactor Profile page for continuity with App design
+- Implement profile picture updating
+- Profile page displays user's posts
+-
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#242](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/242)
+- [x] [#196](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/196)
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #21 link slider and modal on home page
+- #20 calculate the distance from the users location to a post
+- #183 fix issues that arose with the map on android
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #186 Create chat list within chat page
+- #135 Automated testing with GitHub issues
+- front end post details
+- refactor review unit test
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w5-backend-test.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
