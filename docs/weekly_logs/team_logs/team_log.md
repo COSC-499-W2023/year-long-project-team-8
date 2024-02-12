@@ -1074,6 +1074,7 @@ February 05 - February 11, 2024
 <!--
 - screenshot of the projects board
 -->
+![Alt text](../img/t2_projboard_w5.png)
 
 ### Username Map
 
@@ -1121,9 +1122,6 @@ February 05 - February 11, 2024
 - tasks that are currently in progress
 -->
 
-- #21 link slider and modal on home page
-- #20 calculate the distance from the users location to a post
-- #183 fix issues that arose with the map on android
 - #162 Change password in Profile page
 - #165 Chat API tests
 - #187 Initiate chat instance between sender and receiver from Product details page
@@ -1132,6 +1130,9 @@ February 05 - February 11, 2024
 - #235 deletion of chat if product is marked as picked up or deleted
 - #225 Display user's reviews fe
 - #219 Filtering and ordering posts
+- move map feature to the bottom of the pages #246
+- add more functionality to the map page #247
+- make the edit profile page look more similar to the rest of the pages #248
 
 
 ### Burnup Chart
@@ -1139,6 +1140,8 @@ February 05 - February 11, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+![burnup-chart](../img/t2_burnup_w5.png)
+
 
 ### Test Report
 
