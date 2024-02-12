@@ -1095,7 +1095,10 @@ February 05 - February 11, 2024
 - Refactor Profile page for continuity with App design
 - Implement profile picture updating
 - Profile page displays user's posts
--
+- Further chat backend testing
+- Clean up chat list an duser messages to display relevant formatted data
+- deletion of chat if product as marked as picked up or deleted
+- Change password feature within profile page
 
 ### Completed Tasks
 
