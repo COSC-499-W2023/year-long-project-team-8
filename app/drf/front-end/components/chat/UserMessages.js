@@ -10,6 +10,8 @@ const UserMessages = ({route, navigation}) => {
   const [newMessage, setNewMessage] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
   const chatId = route.params?.chatId; 
+  const receiver = route.params?.receiver;
+  const product = route.params?.product;
   //const chatId = 4;
 
   useEffect(() => {
@@ -49,7 +51,7 @@ const UserMessages = ({route, navigation}) => {
 
   const sendMessage = async () => {
     try {
-      const data = await sendChatMessage(userId, authTokens, newMessage);
+      const data = await sendChatMessage(userId, authTokens, newMessage, receiver, product);
       setMessages([...messages, data]);
       setNewMessage('');
     } catch (error) {
