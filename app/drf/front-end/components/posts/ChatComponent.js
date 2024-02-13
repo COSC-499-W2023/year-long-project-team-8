@@ -16,6 +16,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const navigation = useNavigation();
   const chatListing = listing;
   const prodOwner = listing.owner;
+  const product_id = listing.id;
   console.log("Chat listing", chatListing);
   console.log("Product owner (receiver)", prodOwner);
   const chat = require("../../assets/icons/speech-bubble.png");
@@ -30,6 +31,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         const chats = await getChatList(authTokens);
         console.log("CHats obtained from getChatList", chats);
         console.log("Prod owner", prodOwner);
+        console.log("product id", product_id);
         // Find the chat with the matching userId and listing owner
         const chat = chats.find(chat => chat.receiver === prodOwner);
         console.log("chat from product owner in prod details:", chat);
@@ -40,6 +42,9 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
           setProduct(chat.product);
         } else {
           console.warn('No chat found for the specified user and listing owner');
+          setChatId('');
+          setReceiver(prodOwner);
+          setProduct(product_id);
         }
       } catch (error) {
         console.error('Error fetching chat ID:', error);
@@ -51,6 +56,8 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
 
   const handleSend = async () => {
     console.log("Message to send:", messages);
+
+    if(chatId != ''){
     try {
       const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
       setMessages([...messages, data]);
@@ -61,6 +68,21 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
     //need to change this to navigate to correct chatId
     console.log("Chat id", chatId);
     navigation.navigate('UserMessages', {chatId : chatId});
+    setChatId('');
+  } else {
+    try {
+      const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
+      setMessages([...messages, data]);
+      setMessages(initialMessage);
+      //Setting chatId of new chat
+      setChatId(data.id);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+    //need to change this to navigate to correct chatId
+    navigation.navigate('UserMessages', {chatId : chatId});
+    
+  }
     
   };
 
