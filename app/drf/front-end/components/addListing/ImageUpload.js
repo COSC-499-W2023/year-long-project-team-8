@@ -13,7 +13,7 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
   const showAlert = () => setAlertVisible(true);
 
   const handleImagePick = async () => {
-    if (images.length >= 3) {
+    if (images.length >= 6) {
       showAlert();
       return;
     }
@@ -83,7 +83,7 @@ const ImageUpload = ({ images, setImages, isFieldMissing }) => {
         >
           <View style={styles.alertModalView}>
             <CustomText style={styles.modalText}>
-              Ups! You can upload up to 3 pictures
+              Ups! You can upload up to 6 pictures
             </CustomText>
             <TouchableOpacity
               style={styles.buttonClose}

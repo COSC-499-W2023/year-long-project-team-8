@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import { deletePost } from '../helperFunctions/apiHelpers';
 import AuthContext from "../../context/AuthContext";
-
+import { useNavigation } from '@react-navigation/native'; 
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -16,6 +16,7 @@ const PostCard = ({ post, onPress }) => {
   const rotateAnim = useRef(new Animated.Value(0)).current; // Initial value for rotation: 0 degrees
   const [isModalVisible, setModalVisible] = useState(false);
   const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
+  const navigation = useNavigation(); // Use the useNavigation hook to get navigation prop
 
 
   const onToggleDropdown = () => {
@@ -60,7 +61,7 @@ const PostCard = ({ post, onPress }) => {
 
   // TODO: handle the edit action
   const handleEdit = () => {
-    console.log("Edit action");
+    navigation.navigate('EditPost', { post: post }); 
     setDropdownVisible(false); 
   };
 

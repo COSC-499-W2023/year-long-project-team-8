@@ -7,6 +7,7 @@ import SettingsPage from "../settingsPage/Settings";
 import Profile from "../profilePage/profilePage"; 
 import PostDetails from "../posts/PostDetails"; 
 import OtherProfile from "../othersProfile/OtherProfile"; 
+import EditPost from "../editPost/EditPost";
 
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
@@ -104,6 +105,16 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="OtherProfile"
         component={OtherProfile}
+        options={({ navigation }) => ({
+          drawerItemStyle: { display: 'none' },
+          headerTitleAlign: "center",
+          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+        })}
+      />
+      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
+      <Drawer.Screen
+        name="EditPost"
+        component={EditPost}
         options={({ navigation }) => ({
           drawerItemStyle: { display: 'none' },
           headerTitleAlign: "center",
