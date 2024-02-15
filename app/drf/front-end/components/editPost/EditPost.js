@@ -9,7 +9,6 @@ import TitleInput from './TitleInput';
 import DescriptionInput from './DescriptionInput'; 
 import CategoriesSelector from './CategoriesSelector'; 
 import AllergensSelector from './AllergensSelector'; 
-import ImageHandler from './ImageHandler';
 import CustomText from '../CustomText';
 import SubmitButton from './SubmitButton'; 
 import CancelButton from './CancelButton'; 
@@ -32,8 +31,8 @@ const EditPost = () => {
     const [content, setContent] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedAllergens, setSelectedAllergens] = useState([]);
+    const [imageModalVisible, setImageModalVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [isModalVisible, setModalVisible] = useState(false);
     const [bestBefore, setBestBefore] = useState('');
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date(post.best_before));
@@ -179,6 +178,28 @@ useFocusEffect(
     navigation.goBack();
   };
 
+  const onImagePress = (img, index) => {
+    setSelectedImage(img); // Store the entire image object
+    setImageModalVisible(true); // Show the modal
+  };
+  
+  
+
+  // Function to close the image modal
+  const handleCloseModal = () => {
+      setImageModalVisible(false);
+  };
+
+  // Function to handle image deletion
+  const handleDeleteImageModal = () => {
+    if (selectedImage && selectedImage.image) {
+      const updatedImages = images.filter(img => img.image !== selectedImage.image);
+      setImages(updatedImages);
+    }
+    setImageModalVisible(false);
+  };
+  
+
   const handleReset = () => {
     // Reset title, content, categories, allergens, and best before date
     setTitle(post.title);
@@ -197,9 +218,6 @@ useFocusEffect(
   
     // Reset images
     setImages(post.images || []);
-  
-    // Scroll to the top of the ScrollView
-    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
   };
   
 
@@ -249,10 +267,10 @@ useFocusEffect(
                   </TouchableOpacity>
                 )}
               </View>
-              <ImageGrid images={images} onChangeImage={handleChangeImage} onDeleteImage={handleDeleteImage} />
+              <ImageGrid images={images} onChangeImage={handleChangeImage} onDeleteImage={handleDeleteImage} onImagePress={onImagePress}/>
             </View>
 
-            {/*Multiple Image Picker Modal */}
+            {/*Multiple Image Picker Modal TODO: Theme */}
             <Modal
               visible={isPickerOpen}
               animationType="slide"
@@ -274,6 +292,22 @@ useFocusEffect(
             {/*Cancel*/}
             <CancelButton handleCancel={handleReset} />
 
+            <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
+              <View style={styles.modalView}>
+              <Image
+                source={{ uri: selectedImage?.image }} 
+                style={styles.modalImage}
+              />
+                  <View style={styles.modalButtonContainer}>
+                      <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
+                          <CustomText style={styles.modalButtonText}>CHANGE</CustomText>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
+                          <CustomText style={styles.modalButtonTextDelete}>DELETE</CustomText>
+                      </TouchableOpacity>
+                  </View>
+              </View>
+            </Modal>
 
         </ScrollView>
     </TouchableWithoutFeedback>

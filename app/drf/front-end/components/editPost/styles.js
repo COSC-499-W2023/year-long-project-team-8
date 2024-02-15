@@ -136,41 +136,45 @@ const styles = StyleSheet.create({
     section:{
         marginBottom:10,
     },
+    // Style for the modal background and positioning
     modalView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.89)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     },
-    imageWrapper: {
-        justifyContent: 'center',
-        alignItems: 'center'  
+
+    // Style for the image displayed inside the modal
+    modalImage: {
+        width: 300, // Fixed width
+        height: 300, // Set a fixed height or use a flexible option
+        resizeMode: 'contain', // Keep the aspect ratio
+        marginBottom: 20,
       },
-      modalImage: {
-        width: 500, 
-        height: 240,
-      },
-    closeButton: {
-        position: 'absolute',
-        top: 40,
-        right: 20,
+      
+
+    // Container for the buttons to ensure proper layout
+    modalButtonContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        width: '80%', 
     },
-    modalOptions: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        marginTop: 20,
+
+    // Style for the buttons (Close and Delete)
+    modalButton: {
+        padding: 10, // Button padding for touch area
+        width: 200, // Minimum width for the buttons to ensure they are not too narrow
+        justifyContent: 'center', // Center the text or icon inside the button
+        alignItems: 'center', // Center the text or icon inside the button
     },
-    modalOptionText: {
-        color: '#fff',
-        fontSize: 18,
-        padding: 10,
+    modalButtonText:{
+        color:"white",
+        fontSize:18,    
     },
-    modalOptionTextDelete:{
-        color: '#d9363e',
-        fontSize: 18,
-        padding: 10,
-    },
-});
+    modalButtonTextDelete:{
+        color:"#f73e47",
+        fontSize:18
+    }
+    });
 
 export default styles;
