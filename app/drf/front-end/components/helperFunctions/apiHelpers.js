@@ -271,22 +271,22 @@ async function createProductImages(productData, imageFiles, authTokens) {
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
     // Extract the file extension from the URI
-    const fileExtension = imageFile.uri.split('.').pop();
-    let mimeType = 'image/jpeg'; // Default MIME type
+    const fileExtension = imageFile.uri.split(".").pop();
+    let mimeType = "image/jpeg"; // Default MIME type
 
     // Determine the MIME type based on the file extension
     switch (fileExtension.toLowerCase()) {
-      case 'png':
-        mimeType = 'image/png';
+      case "png":
+        mimeType = "image/png";
         break;
-      case 'jpg':
-      case 'jpeg':
-        mimeType = 'image/jpeg';
+      case "jpg":
+      case "jpeg":
+        mimeType = "image/jpeg";
         break;
-      case 'gif':
-        mimeType = 'image/gif';
+      case "gif":
+        mimeType = "image/gif";
         break;
-        
+
       // Add more cases for other file types if necessary
     }
 
@@ -321,8 +321,6 @@ async function updateProfilePicture(userId, authTokens, imageFile) {
   }
 }
 
-
-
 //TODO: Fix for fetching only products for that user
 async function getProductListById(authTokens, userId) {
   try {
@@ -348,6 +346,92 @@ async function getProductListById(authTokens, userId) {
   }
 }
 
+async function updateProduct(productData, imageFiles, authTokens, productId) {
+  try {
+    const formData = new FormData();
+
+    // Append product data as fields in the FormData
+    Object.keys(productData).forEach((key) => {
+      formData.append(key, productData[key]);
+    });
+
+    // Append image files to the FormData
+    if (imageFiles) {
+      await Promise.all(
+        imageFiles.map(async (fileUri, index) => {
+          // Generate a unique filename using a combination of index and a unique identifier
+          const uniqueFilename = `image_${index}_${Math.random()
+            .toString(36)
+            .substring(7)}.jpg`;
+
+          // Convert local URI to file content
+          const fileContent =
+            Platform.OS === "ios"
+              ? await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.Base64,
+                })
+              : await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.UTF8,
+                });
+
+          formData.append("images", {
+            uri: fileUri,
+            type: "image/jpeg", // Adjust the type if needed
+            name: uniqueFilename,
+            data: fileContent, // Add the file content here
+          });
+        })
+      );
+    }
+    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error("Error:", errorData);
+      throw new Error("Failed to create product");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong creating post with images");
+  }
+}
+
+async function deleteProduct(authTokens, productId) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("successful delete");
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error("Error:", errorData);
+      throw new Error("Failed to delete product");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong deleting product");
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -359,4 +443,6 @@ export {
   createProductImages,
   getProductListById,
   updateProfilePicture,
+  updateProduct,
+  deleteProduct,
 };
