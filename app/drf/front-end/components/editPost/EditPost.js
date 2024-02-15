@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, Modal, View} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -9,12 +9,9 @@ import TitleInput from './TitleInput';
 import DescriptionInput from './DescriptionInput'; 
 import CategoriesSelector from './CategoriesSelector'; 
 import AllergensSelector from './AllergensSelector'; 
-import CustomText from '../CustomText';
 import SubmitButton from './SubmitButton'; 
 import CancelButton from './CancelButton'; 
-import { ImagePicker } from 'expo-image-multiple-picker';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageGrid from './ImageGrid'; 
+import ImagePickerComponent from './ImagePickerComponent';
 import styles from './styles';
 
 const EditPost = () => {
@@ -31,36 +28,13 @@ const EditPost = () => {
     const [content, setContent] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedAllergens, setSelectedAllergens] = useState([]);
-    const [imageModalVisible, setImageModalVisible] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
     const [bestBefore, setBestBefore] = useState('');
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date(post.best_before));
     const [images, setImages] = useState(post.images || []);
-    const [isPickerOpen, setIsPickerOpen] = useState(false);    const tomorrow = new Date();
+    const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const backArrowIcon = require('../../assets/icons/back-arrow.png');
-
-  // Handlers for the image picker
-  const handleImageSave = (selectedImages) => {
-    const newImages = selectedImages.map(img => ({ image: img.uri }));
-    setImages([...images, ...newImages]);
-    setIsPickerOpen(false);
-  };
-
-  const handleImageCancel = () => {
-    setIsPickerOpen(false);
-  };
-
-  // Image change and delete logic
-  const handleChangeImage = async (index) => {
-    // ImagePicker logic for changing an image
-  };
-
-  const handleDeleteImage = (index) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);
-  };
 
     // Function to handle date change
     const handleDateChange = (event, selectedDate) => {
@@ -139,7 +113,6 @@ useFocusEffect(
       return () => {
         // This function will be called when the screen goes out of focus
         // Reset the fields to their initial state
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
         setTitle('');
         setContent('');
         setSelectedCategories([]);
@@ -173,32 +146,8 @@ useFocusEffect(
     // Reset images
     setImages(post.images || []);
   
-    // Scroll to the top of the ScrollView
-    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
     navigation.goBack();
   };
-
-  const onImagePress = (img, index) => {
-    setSelectedImage(img); // Store the entire image object
-    setImageModalVisible(true); // Show the modal
-  };
-  
-  
-
-  // Function to close the image modal
-  const handleCloseModal = () => {
-      setImageModalVisible(false);
-  };
-
-  // Function to handle image deletion
-  const handleDeleteImageModal = () => {
-    if (selectedImage && selectedImage.image) {
-      const updatedImages = images.filter(img => img.image !== selectedImage.image);
-      setImages(updatedImages);
-    }
-    setImageModalVisible(false);
-  };
-  
 
   const handleReset = () => {
     // Reset title, content, categories, allergens, and best before date
@@ -219,8 +168,6 @@ useFocusEffect(
     // Reset images
     setImages(post.images || []);
   };
-  
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -258,56 +205,16 @@ useFocusEffect(
             />
 
             {/*Images*/}
-            <View style={styles.section}>
-              <View style={styles.imageSection}>
-                <CustomText style={styles.title}>Images</CustomText>
-                {images.length < 6 && (
-                  <TouchableOpacity style={styles.addIconContainer} onPress={() => setIsPickerOpen(true)}>
-                    <MaterialIcons name="add" size={26} color="#000" />
-                  </TouchableOpacity>
-                )}
-              </View>
-              <ImageGrid images={images} onChangeImage={handleChangeImage} onDeleteImage={handleDeleteImage} onImagePress={onImagePress}/>
-            </View>
-
-            {/*Multiple Image Picker Modal TODO: Theme */}
-            <Modal
-              visible={isPickerOpen}
-              animationType="slide"
-              onRequestClose={() => setIsPickerOpen(false)}
-              transparent={false}
-            >
-              <ImagePicker
-                onSave={handleImageSave}
-                onCancel={handleImageCancel}
-                limit={6 - images.length}
-                mediaType="photo"
-                multiple
-              />
-            </Modal>
+            <ImagePickerComponent
+              images={images}
+              onImagesUpdated={(newImages) => setImages(newImages)}
+            />
 
             {/*Submit*/}
             <SubmitButton handleUpdatePost={handleUpdatePost} />
 
             {/*Cancel*/}
             <CancelButton handleCancel={handleReset} />
-
-            <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
-              <View style={styles.modalView}>
-              <Image
-                source={{ uri: selectedImage?.image }} 
-                style={styles.modalImage}
-              />
-                  <View style={styles.modalButtonContainer}>
-                      <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
-                          <CustomText style={styles.modalButtonText}>CHANGE</CustomText>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
-                          <CustomText style={styles.modalButtonTextDelete}>DELETE</CustomText>
-                      </TouchableOpacity>
-                  </View>
-              </View>
-            </Modal>
 
         </ScrollView>
     </TouchableWithoutFeedback>

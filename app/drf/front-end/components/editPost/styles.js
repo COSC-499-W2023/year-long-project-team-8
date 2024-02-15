@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        backgroundColor: 'rgba(0, 0, 0, 0.8)', 
     },
 
     // Style for the image displayed inside the modal
@@ -174,7 +174,19 @@ const styles = StyleSheet.create({
     modalButtonTextDelete:{
         color:"#f73e47",
         fontSize:18
-    }
+    },
+    imageAndCloseButtonContainer: {
+        position: 'relative', // This makes it the reference point for absolute positioning inside
+    },
+    
+    closeButton: {
+        position: 'absolute', 
+        top: 10, 
+        right: 0, 
+        padding: 10, 
+        zIndex: 1, 
+    },
+    
     });
 
 export default styles;

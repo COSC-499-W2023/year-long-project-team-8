@@ -105,8 +105,7 @@ const PostCard = ({ post, onPress }) => {
 
   return (
     <>
-      <TouchableOpacity onPressIn={onCardPressIn} onPressOut={onCardPressOut} onPress={onPress} activeOpacity={1}>
-        <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
+      <TouchableOpacity onPressIn={onCardPressIn} onPressOut={onCardPressOut} onPress={onPress} activeOpacity={1} style={styles.card}>
           <Image source={{ uri: post?.images[0]?.image }} style={styles.image} />
 
           {/* Edit button */}
@@ -133,7 +132,6 @@ const PostCard = ({ post, onPress }) => {
             <CustomText style={styles.title}>{post.title}</CustomText>
             <CustomText style={styles.description}>{shortenText(post.content)}</CustomText>
           </View>
-        </Animated.View>
       </TouchableOpacity>
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
