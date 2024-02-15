@@ -36,6 +36,10 @@ class ProductViewSetTest(APITestCase):
             email="test@example.com",
             password="testpassword"
         )
+        self.user2 = User.objects.create_user(
+            email="test2@example.com",
+            password="testpassword"
+        )
         self.admin_user = User.objects.create_superuser(
             email="admin@example.com",
             password="adminpassword"
@@ -103,6 +107,39 @@ class ProductViewSetTest(APITestCase):
 
         # Check that the response status code is 404 (Not Found)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+    def test_update_product_wrong_user(self):
+        access_token = self.get_auth_header(self.user2)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        response = self.client.patch(self.url, {'title': 'updated title'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response2 = self.client.get(self.url)
+        self.assertEqual(response2.data['title'], 'Test Product')
+               
+    def test_delete_product_wrong_user(self):
+        access_token = self.get_auth_header(self.user2)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data['detail'], 'You do not have permission to perform this action.')
+        response2 = self.client.get(self.url)
+        self.assertIsNotNone(response2.data)
+
+        
+    def test_update_product(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        response = self.client.patch(self.url, {'title': 'updated title'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], 'updated title')
+        
+    def test_delete_product(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertIsNone(response.data)
+        
        
 class UserViewSetTestCase(TestCase):
     def setUp(self):
@@ -157,19 +194,16 @@ class UserViewSetTestCase(TestCase):
         self.assertEqual(self.user.email, "updated@example.com")
     
     
-    # Could not get this to work, seems to be Django delete permissions
-    # There is something happening with user permissions that does not allow delete
-    # If user permissions are removed from User Views, test passes.
-    # def test_delete_user_authenticated(self):
-    #    access_token = self.get_auth_header(self.user)
-    #    self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
-    #    response = self.client.delete(f'/api/users/{self.user.id}/')
-    #     # May want a more specific code for deleted user
-    #    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    def test_delete_user_authenticated(self):
+       access_token = self.get_auth_header(self.user)
+       self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+       response = self.client.delete(f'/api/users/{self.user.id}/')
+        # May want a more specific code for deleted user
+       self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
     
-    #     #Verify the user has been deleted
-    #    user_exists = User.objects.filter(id=self.user.id).exists()
-    #    self.assertFalse(user_exists)
+        #Verify the user has been deleted
+       user_exists = User.objects.filter(id=self.user.id).exists()
+       self.assertFalse(user_exists)
 
 class ForgotPasswordViewTest(TestCase):
     def setUp(self):
