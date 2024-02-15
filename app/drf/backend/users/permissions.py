@@ -32,7 +32,7 @@ class UserPermission(permissions.BasePermission):
         if view.action in ["retrieve", "list"]:
             return True  # Allow users to retrieve other users' data
         elif view.action in ["update", "partial_update", "destroy"]:
-            return obj == request.user  # Users can update their own data
+            return obj == request.user or request.user.is_staff  # Users can update their own data
         # elif view.action in ["destroy"]:
         #     return False  # Users cannot delete other users' data
         else:
@@ -50,12 +50,12 @@ class IsSelfOrReadOnly(BasePermission):
             return True
 
         # Check if the user making the request is the same as the user being updated.
-        return obj == request.user
+        return obj == request.user or request.user.is_staff
     
 # Permissions for only allowing model owner to edit the model
 class IsOwnerOrReadOnly(permissions.BasePermission):
      def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.owner == request.user
+        return obj.owner == request.user or request.user.is_staff
       
