@@ -20,7 +20,7 @@ const PostCardOther = ({ post, onPress }) => {
   const onCardPressIn = () => {
     Animated.spring(scaleValue, {
       toValue: 0.95,
-      friction: 4,
+      friction: 3,
       useNativeDriver: true,
     }).start();
   };
@@ -40,14 +40,13 @@ const PostCardOther = ({ post, onPress }) => {
       onPressOut={onCardPressOut}
       onPress={onPress}
       activeOpacity={1}
+      style={styles.card}
     >
-      <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
         <Image source={{ uri: post?.images[0]?.image }} style={styles.image} />
         <View style={styles.content}>
           <CustomText style={styles.title}>{post.title}</CustomText>
           <CustomText style={styles.description}>{shortenText(post.content)}</CustomText>
         </View>
-      </Animated.View>
     </TouchableOpacity>
   );
 };
