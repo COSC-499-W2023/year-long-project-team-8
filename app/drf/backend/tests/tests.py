@@ -367,7 +367,6 @@ class ImageViewSetTest(APITestCase):
 
         # Use the correct URL for image creation endpoint
         response = self.client.get(f'/api/products/{self.product.id}/')
-        print(f"Received response: {response.content}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         response_data = response.json()
