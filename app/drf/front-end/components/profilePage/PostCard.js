@@ -10,83 +10,51 @@ import { useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 
 
-const PostCard = ({ post, onPress }) => {
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+const PostCard = ({ post, onPress, isDropdownVisible, onPressDropdown }) => {
+  // Removed local dropdownVisible state
   const scaleValue = useRef(new Animated.Value(1)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current; // Initial value for rotation: 0 degrees
+  const rotateAnim = useRef(new Animated.Value(0)).current;
   const [isModalVisible, setModalVisible] = useState(false);
-  const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
-  const navigation = useNavigation(); // Use the useNavigation hook to get navigation prop
+  const { userId, authTokens } = useContext(AuthContext);
+  const navigation = useNavigation();
 
-
-  const onToggleDropdown = () => {
-    // Start the animation
-    Animated.timing(rotateAnim, {
-      toValue: dropdownVisible ? 0 : 1, // Values are switched
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-
-    setDropdownVisible(!dropdownVisible);
-  };
-
-  // Calculate rotation degree
+  // Rotation degree for dropdown icon
   const rotationDegree = rotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'], // Rotate from 0 to 180 degrees
+    outputRange: ['0deg', '180deg'],
   });
-  
+
   // Function to shorten the description text
-  const shortenText = (text, maxLength = 50) => {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
-    }
-    return text;
-  };
-  const onCardPressIn = () => {
-    Animated.spring(scaleValue, {
-      toValue: 0.95,
-      friction: 4,
-      useNativeDriver: true,
-    }).start();
-  };
+  const shortenText = (text, maxLength = 50) => text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 
-  const onCardPressOut = () => {
-    Animated.spring(scaleValue, {
-      toValue: 1,
-      friction: 3,
-      useNativeDriver: true,
-    }).start();
-  };
+  // Press In and Press Out animations
+  const onCardPressIn = () => Animated.spring(scaleValue, { toValue: 0.95, friction: 4, useNativeDriver: true }).start();
+  const onCardPressOut = () => Animated.spring(scaleValue, { toValue: 1, friction: 3, useNativeDriver: true }).start();
 
-  // TODO: handle the edit action
+  // Edit and Delete handlers
   const handleEdit = () => {
-    navigation.navigate('EditPost', { post: post }); 
-    setDropdownVisible(false); 
+    navigation.navigate('EditPost', { post });
+    onPressDropdown(); // Close dropdown after navigation
   };
-
-  // Function to handle the delete action
   const handleDeleteConfirmation = () => {
     setModalVisible(true);
-    setDropdownVisible(false);
+    onPressDropdown(); // Close dropdown when confirming delete
   };
 
-  // Function to handle delete when user confirms
+  // Delete action
   const handleDelete = async () => {
     try {
       await deletePost(post.id, authTokens);
       setModalVisible(false);
-      // trigger a state update to remove the post from the UI
     } catch (error) {
       console.log("Error", error.message);
     }
   };
 
-  const handleCancel = async () => {
-    setModalVisible(false);
-  }
-  
-  // Function to render a single dropdown item
+  // Cancel delete action
+  const handleCancel = () => setModalVisible(false);
+
+  // Dropdown item component
   const DropdownItem = ({ iconName, label, onPress, color = "#595959" }) => (
     <TouchableOpacity onPress={onPress} style={styles.dropdownItem}>
       <MaterialIcons name={iconName} size={24} color={color} style={styles.dropdownIcon} />
@@ -94,45 +62,35 @@ const PostCard = ({ post, onPress }) => {
     </TouchableOpacity>
   );
 
+  // Rotate animation for dropdown icon
   useEffect(() => {
-    // Start the rotation animation based on the visibility of the dropdown
-    Animated.timing(rotateAnim, {
-      toValue: dropdownVisible ? 1 : 0, // Rotate to 180deg if visible, else rotate back to 0deg
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [dropdownVisible]);
+    Animated.timing(rotateAnim, { toValue: isDropdownVisible ? 1 : 0, duration: 300, useNativeDriver: true }).start();
+  }, [isDropdownVisible]);
 
   return (
     <>
       <TouchableOpacity onPressIn={onCardPressIn} onPressOut={onCardPressOut} onPress={onPress} activeOpacity={1} style={styles.card}>
-          <Image source={{ uri: post?.images[0]?.image }} style={styles.image} />
+        <Image source={{ uri: post?.images[0]?.image }} style={styles.image} />
+        <TouchableOpacity onPress={onPressDropdown} style={styles.editButton} activeOpacity={1}>
+          <CustomText style={styles.editButtonText}>Options</CustomText>
+          <Animated.View style={{ transform: [{ rotate: rotationDegree }] }}>
+            <MaterialIcons name="expand-more" size={24} color="#595959" />
+          </Animated.View>
+        </TouchableOpacity>
 
-          {/* Edit button */}
-          <TouchableOpacity onPress={onToggleDropdown} style={styles.editButton} activeOpacity={1}>
-            <CustomText style={styles.editButtonText}>Options</CustomText>
-            <Animated.View
-              style={{
-                transform: [{ rotate: rotationDegree }],
-              }}
-            >
-              <MaterialIcons name="expand-more" size={24} color="#595959" />
-            </Animated.View>
-          </TouchableOpacity>
-
-          {/* Dropdown Menu */}
-          {dropdownVisible && (
-            <View style={styles.dropdownMenu}>
-              <DropdownItem iconName="edit" label="Edit" onPress={handleEdit} />
-              <DropdownItem iconName="delete" label="Delete" onPress={handleDeleteConfirmation} color={"#f73e47"}/>
-            </View>
-      )}
-
-          <View style={styles.content}>
-            <CustomText style={styles.title}>{post.title}</CustomText>
-            <CustomText style={styles.description}>{shortenText(post.content)}</CustomText>
+        {isDropdownVisible && (
+          <View style={styles.dropdownMenu}>
+            <DropdownItem iconName="edit" label="Edit" onPress={handleEdit} />
+            <DropdownItem iconName="delete" label="Delete" onPress={handleDeleteConfirmation} color="#f73e47" />
           </View>
+        )}
+
+        <View style={styles.content}>
+          <CustomText style={styles.title}>{post.title}</CustomText>
+          <CustomText style={styles.description}>{shortenText(post.content)}</CustomText>
+        </View>
       </TouchableOpacity>
+
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
           <CustomText style={styles.modalTitle}>Delete Post</CustomText>
@@ -147,9 +105,10 @@ const PostCard = ({ post, onPress }) => {
           </View>
         </View>
       </Modal>
-  </>
+    </>
   );
 };
+
 
 const styles = StyleSheet.create({
   card: {

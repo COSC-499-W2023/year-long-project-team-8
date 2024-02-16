@@ -47,6 +47,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
     if (images.length <= 1) {
       setAlertMessage('At least one image is required');
       setIsAlertVisible(true);
+      setImageModalVisible(false);
       return; 
     }
   
@@ -58,6 +59,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
     if (images.length <= 1) {
       setAlertMessage('At least one image is required');
       setIsAlertVisible(true);
+      setImageModalVisible(false);
       return; 
     }
   

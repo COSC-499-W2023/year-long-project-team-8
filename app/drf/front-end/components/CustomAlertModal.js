@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet } from 'react-native';
 import CustomText from './CustomText';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const CustomAlertModal = ({ isVisible, message, onClose }) => {
     return (
@@ -12,14 +13,18 @@ const CustomAlertModal = ({ isVisible, message, onClose }) => {
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <CustomText style={styles.modalTitle} fontType={'title'}>Ooops</CustomText>
-                    <CustomText style={styles.modalText}>{message}</CustomText>
-                    <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={onClose}
-                    >
-                        <CustomText style={styles.textStyle}>Close</CustomText>
-                    </TouchableOpacity>
+                    <View style={styles.header}>
+                    </View>
+                    <View style={styles.body}>
+                        <CustomText style={styles.modalTitle} fontType={'title'}>Ooops!</CustomText>
+                        <CustomText style={styles.modalText} fontType={'text'}>{message}</CustomText>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={onClose}
+                        >
+                            <CustomText style={styles.textStyle}>Close</CustomText>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -31,14 +36,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
     },
     modalView: {
         marginHorizontal: 20,
         backgroundColor: "white",
         borderRadius: 10,
-        padding: 35,
-        alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -49,14 +51,22 @@ const styles = StyleSheet.create({
         elevation: 5,
         width: '80%', 
     },
+    body:{
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent:"center",
+        marginVertical:20,
+        padding:10,
+    },
     button: {
         marginTop:10,
         borderRadius: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: "30%",
         paddingVertical:10
     },
     buttonClose: {
-        backgroundColor: "#f73e47",
+        backgroundColor: "orange",
     },
     textStyle: {
         fontSize:16,
@@ -65,12 +75,13 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalTitle:{
-        fontSize:18,
+        fontSize:25,
     },
     modalText: {
         fontSize:16,
         marginVertical: 10,
-        textAlign: "center"
+        textAlign: "center",
+        color:"grey"
     }
     
 });
