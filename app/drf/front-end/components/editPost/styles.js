@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     section:{
         marginBottom:10,
     },
-    // Style for the modal background and positioning
     modalView: {
         flex: 1,
         justifyContent: 'center',
@@ -144,28 +143,25 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.8)', 
     },
 
-    // Style for the image displayed inside the modal
     modalImage: {
-        width: 300, // Fixed width
-        height: 300, // Set a fixed height or use a flexible option
-        resizeMode: 'contain', // Keep the aspect ratio
+        width: 300, 
+        height: 300, 
+        resizeMode: 'contain', 
         marginBottom: 20,
       },
       
 
-    // Container for the buttons to ensure proper layout
     modalButtonContainer: {
         flexDirection: 'row', 
         justifyContent: 'space-around', 
         width: '80%', 
     },
 
-    // Style for the buttons (Close and Delete)
     modalButton: {
-        padding: 10, // Button padding for touch area
-        width: 200, // Minimum width for the buttons to ensure they are not too narrow
-        justifyContent: 'center', // Center the text or icon inside the button
-        alignItems: 'center', // Center the text or icon inside the button
+        padding: 10, 
+        width: 200, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
     },
     modalButtonText:{
         color:"white",
@@ -176,7 +172,7 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     imageAndCloseButtonContainer: {
-        position: 'relative', // This makes it the reference point for absolute positioning inside
+        position: 'relative', 
     },
     
     closeButton: {
@@ -186,7 +182,10 @@ const styles = StyleSheet.create({
         padding: 10, 
         zIndex: 1, 
     },
-    
+    invalidInput: {
+        borderColor: 'red',
+        borderWidth: 1,
+    },
     });
 
 export default styles;

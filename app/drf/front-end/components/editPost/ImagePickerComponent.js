@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Modal, Image } from 'react-native';
+import { View, TouchableOpacity, Modal, Image, Alert } from 'react-native';
 import { ImagePicker } from 'expo-image-multiple-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImageGrid from './ImageGrid'; 
 import CustomText from '../CustomText'; 
 import styles from './styles'; 
+import Album from './Album';
+import Check from './Check';
+import Header from './Header';
+import CustomAlertModal from '../CustomAlertModal';
 
 const ImagePickerComponent = ({ images, onImagesUpdated }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [editingImageIndex, setEditingImageIndex] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const handleChangeImage = (index) => {
     setEditingImageIndex(index); // Set the index of the image to be replaced
     setIsPickerOpen(true); // Open the image picker for new selection
   };
+  
   
 
   const handleImageSave = (selectedImages) => {
@@ -30,8 +37,6 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
     }
     setIsPickerOpen(false);
   };
-  
-  
 
   const handleImageCancel = () => {
     setIsPickerOpen(false);
@@ -39,9 +44,30 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
   };
 
   const handleDeleteImage = (index) => {
+    if (images.length <= 1) {
+      setAlertMessage('At least one image is required');
+      setIsAlertVisible(true);
+      return; 
+    }
+  
     const updatedImages = images.filter((_, i) => i !== index);
     onImagesUpdated(updatedImages);
   };
+  
+  const handleDeleteImageModal = () => {
+    if (images.length <= 1) {
+      setAlertMessage('At least one image is required');
+      setIsAlertVisible(true);
+      return; 
+    }
+  
+    if (selectedImage && selectedImage.image) {
+      const updatedImages = images.filter(img => img.image !== selectedImage.image);
+      onImagesUpdated(updatedImages);
+    }
+    setImageModalVisible(false);
+  };
+  
 
   const onImagePress = (img, index) => {
     setSelectedImage(img); // Set the selected image for the modal
@@ -49,14 +75,6 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
   };
 
   const handleCloseModal = () => {
-    setImageModalVisible(false);
-  };
-
-  const handleDeleteImageModal = () => {
-    if (selectedImage && selectedImage.image) {
-      const updatedImages = images.filter(img => img.image !== selectedImage.image);
-      onImagesUpdated(updatedImages);
-    }
     setImageModalVisible(false);
   };
 
@@ -84,6 +102,11 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         transparent={false}
       >
         <ImagePicker
+          theme={{
+            header: (props) => <Header {...props} cancel={handleImageCancel} totalAllowed={6-images.length}/>,
+            album: Album,
+            check: Check,
+          }}
           onSave={handleImageSave}
           onCancel={handleImageCancel}
           limit={6 - images.length}
@@ -92,7 +115,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         />
       </Modal>
 
-      <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
+        <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal} >
         <View style={styles.modalView}>
             <View style={styles.imageAndCloseButtonContainer}>
                 <Image source={{ uri: selectedImage?.image }} style={styles.modalImage} />
@@ -108,6 +131,13 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
             </View>
         </View>
       </Modal>
+
+      {/* Custom Alert Modal */}
+      <CustomAlertModal
+        isVisible={isAlertVisible}
+        message={alertMessage}
+        onClose={() => setIsAlertVisible(false)}
+        />
 
     </View>
   );
