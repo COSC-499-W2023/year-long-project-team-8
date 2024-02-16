@@ -186,6 +186,9 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderWidth: 1,
     },
+    loader:{
+        marginTop:"50%"
+    }
     });
 
 export default styles;
