@@ -236,7 +236,6 @@ useFocusEffect(
     setIsContentValid(true);
     setIsTitleValid(true);
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
-
   };
 
   if (isLoading) {
