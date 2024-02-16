@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, View} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -36,8 +36,16 @@ const EditPost = () => {
     const [isContentValid, setIsContentValid] = useState(true);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-
+    const [isLoading, setIsLoading] = useState(true); 
     const backArrowIcon = require('../../assets/icons/back-arrow.png');
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false); 
+      }, 700); 
+  
+      return () => clearTimeout(timer);
+    }, []);
 
     // Function to handle date change
     const handleDateChange = (event, selectedDate) => {
@@ -177,7 +185,6 @@ useFocusEffect(
     };
   
     console.log("Updated Post:", newPost);
-  
   };
   
 
@@ -231,6 +238,15 @@ useFocusEffect(
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
 
   };
+
+  if (isLoading) {
+    // Display loading indicator while preparing the component
+    return (
+      <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="orange" style={styles.loader}/>
+      </View>
+    );
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
