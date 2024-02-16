@@ -3,7 +3,6 @@ import { View, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Text, 
 import CustomText from '../CustomText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
-import { deletePost } from '../helperFunctions/apiHelpers';
 import AuthContext from "../../context/AuthContext";
 import { useNavigation } from '@react-navigation/native'; 
 
@@ -41,14 +40,10 @@ const PostCard = ({ post, onPress, isDropdownVisible, onPressDropdown }) => {
     onPressDropdown(); // Close dropdown when confirming delete
   };
 
-  // Delete action
+  // TODO: Delete action
   const handleDelete = async () => {
-    try {
-      await deletePost(post.id, authTokens);
-      setModalVisible(false);
-    } catch (error) {
-      console.log("Error", error.message);
-    }
+    console.log("delete");
+    setModalVisible(false);
   };
 
   // Cancel delete action
