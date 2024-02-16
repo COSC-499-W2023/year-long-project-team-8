@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, Alert} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -13,17 +13,15 @@ import SubmitButton from './SubmitButton';
 import CancelButton from './CancelButton'; 
 import ImagePickerComponent from './ImagePickerComponent';
 import styles from './styles';
+import CustomAlertModal from '../CustomAlertModal';
 
 const EditPost = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const scrollViewRef = useRef();
-
-  
-    // Extract the post from the route parameters
     const { post } = route.params;
   
-    // Define state variables for the post attributes
+    // state variables for the post attributes
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -34,6 +32,11 @@ const EditPost = () => {
     const [images, setImages] = useState(post.images || []);
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    const [isTitleValid, setIsTitleValid] = useState(true);
+    const [isContentValid, setIsContentValid] = useState(true);
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
     const backArrowIcon = require('../../assets/icons/back-arrow.png');
 
     // Function to handle date change
@@ -58,20 +61,19 @@ const EditPost = () => {
     };
 
     useEffect(() => {
-      // Update state with the new post's information whenever the route parameters change
       setTitle(post.title);
       setContent(post.content);
       setSelectedCategories(post.categories ? post.categories.split(',').map(category => category.trim()) : []);
       setSelectedAllergens(post.allergens ? post.allergens.split(',').map(allergen => allergen.trim()) : []);
       if (post.best_before) {
-        const date = new Date(post.best_before); // Corrected line: create a Date object
+        const date = new Date(post.best_before); 
         const formattedDate = date.toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
         });
         setBestBefore(formattedDate);
-      
+        setImages(post.images);
     }
   
     }, [post, route.params]);
@@ -90,12 +92,21 @@ const EditPost = () => {
   const availableAllergens = allergens;
 
   const toggleCategory = (category) => {
-    setSelectedCategories((prevCategories) =>
-      prevCategories.includes(category)
-        ? prevCategories.filter((c) => c !== category)
-        : [...prevCategories, category],
-    );
+    setSelectedCategories((prevCategories) => {
+      if (prevCategories.includes(category)) {
+        // Prevent deselecting if this is the last selected category
+        if (prevCategories.length === 1) {
+          setAlertMessage('At least one category must be selected');
+          setIsAlertVisible(true);
+          return prevCategories;
+        }
+        return prevCategories.filter((c) => c !== category);
+      } else {
+        return [...prevCategories, category];
+      }
+    });
   };
+  
 
   const toggleAllergen = (allergen) => {
     setSelectedAllergens((prevAllergens) => {
@@ -110,21 +121,65 @@ const EditPost = () => {
 
 useFocusEffect(
     React.useCallback(() => {
+      const scrollToTop = () => {
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({ y: 0, animated: true });
+        }
+      };
+
+      scrollToTop(); 
+
       return () => {
-        // This function will be called when the screen goes out of focus
         // Reset the fields to their initial state
         setTitle('');
         setContent('');
         setSelectedCategories([]);
         setSelectedAllergens([]);
+        setImages([]);
+        setIsContentValid(true);
+        setIsTitleValid(true);
       };
     }, [])
   );
 
   // TODO: Handle post update submission
   const handleUpdatePost = async () => {
-    console.log("update post")
+    let isValid = true;
+
+    if (!title.trim()) {
+      setIsTitleValid(false);
+      isValid = false;
+    } else {
+      setIsTitleValid(true);
+    }
+
+    if (!content.trim()) {
+      setIsContentValid(false);
+      isValid = false;
+    } else {
+      setIsContentValid(true);
+    }
+
+    if (!isValid) {
+      setAlertMessage('Fill in the missing fields');
+      setIsAlertVisible(true);
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+      return;
+    }
+  
+    const newPost = {
+      title: title,
+      content: content,
+      categories: selectedCategories.join(', '), 
+      allergens: selectedAllergens.join(', '), 
+      bestBefore: bestBefore, 
+      images: images 
+    };
+  
+    console.log("Updated Post:", newPost);
+  
   };
+  
 
   
   const handleCancel = () => {
@@ -145,6 +200,9 @@ useFocusEffect(
   
     // Reset images
     setImages(post.images || []);
+
+    setIsContentValid(true);
+    setIsTitleValid(true);
   
     navigation.goBack();
   };
@@ -167,6 +225,9 @@ useFocusEffect(
   
     // Reset images
     setImages(post.images || []);
+
+    setIsContentValid(true);
+    setIsTitleValid(true);
   };
 
   return (
@@ -174,10 +235,10 @@ useFocusEffect(
         <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
 
             {/*Title*/}
-            <TitleInput title={title} setTitle={setTitle} />
+            <TitleInput title={title} setTitle={setTitle} isValid={isTitleValid} setIsValid={setIsTitleValid}/>
 
             {/*Description */}
-            <DescriptionInput content={content} setContent={setContent} />
+            <DescriptionInput content={content} setContent={setContent} isValid={isContentValid} setIsValid={setIsContentValid}/>
 
             {/* Categories */}
             <CategoriesSelector
@@ -215,6 +276,13 @@ useFocusEffect(
 
             {/*Cancel*/}
             <CancelButton handleCancel={handleReset} />
+
+            {/* Custom Alert Modal */}
+            <CustomAlertModal
+              isVisible={isAlertVisible}
+              message={alertMessage}
+              onClose={() => setIsAlertVisible(false)}
+            />
 
         </ScrollView>
     </TouchableWithoutFeedback>

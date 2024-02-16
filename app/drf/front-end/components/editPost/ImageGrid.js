@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
-const imageMargin = 10; // Margin applied to the right and bottom of each image
+const imageMargin = 10; 
 
 const ImageGrid = ({ images, onImagePress }) => {
   return (
@@ -11,7 +11,6 @@ const ImageGrid = ({ images, onImagePress }) => {
         const isLastImage = index === images.length - 1; // Check if this is the last image
         const isOddNumberOfImages = images.length % 2 !== 0; // Check if the total number of images is odd
 
-        // Apply full width style if this is the last image and there's an odd number of images
         const imageStyle = isLastImage && isOddNumberOfImages ? [styles.postImage, styles.fullWidthImage] : styles.postImage;
         return (
           <TouchableOpacity key={index} onPress={() => onImagePress(img, index)}>
