@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Image, TextInput, TouchableOpacity, Share, Linking } from 'react-native';
 import CustomText from '../CustomText'; 
 import ChatButton from './ChatButton'; 
 import styles from './styles'; 
+import AuthContext from '../../context/AuthContext';
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 
 const ChatComponent = ({navigation, initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [message, setMessage] = useState(initialMessage);
+  const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
@@ -45,12 +47,17 @@ const ChatComponent = ({navigation, initialMessage = "Hi! Can I get this plate?"
     }
   };
   
-  
+
   const handleUserPress = () => {
-    navigation.navigate('OtherProfile', {
-      listing: listing,  
-      userId: listing.owner 
-    });
+    if (listing.owner === userId) {
+      navigation.navigate('Tabs', { 
+        screen: 'Profile',
+      });    } else {
+      navigation.navigate('OtherProfile', {
+        listing: listing,  
+        userId: listing.owner 
+      });
+    }
   };
 
 

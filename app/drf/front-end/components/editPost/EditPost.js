@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, Alert} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -203,7 +203,7 @@ useFocusEffect(
 
     setIsContentValid(true);
     setIsTitleValid(true);
-  
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
     navigation.goBack();
   };
 
@@ -228,6 +228,8 @@ useFocusEffect(
 
     setIsContentValid(true);
     setIsTitleValid(true);
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+
   };
 
   return (
