@@ -35,6 +35,9 @@ const ProfilePage = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
+  const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
+
+
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -144,6 +147,11 @@ const ProfilePage = ({ navigation }) => {
     }
   }, [userId, authTokens, isFocused]);
 
+  const handlePressDropdown = (postId) => {
+    setActiveCard(activeCard === postId ? null : postId);
+  };
+
+
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
       {/* Background image and user's profile information */}
@@ -247,6 +255,8 @@ const ProfilePage = ({ navigation }) => {
               onPress={() =>
                 navigation.navigate("PostDetails", { listing: post })
               }
+              onPressDropdown={() => handlePressDropdown(post.id)}
+              isDropdownVisible={activeCard === post.id}
             />
           </View>
         ))}
