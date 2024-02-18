@@ -539,14 +539,63 @@ February 4 - February 11 2024
 ✓ x
 -->
 
-| Item # | Completed  | To Be Done  |
-|:------:|:----------:|:-----------:|
-|   21   |     ✓      |             |
-|   20   |     ✓      |             |
-|  183   |     ✓      |             |
-|   246  |            |      ✓      |
-|   247   |            |      ✓      |
-|   248     |            |      ✓      |
+| Item # | Completed  | To Be Done |
+|:------:|:----------:|:----------:|
+|   21   |     ✓      |            |
+|   20   |     ✓      |            |
+|  183   |     ✓      |            |
+|   246  |            |     ✓      |
+|   247   |            |   ✓        |
+|   248     |            |     ✓      |
+
+# Team_Member_Name Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+February 11 - 18 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_t2_w6.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- make the edit profile page look more similar to the rest of the pages #248
+- add more functionality to the map page #247
+- link slider and radius modal on home page #21
+- calculate distance from your location to a post #20
+- move map feature to the bottom of the pages #246
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- move map feature to the bottom of the pages #246
+- calculate distance from your location to a post #20
+- link slider and radius modal on home page #21
+- add more functionality to the map page #247
+- make the edit profile page look more similar to the rest of the pages #248
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|    #246    |           |      ✓      |
+|    #20    |           |      ✓      |
+|    #21    |           |      ✓      |
+|    #247    |           |     ✓       |
+|    #248    |           |     ✓       |
 
 
 
