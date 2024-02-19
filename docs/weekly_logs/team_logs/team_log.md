@@ -1074,6 +1074,7 @@ February 05 - February 11, 2024
 <!--
 - screenshot of the projects board
 -->
+
 ![Alt text](../img/t2_projboard_w5.png)
 
 ### Username Map
@@ -1134,14 +1135,13 @@ February 05 - February 11, 2024
 - add more functionality to the map page #247
 - make the edit profile page look more similar to the rest of the pages #248
 
-
 ### Burnup Chart
 
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-![burnup-chart](../img/t2_burnup_w5.png)
 
+![burnup-chart](../img/t2_burnup_w5.png)
 
 ### Test Report
 
@@ -1169,6 +1169,7 @@ February 12 - February 18, 2024
 <!--
 - screenshot of the projects board
 -->
+
 ![Alt text](../img/t2_projboard_w6.png)
 
 ### Username Map
@@ -1213,6 +1214,7 @@ February 12 - February 18, 2024
 - [x] [#219](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/219)
 - [x] [#225](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/225)
 - [x] [#221](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/221)
+- [x] [#254](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/254)
 
 ### In Progress Tasks
 
@@ -1239,8 +1241,8 @@ February 12 - February 18, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
-![burnup-chart](../img/t2_burnup_w6.png)
 
+![burnup-chart](../img/t2_burnup_w6.png)
 
 ### Test Report
 
