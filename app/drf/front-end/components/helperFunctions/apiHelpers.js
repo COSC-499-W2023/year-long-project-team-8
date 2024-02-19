@@ -270,34 +270,54 @@ async function createProductImages(productData, imageFiles, authTokens) {
 
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
+    // Extract the file extension from the URI
+    const fileExtension = imageFile.uri.split(".").pop();
+    let mimeType = "image/jpeg"; // Default MIME type
+
+    // Determine the MIME type based on the file extension
+    switch (fileExtension.toLowerCase()) {
+      case "png":
+        mimeType = "image/png";
+        break;
+      case "jpg":
+      case "jpeg":
+        mimeType = "image/jpeg";
+        break;
+      case "gif":
+        mimeType = "image/gif";
+        break;
+
+      // Add more cases for other file types if necessary
+    }
+
     const formData = new FormData();
     formData.append("profile_picture", {
       uri: imageFile.uri,
-      type: imageFile.type,
-      name: `profile_picture_${userId}.jpg`, // Use template literals correctly
+      type: mimeType, // Set the determined MIME type
+      name: `profile_picture_${userId}.${fileExtension}`, // Use the actual file extension
     });
 
     const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
-      method: "PATCH", // Using PATCH for partial updates
+      method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + String(authTokens.access),
+        Authorization: `Bearer ${authTokens.access}`,
       },
       body: formData,
     });
 
-    if (response.status === 200) {
+    if (response.ok) {
       const userData = await response.json();
-      return userData; // Return the updated data to the caller
+      return userData; // Return the updated user data
     } else {
-      throw new Error(
-        `Something went wrong! File: apiHelpers.js - updateProfilePicture()`
-      );
+      // Handle non-200 responses
+      const errorText = await response.text();
+      throw new Error(`Failed to update profile picture: ${errorText}`);
     }
   } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Something went wrong uploading Profile Picture!");
+    console.error("Error updating profile picture:", error);
+    throw new Error("Something went wrong updating Profile Picture!");
   }
 }
 
@@ -326,6 +346,92 @@ async function getProductListById(authTokens, userId) {
   }
 }
 
+async function updateProduct(productData, imageFiles, authTokens, productId) {
+  try {
+    const formData = new FormData();
+
+    // Append product data as fields in the FormData
+    Object.keys(productData).forEach((key) => {
+      formData.append(key, productData[key]);
+    });
+
+    // Append image files to the FormData
+    if (imageFiles) {
+      await Promise.all(
+        imageFiles.map(async (fileUri, index) => {
+          // Generate a unique filename using a combination of index and a unique identifier
+          const uniqueFilename = `image_${index}_${Math.random()
+            .toString(36)
+            .substring(7)}.jpg`;
+
+          // Convert local URI to file content
+          const fileContent =
+            Platform.OS === "ios"
+              ? await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.Base64,
+                })
+              : await FileSystem.readAsStringAsync(fileUri, {
+                  encoding: FileSystem.EncodingType.UTF8,
+                });
+
+          formData.append("images", {
+            uri: fileUri,
+            type: "image/jpeg", // Adjust the type if needed
+            name: uniqueFilename,
+            data: fileContent, // Add the file content here
+          });
+        })
+      );
+    }
+    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Return the created product data
+      return data;
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error("Error:", errorData);
+      throw new Error("Failed to create product");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong creating post with images");
+  }
+}
+
+async function deleteProduct(authTokens, productId) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("successful delete");
+    } else {
+      // Handle errors or provide feedback to the user
+      const errorData = await response.json();
+      console.error("Error:", errorData);
+      throw new Error("Failed to delete product");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong deleting product");
+  }
+}
+
 // Export all the functions
 export {
   filterCategory,
@@ -337,4 +443,6 @@ export {
   createProductImages,
   getProductListById,
   updateProfilePicture,
+  updateProduct,
+  deleteProduct,
 };

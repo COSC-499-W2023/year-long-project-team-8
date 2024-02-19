@@ -693,3 +693,45 @@ February 5, 2023 - February 11, 2023
 ### Gauged effort
 
 - This week's effort and implementation was on par with expectations. I was able to implement a 2 new features, profile picture handling in the font end (big portion was Alex, I just connected some API calls and other logic to update), and filter posts by owner ID, supported by test cases. Minimal code contributions for adding filtering, but necessary for app functionality. Getting profile picture to re-render when changed went smooth as I followed the same logic for adding images to posts.
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 12, 2023 - February 18, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk_t2_w6.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] allow for users to update/edit and delete their own posts (backend)
+- [x] API calls to edit and delete endpoints in front end
+- [x] unit testing for edit and delete
+- [x] post man API testing for edit and delete
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#254](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/254)
+- [ ] [#261](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/261)
+- [ ] [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
+- [ ] [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
+
+### Gauged effort
+
+- This week's effort and implementation was on par with expectations. I was able to test 2 new features, editing and deleting posts server side. Refactored permissions to ensure only users can edit delete their own posts, and admin has priveleges on all posts. Wrote the front end code for the API endpoints, now need to integrate the API calls into UI.

@@ -2,7 +2,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const QuickFilterChip = ({ label, isSelected, onSelect }) => {
+const Chips = ({ label, isSelected, onSelect }) => {
 
   const handlePress = () => {
     onSelect(label);
@@ -25,12 +25,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#F5F0E5',
     marginRight: 8,
+    marginBottom:8,
     elevation:3
   },
   chipSelected: {
-    backgroundColor: '#eb9e34',
+    backgroundColor: '#fab650',
   },
   chipText: {
     color: '#000',
@@ -40,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuickFilterChip;
+export default Chips;

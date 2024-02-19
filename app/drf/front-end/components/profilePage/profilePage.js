@@ -35,6 +35,9 @@ const ProfilePage = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
+  const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
+
+
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -105,19 +108,22 @@ const ProfilePage = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      // Handle the selected image URI
-      console.log(result.assets);
+      // Access the selected asset through the "assets" array
+      const asset = result.assets[0]; 
+
+      console.log(asset);
+
       // Display the selected image in UI and prepare for upload
-      // TODO: Upload to server
       try {
-        await updateProfilePicture(userId, authTokens, result);
+        await updateProfilePicture(userId, authTokens, asset); // Pass the single asset instead of the entire result
         await updateProfilePic();
       } catch (error) {
-        // Handle error if createProductImages fails
-        console.error("Error updating profile picture images:", error);
+        // Handle error if updateProfilePicture fails
+        console.error("Error updating profile picture:", error);
       }
     }
   };
+
 
   // TODO: Requests permission to access the device's location and fetches the current location.
 
@@ -140,6 +146,11 @@ const ProfilePage = ({ navigation }) => {
       fetchPosts();
     }
   }, [userId, authTokens, isFocused]);
+
+  const handlePressDropdown = (postId) => {
+    setActiveCard(activeCard === postId ? null : postId);
+  };
+
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
@@ -244,6 +255,8 @@ const ProfilePage = ({ navigation }) => {
               onPress={() =>
                 navigation.navigate("PostDetails", { listing: post })
               }
+              onPressDropdown={() => handlePressDropdown(post.id)}
+              isDropdownVisible={activeCard === post.id}
             />
           </View>
         ))}
