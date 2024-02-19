@@ -1196,6 +1196,7 @@ February 12 - February 18, 2024
 - deletion of chat if product as marked as picked up or deleted
 - Change password feature within profile page
 - Slide down refresh for chat
+- Edit posts
 
 ### Completed Tasks
 
@@ -1211,6 +1212,7 @@ February 12 - February 18, 2024
 - [x] [#239](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/239)
 - [x] [#219](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/219)
 - [x] [#225](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/225)
+- [x] [#221](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/221)
 
 ### In Progress Tasks
 
