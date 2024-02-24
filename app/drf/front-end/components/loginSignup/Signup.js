@@ -74,44 +74,6 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
     resetFields,
   }));
 
-  // Function to reset form fields
-  const resetFields = () => {
-    // Reset error states and icons
-    setSignupEmailError("");
-    setSignupPasswordError("");
-    setConfirmPasswordError("");
-    setIsEmailErrorIcon(false);
-    setIsPassErrorIcon(false);
-    setIsConfPassErrorIcon(false);
-    setSignupEmail("");
-    setSignupPassword("");
-    setConfirmPassword("");
-  };
-
-  // Export the reset function for the parent to call
-  useImperativeHandle(ref, () => ({
-    resetFields,
-  }));
-
-  // Function to reset form fields
-  const resetFields = () => {
-    // Reset error states and icons
-    setSignupEmailError("");
-    setSignupPasswordError("");
-    setConfirmPasswordError("");
-    setIsEmailErrorIcon(false);
-    setIsPassErrorIcon(false);
-    setIsConfPassErrorIcon(false);
-    setSignupEmail("");
-    setSignupPassword("");
-    setConfirmPassword("");
-  };
-
-  // Export the reset function for the parent to call
-  useImperativeHandle(ref, () => ({
-    resetFields,
-  }));
-
   // Function to handle signup validation and submission
 
   //TODO: Check if email is already in use
