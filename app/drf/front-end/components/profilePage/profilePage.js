@@ -36,7 +36,30 @@ const ProfilePage = ({ navigation }) => {
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
+    const [locationName, setLocationName] = useState("");
 
+
+    useEffect(() => {
+    (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation(currentLocation);
+
+        let reverseGeo = await Location.reverseGeocodeAsync({
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
+        });
+
+        if (reverseGeo.length > 0) {
+            setLocationName(`${reverseGeo[0].city}, ${reverseGeo[0].region}`);
+        }
+    })();
+}, []);
 
 
   useEffect(() => {
@@ -211,8 +234,9 @@ const ProfilePage = ({ navigation }) => {
           {getUserDisplayName(userData)}
         </CustomText>
         <CustomText style={styles.location} fontType={"subHeader"}>
-          {"Location Not Available"}
+            {locationName || "Location Not Available"}
         </CustomText>
+
       </View>
 
       {/* Tabs for switching between posts and reviews */}

@@ -5,7 +5,6 @@ import * as Location from 'expo-location';
 import CustomText from "../CustomText";
 import { useNavigation } from "@react-navigation/native";
 import Slider from '@react-native-community/slider';
-import FilterModal from '../homePage/FilterModal.js'
 
 import styles from './mapStyles';
 
@@ -13,7 +12,6 @@ const MapScreen = () => {
     const [circleRadius, setCircleRadius] = useState(1000);
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const navigation = useNavigation();
 
     useEffect(() => {
         const requestLocationPermission = async () => {
@@ -26,22 +24,17 @@ const MapScreen = () => {
             setLocation({
                 latitude: currentLocation.coords.latitude,
                 longitude: currentLocation.coords.longitude,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5,
             });
         };
 
         requestLocationPermission().then(setErrorMsg("Location Permission Allowed"));
     }, []);
 
-    const goBack = () => navigation.goBack();
-
     return (
         <SafeAreaView style={styles.mainContainer}>
             <MapView style={styles.map} region={location}>
-                <TouchableOpacity onPress={goBack}>
-                    <Image source={require("../../assets/back_arrow.png")} style={styles.backArrow} />
-                </TouchableOpacity>
                 <Slider
                     style={styles.slider}
                     minimumValue={1000}

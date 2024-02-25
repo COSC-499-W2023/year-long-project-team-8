@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
 import Profile from "../profilePage/profilePage.js";
+import Map from "../map/mapMain"
 import AddListing from "../addListing/AddListing.js";
 import CustomText from "../CustomText.js";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,11 +17,6 @@ const Tab = createMaterialTopTabNavigator();
 // These are placeholders and can be replaced with actual screens when developed
 
 // Screen for Browse
-const Browse = () => (
-  <View style={styles.content}>
-    <Text style={styles.title}>Dummy Browse</Text>
-  </View>
-);
 
 // Screen for Chat
 const Chat = () => (
@@ -89,14 +85,14 @@ function BottomTabs({ route }) {
           }}
         />
         <Tab.Screen
-          name="Browse"
-          component={Browse}
+          name="Map"
+          component={Map}
           options={{
-            tabBarLabel: "Browse",
+            tabBarLabel: "Map",
             tabBarIcon: ({ focused, size }) => (
               <View style={styles.iconContainer}>
                 <Ionicons
-                  name="search"
+                  name="map-outline"
                   color={focused ? "#FCA63C" : "#4a4642"}
                   size={25}
                 />
