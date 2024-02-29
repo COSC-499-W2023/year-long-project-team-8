@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import { SafeAreaView } from 'react-native';
 import MapView, { Circle } from 'react-native-maps';
 import * as Location from 'expo-location';
 import CustomText from "../CustomText";
-import { useNavigation } from "@react-navigation/native";
 import Slider from '@react-native-community/slider';
+import { useSlider } from '../../context/MapContext';
 
 import styles from './mapStyles';
 
 const MapScreen = () => {
-    const [circleRadius, setCircleRadius] = useState(1000);
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+    const { sliderValue, setSliderValue } = useSlider();
 
     useEffect(() => {
         const requestLocationPermission = async () => {
@@ -29,7 +29,7 @@ const MapScreen = () => {
             });
         };
 
-        requestLocationPermission().then(setErrorMsg("Location Permission Allowed"));
+        requestLocationPermission().then(() => setErrorMsg("Location Permission Allowed"));
     }, []);
 
     return (
@@ -39,22 +39,24 @@ const MapScreen = () => {
                     style={styles.slider}
                     minimumValue={1000}
                     maximumValue={25000}
-                    value={circleRadius}
-                    onValueChange={setCircleRadius}
+                    value={sliderValue}
+                    onValueChange={(value) => setSliderValue(value)}
                     thumbTintColor="#F8B951"
                     minimumTrackTintColor="#F8B951"
                     maximumTrackTintColor="#000000"
                 />
                 <CustomText style={styles.sliderText} fontType="text">
-                    {Math.floor(circleRadius / 1000)} KM
+                    {Math.floor(sliderValue / 1000)} KM
                 </CustomText>
-                <Circle
-                    center={location}
-                    radius={circleRadius}
-                    strokeWidth={2}
-                    strokeColor="#FCA63C"
-                    fillColor="rgba(211,211,211,0.5)"
-                />
+                {location && (
+                    <Circle
+                        center={location}
+                        radius={sliderValue}
+                        strokeWidth={2}
+                        strokeColor="#FCA63C"
+                        fillColor="rgba(211,211,211,0.5)"
+                    />
+                )}
             </MapView>
         </SafeAreaView>
     );
