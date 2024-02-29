@@ -23,7 +23,7 @@ import PostReview from "./PostReview";
 import * as ImagePicker from "expo-image-picker";
 import { useAppState } from "../../context/AppStateContext";
 
-//TODO: Location, dummy pfp icon resolution increase, change profile picture, loader
+//TODO: dummy pfp icon resolution increase, change profile picture, loader
 
 const ProfilePage = ({ navigation }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
@@ -60,6 +60,7 @@ const ProfilePage = ({ navigation }) => {
         }
     })();
 }, []);
+
 
 
   useEffect(() => {
