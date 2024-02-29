@@ -24,6 +24,34 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const user = require("../../assets/icons/user-profile.png");
   const save = require("../../assets/icons/ribbon.png");
 
+//--------KNOWN ISSUES and object logging notes----------------//
+//   -If chat instance does not already exist, the message is sent, and chat room is created, but it navigates to the chatroom with no messages and fails to load chat. If i back out and go back in its there and is refelcted in database.
+
+// -Every second message sent from product details page throws a chat not found error /api/chat//. This is likely due to resetting the chat message at every send and then it being blank for next send press
+
+// -Can send repeated messages in chat, but only bubble shows up with sender id instead of message body until you back out and go back in
+
+// -Error fetching chatlist when logging out (trying to find access token)
+
+// -No refresh
+
+// PRODUCTS
+// product(1) --> joss (1)
+// product(15) --> admin (2)
+// product(16) --> frog (14)
+
+// CHATS
+// chat(2) --> product (15) --> receiver (admin(2)) --> sender (joss(1))
+
+// chat(16) --> product (16) --> receiver (frog(14)) --> sender (joss(1))
+// -If logged in as frog, i can see this chat, where receiver is set as frog(14).
+// If clicked on message, chat from joss(1) is formatted on the left side correctly. 
+//Sending a message, it shows up as bubble but goes away when reentering chat. This actually creates a new chat with sender and receiver both as frog(14).
+
+// chat(18) --> product (1) --> receiver (joss(1)) --> sender (frog(14))
+// -This makes sense, if its a new product, a new chat room is created. 
+  
+// ----------------------------------------------------------------------------
   useEffect(() => {
     const fetchChatId = async () => {
       try {
