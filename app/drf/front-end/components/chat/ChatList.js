@@ -11,15 +11,21 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChatList = async () => {
       try {
-        const chats = await getChatList(authTokens);
-        console.log('Fetched chat list:', chats);
-        setChatList(chats);
+        if (authTokens) {
+          const chats = await getChatList(authTokens);
+          console.log('Fetched chat list:', chats);
+          setChatList(chats);
+        } else {
+          //Clearing chatlist when user logs out
+          setChatList([]); 
+        }
       } catch (error) {
         console.error('Error fetching chat list:', error);
       }
     };
     fetchChatList();
   }, [authTokens]);
+  
 
   const handleFetchAllChats = async () => {
     try {
