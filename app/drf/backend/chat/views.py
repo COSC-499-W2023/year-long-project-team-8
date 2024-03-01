@@ -2,6 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 from .models import Chat, Message
 from users.models import User
 from products.models import Product 
@@ -46,27 +47,35 @@ class ChatList(generics.ListCreateAPIView):
 
     # Creating chat
     def perform_create(self, serializer):
-        sender = self.request.user
+        user = self.request.user
         product = self.request.data.get('product')
         
         # Retrieve the product and its owner
         try:
             # Verify this product_id
-            product = Product.objects.get(pk=product)
-            receiver = product.owner
+           #product = Product.objects.get(pk=product)
+            #
             
 
             # Check if a chat room already exists for the given sender, receiver, and product
-            existing_chat = Chat.objects.filter(sender=sender, receiver=receiver, product=product).first()
-
+            existing_chat = Chat.objects.filter(
+                Q(receiver = user)
+                | Q(sender = user), product = product).first()
+            
+            print("Exisitng chats:", existing_chat)
             if existing_chat:
                 # If a chat room already exists, associate the new message with the existing chat
-                Message.objects.create(chat=existing_chat, sender=sender, receiver=receiver, message=self.request.data.get('message'))
+                if existing_chat.receiver != user:
+                    receiver = existing_chat.receiver
+                else:
+                    receiver = existing_chat.sender
+                Message.objects.create(chat=existing_chat, sender=user, receiver=receiver, message=self.request.data.get('message'))
                 serializer.instance = existing_chat
             else:
                 # If no chat room exists, create a new chat room
-                new_chat = Chat.objects.create(sender=sender, receiver=receiver, product=product)
-                Message.objects.create(chat=new_chat, sender=sender, receiver=receiver, message=self.request.data.get('message'))
+                receiver = product.owner
+                new_chat = Chat.objects.create(sender=user, receiver=receiver, product=product)
+                Message.objects.create(chat=new_chat, sender=user, receiver=receiver, message=self.request.data.get('message'))
                 serializer.instance = new_chat
 
             headers = self.get_success_headers(serializer.data)
