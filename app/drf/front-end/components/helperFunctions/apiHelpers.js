@@ -340,7 +340,6 @@ async function sendChatMessage(userId, authTokens, newMessage, receiver, product
 
     if (response.ok) {
       const data = await response.json();
-   
       return data;
     } else {
       throw new Error("Error sending chat message API");
