@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
 import { getChatList } from '../helperFunctions/apiHelpers'; 
 import AuthContext from '../../context/AuthContext';
+import styles from '../profilePage/profilePageStyles';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+import { Image } from 'react-native';
 
 const ChatList = () => {
   const [chatList, setChatList] = useState([]);
@@ -41,23 +44,37 @@ const ChatList = () => {
     navigation.navigate('UserMessages', { chatId: chat.id , receiver: chat.receiver, product: chat.product});
   };
 
+  const formatTime = (timestamp) => {
+    const currentTime = moment();
+    const messageTime = moment(timestamp);
+    const diffHours = currentTime.diff(messageTime, 'hours');
+    return `${diffHours} hours ago`;
+  };
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
       {/* Header Text for testing */}
-      <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
-        Messages
-      </Text>
-      <Button title="Fetch All Chats" onPress={handleFetchAllChats} />
+      
       <FlatList
   data={chatList}
   keyExtractor={(item) => item.id.toString()}
   renderItem={({ item }) => (
     <TouchableOpacity onPress={() => navigateToChat(item)}>
-      <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
-        <Text>Chat ID: {item.id}</Text>
-        <Text>Sender: {item.sender.firstname}</Text>
-        <Text>Receiver: {item.receiver.firstname}</Text>
-        <Text>Time: {item.timestamp}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+        <View style={{ width: 40, height: 40, borderRadius: 20, overflow: 'hidden' }}>
+        <Image
+          //actual pfps wont render right now
+              //source={item.receiver.profile_picture ? { uri: item.receiver.profile_picture } : require('../../assets/icons/profile.png')}
+              source={ require('../../assets/icons/profile.png')}
+
+              style={{ width: '100%', height: '100%' }}
+            />
+        </View>
+        <View style={{ marginLeft: 12 }}>
+          <Text style={{ fontWeight: 'bold' }}>Sender: {item.sender.firstname ?? item.sender.email}</Text>
+          <Text>Receiver: {item.receiver.firstname ?? item.receiver.email}</Text>
+          <Text>Time: {formatTime(item.timestamp)}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   )}

@@ -288,11 +288,13 @@ async function getChatList(authTokens) {
       id: chat.id,
       sender: {
         id: chat.sender.id,
+        email: chat.sender.email,
         firstname: chat.sender.firstname,
         profile_picture: chat.sender.profile_picture,
       },
       receiver: {
         id: chat.receiver.id,
+        email: chat.receiver.email,
         firstname: chat.receiver.firstname,
         profile_picture: chat.receiver.profile_picture,
       },
