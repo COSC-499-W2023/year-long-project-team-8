@@ -302,7 +302,8 @@ async function getChatList(authTokens) {
       timestamp: chat.timestamp,
     }));
     console.log("Enriched chat list", enrichedChatList);
-    return enrichedChatList;
+    //return enrichedChatList;
+    return data;
   } catch (error) {
     throw error;
   }
