@@ -19,20 +19,18 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const handleChangeImage = (index) => {
-    setEditingImageIndex(index); // Set the index of the image to be replaced
-    setIsPickerOpen(true); // Open the image picker for new selection
+    setEditingImageIndex(index);
+    setIsPickerOpen(true);
   };
-  
-  
 
   const handleImageSave = (selectedImages) => {
     if (editingImageIndex !== null && selectedImages.length > 0) {
       const updatedImages = [...images];
-      updatedImages[editingImageIndex] = { image: selectedImages[0].uri };
+      updatedImages[editingImageIndex] = selectedImages[0].uri;  // Store URI directly
       onImagesUpdated(updatedImages);
       setEditingImageIndex(null);
     } else {
-      const newImages = selectedImages.map(img => ({ image: img.uri }));
+      const newImages = selectedImages.map(img => img.uri);  // Store URIs directly
       onImagesUpdated([...images, ...newImages]);
     }
     setIsPickerOpen(false);
@@ -48,34 +46,33 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
       setAlertMessage('At least one image is required');
       setIsAlertVisible(true);
       setImageModalVisible(false);
-      return; 
+      return;
     }
-  
+
     const updatedImages = images.filter((_, i) => i !== index);
     onImagesUpdated(updatedImages);
   };
-  
+
   const handleDeleteImageModal = () => {
     if (images.length <= 1) {
       setAlertMessage('At least one image is required');
       setIsAlertVisible(true);
       setImageModalVisible(false);
-      return; 
+      return;
     }
-  
-    if (selectedImage && selectedImage.image) {
-      const updatedImages = images.filter(img => img.image !== selectedImage.image);
+
+    if (selectedImage) {
+      const updatedImages = images.filter(img => img !== selectedImage);
       onImagesUpdated(updatedImages);
     }
     setImageModalVisible(false);
   };
-  
 
   const onImagePress = (img, index) => {
-    setSelectedImage(img); // Set the selected image for the modal
-    setImageModalVisible(true); // Open the modal to show the image with options
+    setSelectedImage(img.image); // Extract the URI from the object
+    setImageModalVisible(true);
   };
-
+  
   const handleCloseModal = () => {
     setImageModalVisible(false);
   };
@@ -91,7 +88,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         )}
       </View>
       <ImageGrid
-        images={images}
+        images={images.map(uri => ({ image: uri }))}  // Convert URIs to objects for ImageGrid
         onChangeImage={handleChangeImage}
         onDeleteImage={handleDeleteImage}
         onImagePress={onImagePress}
@@ -105,7 +102,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
       >
         <ImagePicker
           theme={{
-            header: (props) => <Header {...props} cancel={handleImageCancel} totalAllowed={6-images.length}/>,
+            header: (props) => <Header {...props} cancel={handleImageCancel} totalAllowed={6 - images.length} />,
             album: Album,
             check: Check,
           }}
@@ -117,30 +114,27 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         />
       </Modal>
 
-        <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal} >
+      <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
         <View style={styles.modalView}>
-            <View style={styles.imageAndCloseButtonContainer}>
-                <Image source={{ uri: selectedImage?.image }} style={styles.modalImage} />
-            </View>
-            <View style={styles.modalButtonContainer}>
+          <View style={styles.imageAndCloseButtonContainer}>
+            <Image source={{ uri: selectedImage }} style={styles.modalImage} />
+          </View>
+          <View style={styles.modalButtonContainer}>
             <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
               <CustomText style={styles.modalButtonText}>Close</CustomText>
             </TouchableOpacity>
-
-                <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
-                    <CustomText style={styles.modalButtonTextDelete}>Delete</CustomText>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
+              <CustomText style={styles.modalButtonTextDelete}>Delete</CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
 
-      {/* Custom Alert Modal */}
       <CustomAlertModal
         isVisible={isAlertVisible}
         message={alertMessage}
         onClose={() => setIsAlertVisible(false)}
-        />
-
+      />
     </View>
   );
 };

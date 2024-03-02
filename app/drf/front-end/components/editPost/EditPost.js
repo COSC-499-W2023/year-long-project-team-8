@@ -81,9 +81,8 @@ const EditPost = () => {
           day: 'numeric',
         });
         setBestBefore(formattedDate);
-        setImages(post.images);
-    }
-  
+        setImages(post.images.map(img => img.image)); // Extract URIs from objects
+      }
     }, [post, route.params]);
 
     useEffect(() => {
@@ -231,7 +230,7 @@ useFocusEffect(
     setSelectedDate(bestBeforeDate);
   
     // Reset images
-    setImages(post.images || []);
+    setImages(post.images.map(img => img.image));
 
     setIsContentValid(true);
     setIsTitleValid(true);

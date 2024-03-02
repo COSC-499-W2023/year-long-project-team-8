@@ -5,11 +5,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import AuthContext from "../../context/AuthContext";
 import { useNavigation } from '@react-navigation/native'; 
+import { deleteProduct } from "../helperFunctions/apiHelpers"; 
+
 
 const windowWidth = Dimensions.get('window').width;
 
 
-const PostCard = ({ post, onPress, isDropdownVisible, onPressDropdown }) => {
+const PostCard = ({ post, onPress, isDropdownVisible, onPressDropdown, onPostDelete  }) => {
   // Removed local dropdownVisible state
   const scaleValue = useRef(new Animated.Value(1)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -42,8 +44,13 @@ const PostCard = ({ post, onPress, isDropdownVisible, onPressDropdown }) => {
 
   // TODO: Delete action
   const handleDelete = async () => {
-    console.log("delete");
-    setModalVisible(false);
+    try {
+      await deleteProduct(authTokens, post.id);
+      onPostDelete(); // Trigger the refresh of the post list
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   // Cancel delete action

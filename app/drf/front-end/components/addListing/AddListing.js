@@ -135,10 +135,9 @@ const formattedDate = currentDate.toLocaleDateString('en-US', {
       owner: userId,
     };
   
-    const imageURIs = images.map(image => image.image);
   
     try {
-      await createProductImages(formData, imageURIs, authTokens);
+      await createProductImages(formData, images, authTokens);
       await updatePostCreated();
       console.log("Form Data:", JSON.stringify(formData, null, 2));
       console.log("Image Data:", JSON.stringify(images, null, 2));
