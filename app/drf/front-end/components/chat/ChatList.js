@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ChatList = () => {
   const [chatList, setChatList] = useState([]);
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, userId } = useContext(AuthContext);
   const navigation = useNavigation();
   useEffect(() => {
     const fetchChatList = async () => {
@@ -49,18 +49,19 @@ const ChatList = () => {
       </Text>
       <Button title="Fetch All Chats" onPress={handleFetchAllChats} />
       <FlatList
-        data={chatList}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigateToChat(item)}>
-            <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
-              <Text>Chat ID: {item.id}</Text>
-              <Text>Receiver: {item.receiver}</Text>
-              <Text>Time: {item.timestamp}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+  data={chatList}
+  keyExtractor={(item) => item.id.toString()}
+  renderItem={({ item }) => (
+    <TouchableOpacity onPress={() => navigateToChat(item)}>
+      <View style={{ marginBottom: 8, border: '1px solid black', padding: 8 }}>
+        <Text>Chat ID: {item.id}</Text>
+        <Text>Sender: {item.sender.firstname}</Text>
+        <Text>Receiver: {item.receiver.firstname}</Text>
+        <Text>Time: {item.timestamp}</Text>
+      </View>
+    </TouchableOpacity>
+  )}
+/>
     </View>
   );
 };

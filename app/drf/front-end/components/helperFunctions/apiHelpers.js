@@ -283,7 +283,23 @@ async function getChatList(authTokens) {
     }
 
     const data = await response.json();
-    return data;
+    console.log("Data for getChatList", data);
+    const enrichedChatList = data.map(chat => ({
+      id: chat.id,
+      sender: {
+        id: chat.sender.id,
+        firstname: chat.sender.firstname,
+        profile_picture: chat.sender.profile_picture,
+      },
+      receiver: {
+        id: chat.receiver.id,
+        firstname: chat.receiver.firstname,
+        profile_picture: chat.receiver.profile_picture,
+      },
+      timestamp: chat.timestamp,
+    }));
+    console.log("Enriched chat list", enrichedChatList);
+    return enrichedChatList;
   } catch (error) {
     throw error;
   }
@@ -310,8 +326,8 @@ async function getChatMessages(authTokens, chatId) {
       }));
       return {
         messages: messages,
-        sender: data[0].sender, // Assuming sender is the same for all messages in the chat
-        receiver: data[0].receiver, // Assuming receiver is the same for all messages in the chat
+        sender: data[0].sender, 
+        receiver: data[0].receiver, 
       };   
     } else {
       throw new Error("Error fetching chat messages");
