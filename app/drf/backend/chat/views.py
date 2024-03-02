@@ -37,6 +37,7 @@ class ChatList(generics.ListCreateAPIView):
                 # If a chat room already exists, associate the new message with the existing chat
                 if existing_chat.receiver != user:
                     receiver = existing_chat.receiver
+                    print("REceiver in backend", receiver)
                 else:
                     receiver = existing_chat.sender
                 Message.objects.create(chat=existing_chat, sender=user, receiver=receiver, message=self.request.data.get('message'))

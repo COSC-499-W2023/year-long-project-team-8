@@ -41,6 +41,7 @@ const ChatList = () => {
 
   const navigateToChat = (chat) => {
     console.log("trying to navigate to chat with id", chat.id);
+    console.log("Chat.rpoduct", chat);
     navigation.navigate('UserMessages', { chatId: chat.id , receiver: chat.receiver, product: chat.product});
   };
 
@@ -70,11 +71,14 @@ const ChatList = () => {
               style={{ width: '100%', height: '100%' }}
             />
         </View>
-        <View style={{ marginLeft: 12 }}>
-          <Text style={{ fontWeight: 'bold' }}>Sender: {item.sender.firstname ?? item.sender.email}</Text>
-          <Text>Receiver: {item.receiver.firstname ?? item.receiver.email}</Text>
-          <Text>Time: {formatTime(item.timestamp)}</Text>
-        </View>
+        <View style={{ marginLeft: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}></View>
+        {item.sender.id !== userId ? (
+        <Text style={{ fontWeight: 'bold' , fontSize: 19}}>{item.sender.firstname ?? item.sender.email}</Text>
+      ) : (
+        <Text style={{ fontWeight: 'bold' , fontSize: 19}}>{item.receiver.firstname ?? item.receiver.email}</Text>
+      )}
+      
+        <Text style={{ fontSize: 14 , marginLeft: 10, paddingLeft: 10 }}>{formatTime(item.timestamp)}</Text>
       </View>
     </TouchableOpacity>
   )}
