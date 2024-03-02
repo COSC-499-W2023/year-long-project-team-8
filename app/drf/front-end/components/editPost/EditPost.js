@@ -289,7 +289,7 @@ useFocusEffect(
             />
 
             {/*Submit*/}
-            <SubmitButton handleUpdatePost={handleUpdatePost} />
+            <SubmitButton handleUpdatePost={handleUpdatePost} title={"UPDATE POST"}/>
 
             {/*Cancel*/}
             <CancelButton handleCancel={handleReset} />
