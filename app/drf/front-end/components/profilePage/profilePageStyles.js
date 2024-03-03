@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
 
   settingsButtonContainer: {
     position: 'absolute',
-    top: 40,
-    right: 15,
-    zIndex: 100,
+    top: 13,
+    right: 20,
+    zIndex: 1,
   },
 
   circleBackground: {
@@ -54,9 +54,8 @@ const styles = StyleSheet.create({
   },
 
   postCardContainer: {
-    width: windowWidth * 0.95,
-    alignSelf: 'center',
     marginBottom: 10,
+    width: '50%',
   },
 
   ratingAndReviewRow: {
@@ -64,8 +63,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  reviews:{
-    fontSize:17,
+  reviews: {
+    fontSize: 16,
+    color:"#9ba5f1",
   },
 
   reviewPressable: {
@@ -126,11 +126,6 @@ const styles = StyleSheet.create({
     color: "grey",
   },
 
-  reviews: {
-    fontSize: 16,
-    color:"#9ba5f1",
-  },
-
   locationContainer: {
     flexDirection: 'row',
     marginTop: 5,
@@ -180,18 +175,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  postCardContainer: {
-    width: '50%',
-    marginBottom: 10,
-  },
-
-  settingsButtonContainer: {
-    position: 'absolute',
-    top: 13,
-    right: 20,
-    zIndex: 1,
-  },
-
   settingsButton: {
     height: 26,
     width: 26,
