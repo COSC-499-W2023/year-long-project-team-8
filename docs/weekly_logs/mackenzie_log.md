@@ -709,6 +709,7 @@ February 12, 2023 - February 18, 2023
 -->
 
 ![alt text](img/mk_t2_w6.png)
+![alt text](image.png)
 
 ### Recap of Students Goals
 
@@ -735,3 +736,48 @@ February 12, 2023 - February 18, 2023
 ### Gauged effort
 
 - This week's effort and implementation was on par with expectations. I was able to test 2 new features, editing and deleting posts server side. Refactored permissions to ensure only users can edit delete their own posts, and admin has priveleges on all posts. Wrote the front end code for the API endpoints, now need to integrate the API calls into UI.
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 19, 2023 - March 03, 2023
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk_t2_w8.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] add a tag for expired posts in front end (home page and post details pages)
+- [x] automate launching servers and obtaining IP
+- [ ] deploy backend - attempted on pythonanywhere.com but was unsuccessful
+- [x] CI pipeline
+- [x] refactor backend to handle updating a product with new images
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#261](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/261)
+- [ ] [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
+- [ ] [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
+- [x] #278
+- [x] #279
+- [x] #289
+
+### Gauged effort
+
+- This week's effort and implementation was on par with expectations. I was able to add a front end feature - expiry tags. Added automation for getting IP address and launching our severs with one command. I set up the CI pipeline to run our backend tests for all PRs into develop and master branches (and ci). I attempted to deploy the backend with pythonanywhere but quickly surpassed the free tier of compute credit - unsuccessful. Will look into this later.
