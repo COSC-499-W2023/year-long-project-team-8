@@ -21,8 +21,11 @@ const Listing = ({ listing, navigation }) => {
     }).start();
   };
 
-  // Assuming 'listing' now includes 'ownerDetails' fetched in HomePage
-  const getDisplayName = () => listing.ownerDetails?.firstname || listing.ownerDetails?.email.split('@')[0] || "Unknown";
+  const getDisplayName = () =>
+    listing.ownerDetails?.firstname ||
+    listing.ownerDetails?.email.split("@")[0] ||
+    "Unknown";
+
   const getDisplayRating = () => {
     // Check if ownerDetails and rating exist
     if (listing.ownerDetails && listing.ownerDetails.rating) {
@@ -31,7 +34,7 @@ const Listing = ({ listing, navigation }) => {
     }
     return "New User"; // Default text if rating is not available
   };
-  
+
   const timeAgo = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -59,17 +62,23 @@ const Listing = ({ listing, navigation }) => {
     }
   };
 
+  // Check if the best_before date is after today
+  const isExpired = new Date(listing.best_before) < new Date();
+
   return (
     <TouchableOpacity
       activeOpacity={1}
       onPressIn={zoomIn}
       onPressOut={zoomOut}
-      onPress={() => navigation.navigate('PostDetails', { listing })}
+      onPress={() => navigation.navigate("PostDetails", { listing })}
     >
       <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
         <Card style={styles.card}>
           {listing.images && listing.images.length > 0 && (
-            <Card.Cover source={{ uri: listing.images[0].image }} style={styles.cardImage} />
+            <Card.Cover
+              source={{ uri: listing.images[0].image }}
+              style={styles.cardImage}
+            />
           )}
           <CustomText fontType={"title"} style={styles.cardTitle}>
             {listing.title}
@@ -78,25 +87,36 @@ const Listing = ({ listing, navigation }) => {
             <CustomText fontType={"text"} style={styles.byName}>
               By {getDisplayName()}
             </CustomText>
-            <MaterialIcons name="star" size={16} color="gold" style={styles.star} />
+            <MaterialIcons
+              name="star"
+              size={16}
+              color="gold"
+              style={styles.star}
+            />
             <CustomText fontType={"subHeader"} style={styles.rating}>
               {getDisplayRating()}
             </CustomText>
           </View>
-          <View>
+          <View style={styles.dateContainer}>
             <CustomText fontType={"subHeader"} style={styles.datePosted}>
               {timeAgo(listing.created_at)}
             </CustomText>
-            <CustomText fontType={"subHeader"} style={styles.distanceText}>
-              {"0" /* Replace with actual distance if available */}
-            </CustomText>
+            {isExpired && (
+              <View style={styles.expiredBox}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Expired
+                </CustomText>
+              </View>
+            )}
           </View>
+          <CustomText fontType={"subHeader"} style={styles.distanceText}>
+            {"0" /* Replace with actual distance if available */}
+          </CustomText>
         </Card>
       </Animated.View>
     </TouchableOpacity>
   );
 };
-
 
 export default Listing;
 
@@ -137,9 +157,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "grey",
   },
-  nameAndRatingContainer: {
+  byName: {
+    fontSize: 16,
+    color: "grey",
+    marginTop: 0,
+    paddingLeft: 10,
+  },
+  dateContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+  },
+  datePosted: {
+    fontSize: 14,
+    color: "grey",
   },
   distanceText: {
     position: "absolute",
@@ -148,17 +182,14 @@ const styles = StyleSheet.create({
     right: 2,
     paddingRight: 10,
   },
-  byName: {
-    fontSize: 16,
-    color: "grey",
-    marginTop: 0,
-    paddingLeft: 10,
+  expiredBox: {
+    backgroundColor: "red",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
-  datePosted: {
+  expiredText: {
+    color: "white",
     fontSize: 14,
-    color: "grey",
-    marginTop: 5,
-    paddingLeft: 10,
-    paddingBottom: 10,
   },
 });

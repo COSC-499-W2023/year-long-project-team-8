@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,12 +9,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    width: '100%', 
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   image: {
-    width: "95%", 
+    width: "95%",
     height: 250,
     resizeMode: "cover",
     borderRadius: 15,
@@ -22,18 +22,18 @@ const styles = StyleSheet.create({
   chatCard: {
     marginVertical: 10,
     borderRadius: 15,
-    elevation: 3, 
+    elevation: 3,
     padding: 10,
     backgroundColor: "#fff",
-    shadowColor: "#000", 
-    shadowOffset: { width: 0, height: 2 }, 
-    shadowOpacity: 0.1, 
-    shadowRadius: 3.84, 
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
   },
   chatHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 5, 
+    marginHorizontal: 5,
   },
   chatTitle: {
     fontSize: 18,
@@ -42,34 +42,34 @@ const styles = StyleSheet.create({
   chatIcon: {
     width: 28,
     height: 28,
-    marginRight:5
+    marginRight: 5,
   },
-  chatButtonsContainer:{
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
+  chatButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 5,
-    marginHorizontal:10, 
-    alignContent:"center",
+    marginHorizontal: 10,
+    alignContent: "center",
   },
   chatButton: {
-    alignItems: "center", 
+    alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
     padding: 5,
-    marginHorizontal: 5, 
+    marginHorizontal: 5,
   },
-  chatButtonIcon:{
-    width: 30, 
-    height: 30
+  chatButtonIcon: {
+    width: 30,
+    height: 30,
   },
-  chatButtonText:{
-    textAlign: 'center',
-    fontSize:13,
-    marginTop:2,
+  chatButtonText: {
+    textAlign: "center",
+    fontSize: 13,
+    marginTop: 2,
   },
   messageBox: {
     flexDirection: "row",
-    padding: 10, 
+    padding: 10,
     alignItems: "center",
     justifyContent: "space-between",
   },
@@ -79,11 +79,11 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderRadius: 20,
     paddingVertical: 10,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   card: {
-    marginHorizontal: 5, 
-    marginTop: 10, 
+    marginHorizontal: 5,
+    marginTop: 10,
     padding: 10,
     backgroundColor: "#fff",
   },
@@ -91,31 +91,31 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 10,
-    marginHorizontal:5 
+    marginHorizontal: 5,
   },
   bestBefore: {
     fontSize: 14,
-    marginBottom: 10, 
-    marginHorizontal:5 
+    marginBottom: 10,
+    marginHorizontal: 5,
   },
   detailRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 10, 
+    marginVertical: 10,
     marginHorizontal: 10,
   },
-  categoryContainer:{
-    marginHorizontal:5,
+  categoryContainer: {
+    marginHorizontal: 5,
   },
   categoryTitle: {
     fontSize: 17,
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   categoryItem: {
-    alignItems: 'center',
+    alignItems: "center",
     marginRight: 10,
-    width: 60, 
+    width: 60,
   },
   categoryIcon: {
     width: 48,
@@ -124,20 +124,20 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 13,
-    textAlign: 'center',
+    textAlign: "center",
   },
-  dividerContainer:{
-    marginVertical:10,
+  dividerContainer: {
+    marginVertical: 10,
   },
   divider: {
     height: 1,
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
   },
-  descriptionContainer:{
-    marginHorizontal:5,
+  descriptionContainer: {
+    marginHorizontal: 5,
   },
-  descriptionTitle:{
-    fontSize:17,
+  descriptionTitle: {
+    fontSize: 17,
   },
   descriptionText: {
     fontSize: 16,
@@ -148,89 +148,96 @@ const styles = StyleSheet.create({
     color: "#9ba5f1",
     fontSize: 16,
     fontWeight: "bold",
-  },  
-  giverDetailsContainer:{
-    marginHorizontal:5,
   },
-  giverTitle:{
+  giverDetailsContainer: {
+    marginHorizontal: 5,
+  },
+  giverTitle: {
     fontSize: 17,
-    marginBottom: 10, 
+    marginBottom: 10,
   },
-  giverContent:{
+  giverContent: {
     flexDirection: "row",
-    alignItems:"center",
-    justifyContent:"flex-start",
-    marginBottom: 10, 
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginBottom: 10,
   },
-  profilePic:{
-    width:50,
-    height:50,
-    borderRadius:50,
-    marginRight:10,
+  profilePic: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    marginRight: 10,
   },
-  ratingDisplay:{
-    flexDirection:"row",
+  ratingDisplay: {
+    flexDirection: "row",
   },
-  rating:{
+  rating: {
     marginLeft: 7,
   },
-  reviews:{
+  reviews: {
     marginLeft: 5,
-    color:"#9ba5f1"
+    color: "#9ba5f1",
   },
-  allergenText:{
+  allergenText: {
     fontSize: 16,
     color: "#333",
     paddingVertical: 3,
   },
-  allergenTitle:{
-    fontSize:17,
-    marginBottom: 10, 
+  allergenTitle: {
+    fontSize: 17,
+    marginBottom: 10,
   },
-  allergenContainer:{
-    marginHorizontal:5
+  allergenContainer: {
+    marginHorizontal: 5,
   },
   paginationOverlay: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "center",
-    padding: 10, 
+    padding: 10,
   },
   paginationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     alignSelf: "center",
-    padding: 10, 
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+    padding: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     borderRadius: 20,
   },
   paginationDot: {
     height: 10,
     width: 10,
     borderRadius: 5,
-    marginHorizontal: 5, 
+    marginHorizontal: 5,
   },
   paginationDotActive: {
-    backgroundColor: 'orange',
+    backgroundColor: "orange",
   },
   paginationDotInactive: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: 20, 
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: 20,
   },
-  postedContainer:{
-    
-  }
+  postedContainer: {},
+  expiredTag: {
+    backgroundColor: "red",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+
+  expiredText: {
+    color: "white",
+    fontSize: 14,
+  },
 });
 
-
-
- export default styles;  
+export default styles;
