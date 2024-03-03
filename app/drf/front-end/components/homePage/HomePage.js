@@ -23,10 +23,10 @@ import {
   getUserData,
   getUserProductList,
   getProductList,
-} from "../helperFunctions/apiHelpers";
+} from "../helperFunctions/apiHelpers"; 
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
-import QuickFilterChip from './QuickFilterChip';
+import QuickFilterChip from './QuickFilterChip'; 
 
 const ClearAllIcon = require("../../assets/icons/cancel.png");
 
@@ -139,7 +139,7 @@ const HomePage = ({ navigation }) => {
 
   // Function to handle the selection of food categories
   const handleCategoryPress = (category) => {
-    setSelectedCategories(prevCategories =>
+    setSelectedCategories(prevCategories => 
       prevCategories.includes(category)
         ? prevCategories.filter(cat => cat !== category)
         : [...prevCategories, category]
@@ -173,7 +173,7 @@ const HomePage = ({ navigation }) => {
     if (selectedCategories.length === 0) {
       return true; // If no categories are selected, all listings match
     }
-
+  
     if (!Array.isArray(listingCategories)) {
       return false; // Return false if listingCategories is undefined or not an array
     }
@@ -181,8 +181,8 @@ const HomePage = ({ navigation }) => {
       selectedCategories.includes(category)
     );
   };
-
-
+  
+  
   // TODO: Location filtering and sorting
   const filteredAndSortedListings = useMemo(() => {
     if (loading) {
@@ -205,12 +205,12 @@ const HomePage = ({ navigation }) => {
         const today = new Date();
         const oneWeekLater = new Date(today);
         oneWeekLater.setDate(today.getDate() + 7); // Set the date to one week later
-
+      
         filteredListings = filteredListings.filter(listing => {
           const bestBeforeDate = new Date(listing.best_before);
           return bestBeforeDate >= today && bestBeforeDate <= oneWeekLater; // Check if the best before date is within the next week
         });
-        filteredListings.sort((a, b) => new Date(a.best_before) - new Date(b.best_before));
+        filteredListings.sort((a, b) => new Date(a.best_before) - new Date(b.best_before)); 
         break;
       case 'Rare':
           filteredListings = filteredListings.filter(listing => listing.categories?.split(',').length > 5);
@@ -218,7 +218,7 @@ const HomePage = ({ navigation }) => {
       case 'Pantry':
         // Filter listings to include only those with 'Canned' as their sole category
         filteredListings = filteredListings.filter(listing => {
-          const categoriesArray = listing.categories?.split(',').map(category => category.trim());
+          const categoriesArray = listing.categories?.split(',').map(category => category.trim()); 
           return categoriesArray.length === 1 && categoriesArray.includes('Canned'); // Check if the array has only one element and that element is 'Canned'
         });
         break;
@@ -227,7 +227,7 @@ const HomePage = ({ navigation }) => {
             const categoriesArray = listing.categories?.split(',').map(category => category.trim()); // Split and trim categories
             return categoriesArray.length > 0 && categoriesArray.every(category => ['Vegan', 'Produce'].includes(category)); // Ensure every category is either 'Vegan' or 'Produce'
           });
-          break;
+          break;       
       default:
           break;
   }
@@ -255,11 +255,11 @@ const HomePage = ({ navigation }) => {
     foodListing,
     loading,
     postCreated,
-    selectedQuickFilter,
+    selectedQuickFilter, 
 ]);
 
-
-
+  
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -292,7 +292,7 @@ const HomePage = ({ navigation }) => {
           >
             <View style={styles.categoryContainer}>
               <TouchableOpacity
-                style={styles.categoryButton}
+                style={styles.categoryButton} 
                 onPress={handleClearPress}
               >
                 <Image source={ClearAllIcon} style={styles.iconImageClear} />
@@ -303,7 +303,7 @@ const HomePage = ({ navigation }) => {
             {/* Iterating through categories and showing icons for each */}
             {Object.keys(categoryIcons).map((category) => (
               <View style={styles.categoryContainer} key={category}>
-
+                
                 <TouchableOpacity
                   style={[
                     styles.categoryButton,
@@ -335,7 +335,7 @@ const HomePage = ({ navigation }) => {
             ))}
           </ScrollView>
 
-          <ScrollView style={styles.filterAllContainer}
+          <ScrollView style={styles.filterAllContainer} 
             horizontal={true}
             showsHorizontalScrollIndicator={false}>
             <TouchableOpacity
