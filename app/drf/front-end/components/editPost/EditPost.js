@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, View} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -14,12 +14,17 @@ import CancelButton from './CancelButton';
 import ImagePickerComponent from './ImagePickerComponent';
 import styles from './styles';
 import CustomAlertModal from '../CustomAlertModal';
+import {updateProduct } from '../helperFunctions/apiHelpers';
+import AuthContext from "../../context/AuthContext";
+
 
 const EditPost = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const scrollViewRef = useRef();
     const { post } = route.params;
+    const { authTokens } = useContext(AuthContext);
+
   
     // state variables for the post attributes
     const [title, setTitle] = useState('');
@@ -158,32 +163,43 @@ useFocusEffect(
       isValid = false;
     } else {
       setIsTitleValid(true);
-    }
+    };
 
     if (!content.trim()) {
       setIsContentValid(false);
       isValid = false;
     } else {
       setIsContentValid(true);
-    }
+    };
 
     if (!isValid) {
       setAlertMessage('Fill in the missing fields');
       setIsAlertVisible(true);
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
       return;
-    }
+    };
+    
   
     const newPost = {
       title: title,
       content: content,
       categories: selectedCategories.join(', '), 
-      allergens: selectedAllergens.join(', '), 
-      bestBefore: bestBefore, 
-      images: images 
+      allergens: selectedAllergens.join(', '),
+      best_before: selectedDate.toISOString().split("T")[0],
     };
-  
-    console.log("Updated Post:", newPost);
+
+    console.log("new images", images);
+    console.log(post.id);
+    
+    try {
+      const updatedProduct = await updateProduct(newPost, images, authTokens, post.id);
+      console.log("Updated Product:", updatedProduct);    
+      navigation.goBack(); 
+
+    } catch (error) {
+        console.error("Error updating product:", error);
+        setErrorMessage('Failed to update the product. Please try again.'); 
+    };
   };
   
 
@@ -205,7 +221,7 @@ useFocusEffect(
     setSelectedDate(bestBeforeDate);
   
     // Reset images
-    setImages(post.images || []);
+    setImages(post.images.map(img => img.image));
 
     setIsContentValid(true);
     setIsTitleValid(true);

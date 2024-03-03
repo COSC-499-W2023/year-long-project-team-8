@@ -346,7 +346,7 @@ async function getProductListById(authTokens, userId) {
   }
 }
 
-async function updateProduct(productData, imageFiles, authTokens, productId) {
+async function updateProduct(productData, imageUris, authTokens, productId) {
   try {
     const formData = new FormData();
 
@@ -355,56 +355,44 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
       formData.append(key, productData[key]);
     });
 
-    // Append image files to the FormData
-    if (imageFiles) {
-      await Promise.all(
-        imageFiles.map(async (fileUri, index) => {
-          // Generate a unique filename using a combination of index and a unique identifier
-          const uniqueFilename = `image_${index}_${Math.random()
-            .toString(36)
-            .substring(7)}.jpg`;
-
-          // Convert local URI to file content
-          const fileContent =
-            Platform.OS === "ios"
-              ? await FileSystem.readAsStringAsync(fileUri, {
-                  encoding: FileSystem.EncodingType.Base64,
-                })
-              : await FileSystem.readAsStringAsync(fileUri, {
-                  encoding: FileSystem.EncodingType.UTF8,
-                });
-
-          formData.append("images", {
-            uri: fileUri,
-            type: "image/jpeg", // Adjust the type if needed
-            name: uniqueFilename,
-            data: fileContent, // Add the file content here
+    // Append image URIs to the FormData
+    if (imageUris) {
+      imageUris.forEach((uri, index) => {
+        if (uri.startsWith('http')) {
+          // If the URI is a remote URL, just append it as a string
+          formData.append(`images`, uri);
+        } else {
+          // If the URI is a local file, convert it to a Blob and append
+          const filename = `image_${index}.jpg`;
+          formData.append('images', {
+            uri,
+            type: 'image/jpeg',
+            name: filename,
           });
-        })
-      );
+        }
+      });
     }
+
     const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + String(authTokens.access),
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + String(authTokens.access),
       },
       body: formData,
     });
 
     if (response.ok) {
       const data = await response.json();
-      // Return the created product data
       return data;
     } else {
-      // Handle errors or provide feedback to the user
       const errorData = await response.json();
-      console.error("Error:", errorData);
-      throw new Error("Failed to create product");
+      console.error('Error:', errorData);
+      throw new Error('Failed to update product');
     }
   } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Something went wrong creating post with images");
+    console.error('Error:', error);
+    throw new Error('Something went wrong updating product with images');
   }
 }
 
