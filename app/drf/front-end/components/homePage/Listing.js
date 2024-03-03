@@ -53,8 +53,12 @@ const Listing = ({ listing, navigation }) => {
       return `${hours} hour ago`;
     } else if (hours < 24) {
       return `${hours} hours ago`;
+    } else if (days < 2) {
+      return `${days} day ago`;
     } else if (days < 30) {
       return `${days} days ago`;
+    } else if (months < 2) {
+      return `${months} month ago`;
     } else if (months < 12) {
       return `${months} months ago`;
     } else {
