@@ -50,6 +50,19 @@ class ProductViewSet(ModelViewSet):
 
         for image_data in images_data:
             ProductImages.objects.create(product=product, image=image_data)
+            
+    def perform_update(self, serializer):
+        product = serializer.save()
+
+        # Handle associated images update
+        images_data = self.request.FILES.getlist('images')
+
+        # Delete existing images
+        product.images.all().delete()
+
+        # Create new images
+        for image_data in images_data:
+            ProductImages.objects.create(product=product, image=image_data)
 
     def get_images(self, request, pk=None):
         # Get images associated with a specific product
@@ -74,3 +87,4 @@ class ProductViewSet(ModelViewSet):
 class ImageViewSet(ModelViewSet):
     queryset = ProductImages.objects.all()
     serializer_class = ProductImageSerializer
+    
