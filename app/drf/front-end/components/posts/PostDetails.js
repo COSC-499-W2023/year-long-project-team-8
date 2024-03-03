@@ -84,14 +84,16 @@ const PostDetails = ({ route, navigation }) => {
 
           <CustomText fontType={"subHeader"} style={styles.bestBefore}>
             Best Before: {formatDate(listing.best_before)}
-            {isExpired && (
+          </CustomText>
+          {isExpired && (
+            <View style={styles.expiredContainer}>
               <View style={styles.expiredTag}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
                   Expired
                 </CustomText>
               </View>
-            )}
-          </CustomText>
+            </View>
+          )}
 
           {/*Chat Section*/}
           <ChatComponent

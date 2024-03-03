@@ -238,6 +238,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 14,
   },
+  expiredContainer: {
+    flexDirection: "row", // Align children horizontally
+    justifyContent: "flex-star", // Align children to the end of the container
+    marginTop: 5, // Adjust spacing as needed
+  },
 });
 
 export default styles;
