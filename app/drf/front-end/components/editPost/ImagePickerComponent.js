@@ -9,6 +9,8 @@ import Album from './Album';
 import Check from './Check';
 import Header from './Header';
 import CustomAlertModal from '../CustomAlertModal';
+import * as MediaLibrary from 'expo-media-library';
+
 
 const ImagePickerComponent = ({ images, onImagesUpdated }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -23,18 +25,24 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
     setIsPickerOpen(true);
   };
 
-  const handleImageSave = (selectedImages) => {
-    if (editingImageIndex !== null && selectedImages.length > 0) {
-      const updatedImages = [...images];
-      updatedImages[editingImageIndex] = selectedImages[0].uri;  // Store URI directly
-      onImagesUpdated(updatedImages);
+  const handleImageSave = async (selectedImages) => {
+    const imageAssetsInfo = await Promise.all(
+      selectedImages.map((img) => MediaLibrary.getAssetInfoAsync(img.id))
+    );
+  
+    const updatedImages = imageAssetsInfo.map((info) => info.localUri);
+  
+    if (editingImageIndex !== null && updatedImages.length > 0) {
+      const updatedImagesArray = [...images];
+      updatedImagesArray[editingImageIndex] = updatedImages[0];  // Use localUri
+      onImagesUpdated(updatedImagesArray);
       setEditingImageIndex(null);
     } else {
-      const newImages = selectedImages.map(img => img.uri);  // Store URIs directly
-      onImagesUpdated([...images, ...newImages]);
+      onImagesUpdated([...images, ...updatedImages]); // Use localUri
     }
     setIsPickerOpen(false);
   };
+  
 
   const handleImageCancel = () => {
     setIsPickerOpen(false);
