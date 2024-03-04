@@ -34,7 +34,7 @@ const EditPost = () => {
     const [bestBefore, setBestBefore] = useState('');
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date(post.best_before));
-    const [images, setImages] = useState(post.images || []);
+    const [images, setImages] = useState([]);
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const [isTitleValid, setIsTitleValid] = useState(true);
@@ -86,7 +86,7 @@ const EditPost = () => {
           day: 'numeric',
         });
         setBestBefore(formattedDate);
-        setImages(post.images.map(img => img.image)); // Extract URIs from objects
+        setImages(post.images.map(img => img.image)); 
       }
     }, [post, route.params]);
 
