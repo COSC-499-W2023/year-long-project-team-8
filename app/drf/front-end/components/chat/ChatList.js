@@ -80,7 +80,7 @@ const ChatList = () => {
         </View>
         <View style={{ marginLeft: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}></View>
         {item.sender.id !== userId ? (
-        <Text style={{ fontWeight: 'bold' , fontSize: 19}}>{item.sender.firstname ?? item.sender.email ?? item.sender}</Text>
+        <Text style={{ fontWeight: 'bold' , fontSize: 19}}>{userDetails.firstname}</Text>
       ) : (
         <Text style={{ fontWeight: 'bold' , fontSize: 19}}>{item.receiver.firstname ?? item.receiver.email ?? item.receiver}</Text>
       )}
