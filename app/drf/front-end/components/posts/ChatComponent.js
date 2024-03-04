@@ -65,7 +65,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
       if (chatId !== '') {
         setMessages([...messages, data]);
         setMessages(initialMessage);
-        navigation.navigate('UserMessages', { chatId: chatId });
+        navigation.navigate('UserMessages', { chatId: chatId , sender: userId, receiver: receiver, product: product});
       } else {
         // If chatId is not set (creating a new chat)
         setMessages([...messages, data]);
@@ -73,7 +73,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         
         // Set the chatId of the new chat
         setChatId(data.id);
-        navigation.navigate('UserMessages', { chatId: data.id });
+        navigation.navigate('UserMessages', { chatId: data.id , sender: userId, receiver: receiver, product: product});
       }
       
     } catch (error) {
