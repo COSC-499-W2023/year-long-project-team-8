@@ -1270,6 +1270,7 @@ February 19 - March 03, 2024
 <!--
 - screenshot of the projects board
 -->
+![Alt text](../img/t2_projboard_w8.png)
 
 ### Username Map
 
@@ -1297,7 +1298,10 @@ February 19 - March 03, 2024
 - Change password feature within profile page
 - Slide down refresh for chat
 - Edit posts
--
+- sorting sender and receiver formatting of chat
+- chat bug fixes
+- Slide down refresh for chat updates
+- finish chat core functionality
 - automate server launch
 - add expiry tags to posts
 - implement CI pipeline (backend tests)
@@ -1313,6 +1317,8 @@ February 19 - March 03, 2024
 - [x] #278
 - [x] #279
 - [x] #280
+- [x] #259
+- [X] #260
 
 ### In Progress Tasks
 
@@ -1324,6 +1330,7 @@ February 19 - March 03, 2024
 - #165 Chat API tests
 - #187 Initiate chat instance between sender and receiver from Product details page
 - #135 Automated testing with GitHub issues
+- #275 relevant user details on chat screen
 - #240 Clean up chat list and user messages
 - #235 deletion of chat if product is marked as picked up or deleted
 - #225 Display user's reviews fe
@@ -1331,7 +1338,6 @@ February 19 - March 03, 2024
 - move map feature to the bottom of the pages #246
 - add more functionality to the map page #247
 - make the edit profile page look more similar to the rest of the pages #248
-- #259 Slide down refresh for chat updates
 - #260 Correctly sort sender and receiver for individual messages for formatting
 - [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
 - [#257](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/257)
@@ -1342,6 +1348,7 @@ February 19 - March 03, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+![burnup-chart](../img/t2_burnup_w8.png)
 
 ### Test Report
 
