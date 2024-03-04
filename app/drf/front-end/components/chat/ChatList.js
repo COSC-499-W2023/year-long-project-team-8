@@ -63,7 +63,7 @@ const ChatList = () => {
   const navigateToChat = (chat) => {
     console.log("trying to navigate to chat with id", chat.id);
     console.log("Chat.product", chat);
-    navigation.navigate('UserMessages', { chatId: chat.id , receiver: chat.receiver, product: chat.product});
+    navigation.navigate('UserMessages', { chatId: chat.id , sender: chat.sender, receiver: chat.receiver, product: chat.product});
   };
 
   const formatTime = (timestamp) => {

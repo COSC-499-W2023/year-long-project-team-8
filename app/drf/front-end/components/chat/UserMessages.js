@@ -3,11 +3,13 @@ import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, 
 import { baseEndpoint } from '../../config/config';
 import AuthContext from '../../context/AuthContext';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { getChatMessages, sendChatMessage } from '../helperFunctions/apiHelpers';
+import { getChatMessages, sendChatMessage, getUserData, getProductListById } from '../helperFunctions/apiHelpers';
 
 const UserMessages = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [receiverDetails, setReceiverDetails] = useState('');
+  const [productDetails, setProductDetails] = useState(null);
   const { authTokens, userId } = useContext(AuthContext);
   const chatId = route.params?.chatId; 
   const receiver = route.params?.receiver;
@@ -27,9 +29,31 @@ const UserMessages = ({route, navigation}) => {
       }
     };
 
+    const fetchReceiverDetails = async () => {
+      try {
+        const userDetailsId = sender !== userId ? sender : receiver;
+        const userData = await getUserData(userDetailsId, authTokens);
+        setReceiverDetails(userData);
+      } catch (error) {
+        console.error('Error fetching receiver details:', error);
+      }
+    };
+
+    //Was having issues with this api call permissions
+    // const fetchProductDetails = async () => {
+    //   try {
+    //     const productData = await getProductListById(authTokens, product);
+    //     setProductDetails(productData);
+    //   } catch (error) {
+    //     console.error('Error fetching product details:', error);
+    //   }
+    // };
+
     fetchChatMessages();
-  }, [authTokens, chatId]);
-  
+    fetchReceiverDetails();
+    //fetchProductDetails();
+  }, [authTokens, chatId, sender, receiver, product]);
+
   const isSender = (message) => message.sender === userId;
 
   const renderMessageBubble = ({ item }) => (
@@ -56,11 +80,11 @@ const UserMessages = ({route, navigation}) => {
       console.error('Error sending message:', error);
     }
   };
-
+  console.log("REc details", receiverDetails);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>{sender}'s Conversation about Product {product}</Text>
+        <Text style={styles.headerText}>Ask {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about plate {product}!</Text>
       </View>
       <FlatList
         data={messages}
@@ -94,6 +118,11 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 8,
+  },
+  receiverText: {
+    fontSize: 16,
     color: 'white',
   },
   inputContainer: {
