@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Button, Image, RefreshControl } from 'react-native';
 import { getChatList, getUserData } from '../helperFunctions/apiHelpers'; 
 import AuthContext from '../../context/AuthContext';
 import styles from '../profilePage/profilePageStyles';
@@ -10,6 +10,7 @@ const ChatList = () => {
   const [chatList, setChatList] = useState([]);
   const { authTokens, userId } = useContext(AuthContext);
   const [userDetailsMap, setUserDetailsMap] = useState({});
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -73,6 +74,19 @@ const ChatList = () => {
     return `${diffHours} hours ago`;
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true); // Set refreshing to true while fetching new data
+    try {
+      // Fetch new data
+      const chats = await getChatList(authTokens);
+      setChatList(chats);
+    } catch (error) {
+      console.error('Error fetching chat list:', error);
+    } finally {
+      setRefreshing(false); // Set refreshing to false after fetching new data
+    }
+  };
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
       {/* Header Text for testing */}
@@ -101,6 +115,12 @@ const ChatList = () => {
             </TouchableOpacity>
           );
         }}
+        refreshControl={ // Add RefreshControl component
+          <RefreshControl
+            refreshing={refreshing} // Set refreshing state
+            onRefresh={onRefresh} // Function to handle refresh
+          />
+        }
       />
     </View>
   );

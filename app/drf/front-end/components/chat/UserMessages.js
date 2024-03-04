@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl } from 'react-native';
 import { baseEndpoint } from '../../config/config';
 import AuthContext from '../../context/AuthContext';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ const UserMessages = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [receiverDetails, setReceiverDetails] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
   const { authTokens, userId } = useContext(AuthContext);
   const chatId = route.params?.chatId; 
@@ -81,6 +82,18 @@ const UserMessages = ({route, navigation}) => {
     }
   };
   console.log("REc details", receiverDetails);
+
+  const onRefresh = async () => {
+    setRefreshing(true); // Set refreshing state to true
+    try {
+      const chatData = await getChatMessages(authTokens, chatId);
+      setMessages(chatData.messages);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    } finally {
+      setRefreshing(false); // Set refreshing state to false
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -91,6 +104,12 @@ const UserMessages = ({route, navigation}) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderMessageBubble}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 16 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       />
       <View style={styles.inputContainer}>
         <TextInput
