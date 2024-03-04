@@ -396,6 +396,37 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/4c256
 |   1    |      ✓    |            |
 
 
+### Work Period
+ - February 19 - March 03, 2024
+
+### Task Types
+![Alt text](img/ar_w20.png)
+
+### Recap of Students Goals
+
+- Edit post details implementation
+- Add listing redo
+
+
+
+### Student Tasks on Project Board
+
+- #1 delete/edit post
+- #2 Add listing redo
+
+
+https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a3e1-b2df-4bc1-ae11-36f1ebd80356
+
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |           |      ✓     |
+|   2    |           |      ✓     |
+
+
 
 
 
