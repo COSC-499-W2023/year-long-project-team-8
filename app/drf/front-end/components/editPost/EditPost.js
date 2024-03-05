@@ -297,6 +297,12 @@ useFocusEffect(
               minimumDate={tomorrow}
             />
 
+            {/*Images*/}
+            <ImagePickerComponent
+              images={images}
+              onImagesUpdated={(newImages) => setImages(newImages)}
+            />
+
             {/*Submit*/}
             <SubmitButton handleUpdatePost={handleUpdatePost} title={"UPDATE POST"}/>
 
