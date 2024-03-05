@@ -1,64 +1,75 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Modal, Image, Alert } from 'react-native';
-import { ImagePicker } from 'expo-image-multiple-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageGrid from './ImageGrid'; 
-import CustomText from '../CustomText'; 
-import styles from './styles'; 
-import Album from './Album';
-import Check from './Check';
-import Header from './Header';
+import ImageGrid from './ImageGrid';
+import CustomText from '../CustomText';
+import styles from './styles';
 import CustomAlertModal from '../CustomAlertModal';
-import * as MediaLibrary from 'expo-media-library';
-
+import * as ImagePicker from 'expo-image-picker';
 
 const ImagePickerComponent = ({ images, onImagesUpdated }) => {
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [editingImageIndex, setEditingImageIndex] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const handleChangeImage = (index) => {
-    setEditingImageIndex(index);
-    setIsPickerOpen(true);
-  };
 
-  const handleImageSave = async (selectedImages) => {
-    const imageAssetsInfo = await Promise.all(
-      selectedImages.map((img) => MediaLibrary.getAssetInfoAsync(img.id))
+  const showImagePickerOptions = async () => {
+    const options = ['Take Photo', 'Choose from Library', 'Cancel'];
+
+    Alert.alert(
+      'Select an option',
+      '',
+      options.map((option, index) => ({
+        text: option,
+        onPress: () => {
+          if (index === 0) {
+            takePhoto();
+          } else if (index === 1) {
+            chooseFromLibrary();
+          }
+        },
+      })),
+      { cancelable: true }
     );
-  
-    const updatedImages = imageAssetsInfo.map((info) => info.localUri);
-  
-    if (editingImageIndex !== null && updatedImages.length > 0) {
-      const updatedImagesArray = [...images];
-      updatedImagesArray[editingImageIndex] = updatedImages[0];  // Use localUri
-      onImagesUpdated(updatedImagesArray);
-      setEditingImageIndex(null);
-    } else {
-      onImagesUpdated([...images, ...updatedImages]); // Use localUri
-    }
-    setIsPickerOpen(false);
-  };
-  
-
-  const handleImageCancel = () => {
-    setIsPickerOpen(false);
-    setEditingImageIndex(null);
   };
 
-  const handleDeleteImage = (index) => {
-    if (images.length <= 1) {
-      setAlertMessage('At least one image is required');
-      setIsAlertVisible(true);
-      setImageModalVisible(false);
+  const takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your camera!");
       return;
     }
 
-    const updatedImages = images.filter((_, i) => i !== index);
-    onImagesUpdated(updatedImages);
+    const cameraResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.7,
+    });
+
+    if (!cameraResult.canceled) {
+      const newImages = [...images, cameraResult.uri];
+      onImagesUpdated(newImages);
+    }
+  };
+
+  const chooseFromLibrary = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const libraryResult = await ImagePicker.launchImageLibraryAsync({
+      aspect: [4, 3],
+      quality: 0.7,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (!libraryResult.canceled && libraryResult.assets) {
+      const newImages = [...images, ...libraryResult.assets.map(asset => asset.uri)];
+      onImagesUpdated(newImages);
+    }
   };
 
   const handleDeleteImageModal = () => {
@@ -76,11 +87,11 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
     setImageModalVisible(false);
   };
 
-  const onImagePress = (img, index) => {
-    setSelectedImage(img.image); // Extract the URI from the object
+  const onImagePress = (uri, index) => {
+    setSelectedImage(uri);
     setImageModalVisible(true);
   };
-  
+
   const handleCloseModal = () => {
     setImageModalVisible(false);
   };
@@ -90,37 +101,15 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
       <View style={styles.imageSection}>
         <CustomText style={styles.title}>Images</CustomText>
         {images.length < 6 && (
-          <TouchableOpacity style={styles.addIconContainer} onPress={() => setIsPickerOpen(true)}>
+          <TouchableOpacity style={styles.addIconContainer} onPress={showImagePickerOptions}>
             <MaterialIcons name="add" size={26} color="#000" />
           </TouchableOpacity>
         )}
       </View>
       <ImageGrid
-        images={images.map(uri => ({ image: uri }))}  // Convert URIs to objects for ImageGrid
-        onChangeImage={handleChangeImage}
-        onDeleteImage={handleDeleteImage}
+        images={images}
         onImagePress={onImagePress}
       />
-
-      <Modal
-        visible={isPickerOpen}
-        animationType="slide"
-        onRequestClose={() => setIsPickerOpen(false)}
-        transparent={false}
-      >
-        <ImagePicker
-          theme={{
-            header: (props) => <Header {...props} cancel={handleImageCancel} totalAllowed={6 - images.length} />,
-            album: Album,
-            check: Check,
-          }}
-          onSave={handleImageSave}
-          onCancel={handleImageCancel}
-          limit={6 - images.length}
-          mediaType="photo"
-          multiple
-        />
-      </Modal>
 
       <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
         <View style={styles.modalView}>
@@ -138,6 +127,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         </View>
       </Modal>
 
+      {/* Custom Alert Modal */}
       <CustomAlertModal
         isVisible={isAlertVisible}
         message={alertMessage}

@@ -14,7 +14,7 @@ const ImageGrid = ({ images, onImagePress }) => {
         const imageStyle = isLastImage && isOddNumberOfImages ? [styles.postImage, styles.fullWidthImage] : styles.postImage;
         return (
           <TouchableOpacity activeOpacity={1} key={index} onPress={() => onImagePress(img, index)}>
-            <Image source={{ uri: img.image }} style={imageStyle} />
+            <Image source={{ uri: img }} style={imageStyle} />
           </TouchableOpacity>
 
         );

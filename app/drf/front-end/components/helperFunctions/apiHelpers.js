@@ -359,30 +359,26 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
     if (imageFiles) {
       await Promise.all(
         imageFiles.map(async (fileUri, index) => {
-          // Generate a unique filename using a combination of index and a unique identifier
-          const uniqueFilename = `image_${index}_${Math.random()
-            .toString(36)
-            .substring(7)}.jpg`;
-
-          // Convert local URI to file content
-          const fileContent =
-            Platform.OS === "ios"
-              ? await FileSystem.readAsStringAsync(fileUri, {
-                  encoding: FileSystem.EncodingType.Base64,
-                })
-              : await FileSystem.readAsStringAsync(fileUri, {
-                  encoding: FileSystem.EncodingType.UTF8,
-                });
-
-          formData.append("images", {
-            uri: fileUri,
-            type: "image/jpeg", // Adjust the type if needed
-            name: uniqueFilename,
-            data: fileContent, // Add the file content here
-          });
+          // Check if the URI is a local file URI
+          if (fileUri.startsWith('file://')) {
+            const uniqueFilename = `image_${index}_${Math.random().toString(36).substring(7)}.jpg`;
+            const fileContent = await FileSystem.readAsStringAsync(fileUri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            formData.append('images', {
+              uri: fileUri,
+              type: 'image/jpeg', 
+              name: uniqueFilename,
+              data: fileContent, 
+            });
+          } else {
+            // Handle non-local URIs
+            console.warn(`Skipping non-local URI: ${fileUri}`);
+          }
         })
       );
     }
+
     const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
       method: "PATCH",
       headers: {

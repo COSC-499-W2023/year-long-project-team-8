@@ -154,7 +154,6 @@ useFocusEffect(
     }, [])
   );
 
-  // TODO: Handle post update submission
   const handleUpdatePost = async () => {
     let isValid = true;
 
@@ -198,7 +197,6 @@ useFocusEffect(
 
     } catch (error) {
         console.error("Error updating product:", error);
-        setErrorMessage('Failed to update the product. Please try again.'); 
     };
   };
   
