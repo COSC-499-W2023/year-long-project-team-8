@@ -28,6 +28,13 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
     const fetchChatId = async () => {
       try {
         // Fetch chat list
+        if (!authTokens) {
+          // Reset chat related states when authTokens are null (user logs out)
+          setChatId('');
+          setReceiver('');
+          setProduct('');
+          return;
+        }
         const chats = await getChatList(authTokens);
         console.log("CHats obtained from getChatList", chats);
         console.log("Prod owner", prodOwner);

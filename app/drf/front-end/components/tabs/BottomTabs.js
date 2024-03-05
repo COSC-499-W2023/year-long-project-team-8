@@ -10,6 +10,10 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import AuthContext from "../../context/AuthContext";
 import { baseEndpoint } from "../../config/config";
 import { useNavigation } from "@react-navigation/native";
+import { Animated } from "react-native";
+
+const av = new Animated.Value(0);
+av.addListener(() => {return});
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();

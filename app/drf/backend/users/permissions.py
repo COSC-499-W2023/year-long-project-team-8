@@ -29,7 +29,7 @@ class UserPermission(permissions.BasePermission):
             return False
  
         # if view.action in ["retrieve", "update", "partial_update"]:
-        if view.action in ["retrieve"]:
+        if view.action in ["retrieve", "list", "details"]:
             return True  # Allow users to retrieve other users' data
         elif view.action in ["update", "partial_update", "destroy"]:
             return obj == request.user  # Users can update their own data

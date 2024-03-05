@@ -369,7 +369,30 @@ async function sendChatMessage(userId, authTokens, newMessage, receiver, product
       throw error;
   }
 }
+async function getProductById(authTokens, productId) {
+  try {
+    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
 
+    if (response.status === 200) {
+      const productData = await response.json();
+      return productData; // Return the data to the caller
+      // if unauthorized access attempt, logout user
+    } else if (response.statusText === "Unauthorized") {
+      throw new Error("Unauthorized!");
+    } else {
+      throw new Error("Something went wrong getting post by id!");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong getting post by id!!");
+  }
+}
 
 async function updateProfilePicture(userId, authTokens, imageFile) {
   try {
@@ -442,4 +465,5 @@ export {
   getChatMessages,
   sendChatMessage,
   getProductListById,
+  getProductById,
 };

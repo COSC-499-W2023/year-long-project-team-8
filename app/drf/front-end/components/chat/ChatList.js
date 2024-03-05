@@ -17,8 +17,10 @@ const ChatList = () => {
     const fetchChatList = async () => {
       try {
         if (authTokens) {
-          const chats = await getChatList(authTokens);
-          console.log('Fetched chat list:', chats);
+          let chats = await getChatList(authTokens);
+          // Sort chats by timestamp (newest to oldest)
+          chats.sort((a, b) => b.timestamp - a.timestamp);
+          console.log('Fetched and sorted chat list:', chats);
           setChatList(chats);
         } else {
           // Clearing chatlist when user logs out
@@ -30,6 +32,7 @@ const ChatList = () => {
     };
     fetchChatList();
   }, [authTokens]);
+  
 
   useEffect(() => {
     const fetchUserDetails = async (id) => {
@@ -70,9 +73,18 @@ const ChatList = () => {
   const formatTime = (timestamp) => {
     const currentTime = moment();
     const messageTime = moment(timestamp);
+    const diffMinutes = currentTime.diff(messageTime, 'minutes');
+    if (diffMinutes < 60) {
+      return `${diffMinutes} minutes ago`;
+    }
     const diffHours = currentTime.diff(messageTime, 'hours');
-    return `${diffHours} hours ago`;
+    if (diffHours < 24) {
+      return `${diffHours} hours ago`;
+    }
+    const diffDays = currentTime.diff(messageTime, 'days');
+    return `${diffDays} days ago`;
   };
+  
 
   const onRefresh = async () => {
     setRefreshing(true); // Set refreshing to true while fetching new data
