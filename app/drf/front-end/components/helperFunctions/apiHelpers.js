@@ -437,18 +437,11 @@ async function deleteProduct(authTokens, productId) {
     });
 
     if (response.status === 204) {
-      console.log("Product deleted successfully");
-      return; // No content to parse, so just return
-    }
-
-    if (response.ok) {
-      const data = await response.json(); // Only parse JSON if response is OK
-      return data;
+      console.log("successful delete");
     } else {
       // Handle errors or provide feedback to the user
-      const errorData = await response.json();
-      console.error("Error:", errorData);
-      throw new Error("Failed to delete product");
+      const responseBody = await response.text();
+      console.error("Error:", responseBody);
     }
   } catch (error) {
     console.error("Error:", error);
