@@ -372,8 +372,18 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
               data: fileContent, 
             });
           } else {
-            // Handle non-local URIs
-            console.warn(`Skipping non-local URI: ${fileUri}`);
+            // Download the image and get the local URI
+            const localUri = await downloadImage(fileUri);
+            const uniqueFilename = `image_${index}_${Math.random().toString(36).substring(7)}.jpg`;
+            const fileContent = await FileSystem.readAsStringAsync(localUri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            formData.append('images', {
+              uri: localUri,
+              type: 'image/jpeg', 
+              name: uniqueFilename,
+              data: fileContent, 
+            });
           }
         })
       );
@@ -403,6 +413,18 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
     throw new Error("Something went wrong creating post with images");
   }
 }
+
+
+async function downloadImage(url) {
+  try {
+    const { uri } = await FileSystem.downloadAsync(url, FileSystem.documentDirectory + 'downloadedImage.jpg');
+    return uri;
+  } catch (error) {
+    console.error('Error downloading image:', error);
+    throw error;
+  }
+}
+
 
 async function deleteProduct(authTokens, productId) {
   try {

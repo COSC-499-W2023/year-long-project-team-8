@@ -87,6 +87,7 @@ const EditPost = () => {
         });
         setBestBefore(formattedDate);
         setImages(post.images.map(img => img.image)); 
+        console.log(post.images.map(img => img));
       }
     }, [post, route.params]);
 
