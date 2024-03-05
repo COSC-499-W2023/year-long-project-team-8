@@ -207,18 +207,34 @@ const PostDetails = ({ route, navigation }) => {
             />
           )}
           {myPost && !pickedUp && (
-            <View style={styles.buttonContainer}>
-              <DeleteButton title="REMOVE POST" onPress={handleDeleteButton} />
-              <PickedUpButton title="PICKED UP" onPress={handlePickedUp} />
+            <View>
+              <CustomText fontType={"title"} style={styles.availabilityText}>
+                Availability
+              </CustomText>
+              <View style={styles.buttonContainer}>
+                <DeleteButton
+                  title="REMOVE POST"
+                  onPress={handleDeleteButton}
+                />
+                <PickedUpButton title="PICKED UP" onPress={handlePickedUp} />
+              </View>
             </View>
           )}
           {myPost && pickedUp && (
-            <View style={styles.buttonContainer}>
-              <DeleteButton title="REMOVE POST" onPress={handleDeleteButton} />
-              <NotPickedUpButton
-                title="AVAILABLE?"
-                onPress={handleNotPickedUp}
-              />
+            <View>
+              <CustomText fontType={"title"} style={styles.availabilityText}>
+                Availability
+              </CustomText>
+              <View style={styles.buttonContainer}>
+                <DeleteButton
+                  title="REMOVE POST"
+                  onPress={handleDeleteButton}
+                />
+                <NotPickedUpButton
+                  title="AVAILABLE?"
+                  onPress={handleNotPickedUp}
+                />
+              </View>
             </View>
           )}
 
