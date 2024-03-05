@@ -14,7 +14,6 @@ import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-// Import the SliderProvider from your context file
 import { SliderProvider } from './context/MapContext';
 
 const Stack = createStackNavigator();
