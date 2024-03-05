@@ -50,6 +50,16 @@ const MapScreen = () => {
     return (
         <SafeAreaView style={styles.mainContainer}>
             <MapView style={styles.map} region={location}>
+                {location && (
+                    <Circle
+                        center={location}
+                        radius={sliderValue}
+                        strokeWidth={2}
+                        strokeColor="#FCA63C"
+                        fillColor="rgba(211,211,211,0.5)"
+                    />
+                )}
+            </MapView>
                 <Slider
                     style={styles.slider}
                     minimumValue={1000}
@@ -66,16 +76,6 @@ const MapScreen = () => {
                 <CustomText style={styles.sliderText} fontType="text">
                     {Math.floor(sliderValue / 1000)} KM
                 </CustomText>
-                {Platform.OS === 'ios' && location && (
-                    <Circle
-                        center={location}
-                        radius={sliderValue}
-                        strokeWidth={2}
-                        strokeColor="#FCA63C"
-                        fillColor="rgba(211,211,211,0.5)"
-                    />
-                )}
-            </MapView>
         </SafeAreaView>
     );
 };
