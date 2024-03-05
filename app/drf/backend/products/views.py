@@ -58,11 +58,10 @@ class ProductViewSet(ModelViewSet):
         images_data = self.request.FILES.getlist('images')
 
         # Delete existing images
-        product.images.all().delete()
-
-        # Create new images
-        for image_data in images_data:
-            ProductImages.objects.create(product=product, image=image_data)
+        if (images_data):
+            product.images.all().delete()
+            for image_data in images_data:
+                ProductImages.objects.create(product=product, image=image_data)
 
     def get_images(self, request, pk=None):
         # Get images associated with a specific product
