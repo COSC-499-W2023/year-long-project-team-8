@@ -25,7 +25,7 @@ const MapScreen = () => {
     };
 
     useEffect(() => {
-        const requestLocationPermission = async (radius) => {
+        const requestLocationPermission = async () => {
             try {
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== 'granted') {
@@ -36,8 +36,8 @@ const MapScreen = () => {
                 setLocation({
                     latitude: currentLocation.coords.latitude,
                     longitude: currentLocation.coords.longitude,
-                    latitudeDelta: radius * 0.000030,
-                    longitudeDelta: radius * 0.000030
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05,
                 });
                 setErrorMsg("Location Permission Allowed");
             } catch (error) {
