@@ -18,6 +18,7 @@ const TitleInput = ({ title, setTitle, isValid, setIsValid  }) => {
         value={title}
         onChangeText={handleChangeText} 
         placeholder="Title"
+        testID="title-input"
       />
     </View>
   );

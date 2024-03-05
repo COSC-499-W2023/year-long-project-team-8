@@ -58,7 +58,8 @@ class ProductViewSet(ModelViewSet):
         images_data = self.request.FILES.getlist('images')
 
         # Delete existing images
-        product.images.all().delete()
+        if (images_data):
+            product.images.all().delete()
 
         # Create new images
         for image_data in images_data:

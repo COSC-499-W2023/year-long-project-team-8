@@ -295,27 +295,10 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     } 
   };
 
-  const [fontLoaded, setFontLoaded] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    const loadFont = async () => {
-      await Font.loadAsync({
-        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
-        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
-        textFont: require("../../assets/fonts/Inter-Medium.ttf"),
-      });
-      const timer = delay(3000); // 3-second delay loading
-      await timer;
-      setLoading(false);
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
-
-  if (loading) {
-    return <Preloader />; // Show the preloader while loading
-  }
+  // if (loading) {
+  //   return <Preloader />; // Show the preloader while loading
+  // }
 
   return (
     <KeyboardAvoidingView
@@ -331,18 +314,15 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       >
         <View style={LoginStyles.headerContainer}>
           <CustomText
-            style={[
-              LoginStyles.headerText,
-              fontLoaded ? { fontFamily: "titleFont" } : {},
-            ]}
+            style={LoginStyles.headerText} fontType={'title'}
           >
             Login
           </CustomText>
           <CustomText
-            style={[
-              LoginStyles.subHeaderText,
-              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-            ]}
+            style={
+              LoginStyles.subHeaderText
+            }
+            fontType={'subHeader'}
           >
             Hungry or emptying space in the fridge?
           </CustomText>
@@ -443,6 +423,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
           transparent={true}
           visible={isForgotPasswordModalVisible}
           onRequestClose={handleCloseForgotPasswordModal}
+          testID="forgot-password-modal"
         >
           <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>

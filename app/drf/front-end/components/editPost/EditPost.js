@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, View} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ImageBackground, Image, ActivityIndicator, View} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -297,12 +297,6 @@ useFocusEffect(
               minimumDate={tomorrow}
             />
 
-            {/*Images*/}
-            <ImagePickerComponent
-              images={images}
-              onImagesUpdated={(newImages) => setImages(newImages)}
-            />
-
             {/*Submit*/}
             <SubmitButton handleUpdatePost={handleUpdatePost} title={"UPDATE POST"}/>
 
@@ -316,7 +310,7 @@ useFocusEffect(
               onClose={() => setIsAlertVisible(false)}
             />
 
-        </ScrollView>
+          </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
