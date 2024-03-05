@@ -5,14 +5,33 @@ import styles from './styles';
 import CustomText from "../CustomText"; 
 import { Rating } from '@kolking/react-native-rating'; 
 
-const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture }) => {
+const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture, navigation, userId, myPost,
+
+}) => {
   const dummyPfp = require("../../assets/icons/profile.png"); 
   const profilePicSource = userProfilePicture ? { uri: userProfilePicture } : dummyPfp;
+  console.log("myPost", myPost)
 
-  // Handler function for when the reviews button is pressed
-  const onReviewsPress = () => {
-    console.log('Navigate to review!');
+   // Handler function for when the reviews button is pressed
+   const onReviewsPress = () => {
+    if (myPost) {
+      // Navigate to your own profile page
+      navigation.navigate('Tabs', {
+        screen: 'Profile',
+        params: {
+          selectedTab: 'reviews',
+        },
+      });
+      
+    } else {
+      // Navigate to the profile of the user who posted the post
+      navigation.navigate("OtherProfile", {
+        userId: userId,
+        selectedTab: "reviews",
+      });
+    }
   };
+  
 
   const reviewText = reviews === 1 ? "review" : "reviews";
 

@@ -21,15 +21,21 @@ import PostReview from "../profilePage/PostReview";
 //TODO: Location, fetch posts for specific user, dummy pfp icon resolution increase, loader
 
 const OtherProfile = ({ route, navigation }) => {
-  const { userId } = route.params;
+  const { userId, selectedTab: initialSelectedTab } = route.params;
   const isFocused = useIsFocused();
   const { authTokens } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const [selectedTab, setSelectedTab] = useState("posts");
+  const [selectedTab, setSelectedTab] = useState(initialSelectedTab || "posts");
   const scrollViewRef = useRef(null);
-
+  
+  useEffect(() => {
+    if (route.params?.selectedTab) {
+      setSelectedTab(route.params.selectedTab);
+    }
+  }, [route.params?.selectedTab]);
+  
   useEffect(() => {
     if (!isFocused) {
       // Reset to 'posts' tab

@@ -23,14 +23,15 @@ import PostReview from "./PostReview";
 import * as ImagePicker from "expo-image-picker";
 import { useAppState } from "../../context/AppStateContext";
 
-//TODO: Location, dummy pfp icon resolution increase, change profile picture, loader
+//TODO: Location, dummy pfp icon resolution increase,loader
 
-const ProfilePage = ({ navigation }) => {
+const ProfilePage = ({ navigation, route }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
   const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
+  const { selectedTab: initialSelectedTab } = route.params || {}; // Default to an empty object if params are undefined
+  const [selectedTab, setSelectedTab] = useState(initialSelectedTab || "posts");
   const [userData, setUserData] = useState(null); // State to store user data.
   const [userPosts, setUserPosts] = useState([]); // State to store user's posts.
-  const [selectedTab, setSelectedTab] = useState("posts"); // State to manage selected tab between posts and reviews.
   const [location, setLocation] = useState(null); //State to manage Location
   const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.

@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, ScrollView, Alert } from "react-native";
-import { Divider } from "react-native-paper";
 import CustomText from "../CustomText";
 import styles from "./styles";
 import {
@@ -246,6 +245,7 @@ const PostDetails = ({ route, navigation }) => {
             content={listing.content}
             showFullDescription={showFullDescription}
             setShowFullDescription={setShowFullDescription}
+            myPost = {myPost}
           />
 
           {/*Giver details Section*/}
@@ -262,7 +262,10 @@ const PostDetails = ({ route, navigation }) => {
                 ? userDetails.profile_picture
                 : null
             }
-          />
+            navigation={navigation}
+            userId={listing.owner}
+            myPost={myPost}
+            />
 
           {/* Conditionally display allergens */}
           {listing.allergens && listing.allergens.length > 0 && (
