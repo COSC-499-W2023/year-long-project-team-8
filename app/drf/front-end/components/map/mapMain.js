@@ -24,8 +24,8 @@ const MapScreen = () => {
             setLocation({
                 latitude: currentLocation.coords.latitude,
                 longitude: currentLocation.coords.longitude,
-                latitudeDelta: 0.5,
-                longitudeDelta: 0.5,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
             });
         };
 
@@ -55,6 +55,7 @@ const MapScreen = () => {
                         strokeWidth={2}
                         strokeColor="#FCA63C"
                         fillColor="rgba(211,211,211,0.5)"
+
                     />
                 )}
             </MapView>
