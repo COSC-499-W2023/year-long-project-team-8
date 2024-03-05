@@ -227,8 +227,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   postedContainer: {},
+
   expiredTag: {
-    backgroundColor: "red",
+    backgroundColor: "#FF5733",
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
@@ -242,6 +243,23 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Align children horizontally
     justifyContent: "flex-star", // Align children to the end of the container
     marginTop: 5, // Adjust spacing as needed
+  },
+  almostExpiredTag: {
+    backgroundColor: "orange",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  buttonContainer: {
+    flexDirection: "row", // Arrange children horizontally
+    justifyContent: "space-between", // Distribute children along the main axis
+    marginVertical: 10, // Adjust as needed
+  },
+  pickedUpTag: {
+    backgroundColor: "#3FC080",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
 });
 
