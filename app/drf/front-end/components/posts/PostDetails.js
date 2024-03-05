@@ -133,10 +133,10 @@ const PostDetails = ({ route, navigation }) => {
         },
         {
           text: "Delete",
-          onPress: () => {
+          onPress: async () => {
             // If user confirms, proceed with deletion
-            deleteProduct(authTokens, listing.id);
-            updatePostCreated();
+            await deleteProduct(authTokens, listing.id);
+            await updatePostCreated();
             navigation.navigate("Home");
           },
         },
