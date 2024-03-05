@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl, KeyboardAvoidingView } from 'react-native';
 import { baseEndpoint } from '../../config/config';
 import AuthContext from '../../context/AuthContext';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -94,34 +94,37 @@ const UserMessages = ({route, navigation}) => {
       setRefreshing(false); // Set refreshing state to false
     }
   };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Ask {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about plate {product}!</Text>
-      </View>
-      <FlatList
-        data={messages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderMessageBubble}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 16 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Type your message..."
-          value={newMessage}
-          onChangeText={(text) => setNewMessage(text)}
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Ask {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about plate {product}!</Text>
+        </View>
+        <FlatList
+          data={messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderMessageBubble}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 16 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type your message..."
+            value={newMessage}
+            onChangeText={(text) => setNewMessage(text)}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Text style={styles.sendButtonText}>Send</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
