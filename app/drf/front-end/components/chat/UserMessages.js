@@ -77,6 +77,7 @@ const UserMessages = ({route, navigation}) => {
       const data = await sendChatMessage(userId, authTokens, newMessage, receiver, product);
       setMessages([...messages, data]);
       setNewMessage('');
+      await onRefresh();
     } catch (error) {
       console.error('Error sending message:', error);
     }
