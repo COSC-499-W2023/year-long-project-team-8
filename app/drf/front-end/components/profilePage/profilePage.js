@@ -155,7 +155,7 @@ const ProfilePage = ({ navigation }) => {
       try {
         const productData = await getUserProductList(authTokens);
         if (Array.isArray(productData)) {
-          setUserPosts(productData.slice(0, 3)); // Stores the first 3 posts in state.
+          setUserPosts(productData); // Stores all posts in state.
         } else {
           console.error("Product data is not an array:", productData);
         }
