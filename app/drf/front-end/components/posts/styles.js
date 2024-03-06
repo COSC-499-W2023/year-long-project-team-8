@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
+    marginHorizontal: 5,
   },
   expiredText: {
     color: "white",
@@ -274,12 +275,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
-  },
-  availabilityText: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 0,
-    marginTop: 10,
     marginHorizontal: 5,
   },
 });
