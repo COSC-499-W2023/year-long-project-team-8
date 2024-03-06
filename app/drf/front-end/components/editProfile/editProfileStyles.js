@@ -2,6 +2,7 @@
 
 // Importing necessary modules from react-native
 import { StyleSheet, Dimensions } from 'react-native';
+import {rgbaColor} from "react-native-reanimated/src";
 
 // Dimensions of the window
 const windowWidth = Dimensions.get('window').width;
@@ -13,7 +14,6 @@ export const colors = {
   mediumOrange: '#FCA63C',
   darkOrange: '#DB6D2A',
   darkGray: '#222222',
-  inputGrey: '#e9e9e9',
 };
 
 // StyleSheet for the EditProfilePage component styles
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   // Styling for the container of first name and last name texts
   nameTextContainer: {
-    marginTop: 80,
+    marginTop: 130,
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     height: 45,
     width: '47%',
-    backgroundColor: '#e9e9e9',
+    backgroundColor: 'lightgray',
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     height: 45,
     width: '47%',
-    backgroundColor: colors.inputGrey,
+    backgroundColor: 'lightgray',
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     height: 45,
     width: '100%',
-    backgroundColor: '#e9e9e9',
+    backgroundColor: 'lightgray',
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
@@ -158,44 +158,12 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     height: 45,
     width: '100%',
-    backgroundColor: '#e9e9e9',
+    backgroundColor: 'lightgray',
     borderRadius: 5,
     padding: 10,
     marginTop: 3,
   },
-  buttonFieldContainer: {
-    marginTop: 55,
-    flex: 0.4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  changePasswordButton: {
-    height: 50,
-    width: '100%',
-    marginBottom: 20,
-    backgroundColor: colors.mediumOrange,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  changePasswordText: {
-    color: "white",
-    fontWeight: 'bold',
-  },
-  deleteAccountButton: {
-    height: 45,
-    width: '100%',
-    marginTop: 20,
-    backgroundColor: colors.darkOrange,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  deleteAccountText: {
-    color: "white",
-    fontWeight: 'bold',
-  },
+
   profilePictureContainer: {
     marginTop: 50,
     height: 40,
@@ -223,9 +191,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingTop: 10,
-  }
-
+  },
+  backgroundPhoto: {
+    position: "absolute",
+    bottom: 0,
+  },
 });
 
-// Exporting the styles as the default export
 export default styles;

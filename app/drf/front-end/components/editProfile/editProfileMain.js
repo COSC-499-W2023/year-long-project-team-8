@@ -118,6 +118,7 @@ const EditProfilePage = () => {
 
       //put keyboard avoiding view and scrollview here so that users can move through the page
     <SafeAreaView style={styles.safeAreaView}>
+      <Image style={styles.backgroundPhoto} source={require("../../assets/wave.png")}/>
       {/* Top navigation bar with back button and save button */}
       <View style={styles.topBarContainer}>
         <TouchableOpacity onPress={goBack}>
@@ -161,18 +162,6 @@ const EditProfilePage = () => {
       />
             </ScrollView>
           </KeyboardAvoidingView>
-
-{/*
-      <View style={styles.buttonFieldContainer}>
-        <TouchableOpacity style={styles.changePasswordButton}>
-          <Text style={styles.changePasswordText}>Change Password</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.deleteAccountButton}>
-          <Text style={styles.deleteAccountText}>Delete Account</Text>
-        </TouchableOpacity>
-
-        </View>*/}
     </SafeAreaView>
 
 
