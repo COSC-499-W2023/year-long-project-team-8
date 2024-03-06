@@ -58,7 +58,7 @@ const ProfilePage = ({ navigation }) => {
     setRefreshing(false);
   };
 
-   /*
+
     const [locationName, setLocationName] = useState("");
 
 useEffect(() => {
@@ -68,7 +68,7 @@ useEffect(() => {
       setLocationName(name || "Location Not Available");
     })();
   }, []);
-  */
+  
 
   useEffect(() => {
     if (profilePicUpdated) {
