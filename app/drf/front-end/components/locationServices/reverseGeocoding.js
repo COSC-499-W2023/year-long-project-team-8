@@ -1,3 +1,4 @@
+/*
 import * as Location from 'expo-location';
 
 const reverseGeocode = async (latitude, longitude) => {
@@ -19,3 +20,5 @@ const reverseGeocode = async (latitude, longitude) => {
 };
 
 export default reverseGeocode;
+
+ */

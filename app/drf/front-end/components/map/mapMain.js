@@ -6,7 +6,6 @@ import CustomText from "../CustomText";
 import Slider from '@react-native-community/slider';
 import { useSlider } from '../../context/MapContext';
 import styles from './mapStyles';
-import { Platform } from 'react-native';
 
 const MapScreen = () => {
     const [location, setLocation] = useState(null);
@@ -14,8 +13,8 @@ const MapScreen = () => {
     const { sliderValue, setSliderValue } = useSlider();
 
     const zoomWithMap = (radius) => {
-        const latDelta = radius * 0.000030;
-        const longDelta = radius * 0.000030;
+        const latDelta = radius * 0.00003;
+        const longDelta = radius * 0.00003;
 
         setLocation(prevLocation => ({
             ...prevLocation,
@@ -26,6 +25,7 @@ const MapScreen = () => {
 
     useEffect(() => {
         const requestLocationPermission = async () => {
+
             try {
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== 'granted') {
@@ -36,8 +36,8 @@ const MapScreen = () => {
                 setLocation({
                     latitude: currentLocation.coords.latitude,
                     longitude: currentLocation.coords.longitude,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
                 });
                 setErrorMsg("Location Permission Allowed");
             } catch (error) {
