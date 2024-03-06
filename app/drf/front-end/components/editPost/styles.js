@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         backgroundColor:"#F5F0E5"
     },
     title:{
+        marginLeft:3,
         marginBottom:10,
         marginTop:15,
         fontSize:18,
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between",
         paddingVertical:10,
+        marginLeft:3,
         flex:1,
     },
     datePickerText:{
