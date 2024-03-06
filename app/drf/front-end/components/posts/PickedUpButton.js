@@ -120,6 +120,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     overflow: "hidden",
+    width: 160,
+    paddingHorizontal: 10,
   },
   buttonContent: {
     flexDirection: "row",

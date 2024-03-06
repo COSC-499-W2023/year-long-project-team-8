@@ -31,7 +31,6 @@ const OtherProfile = ({ route, navigation }) => {
   const scrollViewRef = useRef(null);
   const [currentListing, setCurrentListing] = useState(null);
 
-  
   useEffect(() => {
     if (!isFocused) {
       // Reset to 'posts' tab
@@ -47,7 +46,6 @@ const OtherProfile = ({ route, navigation }) => {
       setCurrentListing(listingParam);
     }
   }, [route.params?.listing]);
-  
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
 
@@ -99,14 +97,14 @@ const OtherProfile = ({ route, navigation }) => {
       fetchPosts();
     }
   }, [userId, authTokens, isFocused]);
-  
+
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity
           onPress={() => {
             if (currentListing) {
-              navigation.navigate('PostDetails', { listing: currentListing });
+              navigation.navigate("PostDetails", { listing: currentListing });
             } else {
               navigation.goBack();
             }
@@ -118,8 +116,6 @@ const OtherProfile = ({ route, navigation }) => {
       ),
     });
   }, [navigation, currentListing]);
-  
-  
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>

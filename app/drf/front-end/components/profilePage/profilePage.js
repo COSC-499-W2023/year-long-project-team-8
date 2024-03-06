@@ -37,8 +37,6 @@ const ProfilePage = ({ navigation, route }) => {
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
 
-
-
   useEffect(() => {
     if (profilePicUpdated) {
       // Perform re-fetch logic here
@@ -108,7 +106,7 @@ const ProfilePage = ({ navigation, route }) => {
 
     if (!result.canceled) {
       // Access the selected asset through the "assets" array
-      const asset = result.assets[0]; 
+      const asset = result.assets[0];
 
       console.log(asset);
 
@@ -122,7 +120,6 @@ const ProfilePage = ({ navigation, route }) => {
       }
     }
   };
-
 
   // TODO: Requests permission to access the device's location and fetches the current location.
 
@@ -149,7 +146,6 @@ const ProfilePage = ({ navigation, route }) => {
   const handlePressDropdown = (postId) => {
     setActiveCard(activeCard === postId ? null : postId);
   };
-
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
