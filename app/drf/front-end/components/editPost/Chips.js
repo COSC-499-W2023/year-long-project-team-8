@@ -12,6 +12,7 @@ const Chips = ({ label, isSelected, onSelect }) => {
     <TouchableOpacity
       onPress={handlePress}
       style={[styles.chip, isSelected ? styles.chipSelected : {}]}
+      activeOpacity={0.8}
     >
       <Text style={[styles.chipText, isSelected ? styles.chipTextSelected : {}]}>
         {label}

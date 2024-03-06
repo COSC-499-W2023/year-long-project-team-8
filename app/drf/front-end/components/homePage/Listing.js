@@ -69,6 +69,13 @@ const Listing = ({ listing, navigation }) => {
   // Check if the best_before date is after today
   const isExpired = new Date(listing.best_before) < new Date();
 
+  const currentDate = new Date();
+  const oneDayFromNow = new Date();
+  oneDayFromNow.setDate(oneDayFromNow.getDate() + 1);
+  const almostExpired =
+    new Date(listing.best_before) < oneDayFromNow &&
+    new Date(listing.best_before) >= currentDate;
+  const pickedUp = listing.pickedUp;
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -105,10 +112,24 @@ const Listing = ({ listing, navigation }) => {
             <CustomText fontType={"subHeader"} style={styles.datePosted}>
               {timeAgo(listing.created_at)}
             </CustomText>
-            {isExpired && (
+            {isExpired && !pickedUp && (
               <View style={styles.expiredBox}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
                   Expired
+                </CustomText>
+              </View>
+            )}
+            {almostExpired && !pickedUp && (
+              <View style={styles.almostExpiredBox}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Expires Soon!
+                </CustomText>
+              </View>
+            )}
+            {pickedUp && (
+              <View style={styles.pickedUpBox}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Picked Up!
                 </CustomText>
               </View>
             )}
@@ -187,7 +208,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   expiredBox: {
-    backgroundColor: "red",
+    backgroundColor: "#FF5733",
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -195,5 +216,17 @@ const styles = StyleSheet.create({
   expiredText: {
     color: "white",
     fontSize: 14,
+  },
+  almostExpiredBox: {
+    backgroundColor: "orange",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  pickedUpBox: {
+    backgroundColor: "#3FC080",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
 });

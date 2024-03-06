@@ -683,3 +683,64 @@
 |   9  |              |       ✓    |
 |   10  |              |       ✓    |
 |   11 |              |       ✓    |
+
+### Work Period
+ - Feb 24 - Mar 3, 2024
+
+### Individual Peer Evaluation
+![Alt text](img/t2week_8_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Chat dynamic refreshing
+- Chat bug fixes
+- Create chat list within chat page
+- More chat tests
+- Navigate to specific chat page from list of chats
+- chat instance begins at post details screen
+- create sepreate message model, many relation to chat list
+- Clean up chat list an duser messages to display relevant formatted data
+- deletion of chat if product as marked as picked up or deleted
+- Change password feature within profile page
+
+### Current Student Tasks on Project Board in progress
+<!-- 
+- Tasks undertaken on the project board
+-->
+- item#187 Initiate chat instance between sender and receiver from Product details page
+- item#186 Create chat list within chat page
+- item#236 Create seperate message model to allow many messgaes in chat list
+- item#238 chat instance begins at post details screen
+- item#239 nevigation to specific chat page from list of chats
+- item#165 Chat API tests
+- item#240 Clean up chat list and user messages
+- item#235 deletion of chat if product is marked as picked up or deleted
+- item#259 Slide down refresh for chat updates
+- item#260 Correctly sort sender and receiver of individual messages for formatting
+- item#275 Relevant user details on chat page
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1   |       ✓     |          |
+|   2  |       ✓       |        |
+|   3  |       ✓     |          |
+|   4 |       ✓     |          |
+|   5   |     ✓       |          |
+|   6 |        ✓     |         |
+|   7  |           |      ✓     |
+|   8 |           ✓       |       |
+|   9  |              |       ✓    |
+|   10  |       ✓         |         |
+|   11 |         ✓       |         |
+|   11 |             |       ✓     |

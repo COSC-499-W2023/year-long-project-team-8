@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Image, ActivityIndicator, View} from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import {ScrollView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ImageBackground, Image, ActivityIndicator, View} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { categoryIcons } from "../Categories";
@@ -14,12 +14,17 @@ import CancelButton from './CancelButton';
 import ImagePickerComponent from './ImagePickerComponent';
 import styles from './styles';
 import CustomAlertModal from '../CustomAlertModal';
+import {updateProduct } from '../helperFunctions/apiHelpers';
+import AuthContext from "../../context/AuthContext";
+
 
 const EditPost = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const scrollViewRef = useRef();
     const { post } = route.params;
+    const { authTokens } = useContext(AuthContext);
+
   
     // state variables for the post attributes
     const [title, setTitle] = useState('');
@@ -29,7 +34,7 @@ const EditPost = () => {
     const [bestBefore, setBestBefore] = useState('');
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date(post.best_before));
-    const [images, setImages] = useState(post.images || []);
+    const [images, setImages] = useState([]);
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const [isTitleValid, setIsTitleValid] = useState(true);
@@ -81,9 +86,9 @@ const EditPost = () => {
           day: 'numeric',
         });
         setBestBefore(formattedDate);
-        setImages(post.images);
-    }
-  
+        setImages(post.images.map(img => img.image)); 
+        console.log(post.images.map(img => img));
+      }
     }, [post, route.params]);
 
     useEffect(() => {
@@ -150,7 +155,6 @@ useFocusEffect(
     }, [])
   );
 
-  // TODO: Handle post update submission
   const handleUpdatePost = async () => {
     let isValid = true;
 
@@ -159,32 +163,42 @@ useFocusEffect(
       isValid = false;
     } else {
       setIsTitleValid(true);
-    }
+    };
 
     if (!content.trim()) {
       setIsContentValid(false);
       isValid = false;
     } else {
       setIsContentValid(true);
-    }
+    };
 
     if (!isValid) {
       setAlertMessage('Fill in the missing fields');
       setIsAlertVisible(true);
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
       return;
-    }
+    };
+    
   
     const newPost = {
       title: title,
       content: content,
       categories: selectedCategories.join(', '), 
-      allergens: selectedAllergens.join(', '), 
-      bestBefore: bestBefore, 
-      images: images 
+      allergens: selectedAllergens.join(', '),
+      best_before: selectedDate.toISOString().split("T")[0],
     };
-  
-    console.log("Updated Post:", newPost);
+
+    console.log("new images", images);
+    console.log(post.id);
+    
+    try {
+      const updatedProduct = await updateProduct(newPost, images, authTokens, post.id);
+      console.log("Updated Product:", updatedProduct);    
+      navigation.goBack(); 
+
+    } catch (error) {
+        console.error("Error updating product:", error);
+    };
   };
   
 
@@ -206,7 +220,7 @@ useFocusEffect(
     setSelectedDate(bestBeforeDate);
   
     // Reset images
-    setImages(post.images || []);
+    setImages(post.images.map(img => img.image));
 
     setIsContentValid(true);
     setIsTitleValid(true);
@@ -231,7 +245,7 @@ useFocusEffect(
     setSelectedDate(bestBeforeDate);
   
     // Reset images
-    setImages(post.images || []);
+    setImages(post.images.map(img => img.image));
 
     setIsContentValid(true);
     setIsTitleValid(true);
@@ -289,7 +303,7 @@ useFocusEffect(
             />
 
             {/*Submit*/}
-            <SubmitButton handleUpdatePost={handleUpdatePost} />
+            <SubmitButton handleUpdatePost={handleUpdatePost} title={"UPDATE POST"}/>
 
             {/*Cancel*/}
             <CancelButton handleCancel={handleReset} />
@@ -301,7 +315,7 @@ useFocusEffect(
               onClose={() => setIsAlertVisible(false)}
             />
 
-        </ScrollView>
+          </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
