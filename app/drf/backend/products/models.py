@@ -26,7 +26,6 @@ class Product(models.Model):
     best_before = models.DateTimeField(blank=False,null=False) # CHANGE TO DATEFIELD WHEN TIME PERMITTING (will need to drop database or update all products)
     allergens = models.CharField(max_length=200, blank=True, null=True)
     pickedUp = models.BooleanField(default=False)
-    
     objects = ProductManager()
     
     def clean(self):

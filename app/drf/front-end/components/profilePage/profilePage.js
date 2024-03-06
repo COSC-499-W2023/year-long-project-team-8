@@ -15,6 +15,7 @@ import {
   getUserProductList,
   updateProfilePicture,
 } from "../helperFunctions/apiHelpers";
+import { RefreshControl } from 'react-native';
 import AuthContext from "../../context/AuthContext";
 import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -36,8 +37,28 @@ const ProfilePage = ({ navigation }) => {
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
+  const [refreshing, setRefreshing] = useState(false);
 
 
+  
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // Re-fetch user data
+    if (userId && authTokens) {
+      try {
+        const data = await getUserData(userId, authTokens);
+        setUserData(data);
+        const productData = await getUserProductList(authTokens);
+        if (Array.isArray(productData)) {
+          setUserPosts(productData);
+        }
+      } catch (error) {
+        console.error("Error refreshing data:", error);
+      }
+    }
+    setRefreshing(false);
+  };
+  
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -86,6 +107,7 @@ const ProfilePage = ({ navigation }) => {
         });
     }
   }, [isFocused, userId, authTokens]);
+  
 
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
@@ -133,7 +155,7 @@ const ProfilePage = ({ navigation }) => {
       try {
         const productData = await getUserProductList(authTokens);
         if (Array.isArray(productData)) {
-          setUserPosts(productData.slice(0, 3)); // Stores the first 3 posts in state.
+          setUserPosts(productData); // Stores all posts in state.
         } else {
           console.error("Product data is not an array:", productData);
         }
@@ -153,7 +175,9 @@ const ProfilePage = ({ navigation }) => {
 
 
   return (
-    <ScrollView style={styles.container} ref={scrollViewRef}>
+    <ScrollView style={styles.container} ref={scrollViewRef} refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       {/* Background image and user's profile information */}
       <ImageBackground
         source={require("../../assets/waves_profile.png")}
@@ -257,6 +281,7 @@ const ProfilePage = ({ navigation }) => {
               }
               onPressDropdown={() => handlePressDropdown(post.id)}
               isDropdownVisible={activeCard === post.id}
+              onPostDelete={onRefresh} 
             />
           </View>
         ))}

@@ -60,6 +60,10 @@ class ProductViewSet(ModelViewSet):
         # Delete existing images
         if (images_data):
             product.images.all().delete()
+
+
+        # Create new images
+
             for image_data in images_data:
                 ProductImages.objects.create(product=product, image=image_data)
 
