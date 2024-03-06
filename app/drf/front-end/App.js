@@ -8,10 +8,12 @@ import MainApp from "./components/drawer/DrawerNav";
 import PasswordReset from "./components/loginSignup/PasswordReset";
 import SettingsNav from "./components/settingsPage/Settings";
 import EditProfile from "./components/editProfile/editProfileMain";
+import ProfilePage from "./components/profilePage/profilePage";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
+import HomePage from "./components/homePage/HomePage.js";
 import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { SliderProvider } from './context/MapContext';

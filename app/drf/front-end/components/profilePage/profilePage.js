@@ -38,18 +38,6 @@ const ProfilePage = ({ navigation }) => {
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
-/*
-    const [locationName, setLocationName] = useState("");
-
-useEffect(() => {
-    (async () => {
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
-      setLocationName(name || "Location Not Available");
-    })();
-  }, []);
-  */
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -69,7 +57,18 @@ useEffect(() => {
     }
     setRefreshing(false);
   };
-  
+
+   /*
+    const [locationName, setLocationName] = useState("");
+
+useEffect(() => {
+    (async () => {
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
+      setLocationName(name || "Location Not Available");
+    })();
+  }, []);
+  */
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -120,6 +119,7 @@ useEffect(() => {
   }, [isFocused, userId, authTokens]);
   
 
+
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
     navigation.navigate("EditProfile");
@@ -142,7 +142,7 @@ useEffect(() => {
 
     if (!result.canceled) {
       // Access the selected asset through the "assets" array
-      const asset = result.assets[0]; 
+      const asset = result.assets[0];
 
       console.log(asset);
 
@@ -293,7 +293,7 @@ useEffect(() => {
               }
               onPressDropdown={() => handlePressDropdown(post.id)}
               isDropdownVisible={activeCard === post.id}
-              onPostDelete={onRefresh} 
+              onPostDelete={onRefresh}
             />
           </View>
         ))}
