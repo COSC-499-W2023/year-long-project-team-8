@@ -108,10 +108,6 @@ const styles = StyleSheet.create({
   categoryContainer: {
     marginHorizontal: 5,
   },
-  categoryTitle: {
-    fontSize: 17,
-    marginBottom: 10,
-  },
   categoryItem: {
     alignItems: "center",
     marginRight: 10,
@@ -136,9 +132,6 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     marginHorizontal: 5,
   },
-  descriptionTitle: {
-    fontSize: 17,
-  },
   descriptionText: {
     fontSize: 16,
     color: "#333",
@@ -153,8 +146,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   giverTitle: {
-    fontSize: 17,
-    marginBottom: 10,
+    fontSize: 19,
+    marginTop: 15,
+    marginBottom:10,
   },
   giverContent: {
     flexDirection: "row",
@@ -182,10 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     paddingVertical: 3,
-  },
-  allergenTitle: {
-    fontSize: 17,
-    marginBottom: 10,
   },
   allergenContainer: {
     marginHorizontal: 5,
@@ -224,7 +214,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    padding: 20,
+    paddingLeft: 20,
+    paddingVertical:20
   },
   postedContainer: {},
 

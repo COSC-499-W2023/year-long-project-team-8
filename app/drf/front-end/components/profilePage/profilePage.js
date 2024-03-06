@@ -28,8 +28,7 @@ import { useAppState } from "../../context/AppStateContext";
 const ProfilePage = ({ navigation, route }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
   const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
-  const { selectedTab: initialSelectedTab } = route.params || {}; // Default to an empty object if params are undefined
-  const [selectedTab, setSelectedTab] = useState(initialSelectedTab || "posts");
+  const [selectedTab, setSelectedTab] = useState("posts");
   const [userData, setUserData] = useState(null); // State to store user data.
   const [userPosts, setUserPosts] = useState([]); // State to store user's posts.
   const [location, setLocation] = useState(null); //State to manage Location
@@ -91,7 +90,6 @@ const ProfilePage = ({ navigation, route }) => {
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
     navigation.navigate("EditProfile");
-    console.log("Settings button pressed");
   };
 
   // Handle change pfp

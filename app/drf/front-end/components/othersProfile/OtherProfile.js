@@ -21,30 +21,33 @@ import PostReview from "../profilePage/PostReview";
 //TODO: Location, fetch posts for specific user, dummy pfp icon resolution increase, loader
 
 const OtherProfile = ({ route, navigation }) => {
-  const { userId, selectedTab: initialSelectedTab } = route.params;
+  const { userId } = route.params;
   const isFocused = useIsFocused();
   const { authTokens } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(initialSelectedTab || "posts");
+  const [selectedTab, setSelectedTab] = useState("posts");
   const scrollViewRef = useRef(null);
-  
-  useEffect(() => {
-    if (route.params?.selectedTab) {
-      setSelectedTab(route.params.selectedTab);
-    }
-  }, [route.params?.selectedTab]);
+  const [currentListing, setCurrentListing] = useState(null);
+
   
   useEffect(() => {
     if (!isFocused) {
       // Reset to 'posts' tab
       setSelectedTab("posts");
-
       // Scroll to the top
       scrollViewRef.current?.scrollTo({ y: 0, animated: false });
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    const listingParam = route.params?.listing;
+    if (listingParam) {
+      setCurrentListing(listingParam);
+    }
+  }, [route.params?.listing]);
+  
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
 
@@ -96,19 +99,27 @@ const OtherProfile = ({ route, navigation }) => {
       fetchPosts();
     }
   }, [userId, authTokens, isFocused]);
-
+  
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            if (currentListing) {
+              navigation.navigate('PostDetails', { listing: currentListing });
+            } else {
+              navigation.goBack();
+            }
+          }}
           style={{ marginLeft: 20 }}
         >
           <Image source={backArrowIcon} style={{ width: 25, height: 25 }} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, currentListing]);
+  
+  
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>

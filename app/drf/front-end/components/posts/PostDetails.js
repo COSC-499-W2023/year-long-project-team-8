@@ -207,7 +207,7 @@ const PostDetails = ({ route, navigation }) => {
           )}
           {myPost && !pickedUp && (
             <View>
-              <CustomText fontType={"title"} style={styles.availabilityText}>
+              <CustomText fontType={"title"} style={styles.giverTitle}>
                 Availability
               </CustomText>
               <View style={styles.buttonContainer}>
@@ -221,7 +221,7 @@ const PostDetails = ({ route, navigation }) => {
           )}
           {myPost && pickedUp && (
             <View>
-              <CustomText fontType={"title"} style={styles.availabilityText}>
+              <CustomText fontType={"title"} style={styles.giverTitle}>
                 Availability
               </CustomText>
               <View style={styles.buttonContainer}>

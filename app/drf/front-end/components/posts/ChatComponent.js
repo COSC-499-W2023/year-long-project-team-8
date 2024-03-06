@@ -55,7 +55,7 @@ const ChatComponent = ({navigation, initialMessage = "Hi! Can I get this plate?"
       });    } else {
       navigation.navigate('OtherProfile', {
         listing: listing,  
-        userId: listing.owner 
+        userId: listing.owner,
       });
     }
   };

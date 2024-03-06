@@ -14,7 +14,7 @@ const AllergensComponent = ({ allergens }) => {
 
   return (
     <View style={styles.allergenContainer}>
-      <CustomText style={styles.allergenTitle} fontType={"title"}>Allergens</CustomText>
+      <CustomText style={styles.giverTitle} fontType={"title"}>Allergens</CustomText>
       <View style={styles.allergensList}>
           <CustomText fontType={"text"} style={styles.allergenText}>
                 {formatWithSpacesAfterCommas(allergens)}

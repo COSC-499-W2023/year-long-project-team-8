@@ -6,7 +6,7 @@ import styles from './styles';
 const DescriptionComponent = ({ content, showFullDescription, setShowFullDescription }) => {
   return (
     <View style={styles.descriptionContainer}>
-      <CustomText fontType={"title"} style={styles.descriptionTitle}>
+      <CustomText fontType={"title"} style={styles.giverTitle}>
         Description
       </CustomText>
       <CustomText fontType={"text"} style={styles.descriptionText}>
