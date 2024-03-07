@@ -16,6 +16,7 @@ from rest_framework.filters import SearchFilter
 # Product filter to filter for CSV filter list
 class ProductFilter(django_filters.FilterSet):
     categories = django_filters.CharFilter(method='filter_categories')
+    owner = django_filters.NumberFilter(field_name='owner_id')
 
     class Meta:
         model = Product
@@ -49,6 +50,22 @@ class ProductViewSet(ModelViewSet):
 
         for image_data in images_data:
             ProductImages.objects.create(product=product, image=image_data)
+            
+    def perform_update(self, serializer):
+        product = serializer.save()
+
+        # Handle associated images update
+        images_data = self.request.FILES.getlist('images')
+
+        # Delete existing images
+        if (images_data):
+            product.images.all().delete()
+
+
+        # Create new images
+
+            for image_data in images_data:
+                ProductImages.objects.create(product=product, image=image_data)
 
     def get_images(self, request, pk=None):
         # Get images associated with a specific product
@@ -73,3 +90,4 @@ class ProductViewSet(ModelViewSet):
 class ImageViewSet(ModelViewSet):
     queryset = ProductImages.objects.all()
     serializer_class = ProductImageSerializer
+    

@@ -1,113 +1,122 @@
-// Import necessary dependencies and components
-import * as React from "react";
-import Login from "../../loginSignup/Login";
-import { render, act, fireEvent, waitFor } from "@testing-library/react-native";
-import { cleanup } from "@testing-library/react-native";
-import fetchMock from "jest-fetch-mock";
-import mockNavigation from "../../../__mocks__/mockNavigation.js";
-// Mocking @expo/vector-icons for testing
-jest.mock("@expo/vector-icons");
+import React from 'react';
+import { render, act, fireEvent, waitFor } from '@testing-library/react-native';
+import Login from '../../loginSignup/Login';
+import AuthContext from '../../../context/AuthContext';
+import mockNavigation from '../../../__mocks__/mockNavigation';
 
-// Test suite for the Login component
-describe("Login Component", () => {
-  // Test to ensure texts render with their designated font families
-  it("renders the text with the loaded font", async () => {
-    const component = render(<Login />);
-    let loginText, subHeaderText;
+// Mock the AuthContext with a mock loginUser function
+const mockLoginUser = jest.fn(() => Promise.resolve()); // Mock loginUser as a resolved promise
+const mockContext = {
+  loginUser: mockLoginUser,
+  authTokens: null,
+};
 
-    // Search for the specified texts within the component
-    await act(async () => {
-      loginText = await component.findByText("Login");
-      subHeaderText = await component.findByText(
-        "Hungry or emptying space in the fridge?"
+jest.mock('expo-font', () => ({
+  loadAsync: jest.fn(() => Promise.resolve()),
+}));
+
+describe('Login Component', () => {
+  // Test for rendering
+    it('renders correctly', async () => {
+      const { getByText, getByPlaceholderText } = render(
+        <AuthContext.Provider value={mockContext}>
+          <Login navigation={mockNavigation} />
+        </AuthContext.Provider>
       );
+  
+      // Wait for font loading and initial render
+      await act(async () => {
+        await waitFor(() => {
+          expect(getByText('Login')).toBeTruthy();
+          expect(getByText('Hungry or emptying space in the fridge?')).toBeTruthy();
+          expect(getByPlaceholderText('EMAIL')).toBeTruthy();
+          expect(getByPlaceholderText('PASSWORD')).toBeTruthy();
+        });
+      });
     });
 
-    // Check if the texts have the expected font families
-    expect(loginText).toHaveStyle({ fontFamily: "titleFont" });
-    expect(subHeaderText).toHaveStyle({ fontFamily: "subHeaderFont" });
+  // Test for form submission with invalid email format
+  it('shows an error message for invalid email format', async () => {
+    const { getByPlaceholderText, getByText, queryByText } = render(
+      <AuthContext.Provider value={mockContext}>
+        <Login navigation={mockNavigation} />
+      </AuthContext.Provider>
+    );
+
+    const emailInput = getByPlaceholderText('EMAIL');
+    const loginButton = getByText('LOGIN');
+
+    // Simulate user inputting an invalid email and pressing the login button
+    fireEvent.changeText(emailInput, 'invalidemail');
+    fireEvent.press(loginButton);
+
+    // Wait for the error message to appear
+    await act(async () => {
+      await waitFor(() => {
+        expect(getByText('Invalid email format')).toBeTruthy();
+      });
+    });
+
+    // Simulate user correcting the email
+    fireEvent.changeText(emailInput, 'valid@example.com');
+
+    // The error message should disappear
+    expect(queryByText('Invalid email format')).toBeNull();
   });
 
-  // Test to ensure input states are updated as user types
-  it("updates the email and password state when input changes", async () => {
-    const { getByPlaceholderText } = render(<Login />);
+  // Test for form submission with invalid password format
+  it('shows an error message for invalid password format', async () => {
+    const { getByPlaceholderText, getByText, queryByText } = render(
+      <AuthContext.Provider value={mockContext}>
+        <Login navigation={mockNavigation} />
+      </AuthContext.Provider>
+    );
 
-    // Locate the input fields
-    const emailInput = getByPlaceholderText("EMAIL");
-    const passwordInput = getByPlaceholderText("PASSWORD");
+    const passwordInput = getByPlaceholderText('PASSWORD');
+    const loginButton = getByText('LOGIN');
 
+    // Simulate user inputting an invalid password and pressing the login button
+    fireEvent.changeText(passwordInput, '');
+    fireEvent.press(loginButton);
+
+    // Wait for the error message to appear
     await act(async () => {
-      // Simulate typing into the input fields
-      fireEvent.changeText(emailInput, "test@example.com");
-      fireEvent.changeText(passwordInput, "password123");
+      await waitFor(() => {
+        expect(getByText('Password cannot be empty')).toBeTruthy();
+      });
     });
 
-    // Assert that the input values are as expected
-    expect(emailInput.props.value).toBe("test@example.com");
-    expect(passwordInput.props.value).toBe("password123");
+    // Simulate user correcting the password
+    fireEvent.changeText(passwordInput, 'notempty');
+
+    // The error message should disappear
+    expect(queryByText('Password cannot be empty')).toBeNull();
   });
 
-  // Test to check email validation error message displays
-  it("shows email validation error", async () => {
-    const { getByPlaceholderText, findByText, getByText } = render(<Login />);
+  // Test for password visibility toggle
+  it('toggles password visibility', async () => {
+    const { getByPlaceholderText, getByTestId } = render(
+      <AuthContext.Provider value={mockContext}>
+        <Login navigation={mockNavigation} />
+      </AuthContext.Provider>
+    );
 
-    await act(async () => {
-      // Locate the input field and button
-      const emailInput = getByPlaceholderText("EMAIL");
-      const loginButton = getByText("LOGIN");
+    const passwordInput = getByPlaceholderText('PASSWORD');
+    const visibilityIcon = getByTestId('password-visibility-icon');
 
-      // Simulate typing an incorrect email format and pressing login
-      fireEvent.changeText(emailInput, "test");
-      fireEvent.press(loginButton);
-    });
+    // Initial state should be password hidden
+    expect(passwordInput.props.secureTextEntry).toBeTruthy();
 
-    // Assert that the email validation error message displays
-    const emailError = await findByText("Invalid email");
-    expect(emailError).toBeTruthy();
-  });
+    // Toggle visibility
+    fireEvent.press(visibilityIcon);
 
-  // Test to check password required error message displays
-  it("shows password required error", async () => {
-    const { getByPlaceholderText, findByText, getByText } = render(<Login />);
+    // Password should now be visible
+    expect(passwordInput.props.secureTextEntry).toBeFalsy();
 
-    await act(async () => {
-      // Locate the password input field and button
-      const passwordInput = getByPlaceholderText("PASSWORD");
-      const loginButton = getByText("LOGIN");
+    // Toggle visibility again
+    fireEvent.press(visibilityIcon);
 
-      // Simulate leaving the password field empty and pressing login
-      fireEvent.changeText(passwordInput, "");
-      fireEvent.press(loginButton);
-    });
-
-    // Assert that the password required error message displays
-    const passwordError = await findByText("Password required");
-    expect(passwordError).toBeTruthy();
-  });
-
-  it("toggles password visibility when the visibility icon is pressed", async () => {
-    const { getByPlaceholderText, getByTestId } = render(<Login />);
-    const passwordInput = getByPlaceholderText("PASSWORD");
-    const visibilityIcon = getByTestId("password-visibility-icon");
-
-    await act(async () => {
-      fireEvent.changeText(passwordInput, "password123");
-    });
-
-    // At this point, password is hidden by default
-    expect(passwordInput.props.secureTextEntry).toBe(true);
-
-    await act(async () => {
-      fireEvent.press(visibilityIcon);
-    });
-
-    // After pressing the icon, password should be visible
-    expect(passwordInput.props.secureTextEntry).toBe(false);
-  });
-
-  // Cleanup after each test to avoid potential side-effects
-  afterEach(() => {
-    cleanup();
-    fetchMock.resetMocks();
+    // Password should be hidden again
+    expect(passwordInput.props.secureTextEntry).toBeTruthy();
   });
 });

@@ -217,7 +217,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
               fontLoaded ? { fontFamily: "subHeaderFont" } : {},
             ]}
           >
-            Create and account and join the community!
+            Create an account and join the community!
           </Text>
         </View>
 

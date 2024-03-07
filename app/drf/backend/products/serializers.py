@@ -23,6 +23,7 @@ class ProductSerializer(serializers.ModelSerializer):
                   'best_before',
                   'allergens',
                   'id',
+                  'pickedUp'
                   ]
         read_only_fields = ['valid']
         

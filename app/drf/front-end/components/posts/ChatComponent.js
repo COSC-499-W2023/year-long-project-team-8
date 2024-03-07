@@ -6,6 +6,7 @@ import { sendChatMessage, getChatList } from '../helperFunctions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
+import AuthContext from '../../context/AuthContext';
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
@@ -126,12 +127,17 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
     }
   };
   
-  
+
   const handleUserPress = () => {
-    navigation.navigate('OtherProfile', {
-      listing: listing,  
-      userId: listing.owner 
-    });
+    if (listing.owner === userId) {
+      navigation.navigate('Tabs', { 
+        screen: 'Profile',
+      });    } else {
+      navigation.navigate('OtherProfile', {
+        listing: listing,  
+        userId: listing.owner 
+      });
+    }
   };
 
 

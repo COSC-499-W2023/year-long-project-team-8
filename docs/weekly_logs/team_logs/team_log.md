@@ -1060,3 +1060,305 @@ January 29 - February 04, 2024
 ![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 05 - February 11, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+![Alt text](../img/t2_projboard_w5.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- Refactor Profile page for continuity with App design
+- Implement profile picture updating
+- Profile page displays user's posts
+- Further chat backend testing
+- Clean up chat list an duser messages to display relevant formatted data
+- deletion of chat if product as marked as picked up or deleted
+- Change password feature within profile page
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#242](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/242)
+- [x] [#196](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/196)
+- [x] [#186](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/186)
+- [x] [#236](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/236)
+- [x] [#238](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/238)
+- [x] [#239](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/239)
+- [x] [#219](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/219)
+- [x] [#225](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/225)
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #135 Automated testing with GitHub issues
+- #240 Clean up chat list and user messages
+- #235 deletion of chat if product is marked as picked up or deleted
+- #225 Display user's reviews fe
+- #219 Filtering and ordering posts
+- move map feature to the bottom of the pages #246
+- add more functionality to the map page #247
+- make the edit profile page look more similar to the rest of the pages #248
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/t2_burnup_w5.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w5-backend-test.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 12 - February 18, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+![Alt text](../img/t2_projboard_w6.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- Refactor Profile page for continuity with App design
+- Implement profile picture updating
+- Profile page displays user's posts
+- Further chat backend testing
+- Clean up chat list and user messages to display relevant formatted data
+- deletion of chat if product as marked as picked up or deleted
+- Change password feature within profile page
+- Slide down refresh for chat
+- Edit posts
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#242](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/242)
+- [x] [#196](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/196)
+- [x] [#186](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/186)
+- [x] [#236](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/236)
+- [x] [#238](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/238)
+- [x] [#239](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/239)
+- [x] [#219](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/219)
+- [x] [#225](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/225)
+- [x] [#221](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/221)
+- [x] [#254](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/254)
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #135 Automated testing with GitHub issues
+- #240 Clean up chat list and user messages
+- #235 deletion of chat if product is marked as picked up or deleted
+- #225 Display user's reviews fe
+- #219 Filtering and ordering posts
+- move map feature to the bottom of the pages #246
+- add more functionality to the map page #247
+- make the edit profile page look more similar to the rest of the pages #248
+- #259 Slide down refresh for chat updates
+- #260 Correctly sort sender and receiver for individual messages for formatting
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/t2_burnup_w6.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+February 19 - March 03, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+![Alt text](../img/t2_projboard_w8.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- Refactor Profile page for continuity with App design
+- Implement profile picture updating
+- Profile page displays user's posts
+- Further chat backend testing
+- Clean up chat list and user messages to display relevant formatted data
+- deletion of chat if product as marked as picked up or deleted
+- Change password feature within profile page
+- Slide down refresh for chat
+- Edit posts
+- sorting sender and receiver formatting of chat
+- chat bug fixes
+- Slide down refresh for chat updates
+- finish chat core functionality
+- automate server launch
+- add expiry tags to posts
+- implement CI pipeline (backend tests)
+- deploy backend
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#261](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/261)
+- [x] #278
+- [x] #279
+- [x] #280
+- [x] #259
+- [X] #260
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #162 Change password in Profile page
+- #165 Chat API tests
+- #187 Initiate chat instance between sender and receiver from Product details page
+- #135 Automated testing with GitHub issues
+- #275 relevant user details on chat screen
+- #240 Clean up chat list and user messages
+- #235 deletion of chat if product is marked as picked up or deleted
+- #225 Display user's reviews fe
+- #219 Filtering and ordering posts
+- move map feature to the bottom of the pages #246
+- add more functionality to the map page #247
+- make the edit profile page look more similar to the rest of the pages #248
+- #260 Correctly sort sender and receiver for individual messages for formatting
+- [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
+- [#257](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/257)
+- [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+![burnup-chart](../img/t2_burnup_w8.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
+![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
