@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Image, Dimensions } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
-import styles from './styles'; 
+import React, { useState } from "react";
+import { View, Image, Dimensions } from "react-native";
+import Carousel from "react-native-reanimated-carousel";
+import styles from "./styles";
 
-const { width: windowWidth } = Dimensions.get('window');
+const { width: windowWidth } = Dimensions.get("window");
 
 const CarouselComponent = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -37,7 +37,9 @@ const CarouselComponent = ({ images }) => {
                   key={index}
                   style={[
                     styles.paginationDot,
-                    activeIndex === index ? styles.paginationDotActive : styles.paginationDotInactive,
+                    activeIndex === index
+                      ? styles.paginationDotActive
+                      : styles.paginationDotInactive,
                   ]}
                 />
               ))}
