@@ -12,7 +12,7 @@ const UserMessages = ({route}) => {
   const [newMessage, setNewMessage] = useState('');
   const [receiverDetails, setReceiverDetails] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  const [productDetails, setProductDetails] = useState(null);
+  const [productDetails, setProductDetails] = useState('');
   const { authTokens, userId } = useContext(AuthContext);
   const chatId = route.params?.chatId; 
   const receiver = route.params?.receiver;
@@ -113,7 +113,7 @@ const UserMessages = ({route}) => {
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Text style = {styles.backText}>Back </Text> 
           </TouchableOpacity>
-          <Text style={styles.headerText}>Ask {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about {productDetails.title ?? product}!</Text>
+          <Text style={styles.headerText}>Talk to {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about {productDetails.title ?? product}!</Text>
         </View>
         <FlatList
           data={messages}

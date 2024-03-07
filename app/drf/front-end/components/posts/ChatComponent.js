@@ -75,12 +75,11 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         navigation.navigate('UserMessages', { chatId: chatId , sender: userId, receiver: receiver, product: product});
       } else {
         // If chatId is not set (creating a new chat)
-        setMessages([...messages, data]);
-        setMessages(initialMessage);
-        
+        setMessages('');
         // Set the chatId of the new chat
         setChatId(data.id);
         navigation.navigate('UserMessages', { chatId: data.id , sender: userId, receiver: receiver, product: product});
+        setMessages(initialMessage);
       }
       
     } catch (error) {
@@ -94,10 +93,20 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
     // TODO: Save listing functionality
   };
 
-  const handleChatPress = () => {
-    console.log(`Open chat page`);
-    navigation.navigate('ChatList');
-    // TODO: Open chat page
+  const handleChatPress = async () => {
+    try {
+    if (chatId !== '') {
+      navigation.navigate('UserMessages', { chatId: chatId , sender: userId, receiver: receiver, product: product});
+    } else {
+      setMessages([...messages, data]);
+      setMessages(initialMessage);
+      const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
+      setChatId(data.id);
+      navigation.navigate('UserMessages', { chatId: data.id , sender: userId, receiver: receiver, product: product});
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
   };
 
   //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
