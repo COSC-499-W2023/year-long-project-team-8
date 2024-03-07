@@ -23,8 +23,9 @@ import CustomText from "../CustomText";
 import PostReview from "./PostReview";
 import * as ImagePicker from "expo-image-picker";
 import { useAppState } from "../../context/AppStateContext";
+import reverseGeocode from '../locationServices/reverseGeocoding';
 
-//TODO: Location, dummy pfp icon resolution increase,loader
+//TODO: dummy pfp icon resolution increase,loader
 
 const ProfilePage = ({ navigation, route }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
@@ -56,6 +57,17 @@ const ProfilePage = ({ navigation, route }) => {
     }
     setRefreshing(false);
   };
+
+
+    const [locationName, setLocationName] = useState("");
+
+useEffect(() => {
+    (async () => {
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
+      setLocationName(name || "Location Not Available");
+    })();
+  }, []);
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -104,6 +116,7 @@ const ProfilePage = ({ navigation, route }) => {
         });
     }
   }, [isFocused, userId, authTokens]);
+
 
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
@@ -232,8 +245,9 @@ const ProfilePage = ({ navigation, route }) => {
           {getUserDisplayName(userData)}
         </CustomText>
         <CustomText style={styles.location} fontType={"subHeader"}>
-          {"Location Not Available"}
+            {locationName || "Location Not Available"}
         </CustomText>
+
       </View>
 
       {/* Tabs for switching between posts and reviews */}

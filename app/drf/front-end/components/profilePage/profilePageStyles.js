@@ -18,34 +18,34 @@ const styles = StyleSheet.create({
 
   coverImage: {
     width: '100%',
-    height: 200, 
+    height: 200,
   },
 
   profileInfoContainer: {
     alignItems: 'center',
-    marginTop: -52, 
+    marginTop: -52,
     marginBottom:10,
   },
 
   settingsButtonContainer: {
     position: 'absolute',
-    top: 40,
-    right: 15,
-    zIndex: 100,
+    top: 13,
+    right: 20,
+    zIndex: 1,
   },
 
   circleBackground: {
-    backgroundColor: 'white', 
-    borderRadius: 20, 
-    width: 40, 
-    height: 40, 
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
     elevation: 5,
-    shadowColor: '#000', 
-    shadowOffset: { width: 0, height: 2 }, 
-    shadowOpacity: 0.25, 
-    shadowRadius: 3.84, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 
   settingsIcon:{
@@ -54,59 +54,59 @@ const styles = StyleSheet.create({
   },
 
   postCardContainer: {
-    width: windowWidth * 0.95, 
-    alignSelf: 'center', 
-    marginBottom: 10, 
+    marginBottom: 10,
+    width: '50%',
   },
 
   ratingAndReviewRow: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
-  reviews:{
-    fontSize:17,
+  reviews: {
+    fontSize: 16,
+    color:"#9ba5f1",
   },
 
   reviewPressable: {
-    marginLeft: 10, 
+    marginLeft: 10,
   },
 
   profileContainer: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 10,
   },
-  
+
   userInfo: {
-    alignItems: 'center', 
+    alignItems: 'center',
   },
 
   profilePictureContainer:{
     alignContent:"center",
     justifyContent:"center",
     borderRadius: 50,
-    borderWidth: 12,  
-    borderColor: 'white', 
-    position: 'relative', 
+    borderWidth: 12,
+    borderColor: 'white',
+    position: 'relative',
   },
 
   editIconContainer: {
-    position: 'absolute', 
-    bottom: 0, 
-    right: 0, 
-    borderRadius: 15, 
-    padding: 2, 
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    borderRadius: 15,
+    padding: 2,
   },
   editIcon: {
-    width: 20, 
+    width: 20,
     height: 20,
   },
 
   profileAndRatingContainer: {
-    alignItems: 'center', 
-    marginBottom: 10, 
+    alignItems: 'center',
+    marginBottom: 10,
   },
 
   profilePicture: {
@@ -126,11 +126,6 @@ const styles = StyleSheet.create({
     color: "grey",
   },
 
-  reviews: {
-    fontSize: 16,
-    color:"#9ba5f1",   
-  },
-
   locationContainer: {
     flexDirection: 'row',
     marginTop: 5,
@@ -148,7 +143,7 @@ const styles = StyleSheet.create({
   },
 
   selectedTab: {
-    borderBottomColor: '#F8B951', 
+    borderBottomColor: '#F8B951',
     borderBottomWidth: 2
   },
 
@@ -171,8 +166,8 @@ const styles = StyleSheet.create({
   },
 
   rrecentPostsContainer: {
-    width: '100%', 
-    alignItems: 'center', 
+    width: '100%',
+    alignItems: 'center',
   },
 
   postsGrid: {
@@ -180,18 +175,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  postCardContainer: {
-    width: '50%', 
-    marginBottom: 10,
-  },
-
-  settingsButtonContainer: {
-    position: 'absolute',
-    top: 13,
-    right: 20,
-    zIndex: 1,
-  },
-
   settingsButton: {
     height: 26,
     width: 26,

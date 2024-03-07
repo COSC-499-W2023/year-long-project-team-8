@@ -141,7 +141,6 @@ const EditProfilePage = () => {
             emailError={emailError}
             phoneError={phoneError}
           />
-
           <View style={styles.saveButtonContainer}>
             <SaveButton title={"SAVE"} onPress={saveButtonPress} />
           </View>
