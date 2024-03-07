@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.viewsets import ModelViewSet
 from .models import Product, ProductImages
 from .serializers import ProductSerializer, ProductImageSerializer
@@ -43,9 +43,11 @@ class ProductViewSet(ModelViewSet):
     search_fields = ['title', 'content']
     
     def perform_create(self, serializer):
+           
+        # Save product with obtained latitude and longitude
         product = serializer.save(owner=self.request.user)
-        
-        # Handle associated images
+     
+               
         images_data = self.request.FILES.getlist('images')
 
         for image_data in images_data:
