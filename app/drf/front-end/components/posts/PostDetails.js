@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, ScrollView, Alert } from "react-native";
-import { Divider } from "react-native-paper";
 import CustomText from "../CustomText";
 import styles from "./styles";
 import {
@@ -163,40 +162,38 @@ const PostDetails = ({ route, navigation }) => {
         <CarouselComponent images={listing.images} />
 
         <View style={styles.card}>
-          <CustomText fontType={"title"} style={styles.title}>
-            {listing.title}
-          </CustomText>
+          <View style={styles.titleAndTagRow}>
+            <CustomText fontType={"title"} style={styles.title}>
+              {listing.title}
+            </CustomText>
+            <View style={styles.tagContainer}>
+              {isExpired && (
+                <View style={styles.expiredTag}>
+                  <CustomText fontType={"expired"} style={styles.expiredText}>
+                    Expired
+                  </CustomText>
+                </View>
+              )}
+              {almostExpired && (
+                <View style={styles.almostExpiredTag}>
+                  <CustomText fontType={"expired"} style={styles.expiredText}>
+                    Expires Soon!
+                  </CustomText>
+                </View>
+              )}
+              {pickedUp && (
+                <View style={styles.pickedUpTag}>
+                  <CustomText fontType={"expired"} style={styles.expiredText}>
+                    Picked Up!
+                  </CustomText>
+                </View>
+              )}
+            </View>
+          </View>
 
           <CustomText fontType={"subHeader"} style={styles.bestBefore}>
             Best Before: {formatDate(listing.best_before)}
           </CustomText>
-          {isExpired && (
-            <View style={styles.expiredContainer}>
-              <View style={styles.expiredTag}>
-                <CustomText fontType={"expired"} style={styles.expiredText}>
-                  Expired
-                </CustomText>
-              </View>
-            </View>
-          )}
-          {almostExpired && (
-            <View style={styles.expiredContainer}>
-              <View style={styles.almostExpiredTag}>
-                <CustomText fontType={"expired"} style={styles.expiredText}>
-                  Expires Soon!
-                </CustomText>
-              </View>
-            </View>
-          )}
-          {pickedUp && (
-            <View style={styles.expiredContainer}>
-              <View style={styles.pickedUpTag}>
-                <CustomText fontType={"expired"} style={styles.expiredText}>
-                  Picked Up!
-                </CustomText>
-              </View>
-            </View>
-          )}
 
           {/*Chat Section*/}
           {!myPost && (
@@ -207,34 +204,31 @@ const PostDetails = ({ route, navigation }) => {
             />
           )}
           {myPost && !pickedUp && (
-            <View>
-              <CustomText fontType={"title"} style={styles.availabilityText}>
-                Availability
-              </CustomText>
-              <View style={styles.buttonContainer}>
-                <DeleteButton
-                  title="REMOVE POST"
-                  onPress={handleDeleteButton}
-                />
-                <PickedUpButton title="PICKED UP" onPress={handlePickedUp} />
-              </View>
+            <View style={styles.buttonContainer}>
+              <DeleteButton
+                title="REMOVE POST"
+                onPress={handleDeleteButton}
+                style={styles.buttonStyle}
+              />
+              <PickedUpButton
+                title="PICKED UP"
+                onPress={handlePickedUp}
+                style={styles.buttonStyle}
+              />
             </View>
           )}
           {myPost && pickedUp && (
-            <View>
-              <CustomText fontType={"title"} style={styles.availabilityText}>
-                Availability
-              </CustomText>
-              <View style={styles.buttonContainer}>
-                <DeleteButton
-                  title="REMOVE POST"
-                  onPress={handleDeleteButton}
-                />
-                <NotPickedUpButton
-                  title="AVAILABLE?"
-                  onPress={handleNotPickedUp}
-                />
-              </View>
+            <View style={styles.buttonContainer}>
+              <DeleteButton
+                title="REMOVE POST"
+                onPress={handleDeleteButton}
+                style={styles.buttonStyle}
+              />
+              <NotPickedUpButton
+                title="AVAILABLE?"
+                onPress={handleNotPickedUp}
+                style={styles.buttonStyle}
+              />
             </View>
           )}
 
@@ -246,6 +240,7 @@ const PostDetails = ({ route, navigation }) => {
             content={listing.content}
             showFullDescription={showFullDescription}
             setShowFullDescription={setShowFullDescription}
+            myPost={myPost}
           />
 
           {/*Giver details Section*/}
@@ -262,6 +257,9 @@ const PostDetails = ({ route, navigation }) => {
                 ? userDetails.profile_picture
                 : null
             }
+            navigation={navigation}
+            userId={listing.owner}
+            myPost={myPost}
           />
 
           {/* Conditionally display allergens */}

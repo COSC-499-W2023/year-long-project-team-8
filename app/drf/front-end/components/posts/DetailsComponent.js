@@ -5,17 +5,11 @@ import styles from './styles';
 import CustomText from "../CustomText"; 
 import { Rating } from '@kolking/react-native-rating'; 
 
-const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture }) => {
+const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture, navigation, userId, myPost,
+
+}) => {
   const dummyPfp = require("../../assets/icons/profile.png"); 
   const profilePicSource = userProfilePicture ? { uri: userProfilePicture } : dummyPfp;
-
-  // Handler function for when the reviews button is pressed
-  const onReviewsPress = () => {
-    console.log('Navigate to review!');
-  };
-
-  const reviewText = reviews === 1 ? "review" : "reviews";
-
 
   return (
     <View style={styles.giverDetailsContainer}>
@@ -34,9 +28,9 @@ const DetailsComponent = ({ displayName, rating, reviews, userProfilePicture }) 
              disabled={true}
              />
             <CustomText style={styles.rating} fontType={"text"}>{rating}</CustomText>
-            <TouchableOpacity onPress={onReviewsPress}>
+            {/*<TouchableOpacity onPress={onReviewsPress}>
               <CustomText style={styles.reviews} fontType={"text"}>({reviews} {reviewText})</CustomText>
-            </TouchableOpacity>
+              </TouchableOpacity>*/}
           </View>
         </View>
       </View>
