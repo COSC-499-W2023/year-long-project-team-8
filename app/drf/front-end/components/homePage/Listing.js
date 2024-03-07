@@ -134,9 +134,6 @@ const Listing = ({ listing, navigation }) => {
               </View>
             )}
           </View>
-          <CustomText fontType={"subHeader"} style={styles.distanceText}>
-            {"0" /* Replace with actual distance if available */}
-          </CustomText>
         </Card>
       </Animated.View>
     </TouchableOpacity>
