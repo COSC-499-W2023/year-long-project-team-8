@@ -12,6 +12,10 @@ const SettingsPage = () => {
     navigation.navigate("EditProfile");
   };
 
+  const goToLocationServices = () => {
+    navigation.navigate("LocationService");
+  }
+
   return (
     // Wrap the entire component with SafeAreaView for handling safe areas
     <SafeAreaView style={styles.safeArea}>
@@ -30,10 +34,21 @@ const SettingsPage = () => {
             {/* Right Arrow Image */}
             <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
           </View>
+          <View style={styles.lineStyle} />
         </TouchableOpacity>
 
-        {/* Line to separate the Manage Account Section from the rest of the page */}
-        <View style={styles.lineStyle} />
+        <TouchableOpacity onPress{...goToLocationServices}>
+          <View style={styles.locationServicesContainer}>
+            {/* Header for the Manage Account Section */}
+            <Text style={styles.manageAccountHeader}> Location Services </Text>
+            {/* Subheader for the Manage Account Section */}
+            <Text style={styles.manageAccountSubHeader}> Accept or refuse location services </Text>
+            {/* Right Arrow Image */}
+            <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
+          </View>
+          <View style={styles.lineStyle} />
+        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
@@ -89,9 +104,14 @@ const styles = StyleSheet.create({
   lineStyle: {
     borderWidth: 0.3,
     borderColor: "#c1c1c1",
-    marginLeft: 25,
+    marginLeft: 23,
     marginTop: 10,
   },
+  locationServicesContainer: {
+    alignItems: "flex-start",
+    marginLeft: 20,
+    marginTop: 10,
+  }
 });
 
 // Export the component as the default export
