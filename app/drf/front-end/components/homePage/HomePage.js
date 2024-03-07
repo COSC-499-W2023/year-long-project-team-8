@@ -31,7 +31,10 @@ import QuickFilterChip from './QuickFilterChip';
 const ClearAllIcon = require("../../assets/icons/cancel.png");
 
 const HomePage = ({ navigation }) => {
+
+
   //const navigation = useNavigation();
+
 
   // Use AuthContext to get tokens and userId
   const { authTokens, userId } = useContext(AuthContext);

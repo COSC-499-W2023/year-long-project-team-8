@@ -3,12 +3,13 @@ import { StatusBar, View, Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./components/landing/Landing";
-import Details from "./components/loginSignup/Details";
-import MainApp from "./components/drawer/DrawerNav";
-import PasswordReset from "./components/loginSignup/PasswordReset";
-import SettingsNav from "./components/settingsPage/Settings";
-import EditProfile from "./components/editProfile/editProfileMain";
-import ProfilePage from "./components/profilePage/profilePage";
+import Details from "./components/loginSignup/Details.js";
+import MainApp from "./components/drawer/DrawerNav.js";
+import PasswordReset from './components/loginSignup/PasswordReset';
+import SettingsNav from "./components/settingsPage/Settings.js";
+import EditProfile from "./components/editProfile/editProfileMain.js";
+import ChatList from "./components/chat/ChatList.js";
+import UserMessages from "./components/chat/UserMessages.js";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
@@ -43,7 +44,10 @@ const App = () => {
                   <Stack.Screen name="Settings" component={SettingsNav} />
                   <Stack.Screen name="EditProfile" component={EditProfile} />
                   <Stack.Screen name="mapView" component={mapView} />
-                  <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }} />
+                  <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
+                  <Stack.Screen name="UserMessages" component={UserMessages}/>
+                  <Stack.Screen name="ChatList" component={ChatList}/>
+
                 </Stack.Navigator>
               </NavigationContainer>
             </SliderProvider>

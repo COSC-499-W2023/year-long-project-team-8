@@ -1,12 +1,13 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Tabs from "../tabs/BottomTabs";
-import DrawerProps from "./DrawerProps";
-import SettingsPage from "../settingsPage/Settings";
-import Profile from "../profilePage/profilePage";
-import PostDetails from "../posts/PostDetails";
-import OtherProfile from "../othersProfile/OtherProfile";
+import Tabs from "../tabs/BottomTabs"; 
+import DrawerProps from "./DrawerProps"; 
+import SettingsPage from "../settingsPage/Settings"; 
+import Profile from "../profilePage/profilePage"; 
+import ChatList from "../chat/ChatList.js";
+import PostDetails from "../posts/PostDetails"; 
+import OtherProfile from "../othersProfile/OtherProfile"; 
 import EditPost from "../editPost/EditPost";
 import EditProfilePage from "../editProfile/editProfileMain";
 
@@ -140,6 +141,24 @@ const DrawerNav = ({ navigation }) => {
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={ChatList}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),

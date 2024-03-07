@@ -40,6 +40,12 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
         onPress={() => navigation.navigate("Settings")}
         isActive={activeRouteName === "Settings"}
       />
+      <DrawerItem
+        iconName="chatbubbles"
+        label="Chat"
+        onPress={() => navigation.navigate("Chat")}
+        isActive={activeRouteName === "Chat"}
+      />
 
       <View style={styles.flexGrow} />
       <DrawerItem

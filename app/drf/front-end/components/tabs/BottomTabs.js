@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import HomePage from "../homePage/HomePage.js";
 import Profile from "../profilePage/profilePage.js";
+import ChatList from "../chat/ChatList.js";
 import Map from "../map/mapMain"
 import AddListing from "../addListing/AddListing.js";
 import CustomText from "../CustomText.js";
@@ -9,22 +10,25 @@ import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AuthContext from "../../context/AuthContext";
 import { baseEndpoint } from "../../config/config";
+import { useNavigation } from "@react-navigation/native";
+import { Animated } from "react-native";
+
+const av = new Animated.Value(0);
+av.addListener(() => {return});
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();
-
 // Individual screens for each tab:
 // These are placeholders and can be replaced with actual screens when developed
 
-// Screen for Chat
-const Chat = () => (
-  <View style={styles.content}>
-    <Text style={styles.title}>Dummy Chat</Text>
-  </View>
+// Screen for Chat (do i need to pass navigation here?)
+const Chat = ({ navigation }) => (
+  <ChatList navigation={navigation} />
+
 );
 
 // Main Bottom Tabs Component
-function BottomTabs({ route }) {
+function BottomTabs({ route, navigation }) {
   // use Authcontext to get our token, query the database, and use logout if query fails
   let { authTokens, logoutUser } = useContext(AuthContext);
   useEffect(() => {
@@ -115,7 +119,7 @@ function BottomTabs({ route }) {
         />
         <Tab.Screen
           name="Chat"
-          component={Chat}
+          component={ChatList}
           options={{
             tabBarLabel: "Chat",
             tabBarIcon: ({ focused, size }) => (
