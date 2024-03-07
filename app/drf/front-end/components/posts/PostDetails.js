@@ -166,29 +166,30 @@ const PostDetails = ({ route, navigation }) => {
             <CustomText fontType={"title"} style={styles.title}>
               {listing.title}
             </CustomText>
-            <View style={styles.tagContainer}>
-              {isExpired && (
-                <View style={styles.expiredTag}>
-                  <CustomText fontType={"expired"} style={styles.expiredText}>
-                    Expired
-                  </CustomText>
-                </View>
-              )}
-              {almostExpired && (
-                <View style={styles.almostExpiredTag}>
-                  <CustomText fontType={"expired"} style={styles.expiredText}>
-                    Expires Soon!
-                  </CustomText>
-                </View>
-              )}
-              {pickedUp && (
-                <View style={styles.pickedUpTag}>
-                  <CustomText fontType={"expired"} style={styles.expiredText}>
-                    Picked Up!
-                  </CustomText>
-                </View>
-              )}
-            </View>
+          </View>
+
+          <View style={styles.tagContainer}>
+            {isExpired && (
+              <View style={styles.expiredTag}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Expired
+                </CustomText>
+              </View>
+            )}
+            {almostExpired && (
+              <View style={styles.almostExpiredTag}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Expires Soon!
+                </CustomText>
+              </View>
+            )}
+            {pickedUp && (
+              <View style={styles.pickedUpTag}>
+                <CustomText fontType={"expired"} style={styles.expiredText}>
+                  Picked Up!
+                </CustomText>
+              </View>
+            )}
           </View>
 
           <CustomText fontType={"subHeader"} style={styles.bestBefore}>

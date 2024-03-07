@@ -56,13 +56,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 5,
-    marginBottom: 10,
+    marginBottom: 5,
   },
 
   tagContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
+    marginBottom: 5,
   },
 
   chatTitle: {
