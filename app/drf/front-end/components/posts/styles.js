@@ -35,6 +35,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 5,
   },
+  titleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 5,
+    marginBottom: 10,
+  },
+
+  bestBeforeRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+
+  titleAndTagRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 5,
+    marginBottom: 10,
+  },
+
+  tagContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+
   chatTitle: {
     fontSize: 18,
     color: "#5c5c5c",
@@ -91,12 +121,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 10,
-    marginHorizontal: 5,
   },
   bestBefore: {
     fontSize: 14,
     marginBottom: 10,
-    marginHorizontal: 5,
+    marginLeft: 10,
   },
   detailRow: {
     flexDirection: "row",
@@ -105,12 +134,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 10,
   },
+  buttonStyle: {
+    width: 150,
+  },
   categoryContainer: {
     marginHorizontal: 5,
-  },
-  categoryTitle: {
-    fontSize: 17,
-    marginBottom: 10,
   },
   categoryItem: {
     alignItems: "center",
@@ -136,9 +164,6 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     marginHorizontal: 5,
   },
-  descriptionTitle: {
-    fontSize: 17,
-  },
   descriptionText: {
     fontSize: 16,
     color: "#333",
@@ -153,7 +178,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   giverTitle: {
-    fontSize: 17,
+    fontSize: 19,
+    marginTop: 15,
     marginBottom: 10,
   },
   giverContent: {
@@ -182,10 +208,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     paddingVertical: 3,
-  },
-  allergenTitle: {
-    fontSize: 17,
-    marginBottom: 10,
   },
   allergenContainer: {
     marginHorizontal: 5,
@@ -220,52 +242,39 @@ const styles = StyleSheet.create({
   paginationDotInactive: {
     backgroundColor: "gray",
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    padding: 20,
-  },
-  postedContainer: {},
-
   expiredTag: {
     backgroundColor: "#FF5733",
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
+    marginHorizontal: 5,
   },
-
   expiredText: {
     color: "white",
     fontSize: 14,
   },
   expiredContainer: {
-    flexDirection: "row", // Align children horizontally
-    justifyContent: "flex-star", // Align children to the end of the container
-    marginTop: 5, // Adjust spacing as needed
+    flexDirection: "row",
+    justifyContent: "flex-star",
   },
   almostExpiredTag: {
     backgroundColor: "orange",
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
+    marginHorizontal: 5,
   },
   buttonContainer: {
-    flexDirection: "row", // Arrange children horizontally
-    justifyContent: "space-between", // Distribute children along the main axis
-    marginVertical: 10, // Adjust as needed
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 10,
+    alignItems: "center",
   },
   pickedUpTag: {
     backgroundColor: "#3FC080",
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 8,
-  },
-  availabilityText: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 0,
-    marginTop: 10,
     marginHorizontal: 5,
   },
 });
