@@ -6,7 +6,6 @@ import { sendChatMessage, getChatList } from '../helperFunctions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import styles from './styles'; 
-import AuthContext from '../../context/AuthContext';
 const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
 const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
   const [messages, setMessages] = useState(initialMessage);
@@ -49,7 +48,6 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
           setReceiver(chat.receiver);
           setProduct(chat.product);
         } else {
-          console.warn('No chat found for the specified user and listing owner');
           setChatId('');
           setReceiver(prodOwner);
           setProduct(product_id);
