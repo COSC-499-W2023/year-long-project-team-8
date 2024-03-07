@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import {
   View,
-  Text,
   SafeAreaView,
-  TouchableOpacity,
-  Image,
-  BackHandler,
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { updateProfilePicture } from "../helperFunctions/apiHelpers";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import styles from "./editProfileStyles";
 import { getUserData, updateUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 import EditProfileForm from "./editProfileJSX";
+import SaveButton from "./SaveButton";
 
 const EditProfilePage = () => {
   const { authTokens, userId } = useContext(AuthContext);
@@ -28,10 +26,13 @@ const EditProfilePage = () => {
   const [prevPhone, setPrevPhone] = useState("");
   const [prevFirstName, setPrevFirstName] = useState("");
   const [prevLastName, setPrevLastName] = useState("");
+  const [pfp, setPfp] = useState(null);
+  const [formHasErrors, setFormHasErrors] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   // Accessing navigation object for navigating between screens
   const navigation = useNavigation();
-
   // Effect hook to fetch user data when the component mounts or dependencies change
   useEffect(() => {
     // Fetch user data
@@ -42,27 +43,35 @@ const EditProfilePage = () => {
         setLastName(data?.lastname || "");
         setPhone(data?.phone || "");
         setEmail(data?.email || "");
-        console.log("User Data:", data);
+        setPfp(data?.profile_picture);
       })
       .catch((error) => {
         console.log("Error fetching user data: ", error, "editProfileMain.js");
       });
   }, [userId, authTokens]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        // Reset form values to the actual user's values when the screen goes out of focus
+        setFirstName(userData?.firstname || "");
+        setLastName(userData?.lastname || "");
+        setPhone(userData?.phone || "");
+        setEmail(userData?.email || "");
+        setPfp(userData?.profile_picture);
+        setEmailError(""); // Reset email error
+        setPhoneError(""); // Reset phone error
+      };
+    }, [userData])
+  );
+
   // Function to handle saving edited user details
   const handleSaveDetails = () => {
     const updatedData = {};
+    updatedData.firstname = firstname;
+    updatedData.lastname = lastname;
+    updatedData.phone = phone;
 
-    // Checking for changes in form inputs and updating the corresponding fields
-    if (firstname !== "") {
-      updatedData.firstname = firstname;
-    }
-    if (lastname !== "") {
-      updatedData.lastname = lastname;
-    }
-    if (phone !== "") {
-      updatedData.phone = phone;
-    }
     if (email !== "") {
       updatedData.email = email;
     }
@@ -87,84 +96,69 @@ const EditProfilePage = () => {
       });
   };
 
-  const goBack = () => {
-    navigation.goBack();
+  const saveButtonPress = async () => {
+    if (!formHasErrors) {
+      await handleSaveDetails();
+      navigation.goBack();
+    } else {
+      // Show an error message or handle the error
+      console.log("Cannot save due to errors in the form");
+    }
   };
-
-  const toHome = () => {
-    navigation.goBack();
-  }
-
-  const saveButtonPress = () => {
-    toHome();
-    handleSaveDetails();
-  };
-
-  useEffect(() => {
-    const handleBackPress = () => {
-      goBack();
-      return true;
-    };
-
-    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
-
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
-    };
-  }, []);
 
   return (
-
-
-      //put keyboard avoiding view and scrollview here so that users can move through the page
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image style={styles.backgroundPhoto} source={require("../../assets/wave.png")}/>
+    //put keyboard avoiding view and scrollview here so that users can move through the page
+    <SafeAreaView
+      style={styles.safeAreaView}
+      keyboardVerticalOffset={200}
+      behavior="padding"
+    >
       {/* Top navigation bar with back button and save button */}
-      <View style={styles.topBarContainer}>
-        <TouchableOpacity onPress={goBack}>
-          <Image
-            source={require("../../assets/back_arrow.png")}
-            style={styles.backArrow}
+      <KeyboardAvoidingView>
+        <ScrollView style={styles.scrollView}>
+          {/* EditProfileForm component */}
+          <EditProfileForm
+            firstname={firstname}
+            setFirstName={setFirstName}
+            prevFirstName={prevFirstName}
+            setPrevFirstName={setPrevFirstName}
+            lastname={lastname}
+            setLastName={setLastName}
+            prevLastName={prevLastName}
+            setPrevLastName={setPrevLastName}
+            phone={phone}
+            setPhone={setPhone}
+            prevPhone={prevPhone}
+            setPrevPhone={setPrevPhone}
+            email={email}
+            setEmail={setEmail}
+            prevEmail={prevEmail}
+            setPrevEmail={setPrevEmail}
+            pfp={pfp}
+            setHasErrors={setFormHasErrors}
+            setEmailError={setEmailError}
+            setPhoneError={setPhoneError}
+            emailError={emailError}
+            phoneError={phoneError}
           />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={saveButtonPress}>
-          <Text style={styles.saveButton}>Save</Text>
+          <View style={styles.saveButtonContainer}>
+            <SaveButton title={"SAVE"} onPress={saveButtonPress} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      {/*
+      <View style={styles.buttonFieldContainer}>
+        <TouchableOpacity style={styles.changePasswordButton}>
+          <Text style={styles.changePasswordText}>Change Password</Text>
         </TouchableOpacity>
 
-      </View>
-<KeyboardAvoidingView keyboardVerticalOffset={100}>
-          <ScrollView style={styles.scrollView} contentContainerStyle={{minHeight: 875}}>
-      <View style={styles.profilePictureContainer}>
-        <Image
-          source={require("../../assets/images/profilePage/pfp.png")}
-          style={styles.profileImage}
-        />
-      </View>
+        <TouchableOpacity style={styles.deleteAccountButton}>
+          <Text style={styles.deleteAccountText}>Delete Account</Text>
+        </TouchableOpacity>
 
-      {/* EditProfileForm component */}
-      <EditProfileForm
-        firstname={firstname}
-        setFirstName={setFirstName}
-        prevFirstName={prevFirstName}
-        setPrevFirstName={setPrevFirstName}
-        lastname={lastname}
-        setLastName={setLastName}
-        prevLastName={prevLastName}
-        setPrevLastName={setPrevLastName}
-        phone={phone}
-        setPhone={setPhone}
-        prevPhone={prevPhone}
-        setPrevPhone={setPrevPhone}
-        email={email}
-        setEmail={setEmail}
-        prevEmail={prevEmail}
-        setPrevEmail={setPrevEmail}
-      />
-            </ScrollView>
-          </KeyboardAvoidingView>
+        </View>*/}
     </SafeAreaView>
-
-
   );
 };
 

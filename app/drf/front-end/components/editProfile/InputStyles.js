@@ -13,6 +13,7 @@ const InputStyles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 }, // for iOS
     shadowOpacity: 0.25, // for iOS
     shadowRadius: 3.84, // for iOS
+    width: 300,
   },
   input: {
     fontSize: 15,
@@ -22,11 +23,17 @@ const InputStyles = StyleSheet.create({
   iconForm: {
     marginRight: 10,
   },
+  inputWrapperError: {
+    borderColor: "red",
+  },
+  inputError: {
+    color: "red",
+  },
   errorText: {
     color: "red",
-    marginTop: 10,
-    fontSize: 15,
-    marginLeft: 15,
+    fontSize: 12,
+    marginTop: 5,
+    marginLeft: 10,
   },
 });
 

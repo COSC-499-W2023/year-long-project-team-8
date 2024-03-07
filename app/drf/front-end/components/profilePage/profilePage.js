@@ -15,7 +15,7 @@ import {
   getUserProductList,
   updateProfilePicture,
 } from "../helperFunctions/apiHelpers";
-import { RefreshControl } from 'react-native';
+import { RefreshControl } from "react-native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -69,7 +69,6 @@ useEffect(() => {
     })();
   }, []);
   
-
   useEffect(() => {
     if (profilePicUpdated) {
       // Perform re-fetch logic here
@@ -117,13 +116,11 @@ useEffect(() => {
         });
     }
   }, [isFocused, userId, authTokens]);
-  
 
 
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
     navigation.navigate("EditProfile");
-    console.log("Settings button pressed");
   };
 
   // Handle change pfp
@@ -157,7 +154,6 @@ useEffect(() => {
     }
   };
 
-
   // TODO: Requests permission to access the device's location and fetches the current location.
 
   // Fetches the user's posts from the backend using authTokens.
@@ -184,11 +180,14 @@ useEffect(() => {
     setActiveCard(activeCard === postId ? null : postId);
   };
 
-
   return (
-    <ScrollView style={styles.container} ref={scrollViewRef} refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <ScrollView
+      style={styles.container}
+      ref={scrollViewRef}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* Background image and user's profile information */}
       <ImageBackground
         source={require("../../assets/waves_profile.png")}
