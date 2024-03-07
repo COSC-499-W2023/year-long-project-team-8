@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {View, Text, TextInput} from "react-native";
-
+import React, { useState, useEffect } from "react";
+import { View, Image, ImageBackground } from "react-native";
+import InputField from "./InputField";
 import styles from "./editProfileStyles";
 
 const EditProfileForm = ({
@@ -20,7 +20,16 @@ const EditProfileForm = ({
   setEmail,
   prevEmail,
   setPrevEmail,
+  pfp,
+  setHasErrors,
+  setEmailError,
+  setPhoneError,
+  emailError,
+  phoneError,
 }) => {
+  useEffect(() => {
+    setHasErrors(hasErrors);
+  }, [emailError, phoneError]);
 
   // Format phone number to remove non-numeric characters and limit to 11 characters
   const formatPhoneNumber = (text) => {
@@ -30,23 +39,29 @@ const EditProfileForm = ({
 
   // Format phone number for display with  (XXX) XXX-XXXX pattern
   const phoneFormatted = (phone) => {
-    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 - $3');
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2 - $3");
   };
 
   const isPhoneValid = (cleanedPhone) => {
-  return cleanedPhone.length === 10;
-};
+    return cleanedPhone.length === 10 || cleanedPhone.length === 0;
+  };
 
-const phoneValidation = () => {
-  if (isPhoneValid(phone)) {
-    setPhone(phone);
-  } else {
-    // TODO: Implement error modal to give user feedback
-    setPhone(prevPhone);
-    console.log("Phone is invalid");
-  }
-};
+  const emailValidation = () => {
+    if (isEmailValid(email)) {
+      setEmailError("");
+    } else {
+      setEmailError("Invalid email format");
+    }
+  };
 
+  const phoneValidation = () => {
+    if (isPhoneValid(phone)) {
+      setPhone(phone);
+      setPhoneError("");
+    } else {
+      setPhoneError("Invalid phone format");
+    }
+  };
 
   // Check if email matches the proper format
   const isEmailValid = (email) => {
@@ -54,27 +69,9 @@ const phoneValidation = () => {
     return emailPattern.test(email);
   };
 
-  // Validate email and revert to the previous value if invalid
-  const emailValidation = () => {
-    if (isEmailValid(email)) {
-      setEmail(email);const emailValidation = () => {
-    if (isEmailValid(email)) {
-      setEmail(email);
-    } else {
-      // Revert to the previous value
-      setEmail(prevEmail);
-    }
-  };
-    } else {
-      // TODO: Implement error modal to give user feedback
-      setEmail(prevEmail);
-      console.log("Email is invalid");
-    }
-  };
-
   // Check if the first name is valid (contains only letters)
   const isValidFirstName = (firstname) => {
-    const namePattern = /^[a-zA-Z]+$/;
+    const namePattern = /^[a-zA-Z]*$/;
     return namePattern.test(firstname);
   };
 
@@ -91,7 +88,7 @@ const phoneValidation = () => {
 
   // Check if the last name is valid (contains only letters)
   const isValidLastName = (lastname) => {
-    const namePattern = /^[a-zA-Z]+$/;
+    const namePattern = /^[a-zA-Z]*$/;
     return namePattern.test(lastname);
   };
 
@@ -106,66 +103,66 @@ const phoneValidation = () => {
     }
   };
 
+  const hasErrors = () => {
+    return emailError !== "" || phoneError !== "";
+  };
+
   return (
     <>
       {/* First and Last Name */}
-      <View style={styles.nameTextContainer}>
-        <Text style={styles.firstName}>First Name</Text>
-        <Text style={styles.lastName}>Last Name</Text>
-      </View>
-
-      <View style={styles.nameInputContainer}>
-        {/* Input field for first name */}
-        <TextInput
-          style={styles.firstNameInput}
-          value={firstname.charAt(0).toUpperCase() + firstname.slice(1)}
-          onEndEditing={() => firstNameValidation()}
+      <View style={styles.formContainer}>
+        <ImageBackground
+          source={require("../../assets/waves_profile.png")}
+          style={styles.coverImage}
+          resizeMode="cover"
+        />
+        <View style={styles.profilePictureContainer}>
+          <View styles={styles.profileImageContainer}>
+            <Image source={{ uri: pfp }} style={styles.profileImage} />
+          </View>
+        </View>
+        <InputField
+          icon="account-circle"
+          placeholder="First Name"
+          value={firstname}
+          onChangeText={setFirstName}
+          onBlur={firstNameValidation}
           onFocus={() => setPrevFirstName(firstname)}
-          onChangeText={(text) => setFirstName(text)}
-
         />
-        {/* Input field for last name */}
-        <TextInput
-          style={styles.lastNameInput}
-          value={lastname.charAt(0).toUpperCase() + lastname.slice(1)}
-          onEndEditing={() => lastNameValidation()}
+        <InputField
+          icon="account-circle"
+          placeholder="Last Name"
+          value={lastname}
+          onChangeText={setLastName}
+          onBlur={lastNameValidation}
           onFocus={() => setPrevLastName(lastname)}
-          onChangeText={(text) => setLastName(text)}
         />
-      </View>
 
-      {/* Phone Number */}
-      <View style={styles.phoneNumberTextContainer}>
-        <Text style={styles.phoneNumber}>Phone Number</Text>
-      </View>
-
-      <View style={styles.phoneNumberInputContainer}>
-        {/* Input field for phone number with formatting and validation */}
-        <TextInput
-          style={styles.phoneNumberInput}
-          placeholder={"(xxx) xxx - xxxx"}
+        {/* Phone Number */}
+        <InputField
+          icon="phone"
+          placeholder="Phone Number"
           value={phoneFormatted(phone)}
-          maxLength={20}
+          onChangeText={(text) => {
+            formatPhoneNumber(text);
+            setPhoneError(""); // Clear the phone error when the text changes
+          }}
+          onBlur={phoneValidation}
           onFocus={() => setPrevPhone(phone)}
-          onChangeText={(text) => formatPhoneNumber(text)}
-          onEndEditing={() => phoneValidation()}
+          errorText={phoneError}
         />
-      </View>
 
-      {/* Email */}
-      <View style={styles.emailTextContainer}>
-        <Text style={styles.email}>Email</Text>
-      </View>
-
-      <View style={styles.emailInputContainer}>
-        {/* Input field for email with validation */}
-        <TextInput
-          style={styles.emailInput}
+        <InputField
+          icon="email"
+          placeholder="Email"
           value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError(""); // Clear the email error when the text changes
+          }}
+          onBlur={emailValidation}
           onFocus={() => setPrevEmail(email)}
-          onChangeText={(text) => setEmail(text)}
-          onEndEditing={() => emailValidation()}
-          autoCapitalize={"none"}
+          errorText={emailError}
         />
       </View>
     </>

@@ -15,7 +15,7 @@ import {
   getUserProductList,
   updateProfilePicture,
 } from "../helperFunctions/apiHelpers";
-import { RefreshControl } from 'react-native';
+import { RefreshControl } from "react-native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -39,8 +39,6 @@ const ProfilePage = ({ navigation }) => {
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
   const [refreshing, setRefreshing] = useState(false);
 
-
-  
   const onRefresh = async () => {
     setRefreshing(true);
     // Re-fetch user data
@@ -58,7 +56,6 @@ const ProfilePage = ({ navigation }) => {
     }
     setRefreshing(false);
   };
-  
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -107,12 +104,10 @@ const ProfilePage = ({ navigation }) => {
         });
     }
   }, [isFocused, userId, authTokens]);
-  
 
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
     navigation.navigate("EditProfile");
-    console.log("Settings button pressed");
   };
 
   // Handle change pfp
@@ -131,7 +126,7 @@ const ProfilePage = ({ navigation }) => {
 
     if (!result.canceled) {
       // Access the selected asset through the "assets" array
-      const asset = result.assets[0]; 
+      const asset = result.assets[0];
 
       console.log(asset);
 
@@ -145,7 +140,6 @@ const ProfilePage = ({ navigation }) => {
       }
     }
   };
-
 
   // TODO: Requests permission to access the device's location and fetches the current location.
 
@@ -173,11 +167,14 @@ const ProfilePage = ({ navigation }) => {
     setActiveCard(activeCard === postId ? null : postId);
   };
 
-
   return (
-    <ScrollView style={styles.container} ref={scrollViewRef} refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <ScrollView
+      style={styles.container}
+      ref={scrollViewRef}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* Background image and user's profile information */}
       <ImageBackground
         source={require("../../assets/waves_profile.png")}
@@ -281,7 +278,7 @@ const ProfilePage = ({ navigation }) => {
               }
               onPressDropdown={() => handlePressDropdown(post.id)}
               isDropdownVisible={activeCard === post.id}
-              onPostDelete={onRefresh} 
+              onPostDelete={onRefresh}
             />
           </View>
         ))}
