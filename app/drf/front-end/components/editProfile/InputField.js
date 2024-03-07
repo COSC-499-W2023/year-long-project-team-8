@@ -2,7 +2,8 @@ import React from "react";
 import { View, TextInput, Text } from "react-native";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
-import InputStyles from "./InputStyles";
+import InputStyles from "./InputStyles.js";
+import CustomText from "../CustomText.js";
 
 const InputField = ({
   icon,
@@ -10,6 +11,7 @@ const InputField = ({
   value,
   onChangeText,
   onFocus,
+  onBlur,
   errorText,
   secureTextEntry,
   inputMode,
@@ -21,12 +23,17 @@ const InputField = ({
 }) => {
   return (
     <View>
-      <View style={[InputStyles.inputWrapper]}>
+      <View
+        style={[
+          InputStyles.inputWrapper,
+          errorText ? InputStyles.inputWrapperError : null,
+        ]}
+      >
         {icon && (
           <MaterialIcons
             name={icon}
             size={20}
-            color={isErrorIcon ? "red" : "gray"} // Use isErrorIcon to determine color
+            color={errorText ? "red" : "gray"}
             style={InputStyles.iconForm}
           />
         )}
@@ -37,16 +44,19 @@ const InputField = ({
           value={value}
           onChangeText={onChangeText}
           onFocus={onFocus}
+          onBlur={onBlur}
           inputMode={inputMode}
           secureTextEntry={secureTextEntry}
-          autoCapitalize={"none"}
+          autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           name={name}
           underlineColorAndroid="transparent"
         />
         {rightComponent}
       </View>
-      {errorText && <Text style={InputStyles.errorText}>{errorText}</Text>}
+      {errorText && (
+        <CustomText style={InputStyles.errorText}>{errorText}</CustomText>
+      )}
     </View>
   );
 };
@@ -57,6 +67,7 @@ InputField.propTypes = {
   value: PropTypes.string.isRequired,
   onChangeText: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
   errorText: PropTypes.string,
   secureTextEntry: PropTypes.bool,
   inputMode: PropTypes.string,
@@ -64,6 +75,7 @@ InputField.propTypes = {
   autoCorrect: PropTypes.bool,
   name: PropTypes.string,
   rightComponent: PropTypes.node,
+  isErrorIcon: PropTypes.bool,
 };
 
 export default InputField;
