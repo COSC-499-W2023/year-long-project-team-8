@@ -15,7 +15,7 @@ import {
   getUserProductList,
   updateProfilePicture,
 } from "../helperFunctions/apiHelpers";
-import { RefreshControl } from 'react-native';
+import { RefreshControl } from "react-native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -38,7 +38,7 @@ const ProfilePage = ({ navigation, route }) => {
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
   const [refreshing, setRefreshing] = useState(false);
-  
+
   const onRefresh = async () => {
     setRefreshing(true);
     // Re-fetch user data
@@ -56,7 +56,6 @@ const ProfilePage = ({ navigation, route }) => {
     }
     setRefreshing(false);
   };
-  
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -105,7 +104,6 @@ const ProfilePage = ({ navigation, route }) => {
         });
     }
   }, [isFocused, userId, authTokens]);
-  
 
   // Navigates to the EditProfile screen.
   const goToSettings = () => {
@@ -170,9 +168,13 @@ const ProfilePage = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView style={styles.container} ref={scrollViewRef} refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <ScrollView
+      style={styles.container}
+      ref={scrollViewRef}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* Background image and user's profile information */}
       <ImageBackground
         source={require("../../assets/waves_profile.png")}
@@ -276,7 +278,7 @@ const ProfilePage = ({ navigation, route }) => {
               }
               onPressDropdown={() => handlePressDropdown(post.id)}
               isDropdownVisible={activeCard === post.id}
-              onPostDelete={onRefresh} 
+              onPostDelete={onRefresh}
             />
           </View>
         ))}
