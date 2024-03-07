@@ -68,7 +68,7 @@ useEffect(() => {
       setLocationName(name || "Location Not Available");
     })();
   }, []);
-  
+
   useEffect(() => {
     if (profilePicUpdated) {
       // Perform re-fetch logic here
