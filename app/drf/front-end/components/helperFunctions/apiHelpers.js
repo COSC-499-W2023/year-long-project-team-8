@@ -284,24 +284,6 @@ async function getChatList(authTokens) {
 
     const data = await response.json();
     console.log("Data for getChatList", data);
-    const enrichedChatList = data.map(chat => ({
-      id: chat.id,
-      sender_rev: {
-        id: chat.sender.id,
-        email: chat.sender.email,
-        firstname: chat.sender.firstname,
-        profile_picture: chat.sender.profile_picture,
-      },
-      receiver_rev: {
-        id: chat.receiver.id,
-        email: chat.receiver.email,
-        firstname: chat.receiver.firstname,
-        profile_picture: chat.receiver.profile_picture,
-      },
-      product: chat.product,
-      timestamp: chat.timestamp,
-    }));
-    console.log("Enriched chat list", enrichedChatList);
     //return enrichedChatList;
     return data;
   } catch (error) {

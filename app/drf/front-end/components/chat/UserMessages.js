@@ -82,8 +82,10 @@ const UserMessages = ({route}) => {
         // If the message is empty, set a default message
         messageToSend = "Hi! Can I get this plate?";
       }
-  
-      const data = await sendChatMessage(userId, authTokens, messageToSend, receiver, product);
+      console.log("In rec details userId", userId);
+      const userDetailsId = sender !== userId ? sender : receiver;
+      console.log("In send message id",userDetailsId );
+      const data = await sendChatMessage(userId, authTokens, messageToSend, userDetailsId , product);
       setMessages([...messages, data]);
       setNewMessage('');
       await onRefresh();
@@ -93,6 +95,8 @@ const UserMessages = ({route}) => {
   };
   
   console.log("REc details", receiverDetails);
+  console.log("Receiver route params", receiver);
+  console.log("Receiver.id", receiverDetails.id);
   console.log("Prod details chat", productDetails);
   const onRefresh = async () => {
     setRefreshing(true); // Set refreshing state to true

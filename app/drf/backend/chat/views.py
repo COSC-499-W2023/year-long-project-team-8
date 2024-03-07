@@ -24,13 +24,16 @@ class ChatList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         product = self.request.data.get('product')
+        rec = self.request.data.get('receiver')
+        
+        print("rec", rec)
         
         # Retrieve the product and its owner
         try:
             # Check if a chat room already exists for the given sender, receiver, and product
             existing_chat = Chat.objects.filter(
-                Q(receiver = user)
-                | Q(sender = user), product = product).first()
+                Q(receiver = user, sender = rec)
+                | Q(sender = user, receiver = rec), product = product).first()
             
             print("Exisitng chats:", existing_chat)
             if existing_chat:
