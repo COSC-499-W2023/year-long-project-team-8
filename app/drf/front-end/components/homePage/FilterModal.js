@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import {
   View,
   TouchableOpacity,
@@ -12,10 +12,10 @@ import CustomText from "../CustomText";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import ButtonLanding from "../loginSignup/ButtonLanding";
+import { SliderContext } from '../../context/MapContext';
 
 const AllergenChip = React.memo(({ allergen, isSelected, onSelect, onDeselect }) => {
   return (
-    
     <TouchableOpacity
       onPress={() => isSelected ? onDeselect(allergen) : onSelect(allergen)}
       style={[
@@ -41,7 +41,7 @@ const FilterModal = ({
   setAllergensFilter,
   updateSortOption
 }) => {
-  const [distance, setDistance] = useState(25);
+  const { sliderValue, setSliderValue } = useContext(SliderContext);
   const [rating, setRating] = useState(0);
   const [allergens, setAllergens] = useState([]);
   const [selectedSort, setSelectedSort] = useState('Date');
@@ -51,7 +51,7 @@ const FilterModal = ({
     { label: 'Distance', value: 'Distance' },
     { label: 'Rating', value: 'Rating' },
   ];
-  
+
   const allergenDatabase = [
     "Peanuts",
     "Tree nuts",
@@ -65,20 +65,16 @@ const FilterModal = ({
   ];
 
   const applyFilters = () => {
-    setDistanceFilter(distance);
+    setDistanceFilter(sliderValue);
     setRatingFilter(rating);
     setAllergensFilter(allergens);
-    updateSortOption(selectedSort); 
+    updateSortOption(selectedSort);
     onClose();
   };
 
   const handleSelectSort = (option) => {
     setSelectedSort(option.value);
   };
-  
-
-
-  const getRatingLabel = (value) => `${value} Star(s)`;
 
   const selectAllergen = useCallback((selectedAllergen) => {
     setAllergens((currentAllergens) => {
@@ -87,26 +83,20 @@ const FilterModal = ({
       }
       return [...currentAllergens, selectedAllergen];
     });
-  }, [setAllergens, allergens]);
-  
+  }, []);
+
   const deselectAllergen = useCallback((deselectedAllergen) => {
-    setAllergens((currentAllergens) => 
+    setAllergens((currentAllergens) =>
       currentAllergens.filter((allergen) => allergen !== deselectedAllergen)
     );
-  }, [setAllergens, allergens]);
-  
+  }, []);
+
   const resetFilters = () => {
-    setDistance(25); // Reset to default value
-    setRating(0); // Reset to default value
-    setAllergens([]); // Reset to default value
-    setSelectedSort('Date'); // Reset to default sort option
-    // Reset external filters as well if needed
-    setDistanceFilter(25);
-    setRatingFilter(0);
-    setAllergensFilter([]);
+    setSliderValue(25);
+    setRating(0);
+    setAllergens([]);
+    setSelectedSort('Date');
   };
-  
-  
 
   return (
     <Modal
@@ -114,36 +104,25 @@ const FilterModal = ({
       onBackdropPress={onClose}
       style={styles.modal}
       backdropColor={"#000"}
-      backdropOpacity={0.95} 
-    >      
-    <KeyboardAvoidingView
+      backdropOpacity={0.95}
+    >
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1,borderRadius:12,}}
-        
+        style={{ flex: 1, borderRadius: 12 }}
       >
-        <View style={{ 
-          borderRadius: 12,
-          overflow: 'hidden',
-          flexGrow: 1,
-          justifyContent: "center",
-          }}>
+        <View style={{ borderRadius: 12, overflow: 'hidden', flexGrow: 1, justifyContent: "center" }}>
           <ScrollView
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "center",
-            }}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
             keyboardShouldPersistTaps="handled"
           >
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <Ionicons name="close" size={30} color="white" />
-              </TouchableOpacity>
+              <Ionicons name="close" size={30} color="white" />
+            </TouchableOpacity>
 
             <View style={styles.modalContent}>
-
+              {/* Sort Options */}
               <View>
-                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                    Sort By
-                </CustomText>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>Sort By</CustomText>
                 <View style={styles.sortOptionsContainer}>
                   {sortOptions.map((option) => (
                     <TouchableOpacity
@@ -169,30 +148,23 @@ const FilterModal = ({
 
               {/* Distance Filter with Slider */}
               <View style={styles.filterOption}>
-                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                  Max Distance
-                </CustomText>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>Max Distance</CustomText>
                 <Slider
                   style={styles.slider}
-                  minimumValue={0}
-                  maximumValue={25}
-                  step={1}
-                  value={distance}
-                  onValueChange={setDistance}
-                  minimumTrackTintColor="#FFFFFF" // Active part of the slider to white
-                  maximumTrackTintColor="#555" // Inactive part slightly lighter than the dark background
-                  thumbTintColor="#FFFFFF" // Thumb color can remain the same or adjust as needed
+                  minimumValue={1000}
+                  maximumValue={25000}
+                  value={sliderValue}
+                  onValueChange={(value) => setSliderValue(value)}
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#555"
+                  thumbTintColor="#FFFFFF"
                 />
-                <CustomText style={styles.value} fontType={"text"}>
-                  {distance} Km
-                </CustomText>
+                <CustomText style={styles.value} fontType={"text"}>{Math.floor(sliderValue / 1000)} KM</CustomText>
               </View>
 
-              {/* Rating Filter with Slider */}
+              {/* Rating Filter */}
               <View style={styles.filterOption}>
-                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                  Minimum Rating
-                </CustomText>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>Minimum Rating</CustomText>
                 <Slider
                   style={styles.slider}
                   minimumValue={0}
@@ -200,21 +172,17 @@ const FilterModal = ({
                   step={0.5}
                   value={rating}
                   onValueChange={setRating}
-                  minimumTrackTintColor="#FFFFFF" // Active part of the slider to white
-                  maximumTrackTintColor="#555" // Inactive part slightly lighter than the dark background
-                  thumbTintColor="#FFFFFF" // Thumb color can remain the same or adjust as needed
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#555"
+                  thumbTintColor="#FFFFFF"
                 />
-                <CustomText style={styles.value} fontType={"text"}>
-                  {getRatingLabel(rating)}
-                </CustomText>
+                <CustomText style={styles.value} fontType={"text"}>{rating} Star(s)</CustomText>
               </View>
 
-              {/* Allergen Filter with Dropdown */}
+              {/* Allergen Filter */}
               <View style={styles.allergenContainer}>
-                <CustomText style={styles.filterLabel} fontType={"subHeader"}>
-                  Allergens
-                  </CustomText>
-                  <View style={styles.allergenChipsContainer}>
+                <CustomText style={styles.filterLabel} fontType={"subHeader"}>Allergens</CustomText>
+                <View style={styles.allergenChipsContainer}>
                   {allergenDatabase.map((allergen) => (
                     <AllergenChip
                       key={allergen}
@@ -227,13 +195,13 @@ const FilterModal = ({
                 </View>
               </View>
 
-              {/* Apply Filters Button */}
+              {/* Apply and Reset Buttons */}
               <View style={styles.buttonsContainer}>
-              <TouchableOpacity onPress={resetFilters} style={styles.resetButton}>
-                <CustomText style={styles.resetButtonText}>RESET</CustomText>
-              </TouchableOpacity>
-              <ButtonLanding onPress={applyFilters} title={"APPLY"} style={styles.applyButton} showIcon={false}/>
-            </View>
+                <TouchableOpacity onPress={resetFilters} style={styles.resetButton}>
+                  <CustomText style={styles.resetButtonText}>RESET</CustomText>
+                </TouchableOpacity>
+                <ButtonLanding onPress={applyFilters} title={"APPLY"} style={styles.applyButton} showIcon={false}/>
+              </View>
             </View>
           </ScrollView>
         </View>
