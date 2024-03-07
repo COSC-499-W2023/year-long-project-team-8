@@ -7,16 +7,16 @@
 
 
 
-export const baseEndpoint = "http://10.0.0.154:8000/api";
-//export const baseEndpoint = "http://10.0.0.111:8000/api";
+export const baseEndpoint = "http://142.231.162.153:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
 
 
-//export const baseEndpoint = "http://142.231.161.57:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
 
-//export const baseEndpoint = "http://localhost:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
 
-//export const baseEndpoint = "http://192.168.1.135:8000/api";
-//export const baseEndpoint = "http://142.231.166.135:8000/api";
-//export const baseEndpoint = "http://206.87.16.244:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
+//export const baseEndpoint = "http://142.231.162.153:8000/api";
 
 
