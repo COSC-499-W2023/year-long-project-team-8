@@ -3,15 +3,27 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fffbf0",
   },
   imageBg: {
     flex: 1,
   },
+  header: {
+    padding: 30,
+  },
+  headerText: {
+    fontSize: 48,
+    fontWeight: "700",
+    color: "#1f1f1f",
+  },
+  subHeaderText: {
+    fontSize: 20,
+    color: "grey",
+    marginTop: 10,
+  },
   containerItems: {
     flex: 1,
   },
-
   itemContainer: {
     alignItems: "center",
     marginLeft: 20,
@@ -37,6 +49,9 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     alignSelf: "center",
+  },
+  itemPressed: {
+    transform: [{ scale: 0.95 }], // Scale down a bit when pressed
   },
 });
 

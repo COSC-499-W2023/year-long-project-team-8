@@ -1,14 +1,39 @@
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import React, { useRef } from "react";
+import { View, TouchableOpacity, Animated } from "react-native";
 import CustomText from "../CustomText";
 import styles from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Item = ({ title, description, icon = "arrow-forward-ios", onPress }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0.95,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <View>
-      <TouchableOpacity onPress={onPress}>
-        <View style={styles.itemContainer}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={1}
+      >
+        <Animated.View
+          style={[styles.itemContainer, { transform: [{ scale: scaleAnim }] }]}
+        >
           <View style={styles.headerContainer}>
             <CustomText style={styles.itemTitle} fontType={"text"}>
               {title}
@@ -25,7 +50,7 @@ const Item = ({ title, description, icon = "arrow-forward-ios", onPress }) => {
               style={styles.icon}
             />
           </View>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );

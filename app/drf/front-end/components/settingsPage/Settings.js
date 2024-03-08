@@ -3,6 +3,7 @@ import { View, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Item from "./Item";
 import styles from "./styles";
+import CustomText from "../CustomText";
 
 const SettingsPage = () => {
   const navigation = useNavigation();
@@ -25,6 +26,14 @@ const SettingsPage = () => {
         source={require("../../assets/wave.png")}
         style={styles.imageBg}
       >
+        <View style={styles.header}>
+          <CustomText style={styles.headerText} fontType={"title"}>
+            Settings
+          </CustomText>
+          <CustomText style={styles.subHeaderText} fontType={"subHeader"}>
+            Manage your account and personal information
+          </CustomText>
+        </View>
         <View style={styles.containerItems}>
           <Item
             title={"Personal Details"}
