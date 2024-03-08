@@ -11,7 +11,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
@@ -90,24 +89,10 @@ const PasswordResetScreen = ({ navigation }) => {
     }
   };
 
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadFont = async () => {
-      await Font.loadAsync({
-        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
-        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
-        textFont: require("../../assets/fonts/Inter-Medium.ttf"),
-      });
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
-
   return (
     <ImageBackground
       source={require("../../assets/wave.png")}
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "white" }}
       resizeMode="cover"
     >
       <KeyboardAvoidingView

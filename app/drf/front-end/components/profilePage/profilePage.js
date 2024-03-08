@@ -117,8 +117,8 @@ const ProfilePage = ({ navigation, route }) => {
   }, [isFocused, userId, authTokens]);
 
   // Navigates to the EditProfile screen.
-  const goToSettings = () => {
-    navigation.navigate("EditProfile");
+  const goToEditProfile = () => {
+    navigation.navigate("EditProfile", { sourceScreen: "Profile" });
   };
 
   // Handle change pfp
@@ -195,7 +195,7 @@ const ProfilePage = ({ navigation, route }) => {
 
       {/* Settings button to navigate to EditProfile */}
       <TouchableOpacity
-        onPress={goToSettings}
+        onPress={goToEditProfile}
         style={styles.settingsButtonContainer}
         activeOpacity={1}
       >
