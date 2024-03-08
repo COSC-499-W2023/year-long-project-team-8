@@ -30,6 +30,8 @@ const EditProfilePage = () => {
   const [formHasErrors, setFormHasErrors] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
 
   // Accessing navigation object for navigating between screens
   const navigation = useNavigation();
@@ -50,6 +52,19 @@ const EditProfilePage = () => {
       });
   }, [userId, authTokens]);
 
+  const fetchUserData = async () => {
+    try {
+      const data = await getUserData(userId, authTokens);
+      setFirstName(data?.firstname);
+      setLastName(data?.lastname);
+      setPhone(data?.phone);
+      setEmail(data?.email);
+      setPfp(data?.profile_picture);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       return () => {
@@ -59,10 +74,18 @@ const EditProfilePage = () => {
         setPhone(userData?.phone || "");
         setEmail(userData?.email || "");
         setPfp(userData?.profile_picture);
-        setEmailError(""); // Reset email error
-        setPhoneError(""); // Reset phone error
+        setEmailError("");
+        setPhoneError("");
+        setLastNameError("");
+        setFirstNameError("");
       };
     }, [userData])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserData();
+    }, [userId, authTokens])
   );
 
   // Function to handle saving edited user details
@@ -140,6 +163,10 @@ const EditProfilePage = () => {
             setPhoneError={setPhoneError}
             emailError={emailError}
             phoneError={phoneError}
+            firstNameError={firstNameError}
+            lastNameError={lastNameError}
+            setFirstNameError={setFirstNameError}
+            setLastNameError={setLastNameError}
           />
           <View style={styles.saveButtonContainer}>
             <SaveButton title={"SAVE"} onPress={saveButtonPress} />
