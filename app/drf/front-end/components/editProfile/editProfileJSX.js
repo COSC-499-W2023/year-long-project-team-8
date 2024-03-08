@@ -13,10 +13,11 @@ const EditProfileForm = ({
   setFormHasErrors,
   setPhoneError,
   phoneError,
+  firstNameError,
+  lastNameError,
+  setFirstNameError,
+  setLastNameError,
 }) => {
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-
   // Format phone number for display with (XXX) XXX-XXXX pattern
   const phoneFormatted = (phone) => {
     return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2 - $3");
@@ -31,7 +32,7 @@ const EditProfileForm = ({
       setPhone(phone);
       setPhoneError("");
     } else {
-      setPhoneError("Invalid phone format");
+      setPhoneError("Invalid phone number");
     }
   };
 

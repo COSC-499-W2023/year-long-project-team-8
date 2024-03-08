@@ -11,7 +11,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
@@ -33,7 +32,8 @@ const PasswordResetScreen = ({ navigation }) => {
   const hasUpperCase = (password) => /[A-Z]/.test(password);
   const hasLowerCase = (password) => /[a-z]/.test(password);
   const hasDigits = (password) => /\d/.test(password);
-  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasSpecialChars = (password) =>
+    /[!@#$%^&*(),.?":{}|<>~`_+\-=\[\]\\';\/]/.test(password);
   const isLongEnough = (password) => password.length >= 8;
 
   // Combined password validation check
@@ -88,20 +88,6 @@ const PasswordResetScreen = ({ navigation }) => {
       setSuccessMessage("");
     }
   };
-
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadFont = async () => {
-      await Font.loadAsync({
-        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
-        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
-        textFont: require("../../assets/fonts/Inter-Medium.ttf"),
-      });
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
 
   return (
     <ImageBackground

@@ -1,5 +1,10 @@
-
-import React, { useState, useImperativeHandle, forwardRef, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+  useContext,
+} from "react";
 import {
   View,
   Text,
@@ -14,11 +19,11 @@ import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
-import { baseEndpoint } from '../../config/config';
+import { baseEndpoint } from "../../config/config";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthContext from '../../context/AuthContext'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AuthContext from "../../context/AuthContext";
 
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
@@ -39,22 +44,27 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
   const [isConfPassErrorIcon, setIsConfPassErrorIcon] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
 
-
   const { loginUser } = useContext(AuthContext);
 
   // Password validation criteria
   const hasUpperCase = (password) => /[A-Z]/.test(password);
   const hasLowerCase = (password) => /[a-z]/.test(password);
   const hasDigits = (password) => /\d/.test(password);
-  const hasSpecialChars = (password) => /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasSpecialChars = (password) =>
+    /[!@#$%^&*(),.?":{}|<>~`_+\-=\[\]\\';\/]/.test(password);
   const isLongEnough = (password) => password.length >= 8;
 
   // Combined password validation check
   const isPasswordValid = (password) => {
-    return hasUpperCase(password) && hasLowerCase(password) && hasDigits(password) && hasSpecialChars(password) && isLongEnough(password);
+    return (
+      hasUpperCase(password) &&
+      hasLowerCase(password) &&
+      hasDigits(password) &&
+      hasSpecialChars(password) &&
+      isLongEnough(password)
+    );
   };
 
-  
   // Function to reset form fields
   const resetFields = () => {
     // Reset error states and icons
@@ -107,7 +117,11 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
 
     // Validate confirm password - Check both that it's not empty and matches the password
     if (!confirmPassword || signupPassword !== confirmPassword) {
-      setConfirmPasswordError(confirmPassword ? "Passwords do not match" : "Confirm password is required");
+      setConfirmPasswordError(
+        confirmPassword
+          ? "Passwords do not match"
+          : "Confirm password is required"
+      );
       setIsConfPassErrorIcon(true);
       isValid = false;
     }
@@ -154,17 +168,16 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
         const userId = extractUserIdFromUrl(userData.url);
 
         // Store the token and navigate to the Details screen
-        AsyncStorage.setItem('user_id', userId.toString());
-        AsyncStorage.setItem('access_token', receivedToken);
-        AsyncStorage.setItem('authTokens', JSON.stringify(tokenData));
-       // navigation.navigate("Details", { userId, accessToken: receivedToken });
-       loginUser(signupEmail,signupPassword);
-       resetFields();
+        AsyncStorage.setItem("user_id", userId.toString());
+        AsyncStorage.setItem("access_token", receivedToken);
+        AsyncStorage.setItem("authTokens", JSON.stringify(tokenData));
+        // navigation.navigate("Details", { userId, accessToken: receivedToken });
+        loginUser(signupEmail, signupPassword);
+        resetFields();
         navigation.navigate("Details");
-
       } catch (error) {
         console.log("Error during signup:", error);
-        setConfirmPasswordError("Something went wrong")
+        setConfirmPasswordError("Something went wrong");
       }
     }
   };
@@ -280,11 +293,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
                   onPress={() => setChecklistModalVisible(true)}
                   testID="password-info-icon"
                 >
-                  <MaterialIcons
-                    name="info-outline"
-                    size={25}
-                    color="gray"
-                  />
+                  <MaterialIcons name="info-outline" size={25} color="gray" />
                 </Pressable>
               </View>
             }
@@ -318,8 +327,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
             autoCorrect={false}
             name="confirmPassword"
             errorText={confirmPasswordError}
-            isErrorIcon = {isConfPassErrorIcon}
-
+            isErrorIcon={isConfPassErrorIcon}
           />
 
           <ButtonSignup title="SIGN UP" onPress={handleSignup} />

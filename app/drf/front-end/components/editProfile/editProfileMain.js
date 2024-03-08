@@ -24,6 +24,8 @@ const EditProfilePage = () => {
   const [phone, setPhone] = useState("");
   const [formHasErrors, setFormHasErrors] = useState(false);
   const [phoneError, setPhoneError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
 
   useEffect(() => {
     getUserData(userId, authTokens)
@@ -37,6 +39,19 @@ const EditProfilePage = () => {
         console.log("Error fetching user data: ", error);
       });
   }, [userId, authTokens]);
+
+  const fetchUserData = async () => {
+    try {
+      const data = await getUserData(userId, authTokens);
+      setFirstName(data?.firstname);
+      setLastName(data?.lastname);
+      setPhone(data?.phone);
+      setEmail(data?.email);
+      setPfp(data?.profile_picture);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const handleSaveDetails = async () => {
     if (formHasErrors) {
@@ -74,8 +89,16 @@ const EditProfilePage = () => {
       style={styles.container}
       resizeMode="cover"
     >
-      <KeyboardAvoidingView style={styles.innerContainer}>
-        <View>
+      <KeyboardAvoidingView
+        style={{ flex: 1, justifyContent: "center" }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        paddin
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.headerContainer}>
             <CustomText style={styles.headerText}>Manage Details</CustomText>
           </View>
@@ -89,11 +112,15 @@ const EditProfilePage = () => {
             setFormHasErrors={setFormHasErrors}
             setPhoneError={setPhoneError}
             phoneError={phoneError}
+            firstNameError={firstNameError}
+            lastNameError={lastNameError}
+            setFirstNameError={setFirstNameError}
+            setLastNameError={setLastNameError}
           />
           <View style={styles.saveButtonContainer}>
             <ButtonSignup title="Save Details" onPress={handleSaveDetails} />
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </ImageBackground>
   );

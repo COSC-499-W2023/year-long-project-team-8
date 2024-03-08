@@ -20,6 +20,7 @@ const InputField = ({
   name,
   rightComponent,
   isErrorIcon,
+  charLimit,
 }) => {
   return (
     <View>
@@ -51,6 +52,7 @@ const InputField = ({
           autoCorrect={autoCorrect}
           name={name}
           underlineColorAndroid="transparent"
+          maxLength={charLimit}
         />
         {rightComponent}
       </View>

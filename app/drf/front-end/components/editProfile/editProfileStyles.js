@@ -12,13 +12,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   headerContainer: {
     padding: 30,
   },
   headerText: {
-    fontSize: 45,
-    fontWeight: "700",
+    fontSize: 40,
     color: "#1f1f1f",
+    alignSelf: "flex-start",
   },
   formContainer: {
     alignItems: "center",
