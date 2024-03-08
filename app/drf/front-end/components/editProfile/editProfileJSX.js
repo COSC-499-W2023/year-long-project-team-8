@@ -14,22 +14,26 @@ const EditProfileForm = ({
   setPrevLastName,
   phone,
   setPhone,
-  prevPhone,
   setPrevPhone,
   email,
   setEmail,
-  prevEmail,
   setPrevEmail,
   pfp,
   setHasErrors,
   setEmailError,
   setPhoneError,
+  setFirstNameError,
+  setLastNameError,
   emailError,
   phoneError,
+  firstNameError,
+  lastNameError,
 }) => {
+  const defaultProfile = require("../../assets/icons/profile.png");
+
   useEffect(() => {
     setHasErrors(hasErrors);
-  }, [emailError, phoneError]);
+  }, [emailError, phoneError, firstNameError, lastNameError]);
 
   // Format phone number to remove non-numeric characters and limit to 11 characters
   const formatPhoneNumber = (text) => {
@@ -37,7 +41,7 @@ const EditProfileForm = ({
     setPhone(cleaned.slice(0, 10));
   };
 
-  // Format phone number for display with  (XXX) XXX-XXXX pattern
+  // Format phone number for display with (XXX) XXX-XXXX pattern
   const phoneFormatted = (phone) => {
     return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2 - $3");
   };
@@ -59,7 +63,7 @@ const EditProfileForm = ({
       setPhone(phone);
       setPhoneError("");
     } else {
-      setPhoneError("Invalid phone format");
+      setPhoneError("Invalid phone number");
     }
   };
 
@@ -75,13 +79,13 @@ const EditProfileForm = ({
     return namePattern.test(firstname);
   };
 
-  // Validate first name and revert to the previous value if invalid
+  // Validate first name and set error message if invalid
   const firstNameValidation = () => {
     if (isValidFirstName(firstname)) {
       setFirstName(firstname);
+      setFirstNameError(""); // Clear the error message if the first name is valid
     } else {
-      // TODO: Implement error modal to give user feedback
-      setFirstName(prevFirstName);
+      setFirstNameError("Invalid first name"); // Set the error message if the first name is invalid
       console.log("First Name is invalid");
     }
   };
@@ -92,24 +96,28 @@ const EditProfileForm = ({
     return namePattern.test(lastname);
   };
 
-  // Validate last name and revert to the previous value if invalid
+  // Validate last name and set error message if invalid
   const lastNameValidation = () => {
     if (isValidLastName(lastname)) {
       setLastName(lastname);
+      setLastNameError(""); // Clear the error message if the last name is valid
     } else {
-      // TODO: Implement error modal to give user feedback
-      setLastName(prevLastName);
+      setLastNameError("Invalid last name"); // Set the error message if the last name is invalid
       console.log("Last Name is invalid");
     }
   };
 
   const hasErrors = () => {
-    return emailError !== "" || phoneError !== "";
+    return (
+      emailError !== "" ||
+      phoneError !== "" ||
+      firstNameError !== "" ||
+      lastNameError !== ""
+    );
   };
 
   return (
     <>
-      {/* First and Last Name */}
       <View style={styles.formContainer}>
         <ImageBackground
           source={require("../../assets/waves_profile.png")}
@@ -118,34 +126,47 @@ const EditProfileForm = ({
         />
         <View style={styles.profilePictureContainer}>
           <View styles={styles.profileImageContainer}>
-            <Image source={{ uri: pfp }} style={styles.profileImage} />
+            <Image
+              source={pfp ? { uri: pfp } : defaultProfile}
+              style={styles.profileImage}
+            />
           </View>
         </View>
         <InputField
           icon="account-circle"
           placeholder="First Name"
           value={firstname}
-          onChangeText={setFirstName}
+          onChangeText={(text) => {
+            setFirstName(text);
+            setFirstNameError("");
+          }}
           onBlur={firstNameValidation}
           onFocus={() => setPrevFirstName(firstname)}
+          errorText={firstNameError}
+          charLimit={50}
         />
         <InputField
           icon="account-circle"
           placeholder="Last Name"
           value={lastname}
-          onChangeText={setLastName}
+          onChangeText={(text) => {
+            setLastName(text);
+            setLastNameError("");
+          }}
           onBlur={lastNameValidation}
           onFocus={() => setPrevLastName(lastname)}
+          errorText={lastNameError} // Display the last name error
+          charLimit={50}
         />
 
         {/* Phone Number */}
         <InputField
           icon="phone"
-          placeholder="Phone Number"
+          placeholder="PHONE NUMBER"
           value={phoneFormatted(phone)}
           onChangeText={(text) => {
             formatPhoneNumber(text);
-            setPhoneError(""); // Clear the phone error when the text changes
+            setPhoneError("");
           }}
           onBlur={phoneValidation}
           onFocus={() => setPrevPhone(phone)}
@@ -163,6 +184,7 @@ const EditProfileForm = ({
           onBlur={emailValidation}
           onFocus={() => setPrevEmail(email)}
           errorText={emailError}
+          charLimit={100}
         />
       </View>
     </>

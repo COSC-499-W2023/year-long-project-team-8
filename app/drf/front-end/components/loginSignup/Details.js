@@ -10,18 +10,17 @@ import {
   Platform,
 } from "react-native";
 import * as Font from "expo-font";
-import { parsePhoneNumberFromString, AsYouType } from "libphonenumber-js";
-import { baseEndpoint } from '../../config/config';
+import { baseEndpoint } from "../../config/config";
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //const Details = ({ navigation, route }) => {
-const Details = ({ navigation}) => {
+const Details = ({ navigation }) => {
   //Setting accessToken and userId parameters passed from SignUp component
   //const accessToken = route.params?.accessToken;
   //const userId = route.params?.userId;
-  
+
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -35,7 +34,21 @@ const Details = ({ navigation}) => {
 
   const backgroundImage = require("../../assets/wave.png");
 
- 
+  // Format phone number to remove non-numeric characters and limit to 11 characters
+  // Format phone number to remove non-numeric characters and limit to 10 characters
+  const formatPhoneNumber = (text) => {
+    const cleaned = text.replace(/\D/g, "");
+    return cleaned.slice(0, 10);
+  };
+
+  // Format phone number for display with (XXX) XXX-XXXX pattern
+  const phoneFormatted = (phone) => {
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+  };
+
+  const isPhoneValid = (cleanedPhone) => {
+    return cleanedPhone.length === 10;
+  };
 
   useEffect(() => {
     const loadFont = async () => {
@@ -52,24 +65,24 @@ const Details = ({ navigation}) => {
   const handleHome = () => {
     let valid = true;
 
-    // Validate first name
-    if (!firstname.trim()) {
-      setFirstNameError("First name is required");
+    // Validate first name if it's not empty
+    if (firstname.trim() && !firstname.match(/^[a-zA-Z]+$/)) {
+      setFirstNameError("Invalid first name");
       valid = false;
     } else {
       setFirstNameError("");
     }
 
-    // Validate last name
-    if (!lastname.trim()) {
-      setLastNameError("Last name is required");
+    // Validate last name if it's not empty
+    if (lastname.trim() && !lastname.match(/^[a-zA-Z]+$/)) {
+      setLastNameError("Invalid last name");
       valid = false;
     } else {
       setLastNameError("");
     }
 
-    // Validate phone number
-    if (!isValidPhoneNumber(phone)) {
+    // Validate phone number if it's not empty
+    if (phone.trim() && !isPhoneValid(formatPhoneNumber(phone))) {
       setPhoneError("Invalid phone number");
       valid = false;
     } else {
@@ -84,8 +97,8 @@ const Details = ({ navigation}) => {
 
   //setting userUpdateEndpoint for userId
   const handleUpdate = async () => {
-    const userId = await AsyncStorage.getItem('user_id');
-    const accessToken = await AsyncStorage.getItem('access_token');
+    const userId = await AsyncStorage.getItem("user_id");
+    const accessToken = await AsyncStorage.getItem("access_token");
     //setting userUpdateEndpoint for userId
     const userUpdateEndpoint = `${baseEndpoint}/users/${userId}/`;
     //PATCH request, passing accessToken to Auth header and content body
@@ -109,24 +122,13 @@ const Details = ({ navigation}) => {
 
       const data = await response.json();
 
-      console.log('User profile updated:', data);
+      console.log("User profile updated:", data);
       navigation.navigate("MainApp");
-     // navigation.navigate("Tabs", { userId, accessToken: accessToken });
+      // navigation.navigate("Tabs", { userId, accessToken: accessToken });
     } catch (error) {
       console.error("Error updating user profile:", error.message);
     }
   };
-
-  //Frontend validation
-  function formatPhoneNumber(text) {
-    const phoneNumber = new AsYouType().input(text);
-    return phoneNumber;
-  }
-
-  function isValidPhoneNumber(text) {
-    const phoneNumber = parsePhoneNumberFromString(text);
-    return phoneNumber ? phoneNumber.isValid() : false;
-  }
 
   return (
     <KeyboardAvoidingView
@@ -180,6 +182,7 @@ const Details = ({ navigation}) => {
               autoCapitalize="words"
               autoCorrect={false}
               name="firstname"
+              maxLength={50}
             />
             <InputField
               icon="person"
@@ -196,16 +199,16 @@ const Details = ({ navigation}) => {
               autoCapitalize="words"
               autoCorrect={false}
               name="lastname"
+              maxLength={50}
             />
             <InputField
               icon="phone"
-              placeholder="+(1) 235 234 8912"
-              value={phone}
+              placeholder="PHONE NUMBER"
+              value={phoneFormatted(phone)}
               onChangeText={(text) => {
-                let formattedText = formatPhoneNumber(text);
+                const formattedText = formatPhoneNumber(text);
                 setPhone(formattedText);
-
-                if (!isValidPhoneNumber(formattedText)) {
+                if (!isPhoneValid(formattedText)) {
                   setPhoneError("Invalid phone number");
                 } else {
                   setPhoneError("");

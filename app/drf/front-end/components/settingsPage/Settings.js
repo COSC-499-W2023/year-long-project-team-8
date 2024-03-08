@@ -1,9 +1,17 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 // Get the width of the window for responsive styling
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 const SettingsPage = () => {
   const navigation = useNavigation();
@@ -26,9 +34,14 @@ const SettingsPage = () => {
             {/* Header for the Manage Account Section */}
             <Text style={styles.manageAccountHeader}> Manage Account </Text>
             {/* Subheader for the Manage Account Section */}
-            <Text style={styles.manageAccountSubHeader}> Update information and manage your account</Text>
+            <Text style={styles.manageAccountSubHeader}>
+              Update information and manage your account
+            </Text>
             {/* Right Arrow Image */}
-            <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
+            <Image
+              source={require("../../assets/right-arrow.png")}
+              style={styles.rightArrow}
+            />
           </View>
         </TouchableOpacity>
 
@@ -79,9 +92,9 @@ const styles = StyleSheet.create({
   rightArrow: {
     width: 15,
     height: 15,
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    top: '50%',
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: "50%",
     left: windowWidth * 0.85,
     transform: [{ translateY: -7.5 }],
   },

@@ -18,6 +18,7 @@ const InputStyles = StyleSheet.create({
     fontSize: 15,
     flex: 1,
     marginLeft: 10,
+    marginRight: 5,
   },
   iconForm: {
     marginRight: 10,
