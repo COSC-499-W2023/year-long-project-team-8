@@ -12,6 +12,7 @@ import EditPost from "../editPost/EditPost";
 import EditProfilePage from "../editProfile/editProfileMain";
 import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
+import SavedPosts from "../savedPosts/SavedPosts";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -206,6 +207,24 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="Chat"
         component={ChatList}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="SavedPosts"
+        component={SavedPosts}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (

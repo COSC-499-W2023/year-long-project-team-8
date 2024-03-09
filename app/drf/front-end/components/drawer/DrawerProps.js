@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CustomText from "../CustomText"; 
-import DrawerItem from "./DrawerItem"; 
-import AuthContext from '../../context/AuthContext'; 
+import CustomText from "../CustomText";
+import DrawerItem from "./DrawerItem";
+import AuthContext from "../../context/AuthContext";
 
 const logo = require("../../assets/logo.png");
 
@@ -13,7 +13,7 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
   const handleLogout = () => {
     logoutUser();
     navigation.closeDrawer();
-    navigation.navigate('Landing'); 
+    navigation.navigate("Landing");
   };
 
   return (
@@ -35,16 +35,22 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
         isActive={activeRouteName === "Profile"}
       />
       <DrawerItem
-        iconName="settings"
-        label="Settings"
-        onPress={() => navigation.navigate("Settings")}
-        isActive={activeRouteName === "Settings"}
-      />
-      <DrawerItem
         iconName="chatbubbles"
         label="Chat"
         onPress={() => navigation.navigate("Chat")}
         isActive={activeRouteName === "Chat"}
+      />
+      <DrawerItem
+        iconName="bookmark"
+        label="Saved"
+        onPress={() => navigation.navigate("SavedPosts")}
+        isActive={activeRouteName === "SavedPosts"}
+      />
+      <DrawerItem
+        iconName="settings"
+        label="Settings"
+        onPress={() => navigation.navigate("Settings")}
+        isActive={activeRouteName === "Settings"}
       />
 
       <View style={styles.flexGrow} />
@@ -54,9 +60,14 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
         onPress={() => console.log("HelpSupport")} // Implement actual navigation or action
         isActive={activeRouteName === "HelpSupport"} // Adjust according to navigation structure
       />
-      <TouchableOpacity style={[styles.drawerItem, styles.logout]} onPress={handleLogout}>
+      <TouchableOpacity
+        style={[styles.drawerItem, styles.logout]}
+        onPress={handleLogout}
+      >
         <Ionicons name="log-out" size={24} style={styles.logoutIcon} />
-        <CustomText style={[styles.drawerText, styles.logoutText]}>Logout</CustomText>
+        <CustomText style={[styles.drawerText, styles.logoutText]}>
+          Logout
+        </CustomText>
       </TouchableOpacity>
     </View>
   );
