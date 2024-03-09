@@ -165,7 +165,6 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-
       <Drawer.Screen
         name="Settings"
         component={SettingsPage}
@@ -188,14 +187,23 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="PostDetails"
         component={PostDetails}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                const fromSavedPosts = route.params?.fromSavedPosts;
+                if (fromSavedPosts) {
+                  navigation.navigate("SavedPosts");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
@@ -252,7 +260,6 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="EditPost"
         component={EditPost}

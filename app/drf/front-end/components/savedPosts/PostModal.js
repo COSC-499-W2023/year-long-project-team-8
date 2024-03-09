@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Modal, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import Modal from "react-native-modal";
 const PostModal = ({
   isVisible,
   onClose,
@@ -13,32 +13,37 @@ const PostModal = ({
 }) => {
   return (
     <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isVisible}
-      onRequestClose={onClose}
+      isVisible={isVisible}
+      onBackdropPress={onClose}
+      onSwipeComplete={onClose}
+      swipeDirection="down"
+      style={styles.modal}
     >
       <View style={styles.modalView}>
-        {listing && (
-          <>
-            <Image
-              source={{ uri: listing.images[0].image }}
-              style={styles.modalImage}
-            />
-            <CustomText style={styles.modalTitle}>{listing.title}</CustomText>
-          </>
-        )}
-        <TouchableOpacity style={styles.option} onPress={onUnsave}>
-          <MaterialIcons name="delete" size={24} color="black" />
-          <CustomText>Unsave Post</CustomText>
+        <View style={styles.slideIndicator}></View>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={onView}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons name="visibility" size={30} color="grey" />
+          <CustomText style={styles.optionText}>Navigate to post</CustomText>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option} onPress={onView}>
-          <MaterialIcons name="visibility" size={24} color="black" />
-          <CustomText>View Post</CustomText>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={onRequest}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons name="chat" size={30} color="grey" />
+          <CustomText style={styles.optionText}>Send a message</CustomText>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option} onPress={onRequest}>
-          <MaterialIcons name="chat" size={24} color="black" />
-          <CustomText>Request Post</CustomText>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={onUnsave}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons name="delete" size={30} color="grey" />
+          <CustomText style={styles.optionText}>Unsave post</CustomText>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -65,22 +70,29 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   option: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
   },
-  modalImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+  modal: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
+  optionText: {
+    fontSize: 17,
+    marginLeft: 10,
+  },
+  slideIndicator: {
+    borderWidth: 2,
+    borderRadius: 20,
+    width: 30,
     alignSelf: "center",
-    marginBottom: 10,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 5,
+    borderColor: "grey",
   },
 });

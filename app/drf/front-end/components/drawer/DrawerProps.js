@@ -37,7 +37,7 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
       <DrawerItem
         iconName="chatbubbles"
         label="Chat"
-        onPress={() => navigation.navigate("Chat")}
+        onPress={() => navigation.navigate("Tabs", { screen: "Chat" })}
         isActive={activeRouteName === "Chat"}
       />
       <DrawerItem
@@ -58,7 +58,7 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
         iconName="help-circle"
         label="Help & Support"
         onPress={() => console.log("HelpSupport")} // Implement actual navigation or action
-        isActive={activeRouteName === "HelpSupport"} // Adjust according to navigation structure
+        isActive={activeRouteName === "HelpSupport"}
       />
       <TouchableOpacity
         style={[styles.drawerItem, styles.logout]}

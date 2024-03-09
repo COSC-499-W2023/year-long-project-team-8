@@ -1,18 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Image, TextInput, TouchableOpacity, Share, Linking } from 'react-native';
-import CustomText from '../CustomText'; 
-import ChatButton from './ChatButton'; 
-import { sendChatMessage, getChatList } from '../helperFunctions/apiHelpers';
-import { useNavigation } from '@react-navigation/native';
-import AuthContext from '../../context/AuthContext';
-import styles from './styles'; 
-const chatBubble = require("../../assets/icons/chat-bubbles.png"); 
-const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing}) => {
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Share,
+  Linking,
+} from "react-native";
+import CustomText from "../CustomText";
+import ChatButton from "./ChatButton";
+import { sendChatMessage, getChatList } from "../helperFunctions/apiHelpers";
+import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../../context/AuthContext";
+import styles from "./styles";
+import { MaterialIcons } from "@expo/vector-icons";
+const chatBubble = require("../../assets/icons/chat-bubbles.png");
+const ChatComponent = ({
+  initialMessage = "Hi! Can I get this plate?",
+  listing,
+}) => {
   const [messages, setMessages] = useState(initialMessage);
   const { authTokens, userId } = useContext(AuthContext);
-  const [chatId, setChatId] = useState('');
-  const [receiver, setReceiver] = useState('');
-  const [product, setProduct] = useState('');
+  const [chatId, setChatId] = useState("");
+  const [receiver, setReceiver] = useState("");
+  const [product, setProduct] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
+
   const navigation = useNavigation();
   const chatListing = listing;
   const prodOwner = listing.owner;
@@ -23,7 +36,6 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
-  const save = require("../../assets/icons/ribbon.png");
 
   useEffect(() => {
     const fetchChatId = async () => {
@@ -31,9 +43,9 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         // Fetch chat list
         if (!authTokens) {
           // Reset chat related states when authTokens are null (user logs out)
-          setChatId('');
-          setReceiver('');
-          setProduct('');
+          setChatId("");
+          setReceiver("");
+          setProduct("");
           return;
         }
         const chats = await getChatList(authTokens);
@@ -41,7 +53,7 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
         console.log("Prod owner", prodOwner);
         console.log("product id", product_id);
         // Find the chat with the matching userId and listing owner
-        const chat = chats.find(chat => chat.receiver === prodOwner);
+        const chat = chats.find((chat) => chat.receiver === prodOwner);
         console.log("chat from product owner in prod details:", chat);
         if (chat) {
           // Setting parameters for sendChat call
@@ -49,64 +61,95 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
           setReceiver(chat.receiver);
           setProduct(chat.product);
         } else {
-          setChatId('');
+          setChatId("");
           setReceiver(prodOwner);
           setProduct(product_id);
         }
       } catch (error) {
-        console.error('Error fetching chat ID:', error);
+        console.error("Error fetching chat ID:", error);
       }
     };
-  
+
     fetchChatId();
   }, [authTokens, userId, prodOwner]);
 
   const handleSend = async () => {
     console.log("Message to send:", messages);
-  
+
     try {
       // Send the chat message
-      const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
-      
+      const data = await sendChatMessage(
+        userId,
+        authTokens,
+        messages,
+        receiver,
+        product
+      );
+
       // If chatId is already set
-      if (chatId !== '') {
+      if (chatId !== "") {
         setMessages([...messages, data]);
         setMessages(initialMessage);
-        navigation.navigate('UserMessages', { chatId: chatId , sender: userId, receiver: receiver, product: product});
+        navigation.navigate("UserMessages", {
+          chatId: chatId,
+          sender: userId,
+          receiver: receiver,
+          product: product,
+        });
       } else {
         // If chatId is not set (creating a new chat)
-        setMessages('');
+        setMessages("");
         // Set the chatId of the new chat
         setChatId(data.id);
-        navigation.navigate('UserMessages', { chatId: data.id , sender: userId, receiver: receiver, product: product});
+        navigation.navigate("UserMessages", {
+          chatId: data.id,
+          sender: userId,
+          receiver: receiver,
+          product: product,
+        });
         setMessages(initialMessage);
       }
-      
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
-  
 
   const handleSavePress = () => {
     console.log(`Save button pressed`);
-    // TODO: Save listing functionality
+    setIsSaved(!isSaved); // Toggle the saved state
+    // TODO: Implement the save listing functionality
   };
 
   const handleChatPress = async () => {
     try {
-    if (chatId !== '') {
-      navigation.navigate('UserMessages', { chatId: chatId , sender: userId, receiver: receiver, product: product});
-    } else {
-      setMessages([...messages, data]);
-      setMessages(initialMessage);
-      const data = await sendChatMessage(userId, authTokens, messages, receiver, product);
-      setChatId(data.id);
-      navigation.navigate('UserMessages', { chatId: data.id , sender: userId, receiver: receiver, product: product});
+      if (chatId !== "") {
+        navigation.navigate("UserMessages", {
+          chatId: chatId,
+          sender: userId,
+          receiver: receiver,
+          product: product,
+        });
+      } else {
+        setMessages([...messages, data]);
+        setMessages(initialMessage);
+        const data = await sendChatMessage(
+          userId,
+          authTokens,
+          messages,
+          receiver,
+          product
+        );
+        setChatId(data.id);
+        navigation.navigate("UserMessages", {
+          chatId: data.id,
+          sender: userId,
+          receiver: receiver,
+          product: product,
+        });
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
   };
 
   //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
@@ -182,7 +225,11 @@ const ChatComponent = ({ initialMessage = "Hi! Can I get this plate?", listing})
 
         {/* Save button */}
         <TouchableOpacity style={styles.chatButton} onPress={handleSavePress}>
-          <Image source={save} style={styles.chatButtonIcon} />
+          <MaterialIcons
+            name="favorite"
+            size={24}
+            color={isSaved ? "red" : "grey"}
+          />
           <CustomText style={styles.chatButtonText} fontType={"subHeader"}>
             Save
           </CustomText>
