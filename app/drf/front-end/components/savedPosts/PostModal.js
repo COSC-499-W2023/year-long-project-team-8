@@ -1,15 +1,18 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+
 const PostModal = ({
   isVisible,
   onClose,
   onUnsave,
-  onView,
+  onViewPost,
+  onViewUser,
   onRequest,
   listing,
+  navigation,
 }) => {
   return (
     <Modal
@@ -23,15 +26,22 @@ const PostModal = ({
         <View style={styles.slideIndicator}></View>
         <TouchableOpacity
           style={styles.option}
-          onPress={onView}
-          activeOpacity={0.7}
+          onPress={() => onViewPost(listing)}
         >
           <MaterialIcons name="visibility" size={30} color="grey" />
           <CustomText style={styles.optionText}>Navigate to post</CustomText>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.option}
-          onPress={onRequest}
+          onPress={() => onViewUser(listing)}
+          activeOpacity={0.7}
+        >
+          <MaterialIcons name="person" size={30} color="grey" />
+          <CustomText style={styles.optionText}>See User</CustomText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => onRequest(listing)}
           activeOpacity={0.7}
         >
           <MaterialIcons name="chat" size={30} color="grey" />

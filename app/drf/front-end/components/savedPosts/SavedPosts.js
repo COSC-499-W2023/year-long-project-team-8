@@ -8,16 +8,23 @@ import {
 } from "react-native";
 import PostModal from "./PostModal";
 import Item from "./Item";
-import { getUserData, getProductList } from "../helperFunctions/apiHelpers";
+import {
+  getUserData,
+  getProductList,
+  sendChatMessage,
+} from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 
 const SavedPosts = ({ navigation }) => {
   const [savedListings, setSavedListings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, userId } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [chatId, setChatId] = useState("");
+  const [receiver, setReceiver] = useState("");
+  const [product, setProduct] = useState("");
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -28,6 +35,8 @@ const SavedPosts = ({ navigation }) => {
   const openModal = (listing) => {
     setSelectedListing(listing);
     setModalVisible(true);
+    setReceiver(listing.owner);
+    setProduct(listing.id);
   };
 
   const fetchAllListings = async () => {
@@ -66,13 +75,48 @@ const SavedPosts = ({ navigation }) => {
     setModalVisible(false);
   };
 
-  const handleView = () => {
-    console.log("View post");
+  const handleViewPost = (listing) => {
+    navigation.navigate("PostDetails", { listing, fromSavedPosts: true });
     setModalVisible(false);
   };
 
-  const handleRequest = () => {
-    console.log("Open chat instance");
+  const handleViewUser = (listing) => {
+    navigation.navigate("OtherProfile", {
+      userId: listing.owner,
+      fromSavedPosts: true,
+    });
+    setModalVisible(false);
+  };
+
+  const handleOpenChat = async (listing) => {
+    try {
+      if (chatId !== "") {
+        navigation.navigate("UserMessages", {
+          chatId: chatId,
+          sender: userId,
+          receiver: listing.owner,
+          product: listing.id,
+        });
+      } else {
+        const initialMessage = "Hi! Can I get this plate?";
+        const data = await sendChatMessage(
+          userId,
+          authTokens,
+          initialMessage,
+          listing.owner,
+          listing.id
+        );
+        setChatId(data.id);
+        navigation.navigate("UserMessages", {
+          chatId: data.id,
+          sender: userId,
+          receiver: listing.owner,
+          product: listing.id,
+        });
+      }
+    } catch (error) {
+      console.error("Error opening chat:", error);
+    }
     setModalVisible(false);
   };
 
@@ -104,9 +148,11 @@ const SavedPosts = ({ navigation }) => {
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
         onUnsave={handleUnsave}
-        onView={handleView}
-        onRequest={handleRequest}
+        onViewPost={handleViewPost}
+        onViewUser={handleViewUser}
+        onRequest={handleOpenChat}
         listing={selectedListing}
+        navigation={navigation}
       />
     </View>
   );

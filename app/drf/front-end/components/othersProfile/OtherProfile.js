@@ -103,8 +103,12 @@ const OtherProfile = ({ route, navigation }) => {
       headerLeft: () => (
         <TouchableOpacity
           onPress={() => {
-            if (currentListing) {
-              navigation.navigate("PostDetails", { listing: currentListing });
+            if (route.params?.fromListing) {
+              navigation.navigate("PostDetails", {
+                listing: route.params.listing,
+              });
+            } else if (route.params?.fromSavedPosts) {
+              navigation.navigate("SavedPosts");
             } else {
               navigation.goBack();
             }
@@ -115,7 +119,7 @@ const OtherProfile = ({ route, navigation }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, currentListing]);
+  }, [navigation, route.params]);
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
