@@ -12,6 +12,7 @@ import EditPost from "../editPost/EditPost";
 import EditProfilePage from "../editProfile/editProfileMain";
 import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
+import SavedPosts from "../savedPosts/SavedPosts";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -164,7 +165,6 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-
       <Drawer.Screen
         name="Settings"
         component={SettingsPage}
@@ -187,14 +187,23 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="PostDetails"
         component={PostDetails}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                const fromSavedPosts = route.params?.fromSavedPosts;
+                if (fromSavedPosts) {
+                  navigation.navigate("SavedPosts");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
@@ -206,6 +215,24 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="Chat"
         component={ChatList}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="SavedPosts"
+        component={SavedPosts}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (
@@ -233,7 +260,6 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="EditPost"
         component={EditPost}
