@@ -175,8 +175,9 @@ const ChatComponent = ({
       });
     } else {
       navigation.navigate("OtherProfile", {
-        listing: listing,
         userId: listing.owner,
+        fromListing: true,
+        listing: listing,
       });
     }
   };
