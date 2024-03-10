@@ -1362,3 +1362,74 @@ February 19 - March 03, 2024
 ![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+# Team 8 Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+March 3 - March 10, 2024
+
+
+### Project Board
+<!-- 
+- screenshot of the projects board
+-->
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1 
+<br>
+![alt-text]()
+
+### Username Map
+<!-- 
+- team members usernames
+-->
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+
+### Milestone Goals
+<!--
+- goals that are to be done
+-->
+- fix issues that arose from peer testing
+- find a way to ensure that the user can re-enable the location services if declined at first #281
+- put pins on the map #266
+
+
+
+### Completed Tasks
+<!--
+- tasks that are completed
+-->
+- make the location services more modular #270
+- calculate distance from post to user #265
+
+
+### In Progress Tasks
+<!--
+- tasks that are currently in progress
+-->
+- find a way to ensure that the user can renable the location services if declined at first #281
+- put pins on the map #266
+
+### Burnup Chart
+<!-- 
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+![burnup-chart](../img/burnup_t2_w9.png)
+
+
+### Test Report
+<!-- 
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary 
+-->
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+
+
+
