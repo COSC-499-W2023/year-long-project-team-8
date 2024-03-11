@@ -432,7 +432,7 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
  - March 04 - March 10, 2024
 
 ### Task Types
-![Alt text](img/ar_w21.png)
+![ar_w21](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/6d006961-ef13-4ec2-b4b7-487b2f85e509)
 
 ### Recap of Students Goals
 
@@ -452,7 +452,6 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 - #4 Settings implementation
 
 
-![ar_w21](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/6d006961-ef13-4ec2-b4b7-487b2f85e509)
 
 
 
