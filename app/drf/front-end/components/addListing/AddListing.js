@@ -225,6 +225,9 @@ const AddListing = ({ navigation, onPostCreation }) => {
           const { location } = placeDetails.result.geometry;
           const { lat, lng } = location;
 
+          setLatitude(lat);
+          setLongitude(lng);
+
           // Now you can do whatever you want with the latitude and longitude
           console.log("Latitude:", lat);
           console.log("Longitude:", lng);
