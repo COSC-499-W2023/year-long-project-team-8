@@ -4,6 +4,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Text,
 } from "react-native";
 import { categoryIcons } from "../Categories";
 import { allergens } from "../Allergens";
@@ -193,60 +194,108 @@ const AddListing = ({ navigation, onPostCreation }) => {
       setLongitude(lng);
       console.log("Latitude:", lat);
       console.log("Longitude:", lng);
+      console.log("DETAILS", details);
       // You can store lat and lng in state variables or pass them to your form submission function
+    }
+  };
+  const handleAddressSelection2 = async (data) => {
+    const { description } = data;
+    console.log("address: ", description);
+
+    // Construct the URL for the Places Autocomplete API
+    const autocompleteUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(description)}&key=AIzaSyBB5vOjixk-P19lYhkkiO7EVYfRu-4yp60`;
+
+    try {
+      // Fetch predictions from the Places Autocomplete API
+      const autocompleteResponse = await fetch(autocompleteUrl);
+      const autocompleteData = await autocompleteResponse.json(); // Parse the response as JSON
+
+      if (
+        autocompleteData.predictions &&
+        autocompleteData.predictions.length > 0
+      ) {
+        const placeId = autocompleteData.predictions[0].place_id;
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&fields=geometry&key=AIzaSyBB5vOjixk-P19lYhkkiO7EVYfRu-4yp60`;
+
+        // Fetch details for the selected place with only the geometry field
+        const detailsResponse = await fetch(detailsUrl);
+        const placeDetails = await detailsResponse.json(); // Parse the details response
+
+        if (placeDetails.result && placeDetails.result.geometry) {
+          const { location } = placeDetails.result.geometry;
+          const { lat, lng } = location;
+
+          // Now you can do whatever you want with the latitude and longitude
+          console.log("Latitude:", lat);
+          console.log("Longitude:", lng);
+          console.log("Longitude:", placeDetails);
+        } else {
+          console.error("No geometry found for the selected place.");
+        }
+      } else {
+        console.error("No predictions found for the provided input.");
+      }
+    } catch (error) {
+      console.error("Error fetching place details:", error);
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <GooglePlacesAutocomplete
-          placeholder="Enter Address"
-          onPress={handleAddressSelection}
-          // onPress={(data, details = null) => {
-          //   // Handle selection of address here
-          //   console.log(data, details);
-          // }}
-          query={{
-            key: "AIzaSyBB5vOjixk-P19lYhkkiO7EVYfRu-4yp60", //THIS API COSTS MONEY SO DON'T LEAK IT
-            language: "en",
-            components: "country:ca", // Restrict to Canada
-          }}
-          fetchDetails
-          styles={{
-            textInputContainer: {
-              width: "100%",
-              backgroundColor: "rgba(0,0,0,0)",
-              borderTopWidth: 0,
-              borderBottomWidth: 0,
-            },
-            textInput: {
-              marginLeft: 0,
-              marginRight: 0,
-              height: 38,
-              color: "#5d5d5d",
-              fontSize: 16,
-            },
-            predefinedPlacesDescription: {
-              color: "#1faadb",
-            },
-          }}
+      <ScrollView
+        style={styles.scrollContainer}
+        ref={scrollViewRef}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/*Title*/}
+        <TitleInput
+          title={title}
+          setTitle={setTitle}
+          isValid={isTitleValid}
+          setIsValid={setIsTitleValid}
         />
-        <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
-          {/*Title*/}
-          <TitleInput
-            title={title}
-            setTitle={setTitle}
-            isValid={isTitleValid}
-            setIsValid={setIsTitleValid}
-          />
 
-          {/*Description */}
-          <DescriptionInput
-            content={content}
-            setContent={setContent}
-            isValid={isContentValid}
-            setIsValid={setIsContentValid}
+        {/*Description */}
+        <DescriptionInput
+          content={content}
+          setContent={setContent}
+          isValid={isContentValid}
+          setIsValid={setIsContentValid}
+        />
+        <View>
+          <Text style={styles.header}>Pick Up Location</Text>
+          <GooglePlacesAutocomplete
+            placeholder="Enter Address"
+            onPress={handleAddressSelection2}
+            // onPress={(data, details = null) => {
+            //   // Handle selection of address here
+            //   console.log(data, details);
+            // }}
+            query={{
+              key: "AIzaSyBB5vOjixk-P19lYhkkiO7EVYfRu-4yp60", //THIS API COSTS MONEY SO DON'T LEAK IT
+              language: "en",
+              components: "country:ca", // Restrict to Canada
+            }}
+            styles={{
+              textInputContainer: {
+                width: "100%",
+                backgroundColor: "rgba(0,0,0,0)",
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+              },
+              textInput: {
+                marginLeft: 0,
+                marginRight: 0,
+                height: 38,
+                color: "#5d5d5d",
+                fontSize: 16,
+              },
+              predefinedPlacesDescription: {
+                color: "#1faadb",
+              },
+            }}
+            listViewDisplayed="auto"
+            disableScroll={true} // Uncomment this line if necessary
           />
 
           {/* Categories */}
@@ -295,8 +344,8 @@ const AddListing = ({ navigation, onPostCreation }) => {
             message={alertMessage}
             onClose={() => setIsAlertVisible(false)}
           />
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

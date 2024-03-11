@@ -188,6 +188,10 @@ const styles = StyleSheet.create({
   loader: {
     marginTop: "50%",
   },
+  header: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;
