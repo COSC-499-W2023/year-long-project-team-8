@@ -1406,14 +1406,22 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 - make the location services more modular #270
 - calculate distance from post to user #265
+- Merged chat feature, see linked issues in PR 
 
 
 ### In Progress Tasks
 <!--
 - tasks that are currently in progress
 -->
-- find a way to ensure that the user can renable the location services if declined at first #281
-- put pins on the map #266
+- #281 find a way to ensure that the user can renable the location services if declined at first 
+- #266 put pins on the map 
+- #291 Chatlist enhancements
+- #249 Deploy backend
+- #235 Deletion of chat if product is marked as picked up or deleted
+- #213 Correct error message if email is in use
+- #162 Change password in profile page
+- #299 Change email in profile page BE
+
 
 ### Burnup Chart
 <!-- 
