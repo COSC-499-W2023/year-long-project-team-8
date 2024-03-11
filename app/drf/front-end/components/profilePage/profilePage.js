@@ -15,6 +15,7 @@ import {
   getUserProductList,
   updateProfilePicture,
 } from "../helperFunctions/apiHelpers";
+import { RefreshControl } from "react-native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./profilePageStyles";
 import { useIsFocused } from "@react-navigation/native";
@@ -22,22 +23,50 @@ import CustomText from "../CustomText";
 import PostReview from "./PostReview";
 import * as ImagePicker from "expo-image-picker";
 import { useAppState } from "../../context/AppStateContext";
+import reverseGeocode from "../locationServices/reverseGeocoding";
 
-//TODO: Location, dummy pfp icon resolution increase, change profile picture, loader
+//TODO: dummy pfp icon resolution increase,loader
 
-const ProfilePage = ({ navigation }) => {
+const ProfilePage = ({ navigation, route }) => {
   const isFocused = useIsFocused(); // Tracks if the screen is focused.
   const { userId, authTokens } = useContext(AuthContext); // Accesses auth context for user ID and tokens.
+  const [selectedTab, setSelectedTab] = useState("posts");
   const [userData, setUserData] = useState(null); // State to store user data.
   const [userPosts, setUserPosts] = useState([]); // State to store user's posts.
-  const [selectedTab, setSelectedTab] = useState("posts"); // State to manage selected tab between posts and reviews.
   const [location, setLocation] = useState(null); //State to manage Location
   const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // Re-fetch user data
+    if (userId && authTokens) {
+      try {
+        const data = await getUserData(userId, authTokens);
+        setUserData(data);
+        const productData = await getUserProductList(authTokens);
+        if (Array.isArray(productData)) {
+          setUserPosts(productData);
+        }
+      } catch (error) {
+        console.error("Error refreshing data:", error);
+      }
+    }
+    setRefreshing(false);
+  };
 
+  const [locationName, setLocationName] = useState("Location Not Available");
+
+  // useEffect(() => {
+  //     (async () => {
+  //       let currentLocation = await Location.getCurrentPositionAsync({});
+  //       const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
+  //       setLocationName(name || "Location Not Available");
+  //     })();
+  //   }, []);
 
   useEffect(() => {
     if (profilePicUpdated) {
@@ -88,9 +117,8 @@ const ProfilePage = ({ navigation }) => {
   }, [isFocused, userId, authTokens]);
 
   // Navigates to the EditProfile screen.
-  const goToSettings = () => {
-    navigation.navigate("EditProfile");
-    console.log("Settings button pressed");
+  const goToEditProfile = () => {
+    navigation.navigate("EditProfile", { sourceScreen: "Profile" });
   };
 
   // Handle change pfp
@@ -109,7 +137,7 @@ const ProfilePage = ({ navigation }) => {
 
     if (!result.canceled) {
       // Access the selected asset through the "assets" array
-      const asset = result.assets[0]; 
+      const asset = result.assets[0];
 
       console.log(asset);
 
@@ -124,7 +152,6 @@ const ProfilePage = ({ navigation }) => {
     }
   };
 
-
   // TODO: Requests permission to access the device's location and fetches the current location.
 
   // Fetches the user's posts from the backend using authTokens.
@@ -133,7 +160,7 @@ const ProfilePage = ({ navigation }) => {
       try {
         const productData = await getUserProductList(authTokens);
         if (Array.isArray(productData)) {
-          setUserPosts(productData.slice(0, 3)); // Stores the first 3 posts in state.
+          setUserPosts(productData); // Stores all posts in state.
         } else {
           console.error("Product data is not an array:", productData);
         }
@@ -151,9 +178,14 @@ const ProfilePage = ({ navigation }) => {
     setActiveCard(activeCard === postId ? null : postId);
   };
 
-
   return (
-    <ScrollView style={styles.container} ref={scrollViewRef}>
+    <ScrollView
+      style={styles.container}
+      ref={scrollViewRef}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* Background image and user's profile information */}
       <ImageBackground
         source={require("../../assets/waves_profile.png")}
@@ -163,7 +195,7 @@ const ProfilePage = ({ navigation }) => {
 
       {/* Settings button to navigate to EditProfile */}
       <TouchableOpacity
-        onPress={goToSettings}
+        onPress={goToEditProfile}
         style={styles.settingsButtonContainer}
         activeOpacity={1}
       >
@@ -211,7 +243,7 @@ const ProfilePage = ({ navigation }) => {
           {getUserDisplayName(userData)}
         </CustomText>
         <CustomText style={styles.location} fontType={"subHeader"}>
-          {"Location Not Available"}
+          {locationName || "Location Not Available"}
         </CustomText>
       </View>
 
@@ -257,6 +289,7 @@ const ProfilePage = ({ navigation }) => {
               }
               onPressDropdown={() => handlePressDropdown(post.id)}
               isDropdownVisible={activeCard === post.id}
+              onPostDelete={onRefresh}
             />
           </View>
         ))}

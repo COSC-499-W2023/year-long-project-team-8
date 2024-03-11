@@ -14,6 +14,7 @@ class ProductManager(models.Manager):
         expired_products = self.filter(best_before__lte=timezone.now())
         expired_products.update(valid=False)
         
+#The default auto field for Product is: products.Product.id
 class Product(models.Model):
     title = models.CharField(max_length=120)
     content = models.TextField(blank=True, null=True)
@@ -25,7 +26,7 @@ class Product(models.Model):
     valid = models.BooleanField(default=True)
     best_before = models.DateTimeField(blank=False,null=False) # CHANGE TO DATEFIELD WHEN TIME PERMITTING (will need to drop database or update all products)
     allergens = models.CharField(max_length=200, blank=True, null=True)
-    
+    pickedUp = models.BooleanField(default=False)
     objects = ProductManager()
     
     def clean(self):

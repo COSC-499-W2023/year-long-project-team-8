@@ -1,79 +1,95 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Modal, Image, Alert } from 'react-native';
-import { ImagePicker } from 'expo-image-multiple-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ImageGrid from './ImageGrid'; 
-import CustomText from '../CustomText'; 
-import styles from './styles'; 
-import Album from './Album';
-import Check from './Check';
-import Header from './Header';
+import ImageGrid from './ImageGrid';
+import CustomText from '../CustomText';
+import styles from './styles';
 import CustomAlertModal from '../CustomAlertModal';
+import * as ImagePicker from 'expo-image-picker';
 
 const ImagePickerComponent = ({ images, onImagesUpdated }) => {
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const [editingImageIndex, setEditingImageIndex] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const handleChangeImage = (index) => {
-    setEditingImageIndex(index); // Set the index of the image to be replaced
-    setIsPickerOpen(true); // Open the image picker for new selection
-  };
-  
-  
 
-  const handleImageSave = (selectedImages) => {
-    if (editingImageIndex !== null && selectedImages.length > 0) {
-      const updatedImages = [...images];
-      updatedImages[editingImageIndex] = { image: selectedImages[0].uri };
-      onImagesUpdated(updatedImages);
-      setEditingImageIndex(null);
-    } else {
-      const newImages = selectedImages.map(img => ({ image: img.uri }));
-      onImagesUpdated([...images, ...newImages]);
+  const showImagePickerOptions = async () => {
+    const options = ['Take Photo', 'Choose from Library', 'Cancel'];
+
+    Alert.alert(
+      'Select an option',
+      '',
+      options.map((option, index) => ({
+        text: option,
+        onPress: () => {
+          if (index === 0) {
+            takePhoto();
+          } else if (index === 1) {
+            chooseFromLibrary();
+          }
+        },
+      })),
+      { cancelable: true }
+    );
+  };
+
+  const takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your camera!");
+      return;
     }
-    setIsPickerOpen(false);
-  };
 
-  const handleImageCancel = () => {
-    setIsPickerOpen(false);
-    setEditingImageIndex(null);
-  };
+    const cameraResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.7,
+    });
 
-  const handleDeleteImage = (index) => {
-    if (images.length <= 1) {
-      setAlertMessage('At least one image is required');
-      setIsAlertVisible(true);
-      setImageModalVisible(false);
-      return; 
+    if (!cameraResult.canceled) {
+      const newImages = [...images, cameraResult.uri];
+      onImagesUpdated(newImages);
     }
-  
-    const updatedImages = images.filter((_, i) => i !== index);
-    onImagesUpdated(updatedImages);
   };
-  
+
+  const chooseFromLibrary = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const libraryResult = await ImagePicker.launchImageLibraryAsync({
+      aspect: [4, 3],
+      quality: 0.7,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (!libraryResult.canceled && libraryResult.assets) {
+      const newImages = [...images, ...libraryResult.assets.map(asset => asset.uri)];
+      onImagesUpdated(newImages);
+    }
+  };
+
   const handleDeleteImageModal = () => {
     if (images.length <= 1) {
       setAlertMessage('At least one image is required');
       setIsAlertVisible(true);
       setImageModalVisible(false);
-      return; 
+      return;
     }
-  
-    if (selectedImage && selectedImage.image) {
-      const updatedImages = images.filter(img => img.image !== selectedImage.image);
+
+    if (selectedImage) {
+      const updatedImages = images.filter(img => img !== selectedImage);
       onImagesUpdated(updatedImages);
     }
     setImageModalVisible(false);
   };
-  
 
-  const onImagePress = (img, index) => {
-    setSelectedImage(img); // Set the selected image for the modal
-    setImageModalVisible(true); // Open the modal to show the image with options
+  const onImagePress = (uri, index) => {
+    setSelectedImage(uri);
+    setImageModalVisible(true);
   };
 
   const handleCloseModal = () => {
@@ -85,52 +101,29 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
       <View style={styles.imageSection}>
         <CustomText style={styles.title}>Images</CustomText>
         {images.length < 6 && (
-          <TouchableOpacity style={styles.addIconContainer} onPress={() => setIsPickerOpen(true)}>
+          <TouchableOpacity style={styles.addIconContainer} onPress={showImagePickerOptions}>
             <MaterialIcons name="add" size={26} color="#000" />
           </TouchableOpacity>
         )}
       </View>
       <ImageGrid
         images={images}
-        onChangeImage={handleChangeImage}
-        onDeleteImage={handleDeleteImage}
         onImagePress={onImagePress}
       />
 
-      <Modal
-        visible={isPickerOpen}
-        animationType="slide"
-        onRequestClose={() => setIsPickerOpen(false)}
-        transparent={false}
-      >
-        <ImagePicker
-          theme={{
-            header: (props) => <Header {...props} cancel={handleImageCancel} totalAllowed={6-images.length}/>,
-            album: Album,
-            check: Check,
-          }}
-          onSave={handleImageSave}
-          onCancel={handleImageCancel}
-          limit={6 - images.length}
-          mediaType="photo"
-          multiple
-        />
-      </Modal>
-
-        <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal} >
+      <Modal visible={imageModalVisible} transparent={true} onRequestClose={handleCloseModal}>
         <View style={styles.modalView}>
-            <View style={styles.imageAndCloseButtonContainer}>
-                <Image source={{ uri: selectedImage?.image }} style={styles.modalImage} />
-            </View>
-            <View style={styles.modalButtonContainer}>
+          <View style={styles.imageAndCloseButtonContainer}>
+            <Image source={{ uri: selectedImage }} style={styles.modalImage} />
+          </View>
+          <View style={styles.modalButtonContainer}>
             <TouchableOpacity onPress={handleCloseModal} style={styles.modalButton}>
               <CustomText style={styles.modalButtonText}>Close</CustomText>
             </TouchableOpacity>
-
-                <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
-                    <CustomText style={styles.modalButtonTextDelete}>Delete</CustomText>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={handleDeleteImageModal} style={styles.modalButton}>
+              <CustomText style={styles.modalButtonTextDelete}>Delete</CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
 
@@ -139,8 +132,7 @@ const ImagePickerComponent = ({ images, onImagesUpdated }) => {
         isVisible={isAlertVisible}
         message={alertMessage}
         onClose={() => setIsAlertVisible(false)}
-        />
-
+      />
     </View>
   );
 };

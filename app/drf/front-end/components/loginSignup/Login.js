@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useImperativeHandle, forwardRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
 import {
   View,
   Pressable,
@@ -9,21 +15,19 @@ import {
   Platform,
   TouchableWithoutFeedback,
   ImageBackground,
-  Alert
+  Alert,
 } from "react-native";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Font from "expo-font";
 import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
-import { fetchListingById } from '../helperFunctions/apiHelpers';
+import { fetchListingById } from "../helperFunctions/apiHelpers";
 import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Preloader from '../../context/Preloader'; 
-import Toast from 'react-native-root-toast';
-
+import Preloader from "../../context/Preloader";
+import Toast from "react-native-root-toast";
 
 // Login component for user authentication
 const Login = forwardRef(({ onSwitch, navigation }, ref) => {
@@ -38,7 +42,8 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [authError, setAuthError] = useState("");
-  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
+  const [isForgotPasswordModalVisible, setForgotPasswordModalVisible] =
+    useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordError, setForgotPasswordError] = useState("");
 
@@ -51,7 +56,6 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  
 
   const { loginUser, authTokens } = useContext(AuthContext);
 
@@ -61,7 +65,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   // Function to reset form fields
   const resetFields = () => {
     setPassword("");
-    setPasswordError(""); 
+    setPasswordError("");
     setAuthError("");
     setIsPassErrorIcon(false);
     setEmail("");
@@ -69,7 +73,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     setIsAuthErrorIcon(false);
     setIsEmailErrorIcon(false);
   };
-  
+
   // Export the reset function for the parent to call
   useImperativeHandle(ref, () => ({
     resetFields,
@@ -83,7 +87,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   const handleOpenForgotPasswordModal = () => {
     setForgotPasswordModalVisible(true);
     setPassword("");
-    setPasswordError(""); 
+    setPasswordError("");
     setAuthError("");
     setIsPassErrorIcon(false);
     setEmail("");
@@ -99,12 +103,12 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#D5FDCE', // Green for success
-      textColor: 'black',
+      backgroundColor: "#D5FDCE", // Green for success
+      textColor: "black",
       opacity: 1,
     });
   };
-  
+
   const showToastError = (message) => {
     Toast.show(message, {
       duration: Toast.durations.SHORT,
@@ -112,12 +116,12 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#FDCECE', // Red for error
-      textColor: 'black',
+      backgroundColor: "#FDCECE", // Red for error
+      textColor: "black",
       opacity: 1,
     });
   };
-  
+
   const showToastWarning = (message) => {
     Toast.show(message, {
       duration: Toast.durations.SHORT,
@@ -125,13 +129,11 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       shadow: true,
       animation: true,
       hideOnPress: true,
-      backgroundColor: '#FDF9CE', // Yellow for warning
-      textColor: '#black',
+      backgroundColor: "#FDF9CE", // Yellow for warning
+      textColor: "#black",
       opacity: 1,
     });
   };
-  
-  
 
   // Handle sending forgot password email
   const handleForgotPassword = async () => {
@@ -160,28 +162,28 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       if (response.ok) {
         // Password reset email sent successfully
         setIsButtonDisabled(true); // Disable the button
-        showToastSuccess("Password reset email sent successfully") 
-        setCountdown(15); // Initialize countdown     
+        showToastSuccess("Password reset email sent successfully");
+        setCountdown(15); // Initialize countdown
         navigation.navigate("PasswordReset", { email: lowercaseEmail });
         setForgotPasswordModalVisible(false); // Close the modal here
-        setIsButtonDisabled(false)
+        setIsButtonDisabled(false);
       } else {
         // Handle error response
         if (response.status === 404) {
-        showToastWarning("User not found with the provided email");
-        setForgotPasswordError("User not found with the provided email");
+          showToastWarning("User not found with the provided email");
+          setForgotPasswordError("User not found with the provided email");
         } else {
-        showToastWarning("Error initiating password reset")
-        setForgotPasswordError("Error initiating password reset");
+          showToastWarning("Error initiating password reset");
+          setForgotPasswordError("Error initiating password reset");
         }
-        setIsButtonDisabled(false)
+        setIsButtonDisabled(false);
       }
     } catch (error) {
       // Handle network or other errors
       console.error("Network error:", error);
-      showToastError("Network error. Please try again.")
+      showToastError("Network error. Please try again.");
       setForgotPasswordError("Network error. Please try again.");
-      setIsButtonDisabled(false)
+      setIsButtonDisabled(false);
     }
   };
 
@@ -194,13 +196,11 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   //jwt token endpoint
   const loginEndpoint = `${baseEndpoint}/token/`;
 
-  
-
   const validateInputs = () => {
     let isValid = true;
     setEmailError("");
     setPasswordError("");
-  
+
     // Email validation
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!email || !emailRegex.test(email)) {
@@ -208,25 +208,24 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       setIsEmailErrorIcon(true);
       isValid = false;
     } else {
-      setIsEmailErrorIcon(false);  // Reset email icon error state if email is valid
+      setIsEmailErrorIcon(false); // Reset email icon error state if email is valid
     }
-  
+
     // Password validation
     if (!password) {
       setPasswordError("Password cannot be empty");
       setIsPassErrorIcon(true);
       isValid = false;
     } else {
-      setIsPassErrorIcon(false);  // Reset password icon error state if password is not empty
+      setIsPassErrorIcon(false); // Reset password icon error state if password is not empty
     }
-  
+
     return isValid;
   };
-  
-  
+
   useEffect(() => {
     let interval = null;
-  
+
     if (countdown > 0) {
       interval = setInterval(() => {
         setCountdown(countdown - 1);
@@ -235,10 +234,9 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
       setIsButtonDisabled(false);
       clearInterval(interval);
     }
-  
+
     return () => clearInterval(interval); // Cleanup the interval on component unmount
   }, [countdown]);
-
 
   const handleLogin = async () => {
     Keyboard.dismiss();
@@ -246,25 +244,28 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
     setIsPassErrorIcon(false);
 
     let isValid = validateInputs(); // Validate inputs first
-    
+
     if (isValid) {
       const lowercaseEmail = email.toLowerCase();
       try {
-        const bodyStr = JSON.stringify({ email: lowercaseEmail, password: password });
+        const bodyStr = JSON.stringify({
+          email: lowercaseEmail,
+          password: password,
+        });
         const options = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: bodyStr,
         };
-  
+
         const response = await fetch(`${baseEndpoint}/token/`, options);
         const authData = await response.json();
-  
+
         if (response.ok) {
           await loginUser(lowercaseEmail, password);
-  
+
           // Check for a pending listing ID after a successful login
-          const listingId = await AsyncStorage.getItem('pendingListingId');
+          const listingId = await AsyncStorage.getItem("pendingListingId");
 
           if (listingId) {
             // Fetch the listing details with the listing ID
@@ -272,12 +273,15 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
             console.log(listing);
             // Navigate to PostDetails with the fetched listing as a parameter
             resetFields();
-            navigation.navigate('MainApp', { screen: 'PostDetails', params: { listing: listing } });
-            await AsyncStorage.removeItem('pendingListingId'); // Clear the pending listing ID after navigation
+            navigation.navigate("MainApp", {
+              screen: "PostDetails",
+              params: { listing: listing },
+            });
+            await AsyncStorage.removeItem("pendingListingId"); // Clear the pending listing ID after navigation
           } else {
             // Navigate to MainApp or another screen if no pending listing ID is found
             resetFields();
-            navigation.navigate('MainApp');
+            navigation.navigate("MainApp");
           }
         } else {
           // Handle login errors (wrong credentials)
@@ -292,30 +296,12 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
         setIsEmailErrorIcon(true);
         setIsPassErrorIcon(true);
       }
-    } 
+    }
   };
 
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const loadFont = async () => {
-      await Font.loadAsync({
-        titleFont: require("../../assets/fonts/Inter-Bold.ttf"),
-        subHeaderFont: require("../../assets/fonts/Inter-Regular.ttf"),
-        textFont: require("../../assets/fonts/Inter-Medium.ttf"),
-      });
-      const timer = delay(3000); // 3-second delay loading
-      await timer;
-      setLoading(false);
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
-
-  if (loading) {
-    return <Preloader />; // Show the preloader while loading
-  }
+  // if (loading) {
+  //   return <Preloader />; // Show the preloader while loading
+  // }
 
   return (
     <KeyboardAvoidingView
@@ -330,40 +316,30 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={LoginStyles.headerContainer}>
-          <CustomText
-            style={[
-              LoginStyles.headerText,
-              fontLoaded ? { fontFamily: "titleFont" } : {},
-            ]}
-          >
+          <CustomText style={LoginStyles.headerText} fontType={"title"}>
             Login
           </CustomText>
-          <CustomText
-            style={[
-              LoginStyles.subHeaderText,
-              fontLoaded ? { fontFamily: "subHeaderFont" } : {},
-            ]}
-          >
+          <CustomText style={LoginStyles.subHeaderText} fontType={"subHeader"}>
             Hungry or emptying space in the fridge?
           </CustomText>
         </View>
 
         <View style={LoginStyles.fields}>
-        <InputField
-          icon={"email"}
-          placeholder="Email"
-          value={email}
-          isErrorIcon={isEmailErrorIcon}
-          onChangeText={(text) => {
-            setEmail(text.trim());
-            setEmailError(""); 
-            setIsEmailErrorIcon(false);
-          }}
-          onFocus={() => {
-            setEmailError(""); 
-            setIsEmailErrorIcon(false);
-          }}
-            errorText={emailError} 
+          <InputField
+            icon={"email"}
+            placeholder="Email"
+            value={email}
+            isErrorIcon={isEmailErrorIcon}
+            onChangeText={(text) => {
+              setEmail(text.trim());
+              setEmailError("");
+              setIsEmailErrorIcon(false);
+            }}
+            onFocus={() => {
+              setEmailError("");
+              setIsEmailErrorIcon(false);
+            }}
+            errorText={emailError}
             inputMode="email"
             autoCapitalize="none"
             autoCorrect={false}
@@ -377,13 +353,13 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
             isErrorIcon={isPassErrorIcon}
             onChangeText={(text) => {
               setPassword(text);
-              setPasswordError(""); 
+              setPasswordError("");
               setAuthError("");
               setIsPassErrorIcon(false);
             }}
             onFocus={() => {
-              setPasswordError(""); 
-              setAuthError(""); 
+              setPasswordError("");
+              setAuthError("");
               setIsPassErrorIcon(false);
             }}
             secureTextEntry={!showPassword}
@@ -404,7 +380,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
               </Pressable>
             }
             errorText={passwordError || authError}
-            />
+          />
           <View style={LoginStyles.forgotLoginContainer}>
             <Pressable
               style={LoginStyles.forgotPasswordContainer}
@@ -422,18 +398,9 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
             {/* <ButtonLogin title="LOGIN" onPress={login} /> */}
           </View>
           <Pressable style={LoginStyles.signupContainer} onPress={onSwitch}>
-            <CustomText
-              style={
-                LoginStyles.signupText}
-            >
+            <CustomText style={LoginStyles.signupText}>
               Don't have an account?{" "}
-              <CustomText
-                style={
-                  LoginStyles.signup
-                 }
-              >
-                Sign up!
-              </CustomText>
+              <CustomText style={LoginStyles.signup}>Sign up!</CustomText>
             </CustomText>
           </Pressable>
         </View>
@@ -443,72 +410,82 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
           transparent={true}
           visible={isForgotPasswordModalVisible}
           onRequestClose={handleCloseForgotPasswordModal}
+          testID="forgot-password-modal"
         >
           <TouchableWithoutFeedback onPress={handleCloseForgotPasswordModal}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <KeyboardAvoidingView 
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
               >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <View style={LoginStyles.modalContainer}>
-                <ImageBackground 
-                    source={require('../../assets/modal_wave.png')} 
-                    style={LoginStyles.floatingBubble}
-                    resizeMode="cover"
-                    imageStyle={{ borderRadius: 10}}
-
-                  >
-                          <Pressable
-                            style={LoginStyles.forgotPasswordModalCloseButton}
-                            onPress={handleCloseForgotPasswordModal}
-                          >
-                            <MaterialIcons
-                                name="close"
-                                size={22} 
-                                color="white" 
-                              />
-                          </Pressable>
-                          <CustomText style={LoginStyles.forgotPasswordModalHeader}>
-                            Forgot Password?
-                          </CustomText>
-                          <CustomText style={LoginStyles.forgotPasswordModalsubHeader}>
-                            Don't worry, a code will be sent to your email!
-                          </CustomText>
-                          <View style={LoginStyles.containerInputModal}>
-                          <InputField
-                              style={LoginStyles.forgotPasswordModalInput}
-                              placeholder="Enter your email"
-                              placeholderTextColor="grey"
-                              onChangeText={(text) => {
-                                setForgotPasswordEmail(text.trim());
-                                setForgotPasswordError(""); // Clear the error message when user starts typing
-                              }}
-                              value={forgotPasswordEmail}
-                            />
-
-                          </View>
-                          <View style={LoginStyles.messageContainer}>
-                            {countdown > 0 ? (
-                              <CustomText style={LoginStyles.countdownText}>
-                                Try again in: {countdown} seconds
-                              </CustomText>
-                            ) : (
-                              forgotPasswordError && (
-                                <CustomText style={LoginStyles.forgotPasswordModalError}>
-                                  {forgotPasswordError}
-                                </CustomText>
-                              )
-                            )}
-                          </View>
-                            <ButtonLogin
-                              title="SEND"
-                              onPress={handleForgotPassword}
-                              disabled={isButtonDisabled}
-                              style={isButtonDisabled ? LoginStyles.buttonDisabled : LoginStyles.forgotPasswordsendButton}
-                            />                      
-                      </ImageBackground>
+                    <ImageBackground
+                      source={require("../../assets/modal_wave.png")}
+                      style={LoginStyles.floatingBubble}
+                      resizeMode="cover"
+                      imageStyle={{ borderRadius: 10 }}
+                    >
+                      <Pressable
+                        style={LoginStyles.forgotPasswordModalCloseButton}
+                        onPress={handleCloseForgotPasswordModal}
+                      >
+                        <MaterialIcons name="close" size={22} color="white" />
+                      </Pressable>
+                      <CustomText style={LoginStyles.forgotPasswordModalHeader}>
+                        Forgot Password?
+                      </CustomText>
+                      <CustomText
+                        style={LoginStyles.forgotPasswordModalsubHeader}
+                      >
+                        Don't worry, a code will be sent to your email!
+                      </CustomText>
+                      <View style={LoginStyles.containerInputModal}>
+                        <InputField
+                          style={LoginStyles.forgotPasswordModalInput}
+                          placeholder="Enter your email"
+                          placeholderTextColor="grey"
+                          onChangeText={(text) => {
+                            setForgotPasswordEmail(text.trim());
+                            setForgotPasswordError(""); // Clear the error message when user starts typing
+                          }}
+                          value={forgotPasswordEmail}
+                        />
                       </View>
+                      <View style={LoginStyles.messageContainer}>
+                        {countdown > 0 ? (
+                          <CustomText style={LoginStyles.countdownText}>
+                            Try again in: {countdown} seconds
+                          </CustomText>
+                        ) : (
+                          forgotPasswordError && (
+                            <CustomText
+                              style={LoginStyles.forgotPasswordModalError}
+                            >
+                              {forgotPasswordError}
+                            </CustomText>
+                          )
+                        )}
+                      </View>
+                      <ButtonLogin
+                        title="SEND"
+                        onPress={handleForgotPassword}
+                        disabled={isButtonDisabled}
+                        style={
+                          isButtonDisabled
+                            ? LoginStyles.buttonDisabled
+                            : LoginStyles.forgotPasswordsendButton
+                        }
+                      />
+                    </ImageBackground>
+                  </View>
                 </TouchableWithoutFeedback>
               </KeyboardAvoidingView>
             </View>

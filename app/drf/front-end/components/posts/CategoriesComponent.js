@@ -7,7 +7,7 @@ import { categoryIcons } from '../Categories';
 const CategoriesComponent = ({ categories }) => {
   return (
     <View style={styles.categoryContainer}>
-      <CustomText fontType={"title"} style={styles.categoryTitle}>Categories</CustomText>
+      <CustomText fontType={"title"} style={styles.giverTitle}>Categories</CustomText>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -10 }}>
         <View style={styles.detailRow}>
           {categories && typeof categories === 'string' && categories.split(',').map((category, index) => (

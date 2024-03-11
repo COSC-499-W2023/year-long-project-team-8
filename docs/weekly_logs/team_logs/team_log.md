@@ -1270,6 +1270,7 @@ February 19 - March 03, 2024
 <!--
 - screenshot of the projects board
 -->
+
 ![Alt text](../img/t2_projboard_w8.png)
 
 ### Username Map
@@ -1318,7 +1319,7 @@ February 19 - March 03, 2024
 - [x] #279
 - [x] #280
 - [x] #259
-- [X] #260
+- [x] #260
 
 ### In Progress Tasks
 
@@ -1348,6 +1349,7 @@ February 19 - March 03, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+
 ![burnup-chart](../img/t2_burnup_w8.png)
 
 ### Test Report
@@ -1360,5 +1362,109 @@ February 19 - March 03, 2024
 
 ![alt text](../img/t2-w6-backend-test.png)
 ![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+# Team 8 Log
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 3 - March 10, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1
+<br>
+![alt-text]()
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- [x] fix issues that arose from peer testing
+- [x] find a way to ensure that the user can re-enable the location services if declined at first #281
+- [x] put pins on the map #266
+- [x] add tags for picked up
+- [x] add functionality for user to mark post as picked up or available
+- [x] add additional buttong for user to remove post (alongside availabilty)
+- [x] integrate Google AutoComplete search bar into add listing
+- [x] save location data on posts
+- [x] pull location from posts to populate pins on map
+- [x] link pins to post details
+- [x] separate settings page into more screens 
+- [x] implement saved posts front end
+- [x] finish add listing and edit listing
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- make the location services more modular #270
+- calculate distance from post to user #265
+- Merged chat feature, see linked issues in PR
+- [x] [#302](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/302)
+- [x] [#303](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/303)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [x] [#272](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/272)
+- [x] [#271](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/271)
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- #281 find a way to ensure that the user can renable the location services if declined at first
+- #266 put pins on the map
+- #291 Chatlist enhancements
+- #249 Deploy backend
+- #235 Deletion of chat if product is marked as picked up or deleted
+- #213 Correct error message if email is in use
+- #162 Change password in profile page
+- #299 Change email in profile page BE
+- [ ] [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
+- [ ] [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
+- [ ] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [ ] [#304](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [ ] [#287](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/287)
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/burnup_t2_w9.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing

@@ -1,23 +1,26 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Tabs from "../tabs/BottomTabs"; 
-import DrawerProps from "./DrawerProps"; 
-import SettingsPage from "../settingsPage/Settings"; 
-import Profile from "../profilePage/profilePage"; 
-import PostDetails from "../posts/PostDetails"; 
-import OtherProfile from "../othersProfile/OtherProfile"; 
+import Tabs from "../tabs/BottomTabs";
+import DrawerProps from "./DrawerProps";
+import SettingsPage from "../settingsPage/Settings";
+import Profile from "../profilePage/profilePage";
+import ChatList from "../chat/ChatList.js";
+import PostDetails from "../posts/PostDetails";
+import OtherProfile from "../othersProfile/OtherProfile";
 import EditPost from "../editPost/EditPost";
-
+import EditProfilePage from "../editProfile/editProfileMain";
+import ChangeEmail from "../settingsPage/ChangeEmail";
+import ChangePassword from "../settingsPage/ChangePassword";
+import SavedPosts from "../savedPosts/SavedPosts";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
-const backArrowIcon = require('../../assets/icons/back-arrow.png');
+const backArrowIcon = require("../../assets/icons/back-arrow.png");
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNav = ({ navigation }) => {
-
   // Function to determine the active route name
   const getActiveRouteName = (navigationState) => {
     if (!navigationState) {
@@ -30,16 +33,17 @@ const DrawerNav = ({ navigation }) => {
     }
     return route.name;
   };
-  
 
   const activeRouteName = getActiveRouteName(navigation.getState());
 
   return (
     <Drawer.Navigator
       initialRouteName="Tabs"
-      drawerContent={(props) => <DrawerProps {...props} activeRouteName={activeRouteName} />}      
+      drawerContent={(props) => (
+        <DrawerProps {...props} activeRouteName={activeRouteName} />
+      )}
       screenOptions={{
-        swipeEnabled: true, 
+        swipeEnabled: true,
       }}
     >
       <Drawer.Screen
@@ -47,15 +51,25 @@ const DrawerNav = ({ navigation }) => {
         component={Tabs}
         options={({ navigation, route }) => ({
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Image source={customHamburgerIcon} style={{ width: 22, height: 22, marginLeft: 20 }} />
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={() => console.log("Notifications pressed")}>
-              <Image source={notificationIcon} style={{ width: 25, height: 25, marginRight: 20 }} />
+            <TouchableOpacity
+              onPress={() => console.log("Notifications pressed")}
+            >
+              <Image
+                source={notificationIcon}
+                style={{ width: 25, height: 25, marginRight: 20 }}
+              />
             </TouchableOpacity>
           ),
         })}
@@ -65,10 +79,88 @@ const DrawerNav = ({ navigation }) => {
         component={Profile}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Image source={customHamburgerIcon} style={{ width: 22, height: 22, marginLeft: 20 }} />
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="EditProfile"
+        component={EditProfilePage}
+        options={({ navigation, route }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                const sourceScreen = route.params?.sourceScreen;
+                if (sourceScreen === "Profile") {
+                  navigation.navigate("Profile");
+                } else if (sourceScreen === "Settings") {
+                  navigation.navigate("Settings");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="ChangeEmail"
+        component={ChangeEmail}
+        options={({ navigation, route }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Settings");
+              }}
+            >
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={({ navigation, route }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Settings");
+              }}
+            >
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
             </TouchableOpacity>
           ),
         })}
@@ -78,10 +170,15 @@ const DrawerNav = ({ navigation }) => {
         component={SettingsPage}
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-              <Image source={customHamburgerIcon} style={{ width: 22, height: 22, marginLeft: 20 }} />
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
             </TouchableOpacity>
           ),
         })}
@@ -90,13 +187,63 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="PostDetails"
         component={PostDetails}
-        options={({ navigation }) => ({
-          drawerItemStyle: { display: 'none' },
+        options={({ navigation, route }) => ({
+          drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={backArrowIcon} style={{ width: 25, height: 25, marginLeft: 20 }} />
+            <TouchableOpacity
+              onPress={() => {
+                const fromSavedPosts = route.params?.fromSavedPosts;
+                if (fromSavedPosts) {
+                  navigation.navigate("SavedPosts");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={ChatList}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="SavedPosts"
+        component={SavedPosts}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
             </TouchableOpacity>
           ),
         })}
@@ -106,19 +253,22 @@ const DrawerNav = ({ navigation }) => {
         name="OtherProfile"
         component={OtherProfile}
         options={({ navigation }) => ({
-          drawerItemStyle: { display: 'none' },
+          drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
         })}
       />
-      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="EditPost"
         component={EditPost}
         options={({ navigation }) => ({
-          drawerItemStyle: { display: 'none' },
+          drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
-          headerTitle: () => <Image source={logo} style={{ width: 200, height: 40 }} />,
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
         })}
       />
     </Drawer.Navigator>

@@ -1,174 +1,94 @@
-import React, {useState} from "react";
-import {View, Text, TextInput} from "react-native";
-
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import InputField from "./InputField";
 import styles from "./editProfileStyles";
 
 const EditProfileForm = ({
   firstname,
   setFirstName,
-  prevFirstName,
-  setPrevFirstName,
   lastname,
   setLastName,
-  prevLastName,
-  setPrevLastName,
   phone,
   setPhone,
-  prevPhone,
-  setPrevPhone,
-  email,
-  setEmail,
-  prevEmail,
-  setPrevEmail,
+  setFormHasErrors,
+  setPhoneError,
+  phoneError,
+  firstNameError,
+  lastNameError,
+  setFirstNameError,
+  setLastNameError,
 }) => {
-
-  // Format phone number to remove non-numeric characters and limit to 11 characters
-  const formatPhoneNumber = (text) => {
-    const cleaned = text.replace(/\D/g, "");
-    setPhone(cleaned.slice(0, 10));
-  };
-
-  // Format phone number for display with  (XXX) XXX-XXXX pattern
+  // Format phone number for display with (XXX) XXX-XXXX pattern
   const phoneFormatted = (phone) => {
-    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 - $3');
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2 - $3");
   };
 
   const isPhoneValid = (cleanedPhone) => {
-  return cleanedPhone.length === 10;
-};
-
-const phoneValidation = () => {
-  if (isPhoneValid(phone)) {
-    setPhone(phone);
-  } else {
-    // TODO: Implement error modal to give user feedback
-    setPhone(prevPhone);
-    console.log("Phone is invalid");
-  }
-};
-
-
-  // Check if email matches the proper format
-  const isEmailValid = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
+    return cleanedPhone.length === 10 || cleanedPhone.length === 0;
   };
 
-  // Validate email and revert to the previous value if invalid
-  const emailValidation = () => {
-    if (isEmailValid(email)) {
-      setEmail(email);const emailValidation = () => {
-    if (isEmailValid(email)) {
-      setEmail(email);
+  const phoneValidation = () => {
+    if (isPhoneValid(phone)) {
+      setPhone(phone);
+      setPhoneError("");
     } else {
-      // Revert to the previous value
-      setEmail(prevEmail);
-    }
-  };
-    } else {
-      // TODO: Implement error modal to give user feedback
-      setEmail(prevEmail);
-      console.log("Email is invalid");
+      setPhoneError("Invalid phone number");
     }
   };
 
-  // Check if the first name is valid (contains only letters)
-  const isValidFirstName = (firstname) => {
-    const namePattern = /^[a-zA-Z]+$/;
-    return namePattern.test(firstname);
+  const isNameValid = (name) => {
+    return /^[A-Za-z\s]*$/.test(name);
   };
 
-  // Validate first name and revert to the previous value if invalid
-  const firstNameValidation = () => {
-    if (isValidFirstName(firstname)) {
-      setFirstName(firstname);
+  const nameValidation = (name, setName, setError) => {
+    if (isNameValid(name)) {
+      setName(name);
+      setError("");
     } else {
-      // TODO: Implement error modal to give user feedback
-      setFirstName(prevFirstName);
-      console.log("First Name is invalid");
+      setError("Name can only contain letters and spaces");
     }
   };
 
-  // Check if the last name is valid (contains only letters)
-  const isValidLastName = (lastname) => {
-    const namePattern = /^[a-zA-Z]+$/;
-    return namePattern.test(lastname);
-  };
-
-  // Validate last name and revert to the previous value if invalid
-  const lastNameValidation = () => {
-    if (isValidLastName(lastname)) {
-      setLastName(lastname);
-    } else {
-      // TODO: Implement error modal to give user feedback
-      setLastName(prevLastName);
-      console.log("Last Name is invalid");
-    }
-  };
+  useEffect(() => {
+    setFormHasErrors(
+      phoneError !== "" || firstNameError !== "" || lastNameError !== ""
+    );
+  }, [phoneError, firstNameError, lastNameError, setFormHasErrors]);
 
   return (
-    <>
-      {/* First and Last Name */}
-      <View style={styles.nameTextContainer}>
-        <Text style={styles.firstName}>First Name</Text>
-        <Text style={styles.lastName}>Last Name</Text>
-      </View>
-
-      <View style={styles.nameInputContainer}>
-        {/* Input field for first name */}
-        <TextInput
-          style={styles.firstNameInput}
-          value={firstname.charAt(0).toUpperCase() + firstname.slice(1)}
-          onEndEditing={() => firstNameValidation()}
-          onFocus={() => setPrevFirstName(firstname)}
-          onChangeText={(text) => setFirstName(text)}
-
-        />
-        {/* Input field for last name */}
-        <TextInput
-          style={styles.lastNameInput}
-          value={lastname.charAt(0).toUpperCase() + lastname.slice(1)}
-          onEndEditing={() => lastNameValidation()}
-          onFocus={() => setPrevLastName(lastname)}
-          onChangeText={(text) => setLastName(text)}
-        />
-      </View>
-
-      {/* Phone Number */}
-      <View style={styles.phoneNumberTextContainer}>
-        <Text style={styles.phoneNumber}>Phone Number</Text>
-      </View>
-
-      <View style={styles.phoneNumberInputContainer}>
-        {/* Input field for phone number with formatting and validation */}
-        <TextInput
-          style={styles.phoneNumberInput}
-          placeholder={"(xxx) xxx - xxxx"}
-          value={phoneFormatted(phone)}
-          maxLength={20}
-          onFocus={() => setPrevPhone(phone)}
-          onChangeText={(text) => formatPhoneNumber(text)}
-          onEndEditing={() => phoneValidation()}
-        />
-      </View>
-
-      {/* Email */}
-      <View style={styles.emailTextContainer}>
-        <Text style={styles.email}>Email</Text>
-      </View>
-
-      <View style={styles.emailInputContainer}>
-        {/* Input field for email with validation */}
-        <TextInput
-          style={styles.emailInput}
-          value={email}
-          onFocus={() => setPrevEmail(email)}
-          onChangeText={(text) => setEmail(text)}
-          onEndEditing={() => emailValidation()}
-          autoCapitalize={"none"}
-        />
-      </View>
-    </>
+    <View style={styles.formContainer}>
+      <InputField
+        icon="account-circle"
+        placeholder="First Name"
+        value={firstname}
+        onChangeText={(text) => {
+          setFirstName(text.trim());
+          nameValidation(text.trim(), setFirstName, setFirstNameError);
+        }}
+        errorText={firstNameError}
+      />
+      <InputField
+        icon="account-circle"
+        placeholder="Last Name"
+        value={lastname}
+        onChangeText={(text) => {
+          setLastName(text.trim());
+          nameValidation(text.trim(), setLastName, setLastNameError);
+        }}
+        errorText={lastNameError}
+      />
+      <InputField
+        icon="phone"
+        placeholder="Phone Number"
+        value={phoneFormatted(phone)}
+        onChangeText={(text) => {
+          const cleaned = text.replace(/\D/g, "");
+          setPhone(cleaned.slice(0, 10));
+        }}
+        onBlur={phoneValidation}
+        errorText={phoneError}
+      />
+    </View>
   );
 };
 

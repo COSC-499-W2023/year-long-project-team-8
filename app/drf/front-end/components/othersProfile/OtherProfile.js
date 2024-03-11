@@ -29,16 +29,23 @@ const OtherProfile = ({ route, navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState("posts");
   const scrollViewRef = useRef(null);
+  const [currentListing, setCurrentListing] = useState(null);
 
   useEffect(() => {
     if (!isFocused) {
       // Reset to 'posts' tab
       setSelectedTab("posts");
-
       // Scroll to the top
       scrollViewRef.current?.scrollTo({ y: 0, animated: false });
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    const listingParam = route.params?.listing;
+    if (listingParam) {
+      setCurrentListing(listingParam);
+    }
+  }, [route.params?.listing]);
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
 
@@ -95,14 +102,24 @@ const OtherProfile = ({ route, navigation }) => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            if (route.params?.fromListing) {
+              navigation.navigate("PostDetails", {
+                listing: route.params.listing,
+              });
+            } else if (route.params?.fromSavedPosts) {
+              navigation.navigate("SavedPosts");
+            } else {
+              navigation.goBack();
+            }
+          }}
           style={{ marginLeft: 20 }}
         >
           <Image source={backArrowIcon} style={{ width: 25, height: 25 }} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, route.params]);
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>

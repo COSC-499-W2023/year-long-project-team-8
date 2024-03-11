@@ -597,7 +597,6 @@ February 11 - 18 2024
 |    #247    |           |     ✓       |
 |    #248    |           |     ✓       |
 
-# Team_Member_Name Log
 
 ### Work Period
 <!-- 
@@ -650,6 +649,59 @@ February 18 - March 3, 2024
 |  266   |            |      ✓      |
 |  269   |            |      ✓      |
 |  270   |            |      ✓      |
+
+# Team_Member_Name Log
+
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+March 3 - March 10, 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_t2_w9.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- find a way to ensure that the user can re-enable the location services if declined at first #281
+- put pins on the map #266
+- fixing any issues from peer testing
+- making sure everything was working properly for peer testing
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- make the location services more modular #270
+- put pins on the map #266
+- calculate distance from post to user #265
+- find a way to ensure that the user can renable the location services if declined at first #281
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done  |
+|:------:|:----------:|:-----------:|
+|  270   |      ✓      |             |
+|  266   |            |      ✓       |
+|  265   |     ✓       |             |
+|  281   |            |      ✓       |
+
+** there was a lot of bugs that needed to be fixed before peer testing this week and there is no note of this on github as they were often hotfixes
+
+
+
+
 
 
 
