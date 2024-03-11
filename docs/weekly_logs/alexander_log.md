@@ -428,6 +428,46 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 
 
 
+### Work Period
+ - March 04 - March 10, 2024
+
+### Task Types
+![Alt text](img/ar_w21.png)
+
+### Recap of Students Goals
+
+- Edit post details implementation
+- Add listing redo
+- Front end settings page
+- Front end Saved Posts
+- Hot fixes after peer eval
+
+
+
+### Student Tasks on Project Board
+
+- #1 delete/edit post
+- #2 Add listing redo
+- #3 Save posts implementation
+- #4 Settings implementation
+
+
+![ar_w21](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/6d006961-ef13-4ec2-b4b7-487b2f85e509)
+
+
+
+  
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1    |    ✓      |           |
+|   2    |    ✓      |           |
+|   3    |           |      ✓     |
+|   4    |           |      ✓     |
+
+
+
 
 
 
