@@ -1402,9 +1402,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - goals that are to be done
 -->
 
-- fix issues that arose from peer testing
-- find a way to ensure that the user can re-enable the location services if declined at first #281
-- put pins on the map #266
+- [x] fix issues that arose from peer testing
+- [x] find a way to ensure that the user can re-enable the location services if declined at first #281
+- [x] put pins on the map #266
 - [x] add tags for picked up
 - [x] add functionality for user to mark post as picked up or available
 - [x] add additional buttong for user to remove post (alongside availabilty)
@@ -1412,6 +1412,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] save location data on posts
 - [x] pull location from posts to populate pins on map
 - [x] link pins to post details
+- [x] separate settings page into more screens 
+- [x] implement saved posts front end
+- [x] finish add listing and edit listing
 
 ### Completed Tasks
 
@@ -1425,6 +1428,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] [#302](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/302)
 - [x] [#303](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/303)
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [x] [#272](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/272)
+- [x] [#271](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/271)
 
 ### In Progress Tasks
 
@@ -1443,6 +1448,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [ ] [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
 - [ ] [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
 - [ ] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [ ] [#304](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [ ] [#287](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/287)
 
 ### Burnup Chart
 
