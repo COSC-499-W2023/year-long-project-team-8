@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   ScrollView,
@@ -8,14 +8,18 @@ import {
   StyleSheet,
 } from "react-native";
 import InputField from "../loginSignup/InputField";
+import AuthContext from "../../context/AuthContext";
+import { updateUserData, getUserData } from "../helperFunctions/apiHelpers";
 import ButtonSignup from "../loginSignup/ButtonLanding";
 import CustomText from "../CustomText";
 
 const ChangeEmail = ({ navigation }) => {
   const [currentEmail, setCurrentEmail] = useState("");
+  const [existingEmail, setExistingEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { authTokens, userId } = useContext(AuthContext);
 
   const isEmailValid = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,14 +28,18 @@ const ChangeEmail = ({ navigation }) => {
 
   const handleChangeEmail = async () => {
     // Check if any field is empty
-    if (!currentEmail || !password || !newEmail) {
+    if (!currentEmail || !newEmail) {
       setErrorMessage("Please fill in all fields");
       return;
     }
-
     // Validate the current email format
     if (!isEmailValid(currentEmail)) {
       setErrorMessage("Invalid current email format");
+      return;
+    }
+    //valide entered email with backend
+    if(currentEmail !== existingEmail){
+      setErrorMessage("Current email is not valid");
       return;
     }
 
@@ -41,22 +49,42 @@ const ChangeEmail = ({ navigation }) => {
       return;
     }
 
-    //TODO: Backend Logic to change the email
-    console.log("Email changed successfully");
-    setErrorMessage("");
-    navigation.goBack();
+    try {
+      // Call updateUserData to update the email
+      const updatedData = await updateUserData(userId, authTokens, {
+        email: newEmail,
+      });
+  
+      console.log("Email changed successfully");
+      setErrorMessage("");
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMessage("Something went wrong while updating email");
+    }
   };
 
   // Reset all fields and errors when the user leaves the screen
   useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
       setCurrentEmail("");
-      setPassword("");
       setNewEmail("");
       setErrorMessage("");
     });
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    if (authTokens) {
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setExistingEmail(data?.email || "");
+        })
+        .catch((error) => {
+          console.log("Error fetching user data: ", error);
+        });
+    }
+  }, [userId, authTokens]);
 
   return (
     <ImageBackground
@@ -86,14 +114,6 @@ const ChangeEmail = ({ navigation }) => {
               value={currentEmail}
               onChangeText={setCurrentEmail}
               keyboardType="email-address"
-            />
-
-            <InputField
-              icon="lock"
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
             />
 
             <InputField

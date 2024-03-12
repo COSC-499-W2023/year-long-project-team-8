@@ -145,6 +145,30 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function for password reset
+async function changePassword(email, current_password, new_password, authTokens){
+  try {
+    const response = await fetch(`${baseEndpoint}/auth/change-password/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: JSON.stringify({ email, current_password, new_password }),
+    });
+
+    if (response.ok) {
+      console.log('Password changed successful api help');
+    } else if(response.status === 401) {
+      throw new Error("Current password is incorrect");
+    } else {
+      console.error('Error in change password API helper:', response);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Helper function to return products based on a keyword search query
 async function productSearch(query, authTokens) {
   try {
@@ -575,4 +599,5 @@ export {
   updateProduct,
   deleteProduct,
   getProductById,
+  changePassword,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   ScrollView,
@@ -11,17 +11,21 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import InputField from "../loginSignup/InputField";
 import PasswordStrengthBar from "../loginSignup/PasswordStrengthBar";
+import { changePassword, getUserData } from "../helperFunctions/apiHelpers";
 import ChecklistModal from "../loginSignup/ChecklistModal";
 import ButtonSignup from "../loginSignup/ButtonLanding";
 import CustomText from "../CustomText";
+import AuthContext from "../../context/AuthContext";
 
 const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [existingEmail, setExistingEmail] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
+  const { authTokens, userId } = useContext(AuthContext);
 
   // Password validation criteria
   const hasUpperCase = (password) => /[A-Z]/.test(password);
@@ -43,6 +47,18 @@ const ChangePassword = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    if (authTokens) {
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setExistingEmail(data?.email || "");
+        })
+        .catch((error) => {
+          console.log("Error fetching user data: ", error);
+        });
+    }
+  }, [userId, authTokens]);
+
   const handleChangePassword = async () => {
     // Check if any field is empty
     if (!currentPassword || !newPassword || !confirmNewPassword) {
@@ -63,10 +79,20 @@ const ChangePassword = ({ navigation }) => {
       return;
     }
 
-    //TODO: Backend Logic and error messages if current password is wrong
-    console.log("Password changed successfully");
-    setErrorMessage("");
-    navigation.goBack();
+    try {
+      // Call changePassword to change the password
+      await changePassword(existingEmail, currentPassword, newPassword, authTokens);
+      console.log("Password changed successfully");
+      setErrorMessage("");
+      navigation.goBack();
+    } catch (error) {
+      if (error.message === "Current password is incorrect") {
+        setErrorMessage("Current password is incorrect");
+      } else {
+        console.error("Error changing password:", error);
+        setErrorMessage("Something went wrong while changing the password");
+      }
+    }    
   };
 
   const isPasswordValid = (password) => {
