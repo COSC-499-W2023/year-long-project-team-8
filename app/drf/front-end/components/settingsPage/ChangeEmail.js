@@ -7,6 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import InputField from "../loginSignup/InputField";
 import AuthContext from "../../context/AuthContext";
 import { updateUserData, getUserData } from "../helperFunctions/apiHelpers";
@@ -21,30 +22,49 @@ const ChangeEmail = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const { authTokens, userId } = useContext(AuthContext);
 
+  const showToastSuccess = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: "#D5FDCE",
+      textColor: "black",
+      opacity: 1,
+    });
+  };
+
   const isEmailValid = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
 
   const handleChangeEmail = async () => {
+    // Trim and lowercase the emails
+    const trimmedCurrentEmail = currentEmail.trim().toLowerCase();
+    const trimmedNewEmail = newEmail.trim().toLowerCase();
+
     // Check if any field is empty
-    if (!currentEmail || !newEmail) {
+    if (!trimmedCurrentEmail || !trimmedNewEmail) {
       setErrorMessage("Please fill in all fields");
       return;
     }
+
     // Validate the current email format
-    if (!isEmailValid(currentEmail)) {
+    if (!isEmailValid(trimmedCurrentEmail)) {
       setErrorMessage("Invalid current email format");
       return;
     }
-    //valide entered email with backend
-    if(currentEmail !== existingEmail){
+
+    // Validate entered email with backend
+    if (trimmedCurrentEmail !== existingEmail) {
       setErrorMessage("Current email is not valid");
       return;
     }
 
     // Validate the new email format
-    if (!isEmailValid(newEmail)) {
+    if (!isEmailValid(trimmedNewEmail)) {
       setErrorMessage("Invalid new email format");
       return;
     }
@@ -52,11 +72,12 @@ const ChangeEmail = ({ navigation }) => {
     try {
       // Call updateUserData to update the email
       const updatedData = await updateUserData(userId, authTokens, {
-        email: newEmail,
+        email: trimmedNewEmail,
       });
-  
+
       console.log("Email changed successfully");
       setErrorMessage("");
+      showToastSuccess("Email changed successfully");
       navigation.goBack();
     } catch (error) {
       console.error("Error:", error);
