@@ -145,6 +145,31 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function for password reset
+async function handleResetPassword(token, password){
+  try {
+    const response = await fetch(`/api/auth/reset-password/<token>/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password, token }),
+    });
+
+    if (response.ok) {
+      // Password reset successful, handle accordingly
+      console.log('Password reset successful');
+      // Navigate to a success screen or perform other actions
+    } else {
+      // Handle error response
+      console.error('Error:', response);
+    }
+  } catch (error) {
+    // Handle network or other errors
+    console.error('Network error:', error);
+  }
+}
+
 // Helper function to return products based on a keyword search query
 async function productSearch(query, authTokens) {
   try {
@@ -575,4 +600,5 @@ export {
   updateProduct,
   deleteProduct,
   getProductById,
+  handleResetPassword,
 };

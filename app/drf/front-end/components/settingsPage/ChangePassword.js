@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   ScrollView,
@@ -11,17 +11,21 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import InputField from "../loginSignup/InputField";
 import PasswordStrengthBar from "../loginSignup/PasswordStrengthBar";
+import { handleResetPassword } from "../helperFunctions/apiHelpers";
 import ChecklistModal from "../loginSignup/ChecklistModal";
 import ButtonSignup from "../loginSignup/ButtonLanding";
 import CustomText from "../CustomText";
+import AuthContext from "../../context/AuthContext";
 
 const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
+  const { authTokens, userId } = useContext(AuthContext);
 
   // Password validation criteria
   const hasUpperCase = (password) => /[A-Z]/.test(password);
@@ -58,15 +62,24 @@ const ChangePassword = ({ navigation }) => {
     }
 
     // Check if the new password and confirm new password match
-    if (newPassword !== confirmNewPassword) {
+    if (newPassword === confirmNewPassword) {
+      setPassword(confirmNewPassword);
+    } else {
       setErrorMessage("New passwords do not match");
       return;
     }
 
-    //TODO: Backend Logic and error messages if current password is wrong
-    console.log("Password changed successfully");
-    setErrorMessage("");
-    navigation.goBack();
+    try {
+      // Call handleResetPassword to change the password
+      const token = authTokens ? authTokens.access : null;
+      await handleResetPassword(token, password);
+      console.log("Password changed successfully");
+      setErrorMessage("");
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error changing password:", error);
+      setErrorMessage("Something went wrong while changing the password");
+    }
   };
 
   const isPasswordValid = (password) => {
