@@ -75,13 +75,15 @@ const ChangeEmail = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    getUserData(userId, authTokens)
-      .then((data) => {
-        setExistingEmail(data?.email || "");
-      })
-      .catch((error) => {
-        console.log("Error fetching user data: ", error);
-      });
+    if (authTokens) {
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setExistingEmail(data?.email || "");
+        })
+        .catch((error) => {
+          console.log("Error fetching user data: ", error);
+        });
+    }
   }, [userId, authTokens]);
 
   return (

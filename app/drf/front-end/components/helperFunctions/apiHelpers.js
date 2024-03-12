@@ -159,12 +159,13 @@ async function changePassword(email, current_password, new_password, authTokens)
 
     if (response.ok) {
       console.log('Password changed successful api help');
-    } else{
-      
+    } else if(response.status === 401) {
+      throw new Error("Current password is incorrect");
+    } else {
       console.error('Error in change password API helper:', response);
     }
   } catch (error) {
-    console.error('Network error in change password API helper:', error);
+    throw error;
   }
 }
 

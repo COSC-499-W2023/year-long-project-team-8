@@ -48,13 +48,15 @@ const ChangePassword = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    getUserData(userId, authTokens)
-      .then((data) => {
-        setExistingEmail(data?.email || "");
-      })
-      .catch((error) => {
-        console.log("Error fetching user data: ", error);
-      });
+    if (authTokens) {
+      getUserData(userId, authTokens)
+        .then((data) => {
+          setExistingEmail(data?.email || "");
+        })
+        .catch((error) => {
+          console.log("Error fetching user data: ", error);
+        });
+    }
   }, [userId, authTokens]);
 
   const handleChangePassword = async () => {
@@ -78,15 +80,19 @@ const ChangePassword = ({ navigation }) => {
     }
 
     try {
-      // Call handleResetPassword to change the password
+      // Call changePassword to change the password
       await changePassword(existingEmail, currentPassword, newPassword, authTokens);
       console.log("Password changed successfully");
       setErrorMessage("");
       navigation.goBack();
     } catch (error) {
-      console.error("Error changing password:", error);
-      setErrorMessage("Something went wrong while changing the password");
-    }
+      if (error.message === "Current password is incorrect") {
+        setErrorMessage("Current password is incorrect");
+      } else {
+        console.error("Error changing password:", error);
+        setErrorMessage("Something went wrong while changing the password");
+      }
+    }    
   };
 
   const isPasswordValid = (password) => {
