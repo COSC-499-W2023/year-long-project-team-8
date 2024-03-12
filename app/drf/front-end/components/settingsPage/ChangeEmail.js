@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   ScrollView,
@@ -8,6 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import InputField from "../loginSignup/InputField";
+import AuthContext from "../../context/AuthContext";
+import { updateUserData } from "../helperFunctions/apiHelpers";
 import ButtonSignup from "../loginSignup/ButtonLanding";
 import CustomText from "../CustomText";
 
@@ -16,6 +18,7 @@ const ChangeEmail = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { authTokens, userId } = useContext(AuthContext);
 
   const isEmailValid = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,10 +44,19 @@ const ChangeEmail = ({ navigation }) => {
       return;
     }
 
-    //TODO: Backend Logic to change the email
-    console.log("Email changed successfully");
-    setErrorMessage("");
-    navigation.goBack();
+    try {
+      // Call updateUserData to update the email
+      const updatedData = await updateUserData(userId, authTokens, {
+        email: newEmail,
+      });
+  
+      console.log("Email changed successfully");
+      setErrorMessage("");
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMessage("Something went wrong while updating email");
+    }
   };
 
   // Reset all fields and errors when the user leaves the screen
@@ -86,14 +98,6 @@ const ChangeEmail = ({ navigation }) => {
               value={currentEmail}
               onChangeText={setCurrentEmail}
               keyboardType="email-address"
-            />
-
-            <InputField
-              icon="lock"
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
             />
 
             <InputField
