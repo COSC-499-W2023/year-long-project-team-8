@@ -11,7 +11,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import InputField from "../loginSignup/InputField";
 import PasswordStrengthBar from "../loginSignup/PasswordStrengthBar";
-import { handleResetPassword } from "../helperFunctions/apiHelpers";
+import { changePassword, getUserData } from "../helperFunctions/apiHelpers";
 import ChecklistModal from "../loginSignup/ChecklistModal";
 import ButtonSignup from "../loginSignup/ButtonLanding";
 import CustomText from "../CustomText";
@@ -20,8 +20,8 @@ import AuthContext from "../../context/AuthContext";
 const ChangePassword = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [existingEmail, setExistingEmail] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
@@ -47,6 +47,16 @@ const ChangePassword = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    getUserData(userId, authTokens)
+      .then((data) => {
+        setExistingEmail(data?.email || "");
+      })
+      .catch((error) => {
+        console.log("Error fetching user data: ", error);
+      });
+  }, [userId, authTokens]);
+
   const handleChangePassword = async () => {
     // Check if any field is empty
     if (!currentPassword || !newPassword || !confirmNewPassword) {
@@ -62,17 +72,14 @@ const ChangePassword = ({ navigation }) => {
     }
 
     // Check if the new password and confirm new password match
-    if (newPassword === confirmNewPassword) {
-      setPassword(confirmNewPassword);
-    } else {
+    if (newPassword !== confirmNewPassword) {
       setErrorMessage("New passwords do not match");
       return;
     }
 
     try {
       // Call handleResetPassword to change the password
-      const token = authTokens ? authTokens.access : null;
-      await handleResetPassword(token, password);
+      await changePassword(existingEmail, currentPassword, newPassword, authTokens);
       console.log("Password changed successfully");
       setErrorMessage("");
       navigation.goBack();

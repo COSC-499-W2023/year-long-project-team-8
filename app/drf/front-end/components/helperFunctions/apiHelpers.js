@@ -146,27 +146,25 @@ async function updateUserData(userId, authTokens, updatedData) {
 }
 
 // Helper function for password reset
-async function handleResetPassword(token, password){
+async function changePassword(email, current_password, new_password, authTokens){
   try {
-    const response = await fetch(`/api/auth/reset-password/<token>/`, {
+    const response = await fetch(`${baseEndpoint}/auth/change-password/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: "Bearer " + String(authTokens.access),
       },
-      body: JSON.stringify({ password, token }),
+      body: JSON.stringify({ email, current_password, new_password }),
     });
 
     if (response.ok) {
-      // Password reset successful, handle accordingly
-      console.log('Password reset successful');
-      // Navigate to a success screen or perform other actions
-    } else {
-      // Handle error response
-      console.error('Error:', response);
+      console.log('Password changed successful api help');
+    } else{
+      
+      console.error('Error in change password API helper:', response);
     }
   } catch (error) {
-    // Handle network or other errors
-    console.error('Network error:', error);
+    console.error('Network error in change password API helper:', error);
   }
 }
 
@@ -600,5 +598,5 @@ export {
   updateProduct,
   deleteProduct,
   getProductById,
-  handleResetPassword,
+  changePassword,
 };
