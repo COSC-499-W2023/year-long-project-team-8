@@ -1,76 +1,129 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, RefreshControl, KeyboardAvoidingView, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
-import { baseEndpoint } from '../../config/config';
-import AuthContext from '../../context/AuthContext';
-import styles from '../chat/styles';
-import { useRoute } from '@react-navigation/native';
-import { getChatMessages, sendChatMessage, getUserData, getProductById } from '../helperFunctions/apiHelpers';
+import React, { useState, useEffect, useContext, useRef } from "react";
+import {
+  View,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  RefreshControl,
+  KeyboardAvoidingView,
+  Animated,
+  ActivityIndicator,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../../context/AuthContext";
+import styles from "./styles";
+import CustomText from "../CustomText";
+import {
+  getChatMessages,
+  sendChatMessage,
+  getUserData,
+  getProductById,
+} from "../helperFunctions/apiHelpers";
+import ChatHeader from "./ChatHeader";
 
-const UserMessages = ({route}) => {
+const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [receiverDetails, setReceiverDetails] = useState('');
+  const [newMessage, setNewMessage] = useState("");
+  const [receiverDetails, setReceiverDetails] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const [productDetails, setProductDetails] = useState('');
+  const [productDetails, setProductDetails] = useState("");
   const { authTokens, userId } = useContext(AuthContext);
-  const chatId = route.params?.chatId; 
+  const [inputHeight, setInputHeight] = useState(50);
+  const [isLoading, setIsLoading] = useState(false);
+  const flatListRef = useRef(null);
+
+  const chatId = route.params?.chatId;
   const receiver = route.params?.receiver;
   const product = route.params?.product;
   const sender = route.params?.sender;
-  const navigation = useNavigation(); // Use useNavigation hook to access navigation object
+  const navigation = useNavigation();
+  const buttonScale = useRef(new Animated.Value(1)).current;
+  const MIN_INPUT_HEIGHT = 18;
+  const MAX_INPUT_HEIGHT = MIN_INPUT_HEIGHT * 5; // Maximum height for 5 lines
+
+  const handlePressIn = () => {
+    Animated.spring(buttonScale, {
+      toValue: 0.9,
+      speed: 20,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(buttonScale, {
+      toValue: 1,
+      speed: 20,
+      useNativeDriver: true,
+    }).start();
+  };
 
   useEffect(() => {
     const fetchChatMessages = async () => {
       try {
+        setIsLoading(true);
         const chatData = await getChatMessages(authTokens, chatId);
         setMessages(chatData.messages);
         console.log("Message objects fetched from getChatMessages");
         console.log("Sender:", chatData.sender);
         console.log("Receiver:", chatData.receiver);
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.error("Error fetching messages:", error);
       }
     };
 
     const fetchReceiverDetails = async () => {
       try {
+        setIsLoading(true);
         const userDetailsId = sender !== userId ? sender : receiver;
         const userData = await getUserData(userDetailsId, authTokens);
         setReceiverDetails(userData);
       } catch (error) {
-        console.error('Error fetching receiver details:', error);
+        console.error("Error fetching receiver details:", error);
       }
     };
 
-    //Was having issues with this api call permissions
-    const fetchProductDetails = async () => {
+    const fetchProductDetailsEnriched = async () => {
       try {
+        setIsLoading(true);
         const productData = await getProductById(authTokens, product);
-        setProductDetails(productData);
+        if (productData) {
+          // Fetch additional data for the product here (e.g., owner details)
+          const ownerDetails = await getUserData(productData.owner, authTokens);
+          // Combine the product with its additional data
+          const enrichedProductDetails = { ...productData, ownerDetails };
+          setProductDetails(enrichedProductDetails);
+        }
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
+      setIsLoading(false);
     };
 
     fetchChatMessages();
     fetchReceiverDetails();
-    fetchProductDetails();
+    fetchProductDetailsEnriched();
   }, [authTokens, chatId, sender, receiver, product]);
 
   const isSender = (message) => message.sender === userId;
 
   const renderMessageBubble = ({ item }) => (
-    <View style={{ marginBottom: 8, alignSelf: isSender(item) ? 'flex-end' : 'flex-start' }}>
+    <View
+      style={{
+        marginBottom: 8,
+        alignSelf: isSender(item) ? "flex-end" : "flex-start",
+      }}
+    >
       <View
         style={{
           padding: 8,
-          backgroundColor: isSender(item) ? '#FFA500' : '#ddd',
+          backgroundColor: isSender(item) ? "#FFA500" : "#ddd",
           borderRadius: 8,
-        }}>
-        <Text style={{ color: isSender(item) ? 'white' : 'black' }}>
+        }}
+      >
+        <CustomText style={{ color: isSender(item) ? "white" : "black" }}>
           {item.message}
-        </Text>
+        </CustomText>
       </View>
     </View>
   );
@@ -78,23 +131,29 @@ const UserMessages = ({route}) => {
   const sendMessage = async () => {
     try {
       let messageToSend = newMessage.trim(); // Trim whitespace from the message
-      if (messageToSend === '') {
+      if (messageToSend === "") {
         // If the message is empty, set a default message
         messageToSend = "Hi! Can I get this plate?";
       }
       console.log("In rec details userId", userId);
       const userDetailsId = sender !== userId ? sender : receiver;
-      console.log("In send message id",userDetailsId );
-      const data = await sendChatMessage(userId, authTokens, messageToSend, userDetailsId , product);
+      console.log("In send message id", userDetailsId);
+      const data = await sendChatMessage(
+        userId,
+        authTokens,
+        messageToSend,
+        userDetailsId,
+        product
+      );
       setMessages([...messages, data]);
-      setNewMessage('');
+      setNewMessage("");
       await onRefresh();
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
-  
-  console.log("REc details", receiverDetails);
+
+  console.log("Rec details", receiverDetails);
   console.log("Receiver route params", receiver);
   console.log("Receiver.id", receiverDetails.id);
   console.log("Prod details chat", productDetails);
@@ -104,48 +163,97 @@ const UserMessages = ({route}) => {
       const chatData = await getChatMessages(authTokens, chatId);
       setMessages(chatData.messages);
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error("Error fetching messages:", error);
     } finally {
       setRefreshing(false); // Set refreshing state to false
     }
   };
 
+  useEffect(() => {
+    if (!isLoading && messages.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  }, [isLoading, messages]);
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style = {styles.backText}>Back </Text> 
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Talk to {receiverDetails.firstname ?? receiverDetails.email ?? receiver} about {productDetails.title ?? product}!</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="orange" />
         </View>
-        <FlatList
-          data={messages}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderMessageBubble}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 16 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
-          }
-        />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            value={newMessage}
-            onChangeText={(text) => setNewMessage(text)}
+      ) : (
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <ChatHeader
+            receiverDetails={receiverDetails}
+            productDetails={productDetails}
+            receiver={receiver}
+            product={product}
+            navigation={navigation}
+            isGiver={userId === productDetails.owner}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <Text style={styles.sendButtonText}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderMessageBubble}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingTop: 16,
+              paddingBottom: 16,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            style={{ flex: 1 }}
+            onContentSizeChange={() =>
+              flatListRef.current.scrollToEnd({ animated: true })
+            }
+          />
+          <View style={styles.separator} />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={[
+                styles.input,
+                { height: Math.max(MIN_INPUT_HEIGHT, inputHeight) },
+              ]}
+              placeholder="Type your message..."
+              value={newMessage}
+              onChangeText={(text) => setNewMessage(text)}
+              multiline={true}
+              onContentSizeChange={(event) => {
+                const inputContentHeight = event.nativeEvent.contentSize.height;
+                setInputHeight(
+                  Math.min(
+                    Math.max(inputContentHeight, MIN_INPUT_HEIGHT),
+                    MAX_INPUT_HEIGHT
+                  )
+                );
+              }}
+              maxHeight={MAX_INPUT_HEIGHT}
+              maxLength={2000}
+            />
+
+            <View style={styles.sendButtonContainer}>
+              <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
+                <TouchableOpacity
+                  style={styles.sendButton}
+                  onPress={sendMessage}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  activeOpacity={1}
+                >
+                  <CustomText style={styles.sendButtonText}>Send</CustomText>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
-
 
 export default UserMessages;
