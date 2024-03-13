@@ -191,7 +191,7 @@ const ChatList = () => {
                   </CustomText>
                   <CustomText style={styles.chatListName}>
                     {userDetails.firstname ??
-                      userDetails.email.split("@")[0] ??
+                      (userDetails.email && userDetails.email.split("@")[0]) ??
                       "Unknown User"}
                   </CustomText>
                   <CustomText style={styles.chatListTimestamp}>
