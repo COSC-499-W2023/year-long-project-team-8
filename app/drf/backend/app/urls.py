@@ -19,7 +19,7 @@ from rest_framework import routers
  
 
 from api.views import ForgotPasswordView, ResetPasswordView, ChangePasswordView
-from users.views import UserViewSet, ReviewViewSet
+from users.views import UserViewSet, ReviewViewSet, SavedPostsViewSet
 from chat.views import get_chat_list,get_chat_messages
 from chat.views import ChatList
 from products.views import ProductViewSet, ImageViewSet
@@ -43,5 +43,6 @@ urlpatterns = [
     path('api/chat/', ChatList.as_view(), name='chat_list'),
     path('api/chat/list/', get_chat_list, name='get_chat_list'),
     path('api/chat/<int:chatId>/', get_chat_messages, name='get_chat_messages'),
+    path('api/users/save_posts/', SavedPostsViewSet.as_view({'post' : 'toggle_save'}), name='save_posts')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

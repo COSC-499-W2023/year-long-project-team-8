@@ -31,3 +31,28 @@ class ReviewViewSet(ModelViewSet):
     queryset = Review.objects.all()
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+
+class SavedPostsViewSet(ModelViewSet):
+    queryset = User.objects.all() 
+    serializer_class = UserSerializer  
+
+    def toggle_save(self, request, *args, **kwargs):
+        user = self.get_object() 
+        product_id = request.data.get('product_id')
+        
+        try:
+            if product_id in user.saved_posts.values_list('id', flat=True):
+                # Unsave post if not in list
+                user.saved_posts.remove(product_id)
+                message = f"Product {product_id} has been unsaved."
+            else:
+                # Save posts if not in list
+                user.saved_posts.add(product_id)
+                message = f"Product {product_id} has been saved."
+
+            return Response({"message": message}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+        
