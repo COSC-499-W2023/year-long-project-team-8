@@ -1,6 +1,51 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  chatListItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f0f0f0",
+  },
+  chatListImageContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+    marginRight: 10,
+  },
+  chatListImage: {
+    width: "100%",
+    height: "100%",
+  },
+  chatListPlaceholder: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#41ade8",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chatListInitial: {
+    color: "white",
+    fontSize: 18,
+  },
+  chatListTextContainer: {
+    flex: 1,
+  },
+  chatListListingTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  chatListName: {
+    fontSize: 14,
+    color: "#666",
+  },
+  chatListTimestamp: {
+    fontSize: 12,
+    color: "#999",
+  },
   header: {
     backgroundColor: "#FFA500",
     paddingVertical: 16,

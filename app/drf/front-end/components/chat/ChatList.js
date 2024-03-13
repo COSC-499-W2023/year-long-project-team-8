@@ -7,9 +7,13 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import { getChatList, getUserData } from "../helperFunctions/apiHelpers";
+import {
+  getChatList,
+  getUserData,
+  getProductById,
+} from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
-import styles from "../profilePage/profilePageStyles";
+import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import CustomText from "../CustomText";
@@ -18,7 +22,8 @@ const ChatList = () => {
   const [chatList, setChatList] = useState([]);
   const { authTokens, userId } = useContext(AuthContext);
   const [userDetailsMap, setUserDetailsMap] = useState({});
-  const [refreshing, setRefreshing] = useState(false); // State for refreshing
+  const [productDetailsMap, setProductDetailsMap] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
@@ -28,12 +33,9 @@ const ChatList = () => {
         setLoading(true);
         if (authTokens) {
           let chats = await getChatList(authTokens);
-          // Sort chats by timestamp (newest to oldest)
           chats.sort((a, b) => b.timestamp - a.timestamp);
-          console.log("Fetched and sorted chat list:", chats);
           setChatList(chats);
         } else {
-          // Clearing chatlist when user logs out
           setChatList([]);
         }
       } catch (error) {
@@ -75,9 +77,33 @@ const ChatList = () => {
     });
   }, [chatList, userId, authTokens, userDetailsMap]);
 
+  useEffect(() => {
+    const fetchProductDetails = async (id) => {
+      try {
+        const data = await getProductById(authTokens, id);
+        return data;
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        return null;
+      }
+    };
+
+    const updateProductDetailsMap = async (id) => {
+      if (!productDetailsMap[id]) {
+        const productDetailsData = await fetchProductDetails(id);
+        setProductDetailsMap((prevMap) => ({
+          ...prevMap,
+          [id]: productDetailsData,
+        }));
+      }
+    };
+
+    chatList.forEach((chat) => {
+      updateProductDetailsMap(chat.product);
+    });
+  }, [chatList, authTokens, productDetailsMap]);
+
   const navigateToChat = (chat) => {
-    console.log("trying to navigate to chat with id", chat.id);
-    console.log("Chat.product", chat);
     navigation.navigate("UserMessages", {
       chatId: chat.id,
       sender: chat.sender,
@@ -102,20 +128,26 @@ const ChatList = () => {
   };
 
   const onRefresh = async () => {
-    setRefreshing(true); // Set refreshing to true while fetching new data
+    setRefreshing(true);
     try {
-      // Fetch new data
       const chats = await getChatList(authTokens);
       setChatList(chats);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     } finally {
-      setRefreshing(false); // Set refreshing to false after fetching new data
+      setRefreshing(false);
     }
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", padding: 16 }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        padding: 16,
+        backgroundColor: "white",
+      }}
+    >
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -126,50 +158,51 @@ const ChatList = () => {
             const otherUserId =
               item.sender !== userId ? item.sender : item.receiver;
             const userDetails = userDetailsMap[otherUserId] || {};
+            const userInitial = userDetails.firstname
+              ? userDetails.firstname.charAt(0).toUpperCase()
+              : userDetails.email
+                ? userDetails.email.charAt(0).toUpperCase()
+                : "?";
+            const listingTitle =
+              productDetailsMap[item.product]?.title || "Unknown Listing";
+
             return (
-              <TouchableOpacity onPress={() => navigateToChat(item)}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: 16,
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 20,
-                      overflow: "hidden",
-                    }}
-                  >
+              <TouchableOpacity
+                onPress={() => navigateToChat(item)}
+                style={styles.chatListItem}
+              >
+                <View style={styles.chatListImageContainer}>
+                  {userDetails.profile_picture ? (
                     <Image
-                      source={require("../../assets/icons/profile.png")}
-                      style={{ width: "100%", height: "100%" }}
+                      source={{ uri: userDetails.profile_picture }}
+                      style={styles.chatListImage}
                     />
-                  </View>
-                  <View style={{ marginLeft: 12 }}>
-                    <CustomText style={{ fontWeight: "bold", fontSize: 19 }}>
-                      {userDetails.firstname ??
-                        userDetails.email ??
-                        "Unknown User"}
-                    </CustomText>
-                    <CustomText
-                      style={{ fontSize: 14, marginLeft: 10, paddingLeft: 10 }}
-                    >
-                      {formatTime(item.timestamp)}
-                    </CustomText>
-                  </View>
+                  ) : (
+                    <View style={styles.chatListPlaceholder}>
+                      <CustomText style={styles.chatListInitial}>
+                        {userInitial}
+                      </CustomText>
+                    </View>
+                  )}
+                </View>
+                <View style={styles.chatListTextContainer}>
+                  <CustomText style={styles.chatListListingTitle}>
+                    {listingTitle}
+                  </CustomText>
+                  <CustomText style={styles.chatListName}>
+                    {userDetails.firstname ??
+                      userDetails.email.split("@")[0] ??
+                      "Unknown User"}
+                  </CustomText>
+                  <CustomText style={styles.chatListTimestamp}>
+                    {formatTime(item.timestamp)}
+                  </CustomText>
                 </View>
               </TouchableOpacity>
             );
           }}
           refreshControl={
-            // Add RefreshControl component
-            <RefreshControl
-              refreshing={refreshing} // Set refreshing state
-              onRefresh={onRefresh} // Function to handle refresh
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
       )}
