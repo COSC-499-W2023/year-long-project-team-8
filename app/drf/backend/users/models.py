@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import validate_email
 from django.core.validators import MinValueValidator, MaxValueValidator
+from products.models import Product
 
  
 class CustomUserManager(UserManager):
@@ -43,6 +44,7 @@ class User(AbstractUser):
    reset_code = models.CharField(max_length=6, blank=True, null=True)
    rating = models.FloatField(default=0.0)
    profile_picture = models.ImageField(upload_to="profile_pictures/",null=True, blank=True)
+   saved_posts = models.ManyToManyField(Product, related_name='saved_by_users')
    
    USERNAME_FIELD = "email"
    REQUIRED_FIELDS = []
