@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import Toast from "react-native-root-toast";
 import InputField from "../loginSignup/InputField";
 import PasswordStrengthBar from "../loginSignup/PasswordStrengthBar";
 import { changePassword, getUserData } from "../helperFunctions/apiHelpers";
@@ -59,31 +60,59 @@ const ChangePassword = ({ navigation }) => {
     }
   }, [userId, authTokens]);
 
+  const showToastSuccess = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: "#D5FDCE",
+      textColor: "black",
+      opacity: 1,
+    });
+  };
+
   const handleChangePassword = async () => {
+    // Trim the passwords
+    const trimmedCurrentPassword = currentPassword.trim();
+    const trimmedNewPassword = newPassword.trim();
+    const trimmedConfirmNewPassword = confirmNewPassword.trim();
+
     // Check if any field is empty
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
+    if (
+      !trimmedCurrentPassword ||
+      !trimmedNewPassword ||
+      !trimmedConfirmNewPassword
+    ) {
       setErrorMessage("Please fill in all fields");
       return;
     }
 
     // Validate the new password
-    if (!isPasswordValid(newPassword)) {
+    if (!isPasswordValid(trimmedNewPassword)) {
       setErrorMessage("Password doesn't meet the requirements");
       setChecklistModalVisible(true);
       return;
     }
 
     // Check if the new password and confirm new password match
-    if (newPassword !== confirmNewPassword) {
+    if (trimmedNewPassword !== trimmedConfirmNewPassword) {
       setErrorMessage("New passwords do not match");
       return;
     }
 
     try {
       // Call changePassword to change the password
-      await changePassword(existingEmail, currentPassword, newPassword, authTokens);
+      await changePassword(
+        existingEmail,
+        trimmedCurrentPassword,
+        trimmedNewPassword,
+        authTokens
+      );
       console.log("Password changed successfully");
       setErrorMessage("");
+      showToastSuccess("Password changed successfully");
       navigation.goBack();
     } catch (error) {
       if (error.message === "Current password is incorrect") {
@@ -92,7 +121,7 @@ const ChangePassword = ({ navigation }) => {
         console.error("Error changing password:", error);
         setErrorMessage("Something went wrong while changing the password");
       }
-    }    
+    }
   };
 
   const isPasswordValid = (password) => {
@@ -132,7 +161,7 @@ const ChangePassword = ({ navigation }) => {
               placeholder="Current Password"
               value={currentPassword}
               onChangeText={setCurrentPassword}
-              secureTextEntry={!showPassword}
+              secureTextEntry={true}
             />
 
             <InputField
