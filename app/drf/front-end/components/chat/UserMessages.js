@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Animated,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
@@ -40,7 +41,7 @@ const UserMessages = ({ route }) => {
   const navigation = useNavigation();
   const buttonScale = useRef(new Animated.Value(1)).current;
   const MIN_INPUT_HEIGHT = 18;
-  const MAX_INPUT_HEIGHT = MIN_INPUT_HEIGHT * 5; // Maximum height for 5 lines
+  const MAX_INPUT_HEIGHT = MIN_INPUT_HEIGHT * 5;
 
   const handlePressIn = () => {
     Animated.spring(buttonScale, {
@@ -106,19 +107,54 @@ const UserMessages = ({ route }) => {
   }, [authTokens, chatId, sender, receiver, product]);
 
   const isSender = (message) => message.sender === userId;
-
+  const receiverInitial = receiverDetails.firstname
+    ? receiverDetails.firstname.charAt(0).toUpperCase()
+    : receiverDetails.email
+      ? receiverDetails.email.charAt(0).toUpperCase()
+      : "?";
+  console.log("reciever details", receiverDetails);
   const renderMessageBubble = ({ item }) => (
     <View
       style={{
+        flexDirection: "row",
         marginBottom: 8,
-        alignSelf: isSender(item) ? "flex-end" : "flex-start",
+        justifyContent: isSender(item) ? "flex-end" : "flex-start",
       }}
     >
+      {!isSender(item) && (
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: "#41ade8",
+            marginRight: 8,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {receiverDetails.profile_picture ? (
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+              }}
+              source={{ uri: receiverDetails.profile_picture }}
+            />
+          ) : (
+            <CustomText style={{ color: "white", fontSize: 18 }}>
+              {receiverInitial}
+            </CustomText>
+          )}
+        </View>
+      )}
       <View
         style={{
           padding: 8,
           backgroundColor: isSender(item) ? "#FFA500" : "#ddd",
           borderRadius: 8,
+          maxWidth: "80%",
         }}
       >
         <CustomText style={{ color: isSender(item) ? "white" : "black" }}>
