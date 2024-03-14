@@ -78,6 +78,7 @@ const SavedPosts = ({ navigation }) => {
   const handleUnsave = async () => {
     try {
       const data = await toggleSavePost(authTokens, userId, product);
+      onRefresh();
     } catch (error) {
       console.error("Error toggling saved in product screen")
     }

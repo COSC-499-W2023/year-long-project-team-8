@@ -116,9 +116,10 @@ const ChatComponent = ({
 
   const handleSavePress = async () => {
     console.log(`Save button pressed`);
-    setIsSaved(!isSaved); // Toggle the saved state
+    
     try {
       const data = await toggleSavePost(authTokens, userId, product_id);
+      setIsSaved(data.saved_posts.includes(product_id));
     } catch (error) {
       console.error("Error toggling saved in product screen")
     }
