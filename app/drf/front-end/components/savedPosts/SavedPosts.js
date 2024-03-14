@@ -12,6 +12,7 @@ import {
   getUserData,
   getProductList,
   sendChatMessage,
+  toggleSavePost
 } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 
@@ -74,8 +75,12 @@ const SavedPosts = ({ navigation }) => {
     fetchAllListings();
   }, []);
 
-  const handleUnsave = () => {
-    console.log("Unsave post");
+  const handleUnsave = async () => {
+    try {
+      const data = await toggleSavePost(authTokens, userId, product);
+    } catch (error) {
+      console.error("Error toggling saved in product screen")
+    }
     setModalVisible(false);
   };
 
