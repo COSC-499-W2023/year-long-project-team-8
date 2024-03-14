@@ -205,7 +205,34 @@ class UserViewSetTestCase(TestCase):
         #Verify the user has been deleted
        user_exists = User.objects.filter(id=self.user.id).exists()
        self.assertFalse(user_exists)
+       
+class SavePostViewTest(TestCase):
+    def setUp(self):
+        future_date = timezone.now() + timezone.timedelta(days=30)
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="testpassword"
+        )
+        self.product = Product.objects.create(
+            title='Spaghetti',
+            content='Goated italian food',
+            owner=self.user,
+            best_before=future_date,
+            id = 1
+        )
+        self.client = APIClient()
+    def get_auth_header(self, user):
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        return access_token
 
+    def test_toggle_save_view(self):
+        access_token = self.get_auth_header(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        data = {"userId" : self.user.id, "product_id" : self.product.id}
+        response = self.client.patch('/api/save_posts/', data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
 class ForgotPasswordViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
