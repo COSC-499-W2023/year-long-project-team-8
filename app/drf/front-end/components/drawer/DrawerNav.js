@@ -9,6 +9,7 @@ import PostDetails from "../posts/PostDetails";
 import OtherProfile from "../othersProfile/OtherProfile";
 import EditPost from "../editPost/EditPost";
 import EditProfilePage from "../editProfile/editProfileMain";
+import UserLocation from "../locationServices/userLocation";
 
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
@@ -107,6 +108,25 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
+        <Drawer.Screen
+        name="UserLocation"
+        component={UserLocation}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
       <Drawer.Screen
         name="Settings"
         component={SettingsPage}
