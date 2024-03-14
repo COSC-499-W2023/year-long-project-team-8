@@ -51,10 +51,12 @@ ALLOWED_HOSTS = [local_ip,
                  '127.0.0.1',
                  'localhost',
                  '142.231.67.157',
-                 '0.0.0.0',]
+                 '0.0.0.0',
+                 'http://passtheplate.pythonanywhere.com']
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
+    'http://passtheplate.pythonanywhere.com',
 ]
 
 
@@ -100,7 +102,7 @@ MIDDLEWARE = [
 # origins to allow cors to operate
 ROOT_URLCONF = 'app.urls'
 CORS_URLS_REGEX = r"^/api/.*"
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = ["http://passtheplate.pythonanywhere.com",]
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS += [
@@ -108,6 +110,7 @@ if DEBUG:
         "https://localhost:8111",
         "http://localhost:19006",
         "http://142.231.67.157:8081",
+        "http://passtheplate.pythonanywhere.com"
         #"http://ip:8000"
     ]
 

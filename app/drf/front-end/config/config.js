@@ -7,7 +7,7 @@
 
 
 
-export const baseEndpoint = "http://142.231.167.114:8000/api";
+export const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
 //export const baseEndpoint = "http://142.231.167.114:8000/api";
 
 
