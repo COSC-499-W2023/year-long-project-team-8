@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import CustomText from "../CustomText";
 import ChatButton from "./ChatButton";
-import { sendChatMessage, getChatList } from "../helperFunctions/apiHelpers";
+import { sendChatMessage, getChatList, toggleSavePost } from "../helperFunctions/apiHelpers";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
@@ -114,10 +114,15 @@ const ChatComponent = ({
     }
   };
 
-  const handleSavePress = () => {
+  const handleSavePress = async () => {
     console.log(`Save button pressed`);
     setIsSaved(!isSaved); // Toggle the saved state
     // TODO: Implement the save listing functionality
+    try {
+      await toggleSavePost(authTokens, userId, product_id);
+    } catch (error) {
+      console.error("Error toggling saved in product screen")
+    }
   };
 
   const handleChatPress = async () => {
