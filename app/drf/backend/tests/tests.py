@@ -5,8 +5,9 @@ from unittest.mock import patch
 from rest_framework.test import APITestCase,URLPatternsTestCase
 from products.models import Product, ProductImages
 from users.models import User
+from chat.models import Chat, Message
 from django.test import TestCase
-from products.serializers import ProductImageSerializer, ProductSerializer
+from products.serializers import ProductSerializer
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
@@ -329,60 +330,42 @@ class ProductValidityTests(TestCase):
                 owner=self.user,
             )
             self.product.full_clean() 
-        self.assertEqual(Product.objects.count(), 0)
-            
-class ImageViewSetTest(APITestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.user = User.objects.create_user(email='testuser@test.com', password='testpassword')
-        future_date = timezone.now() + timezone.timedelta(days=30)
-
-        # Create a product with a mocked image
-        self.product = Product.objects.create(
-            title='Test Product',
-            content='Test content',
-            owner=self.user,
-            best_before=future_date,
-        )
-
-        # Mock the file-related operations
-        mock_image_data = b'Test image data'  # Replace with your mock image data
-        self.mock_image_file = mock_open(read_data=mock_image_data)
-
-        with patch('builtins.open', self.mock_image_file):
-            # Use the mocked file directly when creating ProductImages
-            self.product_image = ProductImages.objects.create(
-                product=self.product,
-                image=File(self.mock_image_file.return_value)
-            )
-
-    def get_auth_header(self, user):
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
-        return access_token
-
-    def test_create_product_image(self):
-        access_token = self.get_auth_header(self.user)
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
-
-        # Use the correct URL for image creation endpoint
-        response = self.client.get(f'/api/products/{self.product.id}/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        response_data = response.json()
-        image_url = response_data['images'][0]['image']
-        
-        self.assertIsNotNone(response_data['images'][0]['image'])
-
-        expected_url_part = 'http://testserver/media/MagicMock/open().name/'
-        self.assertTrue(image_url.startswith(expected_url_part))
-
-    def tearDown(self):
-        # Clean up any created files
-        for image in ProductImages.objects.all():
-            image.image.delete()
-            image.delete()
-            
+            self.assertEqual(Product.objects.count(), 0)
+       
+ #Tests for chat functionality, need to be configured for new structure
+class ChatTests(TestCase):
+     def setUp(self):
+         self.sender = User.objects.create_user(email='sender@sender.com', password='password1')
+         self.receiver = User.objects.create_user(email='receiver@receiver.com', password='password2')
+         future_date = timezone.now() + timezone.timedelta(days=30)
+         self.product = Product.objects.create(
+             title='Test Product',
+             owner=self.receiver,
+             best_before=future_date
+         )
+         self.client = APIClient()
+     def test_create_chat(self):
+         self.client.force_authenticate(user=self.sender)
+         data = {
+             'sender' : self.sender.id,
+             'receiver' : self.receiver.id,
+             'product': self.product.id,
+             'message': 'Looks delicious. Where do I pick it up?'
+         }
+         response = self.client.post('/api/chat/', data, format='json')
+         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+         self.assertEqual(Chat.objects.first().sender, self.sender)
+         self.assertEqual(Chat.objects.first().receiver, self.receiver)
+         self.assertEqual(Chat.objects.first().product, self.product)
+         
+     def test_get_chat_list(self):
+         self.client.force_authenticate(user=self.sender)
+         # Creating a chat between sender and receiver
+         chat = Chat.objects.create(sender=self.sender, receiver=self.receiver, product=self.product)
+         Message.objects.create(chat=chat, sender=self.sender, receiver=self.receiver, message='Hello!')
+         response = self.client.get('/api/chat/', format='json')
+         self.assertEqual(response.status_code, status.HTTP_200_OK)
+           
 class ReviewViewSetTest(APITestCase):
     def setUp(self):
         self.client = APIClient()

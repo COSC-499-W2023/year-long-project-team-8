@@ -1,13 +1,12 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
-import CustomText from '../CustomText';
-import styles from './styles';
+import React from "react";
+import { View, TextInput } from "react-native";
+import CustomText from "../CustomText";
+import styles from "./styles";
 
 const DescriptionInput = ({ content, setContent, isValid, setIsValid }) => {
-
   const handleChangeText = (text) => {
     setContent(text);
-    setIsValid(true); 
+    setIsValid(true);
   };
 
   return (
@@ -19,7 +18,8 @@ const DescriptionInput = ({ content, setContent, isValid, setIsValid }) => {
         onChangeText={handleChangeText}
         placeholder="Description"
         multiline={true}
-        textAlignVertical='top'
+        textAlignVertical="top"
+        maxLength={500}
       />
     </View>
   );

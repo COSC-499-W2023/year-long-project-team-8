@@ -14,6 +14,7 @@ class ProductManager(models.Manager):
         expired_products = self.filter(best_before__lte=timezone.now())
         expired_products.update(valid=False)
         
+#The default auto field for Product is: products.Product.id
 class Product(models.Model):
     title = models.CharField(max_length=120)
     content = models.TextField(blank=True, null=True)

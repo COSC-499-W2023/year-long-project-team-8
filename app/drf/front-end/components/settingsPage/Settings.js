@@ -1,115 +1,62 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-// Get the width of the window for responsive styling
-const windowWidth = Dimensions.get('window').width;
+import Item from "./Item";
+import styles from "./styles";
+import CustomText from "../CustomText";
 
 const SettingsPage = () => {
   const navigation = useNavigation();
 
   const goToEditProfile = () => {
-    navigation.navigate("EditProfile");
+    navigation.navigate("EditProfile", { sourceScreen: "Settings" });
   };
 
-  const goToLocationServices = () => {
-    navigation.navigate("LocationServices");
-  }
+  const goToChangeEmail = () => {
+    navigation.navigate("ChangeEmail");
+  };
+
+  const goToChangePassword = () => {
+    navigation.navigate("ChangePassword");
+  };
 
   return (
-    // Wrap the entire component with SafeAreaView for handling safe areas
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        {/* Header Text */}
-        <Text style={styles.headerText}>Settings</Text>
-
-        {/* TouchableOpacity for pressing and navigating to Edit Profile */}
-        <TouchableOpacity onPress={goToEditProfile}>
-          {/* Manage Account Section */}
-          <View style={styles.manageAccountContainer}>
-            {/* Header for the Manage Account Section */}
-            <Text style={styles.manageAccountHeader}> Manage Account </Text>
-            {/* Subheader for the Manage Account Section */}
-            <Text style={styles.manageAccountSubHeader}> Update information and manage your account</Text>
-            {/* Right Arrow Image */}
-            <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
-          </View>
-          <View style={styles.lineStyle} />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={goToLocationServices}>
-          <View style={styles.locationServicesContainer}>
-            <Text style={styles.manageAccountHeader}> Location Services </Text>
-            <Text style={styles.manageAccountSubHeader}> Accept or refuse location services </Text>
-            <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
-          </View>
-          <View style={styles.lineStyle} />
-        </TouchableOpacity>
-
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("../../assets/wave.png")}
+        style={styles.imageBg}
+      >
+        <View style={styles.header}>
+          <CustomText style={styles.headerText} fontType={"title"}>
+            Settings
+          </CustomText>
+          <CustomText style={styles.subHeaderText} fontType={"subHeader"}>
+            Manage your account and personal information
+          </CustomText>
+        </View>
+        <View style={styles.containerItems}>
+          <Item
+            title={"Personal Details"}
+            description={"Update your profile information"}
+            onPress={goToEditProfile}
+            icon={"person"}
+          />
+          <Item
+            title={"Change Email"}
+            description={"Change your current email address"}
+            onPress={goToChangeEmail}
+            icon={"email"}
+          />
+          <Item
+            title={"Change Password"}
+            description={"Set a new password for your account"}
+            onPress={goToChangePassword}
+            icon="lock"
+          />
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 
-// Styles for the component
-const styles = StyleSheet.create({
-  // Flex 1 for SafeAreaView to take up the entire screen
-  safeArea: {
-    flex: 1,
-  },
-  // Flex 1 for the main container to take up the entire screen
-  container: {
-    flex: 1,
-  },
-  // Styles for the header text
-  headerText: {
-    marginTop: 20,
-    fontSize: 24,
-    fontWeight: "bold",
-    alignSelf: "center",
-  },
-  // Styles for the Manage Account section container
-  manageAccountContainer: {
-    alignItems: "flex-start",
-    marginLeft: 20,
-    marginTop: 50,
-  },
-  // Styles for the header in the Manage Account section
-  manageAccountHeader: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#000000",
-  },
-  // Styles for the subheader in the Manage Account section
-  manageAccountSubHeader: {
-    fontSize: 12,
-    marginTop: 5,
-    fontWeight: "400",
-    color: "#000000",
-  },
-  // Styles for the right arrow image in the Manage Account section
-  rightArrow: {
-    width: 15,
-    height: 15,
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    top: '50%',
-    left: windowWidth * 0.85,
-    transform: [{ translateY: -7.5 }],
-  },
-  // Styles for the line separating sections
-  lineStyle: {
-    borderWidth: 0.3,
-    borderColor: "#c1c1c1",
-    marginLeft: 23,
-    marginTop: 10,
-  },
-  locationServicesContainer: {
-    alignItems: "flex-start",
-    marginLeft: 20,
-    marginTop: 10,
-  }
-});
-
-// Export the component as the default export
 export default SettingsPage;

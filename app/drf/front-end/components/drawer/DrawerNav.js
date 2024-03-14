@@ -5,12 +5,14 @@ import Tabs from "../tabs/BottomTabs";
 import DrawerProps from "./DrawerProps";
 import SettingsPage from "../settingsPage/Settings";
 import Profile from "../profilePage/profilePage";
+import ChatList from "../chat/ChatList.js";
 import PostDetails from "../posts/PostDetails";
 import OtherProfile from "../othersProfile/OtherProfile";
 import EditPost from "../editPost/EditPost";
 import EditProfilePage from "../editProfile/editProfileMain";
-import UserLocation from "../locationServices/userLocation";
-
+import ChangeEmail from "../settingsPage/ChangeEmail";
+import ChangePassword from "../settingsPage/ChangePassword";
+import SavedPosts from "../savedPosts/SavedPosts";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -93,13 +95,24 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="EditProfile"
         component={EditProfilePage}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                const sourceScreen = route.params?.sourceScreen;
+                if (sourceScreen === "Profile") {
+                  navigation.navigate("Profile");
+                } else if (sourceScreen === "Settings") {
+                  navigation.navigate("Settings");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
@@ -108,16 +121,20 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-        <Drawer.Screen
-        name="UserLocation"
-        component={UserLocation}
-        options={({ navigation }) => ({
+      <Drawer.Screen
+        name="ChangeEmail"
+        component={ChangeEmail}
+        options={({ navigation, route }) => ({
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Settings");
+              }}
+            >
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
@@ -126,7 +143,28 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-
+      <Drawer.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={({ navigation, route }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Settings");
+              }}
+            >
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
       <Drawer.Screen
         name="Settings"
         component={SettingsPage}
@@ -149,17 +187,62 @@ const DrawerNav = ({ navigation }) => {
       <Drawer.Screen
         name="PostDetails"
         component={PostDetails}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           drawerItemStyle: { display: "none" },
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              onPress={() => {
+                const fromSavedPosts = route.params?.fromSavedPosts;
+                if (fromSavedPosts) {
+                  navigation.navigate("SavedPosts");
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
               <Image
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={ChatList}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="SavedPosts"
+        component={SavedPosts}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
               />
             </TouchableOpacity>
           ),
@@ -177,7 +260,6 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
-      {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="EditPost"
         component={EditPost}

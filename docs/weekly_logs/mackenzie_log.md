@@ -781,3 +781,51 @@ February 19, 2023 - March 03, 2023
 ### Gauged effort
 
 - This week's effort and implementation was on par with expectations. I was able to add a front end feature - expiry tags. Added automation for getting IP address and launching our severs with one command. I set up the CI pipeline to run our backend tests for all PRs into develop and master branches (and ci). I attempted to deploy the backend with pythonanywhere but quickly surpassed the free tier of compute credit - unsuccessful. Will look into this later.
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 04, 2024 - March 10, 2024
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk_t2_w8.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] add tags for picked up
+- [x] add functionality for user to mark post as picked up or available
+- [x] add additional buttong for user to remove post (alongside availabilty)
+- [x] integrate Google AutoComplete search bar into add listing
+- [x] save location data on posts
+- [x] pull location from posts to populate pins on map
+- [x] link pins to post details
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#302](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/302)
+- [x] [#303](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/303)
+- [ ] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [x] [#285](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/285)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [ ] [#256](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/256)
+- [ ] [#249](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/249)
+
+### Gauged effort
+
+- Lots of new features implemented this week along with fixing bugs and preparing for peer testing. Was hoping to get bonus marks for additional effort put in, thanks!

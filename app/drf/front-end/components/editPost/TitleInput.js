@@ -1,13 +1,12 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
-import CustomText from '../CustomText';
-import styles from './styles';
+import React from "react";
+import { View, TextInput } from "react-native";
+import CustomText from "../CustomText";
+import styles from "./styles";
 
-const TitleInput = ({ title, setTitle, isValid, setIsValid  }) => {
-
+const TitleInput = ({ title, setTitle, isValid, setIsValid }) => {
   const handleChangeText = (text) => {
     setTitle(text);
-    setIsValid(true); 
+    setIsValid(true);
   };
 
   return (
@@ -16,9 +15,10 @@ const TitleInput = ({ title, setTitle, isValid, setIsValid  }) => {
       <TextInput
         style={[styles.input, !isValid ? styles.invalidInput : {}]}
         value={title}
-        onChangeText={handleChangeText} 
+        onChangeText={handleChangeText}
         placeholder="Title"
         testID="title-input"
+        maxLength={50}
       />
     </View>
   );

@@ -1,13 +1,29 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fffbf0",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  coverImage: {
-    width: "100%",
-    height: 200,
+  innerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerContainer: {
+    padding: 30,
+  },
+  headerText: {
+    fontSize: 40,
+    color: "#1f1f1f",
+    alignSelf: "flex-start",
   },
   formContainer: {
     alignItems: "center",
@@ -36,8 +52,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     borderRadius: 75,
-    borderWidth: 12,
-    marginTop: -52,
+    borderWidth: 6,
     borderColor: "white",
     position: "relative",
   },
@@ -61,17 +76,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContentContainer: {
-    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
-  },
-  scrollView: {
-    backgroundColor: "white",
   },
   saveButtonContainer: {
     padding: 20,
     marginTop: 10,
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "center",
   },
 });
