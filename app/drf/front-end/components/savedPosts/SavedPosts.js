@@ -42,29 +42,33 @@ const SavedPosts = ({ navigation }) => {
   const fetchAllListings = async () => {
     setLoading(true);
     try {
+      // Fetch the list of saved posts for the user
+      const userData = await getUserData(userId, authTokens);
+      const savedPosts = userData.saved_posts || [];
+  
+      // Fetch products only for the saved posts
       const productList = await getProductList(authTokens);
-      const listingsWithAdditionalData = await Promise.all(
-        productList.results.map(async (listing) => {
-          try {
-            const ownerDetails = await getUserData(listing.owner, authTokens);
-            return { ...listing, ownerDetails };
-          } catch (error) {
-            console.error(
-              "Error fetching additional data for listing:",
-              listing.id,
-              error
-            );
-            return listing;
-          }
-        })
+      const savedListings = await Promise.all(
+        productList.results
+          .filter(listing => savedPosts.includes(listing.id))
+          .map(async (listing) => {
+            try {
+              const ownerDetails = await getUserData(listing.owner, authTokens);
+              return { ...listing, ownerDetails };
+            } catch (error) {
+              console.error("Error fetching additional data for listing:", listing.id, error);
+              return listing;
+            }
+          })
       );
-      setSavedListings(listingsWithAdditionalData);
+      setSavedListings(savedListings);
     } catch (error) {
-      console.error("Error fetching all listings:", error);
+      console.error("Error fetching saved listings:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchAllListings();

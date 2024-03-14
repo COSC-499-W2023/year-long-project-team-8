@@ -119,7 +119,8 @@ const ChatComponent = ({
     setIsSaved(!isSaved); // Toggle the saved state
     // TODO: Implement the save listing functionality
     try {
-      await toggleSavePost(authTokens, userId, product_id);
+      const data = await toggleSavePost(authTokens, userId, product_id);
+      console.log("savepost data", data);
     } catch (error) {
       console.error("Error toggling saved in product screen")
     }
