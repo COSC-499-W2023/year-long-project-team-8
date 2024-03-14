@@ -13,7 +13,7 @@ const SettingsPage = () => {
   };
 
   const goToLocationServices = () => {
-    navigation.navigate("LocationService");
+    navigation.navigate("LocationServices");
   }
 
   return (
@@ -37,13 +37,10 @@ const SettingsPage = () => {
           <View style={styles.lineStyle} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress{...goToLocationServices}>
+        <TouchableOpacity onPress={goToLocationServices}>
           <View style={styles.locationServicesContainer}>
-            {/* Header for the Manage Account Section */}
             <Text style={styles.manageAccountHeader}> Location Services </Text>
-            {/* Subheader for the Manage Account Section */}
             <Text style={styles.manageAccountSubHeader}> Accept or refuse location services </Text>
-            {/* Right Arrow Image */}
             <Image source={require("../../assets/right-arrow.png")} style={styles.rightArrow}/>
           </View>
           <View style={styles.lineStyle} />

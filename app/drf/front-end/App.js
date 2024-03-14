@@ -7,15 +7,15 @@ import Details from "./components/loginSignup/Details";
 import MainApp from "./components/drawer/DrawerNav";
 import PasswordReset from "./components/loginSignup/PasswordReset";
 import SettingsNav from "./components/settingsPage/Settings";
-import EditProfile from "./components/editProfile/editProfileMain";
 import ProfilePage from "./components/profilePage/profilePage";
 import mapView from "./components/map/mapMain";
 import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
-import LocationService from "./components/locationServices/userLocation";
+import LocationServices from "./components/locationServices/userLocation";
 import HomePage from "./components/homePage/HomePage.js";
 import { RootSiblingParent } from 'react-native-root-siblings';
+import locationIcon from './components/locationServices/locationIcon'
 
 import { SliderProvider } from './context/MapContext';
 
@@ -42,7 +42,7 @@ const App = () => {
                   <Stack.Screen name="MainApp" component={MainApp} />
                   <Stack.Screen name="PasswordReset" component={PasswordReset} />
                   <Stack.Screen name="Settings" component={SettingsNav} />
-                  <Stack.Screen name="EditProfile" component={EditProfile} />
+                  <Stack.Screen name="LocationServices" component={LocationServices}/>
                   <Stack.Screen name="mapView" component={mapView} />
                   <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }} />
                 </Stack.Navigator>
