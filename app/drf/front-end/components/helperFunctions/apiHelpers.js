@@ -293,14 +293,14 @@ async function createProductImages(productData, imageFiles, authTokens) {
 
 async function toggleSavePost(authTokens, userId, product_id){
   try{
-    const response = await fetch(`${baseEndpoint}/users/save_posts/`,
+    const response = await fetch(`${baseEndpoint}/save_posts/`,
     {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + String(authTokens.access),
+        Authorization: `Bearer ${authTokens?.access}`,
       }, body: JSON.stringify({
-        user : userId,
+        userId : userId,
         product_id : product_id,
       }),
     });
