@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 20,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 16,
     fontSize: 16,
     color: "#333333",
     elevation: 2,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     backgroundColor: "#41ade8",
-    paddingVertical: 10,
+    paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 8,
   },

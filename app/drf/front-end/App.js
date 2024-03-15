@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./components/landing/Landing";
 import Details from "./components/loginSignup/Details.js";
 import MainApp from "./components/drawer/DrawerNav.js";
-import PasswordReset from './components/loginSignup/PasswordReset';
+import PasswordReset from "./components/loginSignup/PasswordReset";
 import SettingsNav from "./components/settingsPage/Settings.js";
 import EditProfile from "./components/editProfile/editProfileMain.js";
 import ChatList from "./components/chat/ChatList.js";
@@ -15,9 +15,9 @@ import { AuthProvider } from "./context/AuthContext";
 import { AppStateProvider } from "./context/AppStateContext";
 import MainStack from "./components/mainStackNav/MainStack";
 import HomePage from "./components/homePage/HomePage.js";
-import { RootSiblingParent } from 'react-native-root-siblings';
+import { RootSiblingParent } from "react-native-root-siblings";
 
-import { SliderProvider } from './context/MapContext';
+import { SliderProvider } from "./context/MapContext";
 
 const Stack = createStackNavigator();
 
@@ -40,14 +40,20 @@ const App = () => {
                   <Stack.Screen name="Landing" component={Landing} />
                   <Stack.Screen name="Details" component={Details} />
                   <Stack.Screen name="MainApp" component={MainApp} />
-                  <Stack.Screen name="PasswordReset" component={PasswordReset} />
+                  <Stack.Screen
+                    name="PasswordReset"
+                    component={PasswordReset}
+                  />
                   <Stack.Screen name="Settings" component={SettingsNav} />
                   <Stack.Screen name="EditProfile" component={EditProfile} />
                   <Stack.Screen name="mapView" component={mapView} />
-                  <Stack.Screen name="MainStack" component={MainStack} options={{ headerShown: false }}/>
-                  <Stack.Screen name="UserMessages" component={UserMessages}/>
-                  <Stack.Screen name="ChatList" component={ChatList}/>
-
+                  <Stack.Screen
+                    name="MainStack"
+                    component={MainStack}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="UserMessages" component={UserMessages} />
+                  <Stack.Screen name="ChatList" component={ChatList} />
                 </Stack.Navigator>
               </NavigationContainer>
             </SliderProvider>

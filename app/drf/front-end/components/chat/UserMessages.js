@@ -22,6 +22,7 @@ import {
   getProductById,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
+import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 
 const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
@@ -40,8 +41,9 @@ const UserMessages = ({ route }) => {
   const sender = route.params?.sender;
   const navigation = useNavigation();
   const buttonScale = useRef(new Animated.Value(1)).current;
-  const MIN_INPUT_HEIGHT = 18;
-  const MAX_INPUT_HEIGHT = MIN_INPUT_HEIGHT * 5;
+  const LINE_HEIGHT = 20;
+  const MAX_LINES = 5;
+  const MAX_HEIGHT = LINE_HEIGHT * MAX_LINES;
 
   const handlePressIn = () => {
     Animated.spring(buttonScale, {
@@ -220,7 +222,11 @@ const UserMessages = ({ route }) => {
           <ActivityIndicator size="large" color="orange" />
         </View>
       ) : (
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300}
+        >
           <ChatHeader
             receiverDetails={receiverDetails}
             productDetails={productDetails}
@@ -229,7 +235,6 @@ const UserMessages = ({ route }) => {
             navigation={navigation}
             isGiver={userId === productDetails.owner}
           />
-
           <FlatList
             ref={flatListRef}
             data={messages}
@@ -250,41 +255,31 @@ const UserMessages = ({ route }) => {
           />
           <View style={styles.separator} />
           <View style={styles.inputContainer}>
-            <TextInput
-              style={[
-                styles.input,
-                { height: Math.max(MIN_INPUT_HEIGHT, inputHeight) },
-              ]}
+            <AutoGrowingTextInput
+              style={[styles.input, { maxHeight: MAX_HEIGHT }]}
               placeholder="Type your message..."
               value={newMessage}
               onChangeText={(text) => setNewMessage(text)}
               multiline={true}
-              onContentSizeChange={(event) => {
-                const inputContentHeight = event.nativeEvent.contentSize.height;
-                setInputHeight(
-                  Math.min(
-                    Math.max(inputContentHeight, MIN_INPUT_HEIGHT),
-                    MAX_INPUT_HEIGHT
-                  )
-                );
-              }}
-              maxHeight={MAX_INPUT_HEIGHT}
               maxLength={2000}
+              scrollEnabled={true}
             />
 
-            <View style={styles.sendButtonContainer}>
-              <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
-                <TouchableOpacity
-                  style={styles.sendButton}
-                  onPress={sendMessage}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  activeOpacity={1}
-                >
-                  <CustomText style={styles.sendButtonText}>Send</CustomText>
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
+            {newMessage.trim() !== "" && ( // Only render the send button if the input field has a value
+              <View style={styles.sendButtonContainer}>
+                <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
+                  <TouchableOpacity
+                    style={styles.sendButton}
+                    onPress={sendMessage}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                    activeOpacity={1}
+                  >
+                    <CustomText style={styles.sendButtonText}>Send</CustomText>
+                  </TouchableOpacity>
+                </Animated.View>
+              </View>
+            )}
           </View>
         </KeyboardAvoidingView>
       )}

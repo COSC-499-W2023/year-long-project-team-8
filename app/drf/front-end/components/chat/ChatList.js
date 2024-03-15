@@ -149,7 +149,7 @@ const ChatList = () => {
       }}
     >
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="orange" />
       ) : (
         <FlatList
           data={chatList}
@@ -163,8 +163,12 @@ const ChatList = () => {
               : userDetails.email
                 ? userDetails.email.charAt(0).toUpperCase()
                 : "?";
-            const listingTitle =
-              productDetailsMap[item.product]?.title || "Unknown Listing";
+            const listing = productDetailsMap[item.product];
+            const listingImage =
+              listing && listing.images && listing.images.length > 0
+                ? listing.images[0].image
+                : null;
+            const listingTitle = listing ? listing.title : "Unknown Listing";
 
             return (
               <TouchableOpacity
@@ -172,9 +176,9 @@ const ChatList = () => {
                 style={styles.chatListItem}
               >
                 <View style={styles.chatListImageContainer}>
-                  {userDetails.profile_picture ? (
+                  {listingImage ? (
                     <Image
-                      source={{ uri: userDetails.profile_picture }}
+                      source={{ uri: listingImage }}
                       style={styles.chatListImage}
                     />
                   ) : (
@@ -191,7 +195,8 @@ const ChatList = () => {
                   </CustomText>
                   <CustomText style={styles.chatListName}>
                     {userDetails.firstname ??
-                      (userDetails.email && userDetails.email.split("@")[0]) ??
+                      (userDetails?.email &&
+                        userDetails?.email.split("@")[0]) ??
                       "Unknown User"}
                   </CustomText>
                   <CustomText style={styles.chatListTimestamp}>

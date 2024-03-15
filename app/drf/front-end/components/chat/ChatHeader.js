@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
+  PanResponder,
   Animated,
-  TouchableHighlight,
 } from "react-native";
 import CustomText from "../CustomText";
-import { MaterialIcons } from "@expo/vector-icons";
-
+import CarouselComponent from "../posts/CarouselComponent";
 const ChatHeader = ({
   receiverDetails,
   productDetails,
-  receiver,
-  product,
   navigation,
   isGiver,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const animatedHeight = useRef(new Animated.Value(150)).current;
+  const contentOpacity = useRef(new Animated.Value(1)).current;
+  const carouselOpacity = useRef(new Animated.Value(0)).current;
+
+  const startY = useRef(0);
+
   const imageUrl =
     productDetails?.images?.length > 0 ? productDetails.images[0].image : null;
 
@@ -29,6 +33,7 @@ const ChatHeader = ({
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
   const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(false);
+  const images = productDetails?.images;
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -80,8 +85,109 @@ const ChatHeader = ({
     setIsDoneButtonPressed(!isDoneButtonPressed);
   };
 
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        // Get the position of the carousel
+        const carouselPosition = {
+          x: 0,
+          y: isExpanded ? 150 : 350, // Adjust these values based on your layout
+          width: styles.carouselContainer.minWidth,
+          height: styles.carouselContainer.minHeight,
+        };
+
+        // Check if the gesture starts within the carousel bounds
+        const isGestureInCarousel =
+          gestureState.x0 >= carouselPosition.x &&
+          gestureState.x0 <= carouselPosition.x + carouselPosition.width &&
+          gestureState.y0 >= carouselPosition.y &&
+          gestureState.y0 <= carouselPosition.y + carouselPosition.height;
+
+        // Only set the pan responder if the gesture is outside the carousel bounds
+        return !isGestureInCarousel;
+      },
+      onPanResponderGrant: (_, gestureState) => {
+        startY.current = gestureState.y0;
+      },
+      onPanResponderMove: (_, gestureState) => {
+        const distance = gestureState.moveY - startY.current;
+        if (distance > 0 && !isExpanded) {
+          // Dragging down to expand
+          animatedHeight.setValue(Math.max(150 + distance, 150));
+          contentOpacity.setValue(1 - distance / 150);
+          carouselOpacity.setValue(distance / 200); // Fade in carousel as the header expands
+        } else if (distance < 0 && (isExpanded || distance < -50)) {
+          // Dragging up to collapse
+          const newHeight = 350 + distance;
+          animatedHeight.setValue(Math.max(newHeight, 150));
+          contentOpacity.setValue(distance / 150 + 1);
+          carouselOpacity.setValue(-distance / 200); // Fade out carousel as the header collapses
+          if (distance < -50) {
+            setIsExpanded(false); // Update the isExpanded state when dragging up
+          }
+        }
+      },
+
+      onPanResponderRelease: (_, gestureState) => {
+        const distance = gestureState.moveY - startY.current;
+        if (distance > 50 && !isExpanded) {
+          // Expand if dragged down significantly
+          Animated.parallel([
+            Animated.spring(animatedHeight, {
+              toValue: 350, // Expanded height
+              useNativeDriver: false,
+            }),
+            Animated.timing(contentOpacity, {
+              toValue: 0, // Fade out content
+              duration: 300,
+              useNativeDriver: true,
+            }),
+            Animated.timing(carouselOpacity, {
+              toValue: 1, // Fade in carousel
+              duration: 300,
+              useNativeDriver: true,
+            }),
+          ]).start(() => setIsExpanded(true));
+        } else if (distance < -50 && isExpanded) {
+          // Collapse if dragged up significantly
+          Animated.parallel([
+            Animated.spring(animatedHeight, {
+              toValue: 150, // Collapsed height
+              useNativeDriver: false,
+            }),
+            Animated.timing(contentOpacity, {
+              toValue: 1, // Fade in content
+              duration: 300,
+              useNativeDriver: true,
+            }),
+            Animated.timing(carouselOpacity, {
+              toValue: 0, // Fade out carousel
+              duration: 300,
+              useNativeDriver: true,
+            }),
+          ]).start(() => setIsExpanded(false));
+        } else {
+          // Reset to original state if not dragged enough
+          Animated.spring(animatedHeight, {
+            toValue: isExpanded ? 350 : 150,
+            useNativeDriver: false,
+          }).start();
+          setIsExpanded(false); // Ensure the state is updated to collapsed
+          Animated.timing(contentOpacity, {
+            toValue: 1, // Fade in content
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        }
+      },
+    })
+  ).current;
+
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[styles.container, { height: animatedHeight }]}
+      {...panResponder.panHandlers}
+    >
       <View style={styles.header}>
         <View style={styles.backArrowContainer}>
           <TouchableOpacity
@@ -97,63 +203,73 @@ const ChatHeader = ({
           {displayName}
         </CustomText>
       </View>
-      <View style={styles.body}>
-        {imageUrl && (
-          <TouchableOpacity
-            onPressIn={pressInImageButton}
-            onPressOut={pressOutImageButton}
-            style={styles.imageContainer}
-            activeOpacity={1}
-            onPress={() =>
-              navigation.navigate("PostDetails", { listing: productDetails })
-            }
-          >
-            <Animated.Image
-              source={{ uri: imageUrl }}
-              style={[
-                styles.image,
-                { transform: [{ scale: scaleImageButton }] },
-              ]}
-            />
-          </TouchableOpacity>
-        )}
-        <View style={styles.detailsContainer}>
-          <CustomText style={styles.productTitle}>
-            {productDetails.title}
-          </CustomText>
-          <CustomText style={styles.productCategory}>
-            {productDetails.categories}
-          </CustomText>
-          <View style={styles.expireDateContainer}>
-            <CustomText style={styles.productExpireDate}>
-              Expires: {formatDate(productDetails.best_before)}
-            </CustomText>
+      {!isExpanded ? (
+        <Animated.View style={[styles.body, { opacity: contentOpacity }]}>
+          {imageUrl && (
             <TouchableOpacity
-              onPressIn={pressInDoneButton}
-              onPressOut={pressOutDoneButton}
-              onPress={isGiver ? handleOnGiven : handleOnReceived}
+              onPressIn={pressInImageButton}
+              onPressOut={pressOutImageButton}
+              style={styles.imageContainer}
               activeOpacity={1}
+              onPress={() =>
+                navigation.navigate("PostDetails", { listing: productDetails })
+              }
             >
-              <Animated.View
-                style={{ transform: [{ scale: scaleDoneButton }] }}
-              >
-                <View
-                  style={[
-                    styles.doneButton,
-                    isDoneButtonPressed && { backgroundColor: "#6fc276" },
-                  ]}
-                >
-                  <CustomText style={styles.doneButtonText}>
-                    {isGiver ? "Food Given" : "Food Received"}
-                  </CustomText>
-                </View>
-              </Animated.View>
+              <Animated.Image
+                source={{ uri: imageUrl }}
+                style={[
+                  styles.image,
+                  { transform: [{ scale: scaleImageButton }] },
+                ]}
+              />
             </TouchableOpacity>
+          )}
+          <View style={styles.detailsContainer}>
+            <CustomText style={styles.productTitle}>
+              {productDetails.title}
+            </CustomText>
+            <CustomText style={styles.productCategory}>
+              {productDetails.categories}
+            </CustomText>
+            <View style={styles.expireDateContainer}>
+              <CustomText style={styles.productExpireDate}>
+                Expires: {formatDate(productDetails.best_before)}
+              </CustomText>
+              <TouchableOpacity
+                onPressIn={pressInDoneButton}
+                onPressOut={pressOutDoneButton}
+                onPress={isGiver ? handleOnGiven : handleOnReceived}
+                activeOpacity={1}
+              >
+                <Animated.View
+                  style={{ transform: [{ scale: scaleDoneButton }] }}
+                >
+                  <View
+                    style={[
+                      styles.doneButton,
+                      isDoneButtonPressed && { backgroundColor: "#6fc276" },
+                    ]}
+                  >
+                    <CustomText style={styles.doneButtonText}>
+                      {isGiver ? "Food Given" : "Food Received"}
+                    </CustomText>
+                  </View>
+                </Animated.View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </View>
+        </Animated.View>
+      ) : (
+        <Animated.View
+          style={[styles.newContent, { opacity: carouselOpacity }]}
+        >
+          <View style={styles.carouselContainer}>
+            <CarouselComponent images={images} />
+          </View>
+        </Animated.View>
+      )}
       <View style={styles.draggable} />
-    </View>
+    </Animated.View>
   );
 };
 
@@ -250,9 +366,23 @@ const styles = StyleSheet.create({
   draggable: {
     width: 15,
     height: 3,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 10,
     borderRadius: 20,
     backgroundColor: "grey",
     borderColor: "grey",
+    position: "absolute",
+    bottom: 0,
+  },
+  newContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100,
+  },
+  carouselContainer: {
+    minHeight: 200,
+    minWidth: 380,
+    zIndex: 1000,
   },
 });
