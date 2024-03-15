@@ -4,6 +4,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   ImageBackground,
+  Platform,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./editProfileStyles";
@@ -92,7 +93,7 @@ const EditProfilePage = () => {
       <KeyboardAvoidingView
         style={{ flex: 1, justifyContent: "center" }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        paddin
+        padding
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}

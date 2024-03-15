@@ -15,7 +15,7 @@ const FloatingButton = ({ onButtonPress, scrollRef }) => {
       }}
     >
       {/* Arrow icon for the button */}
-      <Ionicons name="ios-arrow-up" size={24} color="white" />
+      <Ionicons name="arrow-up" size={24} color="white" />
     </TouchableOpacity>
   );
 };
