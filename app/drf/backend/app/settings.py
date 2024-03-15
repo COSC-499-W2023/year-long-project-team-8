@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import datetime 
+import datetime
 from datetime import timedelta
 from pathlib import Path
 import socket
@@ -30,9 +30,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = ['http://passtheplate.pythonanywhere.com']
+ALLOWED_HOSTS = ['https://passtheplate.pythonanywhere.com']
 
-CORS_ORIGIN_WHITELIST = ['http://passtheplate.pythonanywhere.com',]
+CORS_ORIGIN_WHITELIST = ['https://passtheplate.pythonanywhere.com',]
 
 
 # Application definition
@@ -73,10 +73,10 @@ MIDDLEWARE = [
 # origins to allow cors to operate
 ROOT_URLCONF = 'app.urls'
 CORS_URLS_REGEX = r"^/api/.*"
-CORS_ALLOWED_ORIGINS = ["http://passtheplate.pythonanywhere.com",]
+CORS_ALLOWED_ORIGINS = ["https://passtheplate.pythonanywhere.com",]
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS += ["http://passtheplate.pythonanywhere.com"]
+    CORS_ALLOWED_ORIGINS += ["https://passtheplate.pythonanywhere.com"]
 
 TEMPLATES = [
     {
@@ -155,12 +155,12 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-    "rest_framework.authentication.SessionAuthentication", 
+    "rest_framework.authentication.SessionAuthentication",
        "api.authentication.TokenAuthentication",
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly" 
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
@@ -204,7 +204,7 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
-    
+
      "TOKEN_OBTAIN_SERIALIZER": "api.views.MyTokenObtainPairSerializer",
 }
 
