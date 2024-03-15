@@ -5,7 +5,7 @@ Note: must import AuthContext into components where you wish to use these functi
 */
 import { Platform } from "react-native";
 import * as FileSystem from "expo-file-system";
-const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories

@@ -22,7 +22,7 @@ const Details = ({ navigation }) => {
 
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
-  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+  const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState(""); // Added last name

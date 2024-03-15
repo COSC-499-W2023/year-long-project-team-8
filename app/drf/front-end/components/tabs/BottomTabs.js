@@ -16,7 +16,7 @@ const av = new Animated.Value(0);
 av.addListener(() => {
   return;
 });
-const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 
 // Create a Material Top Tab Navigator
 const Tab = createMaterialTopTabNavigator();

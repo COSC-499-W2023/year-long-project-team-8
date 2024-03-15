@@ -33,7 +33,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+  const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 
   // State variable to manage preloader visibility
   const [loading, setLoading] = useState(false);

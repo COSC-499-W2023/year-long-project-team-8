@@ -26,7 +26,7 @@ const PasswordResetScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
-  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+  const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 
   // Password validation criteria
   const hasUpperCase = (password) => /[A-Z]/.test(password);

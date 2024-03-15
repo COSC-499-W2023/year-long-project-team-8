@@ -24,7 +24,7 @@ import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AuthContext from "../../context/AuthContext";
 
-const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 

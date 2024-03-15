@@ -11,7 +11,7 @@ if (!global.btoa) {
 if (!global.atob) {
   global.atob = decode;
 }
-const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 const AuthContext = createContext();
 
 // Define parameters for context to hold - also need to add to context data below to persist the data

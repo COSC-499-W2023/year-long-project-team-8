@@ -31,9 +31,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = ['http://passtheplate.pythonanywhere.com']
+ALLOWED_HOSTS = ['https://passtheplate.pythonanywhere.com']
 
-CORS_ORIGIN_WHITELIST = ['http://passtheplate.pythonanywhere.com',]
+CORS_ORIGIN_WHITELIST = ['https://passtheplate.pythonanywhere.com',]
 
 
 # Application definition
@@ -74,10 +74,10 @@ MIDDLEWARE = [
 # origins to allow cors to operate
 ROOT_URLCONF = 'app.urls'
 CORS_URLS_REGEX = r"^/api/.*"
-CORS_ALLOWED_ORIGINS = ["http://passtheplate.pythonanywhere.com",]
+CORS_ALLOWED_ORIGINS = ["https://passtheplate.pythonanywhere.com",]
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS += ["http://passtheplate.pythonanywhere.com"]
+    CORS_ALLOWED_ORIGINS += ["https://passtheplate.pythonanywhere.com"]
 
 TEMPLATES = [
     {
