@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import datetime 
+import datetime
 from datetime import timedelta
 from pathlib import Path
 import socket
@@ -47,11 +47,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = [local_ip,
-                 '127.0.0.1',
-                 'localhost',
-                 '142.231.67.157',
-                 '0.0.0.0',]
+ALLOWED_HOSTS = ['passtheplate.pythonanywhere.com' ]
 
 CORS_ORIGIN_WHITELIST = [
     f'http://{local_ip}:8081',
@@ -238,7 +234,7 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
-    
+
      "TOKEN_OBTAIN_SERIALIZER": "api.views.MyTokenObtainPairSerializer",
 }
 
