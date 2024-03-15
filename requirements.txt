@@ -4,6 +4,7 @@ djangorestframework
 djangorestframework-simplejwt
 pyyaml
 requests
+whitenoise>=5.3.0
 django-cors-headers
 django-filter
 Pillow
