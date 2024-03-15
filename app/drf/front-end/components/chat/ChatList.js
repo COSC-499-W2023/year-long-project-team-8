@@ -11,6 +11,7 @@ import {
   getChatList,
   getUserData,
   getProductById,
+  getChatMessages,
 } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
@@ -33,6 +34,14 @@ const ChatList = () => {
         setLoading(true);
         if (authTokens) {
           let chats = await getChatList(authTokens);
+          for (let chat of chats) {
+            const chatData = await getChatMessages(authTokens, chat.id);
+            const lastMessage = chatData.messages[chatData.messages.length - 1];
+            chat.lastMessage = lastMessage ? lastMessage.message : "";
+            chat.timestamp = lastMessage
+              ? lastMessage.timestamp
+              : chat.timestamp;
+          }
           chats.sort((a, b) => b.timestamp - a.timestamp);
           setChatList(chats);
         } else {
@@ -130,10 +139,17 @@ const ChatList = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     try {
-      const chats = await getChatList(authTokens);
+      let chats = await getChatList(authTokens);
+      for (let chat of chats) {
+        const chatData = await getChatMessages(authTokens, chat.id);
+        const lastMessage = chatData.messages[chatData.messages.length - 1];
+        chat.lastMessage = lastMessage ? lastMessage.message : "";
+        chat.timestamp = lastMessage ? lastMessage.timestamp : chat.timestamp;
+      }
+      chats.sort((a, b) => b.timestamp - a.timestamp);
       setChatList(chats);
     } catch (error) {
-      console.error("Error fetching chat list:", error);
+      console.error("Error refreshing chat list:", error);
     } finally {
       setRefreshing(false);
     }
@@ -193,15 +209,20 @@ const ChatList = () => {
                   <CustomText style={styles.chatListListingTitle}>
                     {listingTitle}
                   </CustomText>
-                  <CustomText style={styles.chatListName}>
-                    {userDetails.firstname ??
-                      (userDetails?.email &&
-                        userDetails?.email.split("@")[0]) ??
-                      "Unknown User"}
+                  <CustomText style={styles.chatListLastMessage}>
+                    {item.lastMessage}
                   </CustomText>
-                  <CustomText style={styles.chatListTimestamp}>
-                    {formatTime(item.timestamp)}
-                  </CustomText>
+                  <View style={styles.lastRow}>
+                    <CustomText style={styles.chatListName}>
+                      {userDetails.firstname ??
+                        (userDetails?.email &&
+                          userDetails?.email.split("@")[0]) ??
+                        "Unknown User"}
+                    </CustomText>
+                    <CustomText style={styles.chatListTimestamp}>
+                      {formatTime(item.timestamp)}
+                    </CustomText>
+                  </View>
                 </View>
               </TouchableOpacity>
             );

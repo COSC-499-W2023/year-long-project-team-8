@@ -125,6 +125,11 @@ const styles = StyleSheet.create({
     height: 24,
     tintColor: "white",
   },
+  lastRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 });
 
 export default styles;
