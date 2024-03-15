@@ -10,7 +10,6 @@ import {
   Platform,
 } from "react-native";
 import * as Font from "expo-font";
-import { baseEndpoint } from "../../config/config";
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -23,6 +22,7 @@ const Details = ({ navigation }) => {
 
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
+  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
 
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState(""); // Added last name

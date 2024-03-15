@@ -16,7 +16,6 @@ import InputField from "./InputField";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import ButtonSignup from "./ButtonLanding";
-import { baseEndpoint } from "../../config/config";
 import CustomText from "../CustomText";
 
 const PasswordResetScreen = ({ navigation }) => {
@@ -27,6 +26,7 @@ const PasswordResetScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecklistModalVisible, setChecklistModalVisible] = useState(false);
+  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
 
   // Password validation criteria
   const hasUpperCase = (password) => /[A-Z]/.test(password);

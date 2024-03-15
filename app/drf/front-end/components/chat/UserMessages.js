@@ -10,6 +10,7 @@ import {
   Animated,
   ActivityIndicator,
   Image,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
@@ -22,7 +23,6 @@ import {
   getProductById,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 
 const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
@@ -255,14 +255,13 @@ const UserMessages = ({ route }) => {
           />
           <View style={styles.separator} />
           <View style={styles.inputContainer}>
-            <AutoGrowingTextInput
-              style={[styles.input, { maxHeight: MAX_HEIGHT }]}
+            <TextInput
+              style={styles.input}
               placeholder="Type your message..."
               value={newMessage}
               onChangeText={(text) => setNewMessage(text)}
               multiline={true}
               maxLength={2000}
-              scrollEnabled={true}
             />
 
             {newMessage.trim() !== "" && ( // Only render the send button if the input field has a value

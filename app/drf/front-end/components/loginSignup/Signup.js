@@ -19,12 +19,12 @@ import styles from "./LoginStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import ButtonSignup from "./ButtonLanding";
 import InputField from "./InputField";
-import { baseEndpoint } from "../../config/config";
 import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AuthContext from "../../context/AuthContext";
 
+const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 

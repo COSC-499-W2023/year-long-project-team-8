@@ -1,12 +1,5 @@
 import React, { useRef } from "react";
-import {
-  ImageBackground,
-  Animated,
-  View,
-  Dimensions,
-  SafeAreaView,
-} from "react-native";
-
+import { ImageBackground, Animated, View, Dimensions } from "react-native";
 import Login from "../loginSignup/Login";
 import Signup from "../loginSignup/Signup.js";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"; // Importing the library

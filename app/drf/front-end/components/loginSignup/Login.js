@@ -23,7 +23,6 @@ import LoginStyles from "./LoginStyles";
 import ButtonLogin from "./ButtonLanding";
 import InputField from "./InputField";
 import { fetchListingById } from "../helperFunctions/apiHelpers";
-import { baseEndpoint } from "../../config/config";
 import AuthContext from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Preloader from "../../context/Preloader";
@@ -34,6 +33,7 @@ const Login = forwardRef(({ onSwitch, navigation }, ref) => {
   // Local state variables to manage email and password input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
 
   // State variable to manage preloader visibility
   const [loading, setLoading] = useState(false);

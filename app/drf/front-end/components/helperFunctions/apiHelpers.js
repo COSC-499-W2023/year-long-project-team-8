@@ -4,8 +4,9 @@ Note: must import AuthContext into components where you wish to use these functi
       AuthContext stores userId and token data.
 */
 import { Platform } from "react-native";
-import { baseEndpoint } from "../../config/config";
 import * as FileSystem from "expo-file-system";
+const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
+
 // Helper function to return products filtered on category
 // Should be able to pass a list of categories
 async function filterCategory(categories, authTokens) {
