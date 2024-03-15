@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   lastRow: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "space-between",
   },
 });
