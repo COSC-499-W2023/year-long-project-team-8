@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import datetime 
+
+import datetime
 from datetime import timedelta
 from pathlib import Path
 import socket
@@ -18,27 +19,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-m4!3e!pm@-9#aph6axtrenx^5-n8-addwui17nymw_p^_l_qzl'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-# Get the local IP address dynamically
-def get_local_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        local_ip = s.getsockname()[0]
-    finally:
-        s.close()
-    return local_ip
-
-local_ip = get_local_ip()
+DEBUG = False
 
 # Set up path for media(images)
 # Actual directory user files go to
@@ -47,15 +31,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = [local_ip,
-                 '127.0.0.1',
-                 'localhost',
-                 '142.231.67.157',
-                 '0.0.0.0',]
+ALLOWED_HOSTS = ['passtheplate.pythonanywhere.com',]
 
-CORS_ORIGIN_WHITELIST = [
-    f'http://{local_ip}:8081',
-]
+CORS_ORIGIN_WHITELIST = ['https://passtheplate.pythonanywhere.com',]
 
 
 # Application definition
@@ -67,16 +45,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # third party api services
-    # "algoliasearch_django",
-    # third party packages
     "corsheaders",
     "rest_framework",
      "rest_framework.authtoken",
     "rest_framework_simplejwt",
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
-    # internal apps
     "api",
     'products',
     'users',
@@ -92,21 +66,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
 
 # origins to allow cors to operate
 ROOT_URLCONF = 'app.urls'
 CORS_URLS_REGEX = r"^/api/.*"
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = ["https://passtheplate.pythonanywhere.com",]
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS += [
-        "http://localhost:8111",
-        "https://localhost:8111",
-        "http://localhost:19006",
-        "http://142.231.67.157:8081",
-        #"http://ip:8000"
-    ]
+    CORS_ALLOWED_ORIGINS += ["https://passtheplate.pythonanywhere.com"]
 
 TEMPLATES = [
     {
@@ -173,6 +144,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -183,12 +156,12 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-    "rest_framework.authentication.SessionAuthentication", #removed other authentication to get fine grain insights on jwt
+    "rest_framework.authentication.SessionAuthentication",
        "api.authentication.TokenAuthentication",
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly" # permission class - comment out for testing 'post' methods
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
@@ -203,7 +176,6 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",
-    # "SIGNING_KEY": settings.SECRET_KEY,
     "VERIFYING_KEY": "",
     "AUDIENCE": None,
     "ISSUER": None,
@@ -233,16 +205,8 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
-    
      "TOKEN_OBTAIN_SERIALIZER": "api.views.MyTokenObtainPairSerializer",
 }
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'passtheplate9@gmail.com'
-# EMAIL_HOST_PASSWORD = 'hjdrfqpzmvrohkkk'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'

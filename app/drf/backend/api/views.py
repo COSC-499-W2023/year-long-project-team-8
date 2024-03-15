@@ -1,6 +1,7 @@
 import json, string, random
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
 from products.serializers import ProductSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -88,5 +89,22 @@ class ResetPasswordView(APIView):
             user.save()
 
             return Response({'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# View to change password
+class ChangePasswordView(APIView):
+     def post(self, request):
+        email = request.data.get('email')
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+        try:
+            user = authenticate(request, username=email, password=current_password)
+            if user is None:
+                return Response({'error': 'Invalid email or password given to change password view'}, status=status.HTTP_401_UNAUTHORIZED)
+            user.set_password(new_password)
+            user.save()
+
+            return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
  
 
-from api.views import ForgotPasswordView, ResetPasswordView
+from api.views import ForgotPasswordView, ResetPasswordView, ChangePasswordView
 from users.views import UserViewSet, ReviewViewSet
 from chat.views import get_chat_list,get_chat_messages
 from chat.views import ChatList
@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
     path('api/auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('api/auth/reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('api/auth/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('api/chat/', ChatList.as_view(), name='chat_list'),
     path('api/chat/list/', get_chat_list, name='get_chat_list'),
     path('api/chat/<int:chatId>/', get_chat_messages, name='get_chat_messages'),

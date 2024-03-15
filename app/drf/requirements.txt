@@ -1,5 +1,6 @@
 algoliasearch-django>=2.0,<3.0
 django>=4.0.0,<4.1.0
+whitenoise==6.6.0
 djangorestframework
 djangorestframework-simplejwt
 pyyaml
