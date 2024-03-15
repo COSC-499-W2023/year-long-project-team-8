@@ -1,22 +1,6 @@
-// Replace with you ip or localhost (this will cover endpoints in JS files)
-// Add IP address to the allowed hosts and CORS_ORIGIN_WHITELIST in settings.py
-// run django server locally using python manage.py runserver 0.0.0.0:8000
-// run npm expo start as normal
 
-//modify baseendpoint ip to test on expo, else use localhost
-
-
-
+// run npx expo start as normal, this will take care of the rest
 export const baseEndpoint = "http://passtheplate.pythonanywhere.com/api";
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
 
-
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
-
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
-
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
-//export const baseEndpoint = "http://142.231.167.114:8000/api";
 
 
