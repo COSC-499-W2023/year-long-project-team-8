@@ -43,6 +43,7 @@ class User(AbstractUser):
    reset_code = models.CharField(max_length=6, blank=True, null=True)
    rating = models.FloatField(default=0.0)
    profile_picture = models.ImageField(upload_to="profile_pictures/",null=True, blank=True)
+   saved_posts = models.ManyToManyField('products.Product', related_name='saved_by_users', blank=True)
    
    USERNAME_FIELD = "email"
    REQUIRED_FIELDS = []
