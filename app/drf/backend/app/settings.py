@@ -30,11 +30,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = ['passtheplate.pythonanywhere.com' ]
-=======
 ALLOWED_HOSTS = ['http://passtheplate.pythonanywhere.com']
->>>>>>> b4ab92148dc37ed5a7eb1e2a32d62d593ed13ac9
 
 CORS_ORIGIN_WHITELIST = ['http://passtheplate.pythonanywhere.com',]
 
@@ -159,12 +155,12 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-    "rest_framework.authentication.SessionAuthentication", 
+    "rest_framework.authentication.SessionAuthentication",
        "api.authentication.TokenAuthentication",
          "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly" 
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
