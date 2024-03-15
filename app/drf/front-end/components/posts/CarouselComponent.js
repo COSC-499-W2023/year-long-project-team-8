@@ -5,7 +5,7 @@ import styles from "./styles";
 
 const { width: windowWidth } = Dimensions.get("window");
 
-const CarouselComponent = ({ images }) => {
+const CarouselComponent = ({ images, style }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const renderItem = ({ item }) => (
@@ -15,7 +15,7 @@ const CarouselComponent = ({ images }) => {
   );
 
   return (
-    <View style={styles.carouselContainer}>
+    <View style={[styles.carouselContainer, style]}>
       {images && images.length > 1 ? (
         <>
           <Carousel
