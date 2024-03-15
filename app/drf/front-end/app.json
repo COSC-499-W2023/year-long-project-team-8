@@ -8,10 +8,10 @@
         }
       ]
     ],
-    "name": "front-end",
+    "name": "PassThePlate",
     "slug": "front-end",
     "scheme": "passtheplate",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -30,6 +30,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -46,7 +47,8 @@
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET"
       ],
       "package": "com.aroizmand.frontend"
     },
