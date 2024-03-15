@@ -51,6 +51,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
+    "react-native-autogrow-textinput": "^5.4.0",
+    "react-native-camera": "^4.2.1",
     "react-native-deep-link": "^0.2.9",
     "react-native-document-picker": "^9.0.1",
     "react-native-dropdown-select-list": "^2.0.5",

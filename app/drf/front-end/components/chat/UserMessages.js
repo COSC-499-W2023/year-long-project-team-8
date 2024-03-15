@@ -1,26 +1,28 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   View,
-  Text,
   TextInput,
   FlatList,
   TouchableOpacity,
   SafeAreaView,
   RefreshControl,
   KeyboardAvoidingView,
-  Platform,
+  Animated,
+  ActivityIndicator,
+  Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
-import { baseEndpoint } from "../../config/config";
+import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
-import styles from "../chat/styles";
-import { useRoute } from "@react-navigation/native";
+import styles from "./styles";
+import CustomText from "../CustomText";
 import {
   getChatMessages,
   sendChatMessage,
   getUserData,
   getProductById,
 } from "../helperFunctions/apiHelpers";
+import ChatHeader from "./ChatHeader";
+import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 
 const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
@@ -29,15 +31,40 @@ const UserMessages = ({ route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [productDetails, setProductDetails] = useState("");
   const { authTokens, userId } = useContext(AuthContext);
+  const [inputHeight, setInputHeight] = useState(50);
+  const [isLoading, setIsLoading] = useState(false);
+  const flatListRef = useRef(null);
+
   const chatId = route.params?.chatId;
   const receiver = route.params?.receiver;
   const product = route.params?.product;
   const sender = route.params?.sender;
-  const navigation = useNavigation(); // Use useNavigation hook to access navigation object
+  const navigation = useNavigation();
+  const buttonScale = useRef(new Animated.Value(1)).current;
+  const LINE_HEIGHT = 20;
+  const MAX_LINES = 5;
+  const MAX_HEIGHT = LINE_HEIGHT * MAX_LINES;
+
+  const handlePressIn = () => {
+    Animated.spring(buttonScale, {
+      toValue: 0.9,
+      speed: 20,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(buttonScale, {
+      toValue: 1,
+      speed: 20,
+      useNativeDriver: true,
+    }).start();
+  };
 
   useEffect(() => {
     const fetchChatMessages = async () => {
       try {
+        setIsLoading(true);
         const chatData = await getChatMessages(authTokens, chatId);
         setMessages(chatData.messages);
         console.log("Message objects fetched from getChatMessages");
@@ -50,6 +77,7 @@ const UserMessages = ({ route }) => {
 
     const fetchReceiverDetails = async () => {
       try {
+        setIsLoading(true);
         const userDetailsId = sender !== userId ? sender : receiver;
         const userData = await getUserData(userDetailsId, authTokens);
         setReceiverDetails(userData);
@@ -58,40 +86,82 @@ const UserMessages = ({ route }) => {
       }
     };
 
-    //Was having issues with this api call permissions
-    const fetchProductDetails = async () => {
+    const fetchProductDetailsEnriched = async () => {
       try {
+        setIsLoading(true);
         const productData = await getProductById(authTokens, product);
-        setProductDetails(productData);
+        if (productData) {
+          // Fetch additional data for the product here (e.g., owner details)
+          const ownerDetails = await getUserData(productData.owner, authTokens);
+          // Combine the product with its additional data
+          const enrichedProductDetails = { ...productData, ownerDetails };
+          setProductDetails(enrichedProductDetails);
+        }
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
+      setIsLoading(false);
     };
 
     fetchChatMessages();
     fetchReceiverDetails();
-    fetchProductDetails();
+    fetchProductDetailsEnriched();
   }, [authTokens, chatId, sender, receiver, product]);
 
   const isSender = (message) => message.sender === userId;
-
+  const receiverInitial = receiverDetails.firstname
+    ? receiverDetails.firstname.charAt(0).toUpperCase()
+    : receiverDetails.email
+      ? receiverDetails.email.charAt(0).toUpperCase()
+      : "?";
+  console.log("reciever details", receiverDetails);
   const renderMessageBubble = ({ item }) => (
     <View
       style={{
+        flexDirection: "row",
         marginBottom: 8,
-        alignSelf: isSender(item) ? "flex-end" : "flex-start",
+        justifyContent: isSender(item) ? "flex-end" : "flex-start",
       }}
     >
+      {!isSender(item) && (
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: "#41ade8",
+            marginRight: 8,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {receiverDetails.profile_picture ? (
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+              }}
+              source={{ uri: receiverDetails.profile_picture }}
+            />
+          ) : (
+            <CustomText style={{ color: "white", fontSize: 18 }}>
+              {receiverInitial}
+            </CustomText>
+          )}
+        </View>
+      )}
       <View
         style={{
           padding: 8,
           backgroundColor: isSender(item) ? "#FFA500" : "#ddd",
           borderRadius: 8,
+          maxWidth: "80%",
         }}
       >
-        <Text style={{ color: isSender(item) ? "white" : "black" }}>
+        <CustomText style={{ color: isSender(item) ? "white" : "black" }}>
           {item.message}
-        </Text>
+        </CustomText>
       </View>
     </View>
   );
@@ -121,7 +191,7 @@ const UserMessages = ({ route }) => {
     }
   };
 
-  console.log("REc details", receiverDetails);
+  console.log("Rec details", receiverDetails);
   console.log("Receiver route params", receiver);
   console.log("Receiver.id", receiverDetails.id);
   console.log("Prod details chat", productDetails);
@@ -137,50 +207,82 @@ const UserMessages = ({ route }) => {
     }
   };
 
+  useEffect(() => {
+    if (!isLoading && messages.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  }, [isLoading, messages]);
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.backText}>Back </Text>
-          </TouchableOpacity>
-          <Text style={styles.headerText}>
-            Talk to{" "}
-            {receiverDetails.firstname ?? receiverDetails.email ?? receiver}{" "}
-            about {productDetails.title ?? product}!
-          </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="orange" />
         </View>
-        <FlatList
-          data={messages}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderMessageBubble}
-          contentContainerStyle={{
-            paddingHorizontal: 16,
-            paddingTop: 16,
-            paddingBottom: 16,
-          }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            value={newMessage}
-            onChangeText={(text) => setNewMessage(text)}
+      ) : (
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -300}
+        >
+          <ChatHeader
+            receiverDetails={receiverDetails}
+            productDetails={productDetails}
+            receiver={receiver}
+            product={product}
+            navigation={navigation}
+            isGiver={userId === productDetails.owner}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <Text style={styles.sendButtonText}>Send</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderMessageBubble}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingTop: 16,
+              paddingBottom: 16,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            style={{ flex: 1 }}
+            onContentSizeChange={() =>
+              flatListRef.current.scrollToEnd({ animated: true })
+            }
+          />
+          <View style={styles.separator} />
+          <View style={styles.inputContainer}>
+            <AutoGrowingTextInput
+              style={[styles.input, { maxHeight: MAX_HEIGHT }]}
+              placeholder="Type your message..."
+              value={newMessage}
+              onChangeText={(text) => setNewMessage(text)}
+              multiline={true}
+              maxLength={2000}
+              scrollEnabled={true}
+            />
+
+            {newMessage.trim() !== "" && ( // Only render the send button if the input field has a value
+              <View style={styles.sendButtonContainer}>
+                <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
+                  <TouchableOpacity
+                    style={styles.sendButton}
+                    onPress={sendMessage}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                    activeOpacity={1}
+                  >
+                    <CustomText style={styles.sendButtonText}>Send</CustomText>
+                  </TouchableOpacity>
+                </Animated.View>
+              </View>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };

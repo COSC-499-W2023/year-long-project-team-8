@@ -296,6 +296,32 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
+async function toggleSavePost(authTokens, userId, product_id) {
+  try {
+    const response = await fetch(`${baseEndpoint}/save_posts/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`,
+      },
+      body: JSON.stringify({
+        userId: userId,
+        product_id: product_id,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Error toggling save post API");
+    }
+  } catch (error) {
+    console.error("Error in toggling save post API:", error);
+    throw error;
+  }
+}
+
 async function getChatList(authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/chat/list/`, {
@@ -612,4 +638,5 @@ export {
   deleteProduct,
   getProductById,
   changePassword,
+  toggleSavePost,
 };
