@@ -31,7 +31,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front-end/assets/images/po
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = ['https://passtheplate.pythonanywhere.com']
+ALLOWED_HOSTS = ['https://passtheplate.pythonanywhere.com', 'passtheplate.pythonanywhere.com',]
 
 CORS_ORIGIN_WHITELIST = ['https://passtheplate.pythonanywhere.com',]
 
