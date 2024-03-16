@@ -1,20 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
-import {
-  Dimensions,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import MapView, { Circle, Marker } from "react-native-maps";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { Dimensions, SafeAreaView, View, Linking, Modal } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import CustomText from "../CustomText";
 import Slider from "@react-native-community/slider";
 import { useSlider } from "../../context/MapContext";
 import styles from "./mapStyles";
-import { getProductList, getUserData } from "../helperFunctions/apiHelpers"; // Import getProductList function
-import { Platform } from "react-native";
+import { getProductList, getUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
+import PostPreviewModal from "./postPreviewModal"; // Import the PostModal component
 
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -23,16 +18,18 @@ const MapScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const { authTokens } = useContext(AuthContext);
   const { postCreated } = useAppState();
+  const [selectedPost, setSelectedPost] = useState(null); // State to track selected post
+  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
+
+  const mapRef = useRef(null);
 
   const fetchFoodListings = async () => {
     try {
-      const productList = await getProductList(authTokens); // Fetch listings
+      const productList = await getProductList(authTokens);
       const listingsWithAdditionalData = await Promise.all(
         productList.results.map(async (post) => {
           try {
-            // Fetch additional data for each listing here (e.g., owner details)
             const ownerDetails = await getUserData(post.owner, authTokens);
-            // Combine the listing with its additional data
             return { ...post, ownerDetails };
           } catch (error) {
             console.error(
@@ -40,31 +37,21 @@ const MapScreen = ({ navigation }) => {
               post.id,
               error
             );
-            // Return the listing without additional data if there's an error
             return post;
           }
         })
       );
-      setPosts(listingsWithAdditionalData); // Update state with enriched listings
+      setPosts(listingsWithAdditionalData);
     } catch (error) {
       console.error("Error fetching food listings:", error);
     }
   };
 
   useEffect(() => {
-    console.log("Fetching food listings...");
     fetchFoodListings();
-    console.log("Posts in map: ", JSON.stringify(posts));
   }, []);
 
   useEffect(() => {
-    fetchFoodListings();
-    console.log("Posts in map tirggered: ", JSON.stringify(posts));
-  }, [postCreated]);
-
-  useEffect(() => {
-    fetchFoodListings();
-    console.log("Posts in map tirggered new funccy: ", JSON.stringify(posts));
     const requestLocationPermission = async () => {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -87,23 +74,20 @@ const MapScreen = ({ navigation }) => {
     requestLocationPermission();
   }, []);
 
-  const zoomWithMap = (radius) => {
-    const latDelta = radius * 0.00003;
-    const longDelta = radius * 0.00003;
+  const handleMarkerPress = (post) => {
+    setSelectedPost(post);
+    setModalVisible(true);
+  };
 
-    setLocation((prevLocation) => ({
-      ...prevLocation,
-      longitudeDelta: longDelta,
-      latitudeDelta: latDelta,
-    }));
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <MapView style={styles.map} region={location}>
+      <MapView ref={mapRef} style={styles.map} region={location}>
         {location && posts && (
           <>
-            {/* Render markers for posts with valid latitude and longitude */}
             {posts
               .filter((post) => post.latitude && post.longitude)
               .map((post) => (
@@ -113,18 +97,8 @@ const MapScreen = ({ navigation }) => {
                     latitude: post.latitude,
                     longitude: post.longitude,
                   }}
-                  onPress={() => {
-                    console.log("Marker pressed:", post);
-                    navigation.navigate("PostDetails", { listing: post });
-                  }}
-                  // Handle press event
-                >
-                  {/* Custom marker component using the post image */}
-                  {/* <Image
-                    source={{ uri: post.images[0].image }} // Assuming the image URL is stored in the 'image' field of the post object
-                    style={{ width: 40, height: 40 }} // Adjust the size of the marker image as needed
-                  /> */}
-                </Marker>
+                  onPress={() => handleMarkerPress(post)}
+                />
               ))}
           </>
         )}
@@ -136,7 +110,7 @@ const MapScreen = ({ navigation }) => {
         value={sliderValue}
         onValueChange={(value) => {
           setSliderValue(value);
-          zoomWithMap(value);
+          // Zoom logic here
         }}
         thumbTintColor="#F8B951"
         minimumTrackTintColor="#F8B951"
@@ -145,6 +119,23 @@ const MapScreen = ({ navigation }) => {
       <CustomText style={styles.sliderText} fontType="text">
         {Math.floor(sliderValue / 1000)} KM
       </CustomText>
+
+      {/* Post modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          <PostPreviewModal
+            visible={modalVisible}
+            post={selectedPost}
+            onClose={() => setModalVisible(false)}
+            navigation={navigation}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
