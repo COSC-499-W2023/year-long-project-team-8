@@ -5,13 +5,14 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them."
+
         }
       ]
     ],
     "name": "front-end",
     "slug": "front-end",
     "scheme": "passtheplate",
-    "version": "1.0.4",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -30,35 +31,21 @@
       }
     },
     "android": {
-      "versionCode": 4,
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBB5vOjixk-P19lYhkkiO7EVYfRu-4yp60"
-        }
-      },
       "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.CAMERA",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.INTERNET"
-      ],
-      "package": "com.aroizmand.frontend"
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "f477b0a1-a989-42fb-b525-d61c7dcbebbf"
-      }
     }
   }
 }
