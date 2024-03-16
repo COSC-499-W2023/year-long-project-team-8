@@ -10,6 +10,8 @@ import {
   Animated,
   ActivityIndicator,
   Image,
+  Platform,
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
@@ -22,7 +24,6 @@ import {
   getProductById,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 
 const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
@@ -31,7 +32,7 @@ const UserMessages = ({ route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [productDetails, setProductDetails] = useState("");
   const { authTokens, userId } = useContext(AuthContext);
-  const [inputHeight, setInputHeight] = useState(50);
+  const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef(null);
 
@@ -44,6 +45,10 @@ const UserMessages = ({ route }) => {
   const LINE_HEIGHT = 20;
   const MAX_LINES = 5;
   const MAX_HEIGHT = LINE_HEIGHT * MAX_LINES;
+
+  const onGivenConfirm = () => {
+    setModalVisible(true);
+  };
 
   const handlePressIn = () => {
     Animated.spring(buttonScale, {
@@ -234,6 +239,7 @@ const UserMessages = ({ route }) => {
             product={product}
             navigation={navigation}
             isGiver={userId === productDetails.owner}
+            onGivenConfirm={onGivenConfirm}
           />
           <FlatList
             ref={flatListRef}
@@ -255,14 +261,13 @@ const UserMessages = ({ route }) => {
           />
           <View style={styles.separator} />
           <View style={styles.inputContainer}>
-            <AutoGrowingTextInput
-              style={[styles.input, { maxHeight: MAX_HEIGHT }]}
+            <TextInput
+              style={styles.input}
               placeholder="Type your message..."
               value={newMessage}
               onChangeText={(text) => setNewMessage(text)}
               multiline={true}
               maxLength={2000}
-              scrollEnabled={true}
             />
 
             {newMessage.trim() !== "" && ( // Only render the send button if the input field has a value
@@ -283,6 +288,41 @@ const UserMessages = ({ route }) => {
           </View>
         </KeyboardAvoidingView>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <CustomText style={styles.modalText}>
+              Thanks for helping people!
+            </CustomText>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  navigation.goBack();
+                }}
+              >
+                <CustomText style={styles.textStyle}>
+                  Go Back to Chats
+                </CustomText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <CustomText style={styles.textStyle}>Stay Here</CustomText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
