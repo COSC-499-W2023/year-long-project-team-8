@@ -24,6 +24,7 @@ import {
   getProductById,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const UserMessages = ({ route }) => {
   const [messages, setMessages] = useState([]);
@@ -298,28 +299,21 @@ const UserMessages = ({ route }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <CustomText style={styles.modalText}>
-              Thanks for helping people!
-            </CustomText>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                  navigation.goBack();
-                }}
-              >
-                <CustomText style={styles.textStyle}>
-                  Go Back to Chats
-                </CustomText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <CustomText style={styles.textStyle}>Stay Here</CustomText>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <MaterialIcons name="close" size={24} color="grey" />
+            </TouchableOpacity>
+            <View style={styles.modalHeader}>
+              <View style={styles.titleContainer}>
+                <CustomText style={styles.modalTitle}>Thank you!</CustomText>
+              </View>
             </View>
+            <CustomText style={styles.modalText}>
+              You are making the world a better place! Your post will now be
+              marked as given and will not be available anymore.
+            </CustomText>
           </View>
         </View>
       </Modal>

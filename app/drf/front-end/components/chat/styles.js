@@ -140,8 +140,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
+    padding: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -152,11 +151,20 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: "80%",
   },
+  modalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+  },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
     textAlign: "center",
     color: "grey",
+  },
+  titleContainer: {
+    flex: 1,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -172,8 +180,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonClose: {
-    backgroundColor: "orange",
+  modalCloseButton: {
+    alignSelf: "flex-end",
+    padding: 10,
+  },
+  modalTitle: {
+    fontSize: 22,
+    color: "black",
+    textAlign: "center",
   },
   textStyle: {
     fontSize: 16,
