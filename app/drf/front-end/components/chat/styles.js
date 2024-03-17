@@ -155,7 +155,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
+    marginTop: -10,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   modalText: {
     fontSize: 16,
@@ -182,7 +184,8 @@ const styles = StyleSheet.create({
   },
   modalCloseButton: {
     alignSelf: "flex-end",
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
   modalTitle: {
     fontSize: 22,
