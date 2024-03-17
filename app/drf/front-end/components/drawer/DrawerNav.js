@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Image, TouchableOpacity, View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Tabs from "../tabs/BottomTabs";
 import DrawerProps from "./DrawerProps";
@@ -14,6 +14,7 @@ import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
 import SavedPosts from "../savedPosts/SavedPosts";
 import Notifications from "../notifications/Notifications";
+import CustomText from "../CustomText";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -22,6 +23,9 @@ const backArrowIcon = require("../../assets/icons/back-arrow.png");
 const Drawer = createDrawerNavigator();
 
 const DrawerNav = ({ navigation }) => {
+  // Example count unseen notifications
+  const [unseenNotificationsCount, setUnseenNotificationsCount] = useState(3);
+
   // Function to determine the active route name
   const getActiveRouteName = (navigationState) => {
     if (!navigationState) {
@@ -67,10 +71,31 @@ const DrawerNav = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => navigation.navigate("Notifications")}
             >
-              <Image
-                source={notificationIcon}
-                style={{ width: 25, height: 25, marginRight: 20 }}
-              />
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -89,6 +114,37 @@ const DrawerNav = ({ navigation }) => {
                 source={customHamburgerIcon}
                 style={{ width: 22, height: 22, marginLeft: 20 }}
               />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -120,6 +176,37 @@ const DrawerNav = ({ navigation }) => {
               />
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Drawer.Screen
@@ -140,6 +227,37 @@ const DrawerNav = ({ navigation }) => {
                 source={backArrowIcon}
                 style={{ width: 25, height: 25, marginLeft: 20 }}
               />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -164,6 +282,37 @@ const DrawerNav = ({ navigation }) => {
               />
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Drawer.Screen
@@ -180,6 +329,37 @@ const DrawerNav = ({ navigation }) => {
                 source={customHamburgerIcon}
                 style={{ width: 22, height: 22, marginLeft: 20 }}
               />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -211,6 +391,37 @@ const DrawerNav = ({ navigation }) => {
               />
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Drawer.Screen
@@ -227,6 +438,37 @@ const DrawerNav = ({ navigation }) => {
                 source={customHamburgerIcon}
                 style={{ width: 22, height: 22, marginLeft: 20 }}
               />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
           ),
         })}
@@ -247,6 +489,37 @@ const DrawerNav = ({ navigation }) => {
               />
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ),
         })}
       />
       {/* PostDetails screen hidden from the drawer but accessible via navigation */}
@@ -259,6 +532,37 @@ const DrawerNav = ({ navigation }) => {
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Drawer.Screen
@@ -269,6 +573,37 @@ const DrawerNav = ({ navigation }) => {
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Notifications")}
+            >
+              <View>
+                <Image
+                  source={notificationIcon}
+                  style={{ width: 25, height: 25, marginRight: 20 }}
+                />
+                {unseenNotificationsCount > 0 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: -5,
+                      backgroundColor: "red",
+                      borderRadius: 10,
+                      width: 20,
+                      height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomText style={{ color: "white", fontSize: 12 }}>
+                      {unseenNotificationsCount}
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
           ),
         })}
       />
