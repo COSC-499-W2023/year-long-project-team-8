@@ -13,6 +13,7 @@ import EditProfilePage from "../editProfile/editProfileMain";
 import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
 import SavedPosts from "../savedPosts/SavedPosts";
+import Notifications from "../notifications/Notifications";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -64,7 +65,7 @@ const DrawerNav = ({ navigation }) => {
           ),
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => console.log("Notifications pressed")}
+              onPress={() => navigation.navigate("Notifications")}
             >
               <Image
                 source={notificationIcon}
@@ -268,6 +269,24 @@ const DrawerNav = ({ navigation }) => {
           headerTitleAlign: "center",
           headerTitle: () => (
             <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+        })}
+      />
+      <Drawer.Screen
+        name="Notifications"
+        component={Notifications}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image
+                source={backArrowIcon}
+                style={{ width: 25, height: 25, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
           ),
         })}
       />
