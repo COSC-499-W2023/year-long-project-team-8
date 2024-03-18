@@ -1521,6 +1521,9 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
 - [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [ ] #287 save posts
+- [ ] #299 Save email
+      
 
 ### In Progress Tasks
 
@@ -1529,6 +1532,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 
 - find a way to ensure that the user can re-enable the location services if declined at first #281
+- Planning reviews
+- enhancing chatlist
 
 ### Burnup Chart
 
