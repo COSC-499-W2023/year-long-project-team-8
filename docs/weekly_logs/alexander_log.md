@@ -466,8 +466,41 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 |   4    |           |      ✓     |
 
 
+### Work Period
+
+-   March 11 - March 17, 2024
+
+### Task Types
+
+![ar_w22](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/7c9aa327-69f0-4c73-8a55-a428befa1089)
 
 
+### Recap of Students Goals
+
+-   Implement chat functionality.
+-   Improve settings page
+-   Release front end for internal testing google play store
+
+### Student Tasks on Project Board
+
+-   #1 Chatlist enhancements.
+-   #2 Front end deploy
+-   #3 Notifications
+-   #4 Reviews
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+| --- | --- | --- |
+| 1 | ✓ |  |
+| 2 |  | ✓ |
+| 3 |  | ✓ |
+| 4 |  | ✓ |
+
+
+### Additional Notes
+
+-   Front end has been released for testing in google play with unfinished code. Will be updated once finished.
 
 
 
