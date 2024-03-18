@@ -1468,3 +1468,75 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 10 - March 17, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1
+<br>
+![alt-text](../img/t2_w10_projboard.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+- find a way to ensure that the user can re-enable the location services if declined at first #281
+
+
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+- find a way to ensure that the user can re-enable the location services if declined at first #281
+
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/t2_w10_burnup.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
