@@ -145,6 +145,30 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function for password reset
+async function changePassword(email, current_password, new_password, authTokens){
+  try {
+    const response = await fetch(`${baseEndpoint}/auth/change-password/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: JSON.stringify({ email, current_password, new_password }),
+    });
+
+    if (response.ok) {
+      console.log('Password changed successful api help');
+    } else if(response.status === 401) {
+      throw new Error("Current password is incorrect");
+    } else {
+      console.error('Error in change password API helper:', response);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Helper function to return products based on a keyword search query
 async function productSearch(query, authTokens) {
   try {
@@ -267,6 +291,32 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
+async function toggleSavePost(authTokens, userId, product_id){
+  try{
+    const response = await fetch(`${baseEndpoint}/save_posts/`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authTokens?.access}`,
+      }, body: JSON.stringify({
+        userId : userId,
+        product_id : product_id,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Error toggling save post API");
+    }
+    } catch (error) {
+      console.error("Error in toggling save post API:", error);
+      throw error;
+  }
+}
+
 async function getChatList(authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/chat/list/`, {
@@ -274,7 +324,7 @@ async function getChatList(authTokens) {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + String(authTokens.access),
-      },
+      }
     });
 
     if (!response.ok) {
@@ -575,4 +625,6 @@ export {
   updateProduct,
   deleteProduct,
   getProductById,
+  changePassword,
+  toggleSavePost,
 };

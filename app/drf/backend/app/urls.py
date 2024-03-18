@@ -18,8 +18,8 @@ from django.urls import path, include
 from rest_framework import routers
  
 
-from api.views import ForgotPasswordView, ResetPasswordView
-from users.views import UserViewSet, ReviewViewSet
+from api.views import ForgotPasswordView, ResetPasswordView, ChangePasswordView
+from users.views import UserViewSet, ReviewViewSet, SavedPostsViewSet
 from chat.views import get_chat_list,get_chat_messages
 from chat.views import ChatList
 from products.views import ProductViewSet, ImageViewSet
@@ -39,8 +39,10 @@ urlpatterns = [
     path('api/my-products/', ProductViewSet.as_view({'get': 'list_my_products'}), name='my-products'),
     path('api/auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('api/auth/reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('api/auth/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('api/chat/', ChatList.as_view(), name='chat_list'),
     path('api/chat/list/', get_chat_list, name='get_chat_list'),
     path('api/chat/<int:chatId>/', get_chat_messages, name='get_chat_messages'),
+    path('api/save_posts/', SavedPostsViewSet.as_view(), name='save_posts')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

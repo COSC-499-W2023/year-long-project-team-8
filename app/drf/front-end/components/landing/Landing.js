@@ -76,10 +76,18 @@ const Landing = ({ navigation }) => {
               }}
             >
               <View style={{ width: width }}>
-                <Login onSwitch={animateToSignup} navigation={navigation} ref={loginRef}/>
+                <Login
+                  onSwitch={animateToSignup}
+                  navigation={navigation}
+                  ref={loginRef}
+                />
               </View>
               <View style={{ width: width, height: height }}>
-                <Signup onSwitch={animateToLogin} navigation={navigation} ref={signupRef}/>
+                <Signup
+                  onSwitch={animateToLogin}
+                  navigation={navigation}
+                  ref={signupRef}
+                />
               </View>
             </Animated.View>
           </ImageBackground>
