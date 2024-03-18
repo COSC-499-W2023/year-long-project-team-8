@@ -60,13 +60,13 @@ const ProfilePage = ({ navigation, route }) => {
 
   const [locationName, setLocationName] = useState("Location Not Available");
 
-  // useEffect(() => {
-  //     (async () => {
-  //       let currentLocation = await Location.getCurrentPositionAsync({});
-  //       const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
-  //       setLocationName(name || "Location Not Available");
-  //     })();
-  //   }, []);
+   useEffect(() => {
+       (async () => {
+         let currentLocation = await Location.getCurrentPositionAsync({});
+         const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
+         setLocationName(name || "Location Not Available");
+       })();
+     }, []);
 
   useEffect(() => {
     if (profilePicUpdated) {
