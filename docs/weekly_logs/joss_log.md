@@ -791,3 +791,50 @@
 |   5   |           |    ✓       |
 |   6 |            |    ✓      |
 
+### Work Period
+ - Mar 11 - Mar 17, 2024
+
+### Individual Peer Evaluation
+![Alt text](img/t2week_8_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- deploying backend
+- deletion of chat if picked up and chatlist refinemets with alex
+- check if email in use
+- change email
+- change password in profile page
+- save posts backend
+
+### Current Student Tasks on Project Board in progress
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #291 Chatlist enhancements
+- #249 Deploy backend
+- #235 Deletion of chat if product is marked as picked up or deleted
+- #213 Correct error message if email is in use
+- #162 Change password in profile page
+- #299 Change email in profile page BE
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1   |           |    ✓       |
+|   2  |       ✓       |        |
+|   3  |          |    ✓       |
+|   4 |           |      ✓     |
+|   5   |    ✓       |           |
+|   6 |      ✓      |          |
+
