@@ -1,27 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
-  PanResponder,
   Animated,
+  Alert,
 } from "react-native";
 import CustomText from "../CustomText";
-import CarouselComponent from "../posts/CarouselComponent";
 const ChatHeader = ({
   receiverDetails,
   productDetails,
   navigation,
   isGiver,
+  onGivenConfirm,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const animatedHeight = useRef(new Animated.Value(150)).current;
-  const contentOpacity = useRef(new Animated.Value(1)).current;
-  const carouselOpacity = useRef(new Animated.Value(0)).current;
-
-  const startY = useRef(0);
-
   const imageUrl =
     productDetails?.images?.length > 0 ? productDetails.images[0].image : null;
 
@@ -33,7 +26,6 @@ const ChatHeader = ({
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
   const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(false);
-  const images = productDetails?.images;
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -76,13 +68,31 @@ const ChatHeader = ({
   };
 
   const handleOnGiven = () => {
-    console.log("Food Given");
-    setIsDoneButtonPressed(!isDoneButtonPressed);
-  };
-
-  const handleOnReceived = () => {
-    console.log("Food Received");
-    setIsDoneButtonPressed(!isDoneButtonPressed);
+    if (isDoneButtonPressed) {
+      Alert.alert(
+        "Action Not Allowed",
+        "You cannot unconfirm once the food has been marked as given."
+      );
+    } else {
+      Alert.alert(
+        "Confirm",
+        "Are you sure you want to mark this listing as given?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              setIsDoneButtonPressed(!isDoneButtonPressed);
+              onGivenConfirm();
+            },
+          },
+        ]
+      );
+    }
   };
 
   return (
@@ -133,27 +143,29 @@ const ChatHeader = ({
             <CustomText style={styles.productExpireDate}>
               Expires: {formatDate(productDetails.best_before)}
             </CustomText>
-            <TouchableOpacity
-              onPressIn={pressInDoneButton}
-              onPressOut={pressOutDoneButton}
-              onPress={isGiver ? handleOnGiven : handleOnReceived}
-              activeOpacity={1}
-            >
-              <Animated.View
-                style={{ transform: [{ scale: scaleDoneButton }] }}
+            {isGiver && ( // Conditionally render the button if isGiver is true
+              <TouchableOpacity
+                onPressIn={pressInDoneButton}
+                onPressOut={pressOutDoneButton}
+                onPress={handleOnGiven}
+                activeOpacity={1}
               >
-                <View
-                  style={[
-                    styles.doneButton,
-                    isDoneButtonPressed && { backgroundColor: "#6fc276" },
-                  ]}
+                <Animated.View
+                  style={{ transform: [{ scale: scaleDoneButton }] }}
                 >
-                  <CustomText style={styles.doneButtonText}>
-                    {isGiver ? "Food Given" : "Food Received"}
-                  </CustomText>
-                </View>
-              </Animated.View>
-            </TouchableOpacity>
+                  <View
+                    style={[
+                      styles.doneButton,
+                      isDoneButtonPressed && { backgroundColor: "#6fc276" },
+                    ]}
+                  >
+                    <CustomText style={styles.doneButtonText}>
+                      Food Given
+                    </CustomText>
+                  </View>
+                </Animated.View>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
