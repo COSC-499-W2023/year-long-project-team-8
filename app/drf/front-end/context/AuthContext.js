@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { jwtDecode } from "jwt-decode";
@@ -13,6 +13,8 @@ if (!global.atob) {
 }
 const baseEndpoint = "https://passtheplate.pythonanywhere.com/api";
 const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 // Define parameters for context to hold - also need to add to context data below to persist the data
 export const AuthProvider = ({ children }) => {

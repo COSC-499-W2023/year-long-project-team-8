@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import CustomText from "../CustomText";
 import ChatButton from "./ChatButton";
-import { sendChatMessage, getChatList, toggleSavePost, getUserData } from "../helperFunctions/apiHelpers";
+import {
+  sendChatMessage,
+  getChatList,
+  toggleSavePost,
+  getUserData,
+} from "../helperFunctions/apiHelpers";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
@@ -36,6 +41,7 @@ const ChatComponent = ({
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
+  console.log("Navigation prop in ChatComponent:", navigation);
 
   useEffect(() => {
     const fetchChatId = async () => {
@@ -73,7 +79,6 @@ const ChatComponent = ({
     fetchChatId();
   }, [authTokens, userId, prodOwner]);
 
-
   useEffect(() => {
     checkIsSaved();
   }, [authTokens, userId, prodOwner]);
@@ -82,7 +87,7 @@ const ChatComponent = ({
     try {
       if (authTokens) {
         const data = await getUserData(userId, authTokens);
-        setIsSaved(data.saved_posts.includes(product_id)); 
+        setIsSaved(data.saved_posts.includes(product_id));
       }
     } catch (error) {
       console.error("Error checking saved status:", error);
@@ -106,7 +111,6 @@ const ChatComponent = ({
   //       });
   //   }
   // }, [userId, authTokens]);
-  
 
   const handleSend = async () => {
     console.log("Message to send:", messages);
@@ -151,12 +155,12 @@ const ChatComponent = ({
 
   const handleSavePress = async () => {
     console.log(`Save button pressed`);
-    
+
     try {
       const data = await toggleSavePost(authTokens, userId, product_id);
       setIsSaved(data.saved_posts.includes(product_id));
     } catch (error) {
-      console.error("Error toggling saved in product screen")
+      console.error("Error toggling saved in product screen");
     }
   };
 

@@ -1412,7 +1412,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] save location data on posts
 - [x] pull location from posts to populate pins on map
 - [x] link pins to post details
-- [x] separate settings page into more screens 
+- [x] separate settings page into more screens
 - [x] implement saved posts front end
 - [x] finish add listing and edit listing
 
@@ -1466,5 +1466,92 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 
 - add screenshot(s) of test run summary
 -->
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 10 - March 17, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1
+<br>
+![alt-text](../img/t2_w10_projboard.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- [ ]find a way to ensure that the user can re-enable the location services if declined at first #281
+- [x] create modal to preview post details on map pin
+- [x] link modal to post details
+- [x] link modal to generate directions to post
+- [x] display post details on modal
+- [x] display post image on modal
+- [x] explore options for getting location data - no free APIs, still stuck on this
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [ ] #287 save posts
+- [ ] #299 Save email
+      
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- find a way to ensure that the user can re-enable the location services if declined at first #281
+- Planning reviews
+- enhancing chatlist
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+![burnup-chart](../img/t2_w10_burnup.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
+![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
