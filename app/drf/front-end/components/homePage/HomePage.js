@@ -110,7 +110,8 @@ const HomePage = ({ navigation }) => {
       const filteredListings = listingsWithAdditionalData.filter((listing) => {
         const isOwner = listing.owner !== userId;
         const isNotExpired = new Date(listing.best_before) >= new Date();
-        return isOwner && isNotExpired;
+        const isAvailable = !listing.pickedUp;
+        return isOwner && isNotExpired && isAvailable;
       });
       setFoodListing(filteredListings); // Update state with enriched listings
     } catch (error) {
