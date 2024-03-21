@@ -183,13 +183,13 @@ const PostDetails = ({ route, navigation }) => {
                 </CustomText>
               </View>
             )}
-            {/* {pickedUp && (
+            {pickedUp && (
               <View style={styles.pickedUpTag}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
                   Picked Up!
                 </CustomText>
               </View>
-            )} */}
+            )}
           </View>
 
           <CustomText fontType={"subHeader"} style={styles.bestBefore}>
