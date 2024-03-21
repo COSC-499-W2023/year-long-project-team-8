@@ -107,7 +107,12 @@ const HomePage = ({ navigation }) => {
           }
         })
       );
-      setFoodListing(listingsWithAdditionalData); // Update state with enriched listings
+      const filteredListings = listingsWithAdditionalData.filter((listing) => {
+        const isOwner = listing.owner !== userId;
+        const isNotExpired = new Date(listing.best_before) >= new Date();
+        return isOwner && isNotExpired;
+      });
+      setFoodListing(filteredListings); // Update state with enriched listings
     } catch (error) {
       console.error("Error fetching food listings:", error);
     } finally {
