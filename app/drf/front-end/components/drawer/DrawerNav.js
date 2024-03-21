@@ -13,7 +13,6 @@ import EditProfilePage from "../editProfile/editProfileMain";
 import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
 import SavedPosts from "../savedPosts/SavedPosts";
-import LocationServices from "../locationServices/userLocation";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -112,28 +111,6 @@ const DrawerNav = ({ navigation }) => {
                 } else {
                   navigation.goBack();
                 }
-              }}
-            >
-              <Image
-                source={backArrowIcon}
-                style={{ width: 25, height: 25, marginLeft: 20 }}
-              />
-            </TouchableOpacity>
-          ),
-        })}
-      />
-        <Drawer.Screen
-        name="LocationServices"
-        component={LocationServices}
-        options={({ navigation, route }) => ({
-          headerTitleAlign: "center",
-          headerTitle: () => (
-            <Image source={logo} style={{ width: 200, height: 40 }} />
-          ),
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Settings");
               }}
             >
               <Image

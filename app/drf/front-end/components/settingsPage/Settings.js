@@ -57,12 +57,6 @@ const SettingsPage = () => {
             onPress={goToChangePassword}
             icon="lock"
           />
-          <Item
-            title={"Location Services"}
-            description={"Allow and deny location services"}
-            onPress={goToLocationServices}
-            icon="location-on"
-            />
         </View>
       </ImageBackground>
     </View>
