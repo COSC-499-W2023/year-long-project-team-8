@@ -829,3 +829,42 @@ March 04, 2024 - March 10, 2024
 ### Gauged effort
 
 - Lots of new features implemented this week along with fixing bugs and preparing for peer testing. Was hoping to get bonus marks for additional effort put in, thanks!
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 11, 2024 - March 17, 2024
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk-t2-w10.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] create modal to preview post details on map pin
+- [x] link modal to post details
+- [x] link modal to generate directions to post
+- [x] display post details on modal
+- [x] display post image on modal
+- [x] explore options for getting location data - no free APIs, still stuck on this
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)

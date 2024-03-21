@@ -26,8 +26,6 @@ class ChatList(generics.ListCreateAPIView):
         product = self.request.data.get('product')
         rec = self.request.data.get('receiver')
         
-        print("rec", rec)
-        
         # Retrieve the product and its owner
         try:
             # Check if a chat room already exists for the given sender, receiver, and product
@@ -35,7 +33,6 @@ class ChatList(generics.ListCreateAPIView):
                 Q(receiver = user, sender = rec)
                 | Q(sender = user, receiver = rec), product = product).first()
             
-            print("Exisitng chats:", existing_chat)
             if existing_chat:
                 # If a chat room already exists, associate the new message with the existing chat
                 if existing_chat.receiver != user:

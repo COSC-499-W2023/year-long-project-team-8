@@ -1,7 +1,10 @@
 from django.contrib import admin
 from products.models import Product
-from users.models import Review
+from users.models import Review, User
 from chat.models import Chat, Message
+class UserAdmin(admin.ModelAdmin):
+
+    search_fields = ("email",)
 
 # Register your models here to view on admin site
 admin.site.register(Product)

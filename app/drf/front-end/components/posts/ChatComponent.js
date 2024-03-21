@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import CustomText from "../CustomText";
 import ChatButton from "./ChatButton";
-import { sendChatMessage, getChatList } from "../helperFunctions/apiHelpers";
-import { useNavigation } from "@react-navigation/native";
+import { sendChatMessage, getChatList, toggleSavePost, getUserData } from "../helperFunctions/apiHelpers";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -73,6 +73,41 @@ const ChatComponent = ({
     fetchChatId();
   }, [authTokens, userId, prodOwner]);
 
+
+  useEffect(() => {
+    checkIsSaved();
+  }, [authTokens, userId, prodOwner]);
+
+  const checkIsSaved = async () => {
+    try {
+      if (authTokens) {
+        const data = await getUserData(userId, authTokens);
+        setIsSaved(data.saved_posts.includes(product_id)); 
+      }
+    } catch (error) {
+      console.error("Error checking saved status:", error);
+    }
+  };
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     checkIsSaved();
+  //   }, [])
+  // );
+
+  // useEffect(() => {
+  //   if (authTokens) {
+  //     getUserData(userId, authTokens)
+  //       .then((data) => {
+  //         setExistingEmail(data?.email || "");
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error fetching user data: ", error);
+  //       });
+  //   }
+  // }, [userId, authTokens]);
+  
+
   const handleSend = async () => {
     console.log("Message to send:", messages);
 
@@ -114,10 +149,15 @@ const ChatComponent = ({
     }
   };
 
-  const handleSavePress = () => {
+  const handleSavePress = async () => {
     console.log(`Save button pressed`);
-    setIsSaved(!isSaved); // Toggle the saved state
-    // TODO: Implement the save listing functionality
+    
+    try {
+      const data = await toggleSavePost(authTokens, userId, product_id);
+      setIsSaved(data.saved_posts.includes(product_id));
+    } catch (error) {
+      console.error("Error toggling saved in product screen")
+    }
   };
 
   const handleChatPress = async () => {
