@@ -13,6 +13,10 @@ from rest_framework import status
 from users.models import User
 import sendgrid
 from sendgrid.helpers.mail import Mail
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # currently set to display sample data and headers
 # adjust to set to api home gui
@@ -54,7 +58,7 @@ class ForgotPasswordView(APIView):
 
              # Send the reset code to the user's email using SendGrid
             try:
-                sg = sendgrid.SendGridAPIClient(api_key='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')
+                sg = sendgrid.SendGridAPIClient(api_key=os.getenv('EMAIL_HOST_PASSWORD'))
                 from_email = 'passtheplate9@gmail.com'
                 to_email = email
                 subject = 'Password Reset'
