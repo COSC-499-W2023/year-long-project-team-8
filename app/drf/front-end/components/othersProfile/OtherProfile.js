@@ -83,7 +83,12 @@ const OtherProfile = ({ route, navigation }) => {
         const productData = await getProductListById(authTokens, userId);
 
         if (productData && Array.isArray(productData.results)) {
-          setUserPosts(productData.results);
+          // Filter out expired posts
+          const filteredPosts = productData.results.filter((post) => {
+            // Check if the post is not expired
+            return new Date(post.best_before) >= new Date() && !post.pickedUp;
+          });
+          setUserPosts(filteredPosts);
         } else {
           console.error("Unexpected format for product data:", productData);
           setUserPosts([]);
