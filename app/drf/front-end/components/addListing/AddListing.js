@@ -15,6 +15,7 @@ import CustomAlertModal from '../CustomAlertModal';
 import { createProductImages } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext"; // Import AuthContext
 import { useAppState } from "../../context/AppStateContext";
+import { GOOGLE_API_KEY } from '@env'
 
 const AddListing = ({ navigation, onPostCreation }) => {
   // state variables for the post attributes

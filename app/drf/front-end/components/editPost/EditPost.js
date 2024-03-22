@@ -16,6 +16,7 @@ import styles from './styles';
 import CustomAlertModal from '../CustomAlertModal';
 import {updateProduct } from '../helperFunctions/apiHelpers';
 import AuthContext from "../../context/AuthContext";
+import { GOOGLE_API_KEY } from '@env'
 
 
 const EditPost = () => {
@@ -43,6 +44,7 @@ const EditPost = () => {
     const [alertMessage, setAlertMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true); 
     const backArrowIcon = require('../../assets/icons/back-arrow.png');
+    
 
     useEffect(() => {
       const timer = setTimeout(() => {
