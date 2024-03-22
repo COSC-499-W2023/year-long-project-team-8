@@ -7,4 +7,5 @@ requests
 django-cors-headers
 django-filter
 Pillow
+python-dotenv
 sendgrid

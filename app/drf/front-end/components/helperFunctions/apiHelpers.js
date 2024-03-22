@@ -115,7 +115,7 @@ function renderProducts(data) {
   // Example function to render the products
   // You can customize this based on your needs
   data.forEach((product) => {
-    // Add your rendering logic here (e.g., append to a list or update the DOM)
+    // Add your rendering c here (e.g., append to a list or update the DOM)
   });
 }
 
@@ -165,6 +165,33 @@ async function changePassword(email, current_password, new_password, authTokens)
       console.error('Error in change password API helper:', response);
     }
   } catch (error) {
+    throw error;
+  }
+}
+//Create review function, giver of review has to be logged in user (userId)
+async function createReview(receiver, userId, content, rating, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/api/reviews/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: JSON.stringify({ receiver, userId, content, rating }),
+    });
+
+    if (response.ok) {
+      console.log('Review sent successfully in API helper');
+    } else {
+      const responseData = await response.json();
+            if (response.status === 400 && responseData.rating) {
+                throw new Error(responseData.rating[0]);
+            } else {
+                throw new Error('Error sending review: ' + response.statusText);
+            }
+    }
+  } catch (error) {
+    console.error('Error in sending review API helper:', error);
     throw error;
   }
 }
@@ -627,4 +654,5 @@ export {
   getProductById,
   changePassword,
   toggleSavePost,
+  createReview,
 };

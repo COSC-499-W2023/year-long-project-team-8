@@ -112,13 +112,13 @@ const Listing = ({ listing, navigation }) => {
             <CustomText fontType={"subHeader"} style={styles.datePosted}>
               {timeAgo(listing.created_at)}
             </CustomText>
-            {isExpired && !pickedUp && (
+            {/* {isExpired && !pickedUp && (
               <View style={styles.expiredBox}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
                   Expired
                 </CustomText>
               </View>
-            )}
+            )} */}
             {almostExpired && !pickedUp && (
               <View style={styles.almostExpiredBox}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
@@ -126,13 +126,13 @@ const Listing = ({ listing, navigation }) => {
                 </CustomText>
               </View>
             )}
-            {pickedUp && (
+            {/* {pickedUp && (
               <View style={styles.pickedUpBox}>
                 <CustomText fontType={"expired"} style={styles.expiredText}>
                   Picked Up!
                 </CustomText>
               </View>
-            )}
+            )} */}
           </View>
         </Card>
       </Animated.View>
