@@ -143,7 +143,7 @@ const ChatHeader = ({
             <CustomText style={styles.productExpireDate}>
               Expires: {formatDate(productDetails.best_before)}
             </CustomText>
-            {isGiver && ( // Conditionally render the button if isGiver is true
+            {!isGiver && ( // Conditionally render the button if isGiver is false
               <TouchableOpacity
                 onPressIn={pressInDoneButton}
                 onPressOut={pressOutDoneButton}
@@ -160,7 +160,7 @@ const ChatHeader = ({
                     ]}
                   >
                     <CustomText style={styles.doneButtonText}>
-                      Food Given
+                      Food Recieved
                     </CustomText>
                   </View>
                 </Animated.View>

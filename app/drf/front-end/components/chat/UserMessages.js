@@ -45,7 +45,6 @@ const UserMessages = ({ route }) => {
   const buttonScale = useRef(new Animated.Value(1)).current;
   const LINE_HEIGHT = 20;
   const MAX_LINES = 5;
-  const MAX_HEIGHT = LINE_HEIGHT * MAX_LINES;
 
   const onGivenConfirm = () => {
     setModalVisible(true);
@@ -97,7 +96,7 @@ const UserMessages = ({ route }) => {
         setIsLoading(true);
         const productData = await getProductById(authTokens, product);
         if (productData) {
-          // Fetch additional data for the product here (e.g., owner details)
+          // Fetch additional data for the product here
           const ownerDetails = await getUserData(productData.owner, authTokens);
           // Combine the product with its additional data
           const enrichedProductDetails = { ...productData, ownerDetails };
