@@ -24,12 +24,15 @@ import PasswordStrengthBar from "./PasswordStrengthBar";
 import ChecklistModal from "./ChecklistModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AuthContext from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const tokenEndpoint = `${baseEndpoint}/token/`;
 const signUpEndpoint = `${baseEndpoint}/users/`;
 
 const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
   // State for form fields
+  const { setIsNavigatingFromSignup } = useAuth();
+
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -172,6 +175,7 @@ const Signup = forwardRef(({ onSwitch, navigation }, ref) => {
         AsyncStorage.setItem("access_token", receivedToken);
         AsyncStorage.setItem("authTokens", JSON.stringify(tokenData));
         // navigation.navigate("Details", { userId, accessToken: receivedToken });
+        setIsNavigatingFromSignup(true);
         loginUser(signupEmail, signupPassword);
         resetFields();
         navigation.navigate("Details");

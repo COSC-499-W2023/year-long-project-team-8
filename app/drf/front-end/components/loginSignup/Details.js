@@ -14,12 +14,14 @@ import { baseEndpoint } from "../../config/config";
 import InputField from "./InputField";
 import ButtonLanding from "./ButtonLanding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../context/AuthContext";
 
 //const Details = ({ navigation, route }) => {
 const Details = ({ navigation }) => {
   //Setting accessToken and userId parameters passed from SignUp component
   //const accessToken = route.params?.accessToken;
   //const userId = route.params?.userId;
+  const { setIsNavigatingFromSignup } = useAuth();
 
   //Frontend logic
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -121,10 +123,8 @@ const Details = ({ navigation }) => {
       }
 
       const data = await response.json();
-
-      console.log("User profile updated:", data);
-      navigation.navigate("MainApp");
-      // navigation.navigate("Tabs", { userId, accessToken: accessToken });
+      setIsNavigatingFromSignup(false);
+      navigation.navigate("Tabs");
     } catch (error) {
       console.error("Error updating user profile:", error.message);
     }
@@ -233,7 +233,7 @@ const Details = ({ navigation }) => {
           </View>
           <Pressable
             style={DetailStyles.skipContainer}
-            onPress={() => navigation.navigate("MainApp")}
+            onPress={() => navigation.navigate("Tabs")}
           >
             <Text
               style={[

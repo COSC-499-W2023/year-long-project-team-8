@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.2)",
   },
   modalView: {
     marginHorizontal: 20,
@@ -197,6 +197,36 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  reviewInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginBottom: 5,
+  },
+  reviewInput: {
+    flex: 1,
+    marginRight: 8,
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    minHeight: 100,
+    maxHeight: 200,
+    fontSize: 16,
+    color: "#333333",
+    elevation: 2,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    textAlignVertical: "top", // Align text to the left
+  },
+  rating: {
+    alignSelf: "center",
+    marginBottom: 10,
+    color: "orange",
   },
 });
 

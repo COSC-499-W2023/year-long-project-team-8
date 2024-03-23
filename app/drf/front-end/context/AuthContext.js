@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [access, setAccessToken] = useState(null);
   const [refresh, setRefreshToken] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isNavigatingFromSignup, setIsNavigatingFromSignup] = useState(false);
 
   // Persists auth data wherever it is imported and in scope
   const loadAuthData = async () => {
@@ -137,6 +138,8 @@ export const AuthProvider = ({ children }) => {
     authTokens: authTokens,
     loginUser: loginUser,
     logoutUser: logoutUser,
+    isNavigatingFromSignup: isNavigatingFromSignup,
+    setIsNavigatingFromSignup: setIsNavigatingFromSignup,
   };
 
   // Update token on a time interval - call to refresh token endpoint and reset access token

@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
 import CustomText from "../CustomText";
+import { Rating } from "@kolking/react-native-rating";
 import {
   getChatMessages,
   sendChatMessage,
@@ -35,6 +36,8 @@ const UserMessages = ({ route }) => {
   const { authTokens, userId } = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPostReceived, setIsPostReceived] = useState(false);
+
   const flatListRef = useRef(null);
 
   const chatId = route.params?.chatId;
@@ -101,6 +104,11 @@ const UserMessages = ({ route }) => {
           // Combine the product with its additional data
           const enrichedProductDetails = { ...productData, ownerDetails };
           setProductDetails(enrichedProductDetails);
+          console.log("Is post recieved?", productData.PickedUp);
+          // Check if the product has been picked up and open the modal if it has
+          if (enrichedProductDetails.pickedUp) {
+            setModalVisible(true);
+          }
         }
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -112,6 +120,12 @@ const UserMessages = ({ route }) => {
     fetchReceiverDetails();
     fetchProductDetailsEnriched();
   }, [authTokens, chatId, sender, receiver, product]);
+
+  useEffect(() => {
+    if (isPostReceived) {
+      setModalVisible(true);
+    }
+  }, [isPostReceived]);
 
   const isSender = (message) => message.sender === userId;
   const receiverInitial = receiverDetails.firstname
@@ -240,6 +254,7 @@ const UserMessages = ({ route }) => {
             navigation={navigation}
             isGiver={userId === productDetails.owner}
             onGivenConfirm={onGivenConfirm}
+            pickedUp={productDetails.pickedUp}
           />
           <FlatList
             ref={flatListRef}
@@ -289,7 +304,7 @@ const UserMessages = ({ route }) => {
         </KeyboardAvoidingView>
       )}
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -310,9 +325,25 @@ const UserMessages = ({ route }) => {
               </View>
             </View>
             <CustomText style={styles.modalText}>
-              You are making the world a better place! Your post will now be
-              marked as given and will not be available anymore.
+              The post will now be marked as received and will not be available
+              anymore. You can leave a review now or come back to the chat to
+              leave a review later!
             </CustomText>
+            <Rating
+              size={30}
+              fillColor="#FF3B30"
+              spacing={5}
+              style={styles.rating}
+              scale={1}
+            />
+            <View style={styles.reviewInputContainer}>
+              <TextInput
+                multiline
+                style={styles.reviewInput}
+                placeholder="Leave a review..."
+                maxLength={500}
+              ></TextInput>
+            </View>
           </View>
         </View>
       </Modal>
