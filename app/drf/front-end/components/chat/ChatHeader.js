@@ -25,6 +25,7 @@ const ChatHeader = ({
   isGiver,
   onGivenConfirm,
   pickedUp = false,
+  setModalVisible,
 }) => {
   const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(
     productDetails.pickedUp
@@ -93,7 +94,7 @@ const ChatHeader = ({
       await updatePostCreated();
 
       Alert.alert("Success", "The post has been marked as picked up!", [
-        { text: "OK", onPress: () => navigation.navigate("Home") },
+        { text: "OK", onPress: () => setModalVisible(true) },
       ]);
     } catch (error) {
       console.error("Error marking post as picked up:", error);

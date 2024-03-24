@@ -21,6 +21,7 @@
     "@react-navigation/material-top-tabs": "^6.6.5",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.18",
+    "@rneui/themed": "^4.0.0-rc.8",
     "base-64": "^1.0.0",
     "expo": "~49.0.13",
     "expo-file-system": "~15.4.5",

@@ -13,16 +13,18 @@ import {
   Platform,
   Modal,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
 import CustomText from "../CustomText";
-import { Rating } from "@kolking/react-native-rating";
+import { Rating } from "@rneui/themed";
+
 import {
   getChatMessages,
   sendChatMessage,
   getUserData,
   getProductById,
+  createReview,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -37,6 +39,8 @@ const UserMessages = ({ route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isPostReceived, setIsPostReceived] = useState(false);
+  const [rating, setRating] = useState(3);
+  const [reviewText, setReviewText] = useState("");
 
   const flatListRef = useRef(null);
 
@@ -105,8 +109,7 @@ const UserMessages = ({ route }) => {
           const enrichedProductDetails = { ...productData, ownerDetails };
           setProductDetails(enrichedProductDetails);
           console.log("Is post recieved?", productData.PickedUp);
-          // Check if the product has been picked up and open the modal if it has
-          if (enrichedProductDetails.pickedUp) {
+          if (productData.pickedUp) {
             setModalVisible(true);
           }
         }
@@ -122,7 +125,7 @@ const UserMessages = ({ route }) => {
   }, [authTokens, chatId, sender, receiver, product]);
 
   useEffect(() => {
-    if (isPostReceived) {
+    if (productDetails.PickedUp) {
       setModalVisible(true);
     }
   }, [isPostReceived]);
@@ -232,6 +235,32 @@ const UserMessages = ({ route }) => {
     }
   }, [isLoading, messages]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (productDetails.pickedUp) {
+        setModalVisible(true);
+      }
+    }, [productDetails.pickedUp])
+  );
+
+  const giverId = productDetails.owner;
+  const receiverId = userId === productDetails.owner ? receiver : userId;
+
+  const updateRating = (newRating) => {
+    setRating(newRating);
+    console.log("Updated Rating:", newRating);
+  };
+
+  const submitReview = async () => {
+    try {
+      await createReview(giverId, receiverId, reviewText, rating, authTokens);
+      console.log("Review submitted successfully");
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {isLoading ? (
@@ -255,6 +284,7 @@ const UserMessages = ({ route }) => {
             isGiver={userId === productDetails.owner}
             onGivenConfirm={onGivenConfirm}
             pickedUp={productDetails.pickedUp}
+            setModalVisible={setModalVisible}
           />
           <FlatList
             ref={flatListRef}
@@ -330,20 +360,31 @@ const UserMessages = ({ route }) => {
               leave a review later!
             </CustomText>
             <Rating
-              size={30}
-              fillColor="#FF3B30"
-              spacing={5}
-              style={styles.rating}
-              scale={1}
+              fractions={1}
+              startingValue={rating}
+              jumpValue={0.5}
+              onFinishRating={updateRating}
+              imageSize={40}
             />
+
             <View style={styles.reviewInputContainer}>
               <TextInput
                 multiline
                 style={styles.reviewInput}
                 placeholder="Leave a review..."
                 maxLength={500}
-              ></TextInput>
+                value={reviewText}
+                onChangeText={setReviewText}
+              />
             </View>
+            <TouchableOpacity
+              style={styles.submitReviewButton}
+              onPress={submitReview}
+            >
+              <CustomText style={styles.submitReviewText} fontType={"title"}>
+                Submit Review
+              </CustomText>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

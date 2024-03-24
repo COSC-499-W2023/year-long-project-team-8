@@ -221,12 +221,23 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    textAlignVertical: "top", // Align text to the left
+    textAlignVertical: "top",
   },
   rating: {
     alignSelf: "center",
     marginBottom: 10,
     color: "orange",
+  },
+  submitReviewButton: {
+    backgroundColor: "#FFA500",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: "center",
+  },
+  submitReviewText: {
+    color: "white",
   },
 });
 

@@ -174,23 +174,25 @@ async function changePassword(
   }
 }
 //Create review function, giver of review has to be logged in user (userId)
-async function createReview(receiver, userId, content, rating, authTokens) {
+async function createReview(receiver, giver, content, rating, authTokens) {
   try {
-    const response = await fetch(`${baseEndpoint}/api/reviews/`, {
+    const response = await fetch(`${baseEndpoint}/reviews/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + String(authTokens.access),
       },
-      body: JSON.stringify({ receiver, userId, content, rating }),
+      body: JSON.stringify({ receiver, giver, content, rating }),
     });
 
     if (response.ok) {
       console.log("Review sent successfully in API helper");
     } else {
       const responseData = await response.json();
-      if (response.status === 400 && responseData.rating) {
-        throw new Error(responseData.rating[0]);
+      if (response.status === 400) {
+        throw new Error(
+          "Error sending review: " + JSON.stringify(responseData)
+        );
       } else {
         throw new Error("Error sending review: " + response.statusText);
       }
@@ -647,30 +649,6 @@ async function deleteProduct(authTokens, productId) {
   }
 }
 
-// Helper function to update the given status of a product
-async function updateProductGivenStatus(productId, isGiven, authTokens) {
-  try {
-    const response = await fetch(`${baseEndpoint}/products/${productId}/`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + String(authTokens.access),
-      },
-      body: JSON.stringify({ PickedUp: isGiven }),
-    });
-
-    if (response.status === 200) {
-      const updatedProduct = await response.json();
-      return updatedProduct;
-    } else {
-      throw new Error("Failed to update product given status");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Something went wrong updating product given status");
-  }
-}
-
 // Export all the functions
 export {
   filterCategory,
@@ -691,5 +669,4 @@ export {
   changePassword,
   toggleSavePost,
   createReview,
-  updateProductGivenStatus,
 };
