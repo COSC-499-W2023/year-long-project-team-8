@@ -46,23 +46,17 @@ const ChatComponent = ({
   useEffect(() => {
     const fetchChatId = async () => {
       try {
-        // Fetch chat list
         if (!authTokens) {
-          // Reset chat related states when authTokens are null (user logs out)
           setChatId("");
           setReceiver("");
           setProduct("");
           return;
         }
         const chats = await getChatList(authTokens);
-        // console.log("CHats obtained from getChatList", chats);
-        // console.log("Prod owner", prodOwner);
-        // console.log("product id", product_id);
-        // Find the chat with the matching userId and listing owner
-        const chat = chats.find((chat) => chat.receiver === prodOwner);
-        // console.log("chat from product owner in prod details:", chat);
+        const chat = chats.find(
+          (chat) => chat.receiver === prodOwner && chat.product === product_id
+        );
         if (chat) {
-          // Setting parameters for sendChat call
           setChatId(chat.id);
           setReceiver(chat.receiver);
           setProduct(chat.product);
@@ -113,8 +107,6 @@ const ChatComponent = ({
   // }, [userId, authTokens]);
 
   const handleSend = async () => {
-    // console.log("Message to send:", messages);
-
     try {
       // Send the chat message
       const data = await sendChatMessage(
@@ -127,7 +119,6 @@ const ChatComponent = ({
 
       // If chatId is already set
       if (chatId !== "") {
-        setMessages([...messages, data]);
         setMessages(initialMessage);
         navigation.navigate("UserMessages", {
           chatId: chatId,
@@ -137,7 +128,7 @@ const ChatComponent = ({
         });
       } else {
         // If chatId is not set (creating a new chat)
-        setMessages("");
+        setMessages(initialMessage);
         // Set the chatId of the new chat
         setChatId(data.id);
         navigation.navigate("UserMessages", {
@@ -146,7 +137,6 @@ const ChatComponent = ({
           receiver: receiver,
           product: product,
         });
-        setMessages(initialMessage);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -166,26 +156,24 @@ const ChatComponent = ({
 
   const handleChatPress = async () => {
     try {
-      if (chatId !== "") {
-        navigation.navigate("UserMessages", {
-          chatId: chatId,
-          sender: userId,
-          receiver: receiver,
-          product: product,
-        });
-      } else {
-        setMessages([...messages, data]);
-        setMessages(initialMessage);
+      if (chatId === "") {
         const data = await sendChatMessage(
           userId,
           authTokens,
-          messages,
+          initialMessage,
           receiver,
           product
         );
         setChatId(data.id);
         navigation.navigate("UserMessages", {
           chatId: data.id,
+          sender: userId,
+          receiver: receiver,
+          product: product,
+        });
+      } else {
+        navigation.navigate("UserMessages", {
+          chatId: chatId,
           sender: userId,
           receiver: receiver,
           product: product,
