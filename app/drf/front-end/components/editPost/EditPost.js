@@ -377,11 +377,9 @@ const EditPost = () => {
           <Text style={styles.header}>Pick Up Location</Text>
           <GooglePlacesAutocomplete
             ref={autoCompleteRef}
-            defaultValue={location} // Set the defaultValue to the current location
-            // placeholder={post.location}
+            // defaultValue={location}
             placeholder="Enter your address"
             // onPress={handleAddressSelection2}
-            // this is for Google Places API endpoint. Both versions work, not sure what is more efficient?
             onPress={handleAddressSelection}
             fetchDetails
             query={{
