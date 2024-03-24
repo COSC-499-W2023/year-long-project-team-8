@@ -256,9 +256,15 @@ const UserMessages = ({ route }) => {
       await createReview(giverId, receiverId, reviewText, rating, authTokens);
       console.log("Review submitted successfully");
       setModalVisible(false);
+      resetReview();
     } catch (error) {
       console.error("Error submitting review:", error);
     }
+  };
+
+  const resetReview = () => {
+    setRating(3);
+    setReviewText("");
   };
 
   return (
@@ -339,13 +345,18 @@ const UserMessages = ({ route }) => {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          resetReview();
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
               style={styles.modalCloseButton}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                setRating(3); // Reset the rating to the default value
+                setReviewText(""); // Clear the review text
+              }}
             >
               <MaterialIcons name="close" size={24} color="grey" />
             </TouchableOpacity>

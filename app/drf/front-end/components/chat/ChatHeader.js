@@ -24,7 +24,7 @@ const ChatHeader = ({
   navigation,
   isGiver,
   onGivenConfirm,
-  pickedUp = false,
+  pickedUp,
   setModalVisible,
 }) => {
   const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(
@@ -166,11 +166,11 @@ const ChatHeader = ({
                   <View
                     style={[
                       styles.doneButton,
-                      isDoneButtonPressed && { backgroundColor: "#6fc276" },
+                      pickedUp && { backgroundColor: "#6fc276" },
                     ]}
                   >
                     <CustomText style={styles.doneButtonText}>
-                      Food Recieved
+                      Food Received
                     </CustomText>
                   </View>
                 </Animated.View>
