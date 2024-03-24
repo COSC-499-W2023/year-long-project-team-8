@@ -53,6 +53,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
   const { authTokens, userId } = useContext(AuthContext);
   const { updatePostCreated } = useAppState();
   const [location, setLocation] = useState("");
+  const autoCompleteRef = useRef();
 
   // Set tomorrow's date as the default selected date
   useEffect(() => {
@@ -186,6 +187,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
     setIsContentValid(true);
     setIsTitleValid(true);
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    autoCompleteRef.current.setAddressText("");
   };
 
   const handleAddressSelection = (data, details = null) => {
@@ -275,6 +277,7 @@ const AddListing = ({ navigation, onPostCreation }) => {
         <View>
           <Text style={styles.header}>Pick Up Location</Text>
           <GooglePlacesAutocomplete
+            ref={autoCompleteRef}
             placeholder="Enter Address"
             // onPress={handleAddressSelection2}
             // this is for Google Places API endpoint. Both versions work, not sure what is more efficient?

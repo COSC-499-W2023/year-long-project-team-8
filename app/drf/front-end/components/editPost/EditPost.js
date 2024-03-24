@@ -8,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   View,
+  Text,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -25,6 +26,7 @@ import styles from "./styles";
 import CustomAlertModal from "../CustomAlertModal";
 import { updateProduct } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_API_KEY } from "@env";
 
 const EditPost = () => {
@@ -51,6 +53,10 @@ const EditPost = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [location, setLocation] = useState("");
+  const autoCompleteRef = useRef();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -81,8 +87,17 @@ const EditPost = () => {
   };
 
   useEffect(() => {
+    if (autoCompleteRef.current && post.location) {
+      autoCompleteRef.current.setAddressText(post.location);
+    }
+  }, [post]);
+
+  useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
+    setLocation(post.location);
+    setLatitude(post.latitude);
+    setLongitude(post.longitude);
     setSelectedCategories(
       post.categories
         ? post.categories.split(",").map((category) => category.trim())
@@ -163,7 +178,9 @@ const EditPost = () => {
         // Reset the fields to their initial state
         setTitle("");
         setContent("");
-        setSelectedCategories([]);
+        setLatitude("");
+        setLongitude("");
+        setLocation("");
         setSelectedAllergens([]);
         setImages([]);
         setIsContentValid(true);
@@ -202,6 +219,9 @@ const EditPost = () => {
       categories: selectedCategories.join(", "),
       allergens: selectedAllergens.join(", "),
       best_before: selectedDate.toISOString().split("T")[0],
+      latitude: latitude,
+      longitude: longitude,
+      location: location,
     };
 
     console.log("new images", images);
@@ -225,6 +245,9 @@ const EditPost = () => {
     // Reset title, content, categories, allergens, and best before date
     setTitle(post.title);
     setContent(post.content);
+    setLocation(post.location);
+    setLatitude(post.latitude);
+    setLongitude(post.longitude);
     setSelectedCategories(
       post.categories
         ? post.categories.split(",").map((category) => category.trim())
@@ -253,6 +276,13 @@ const EditPost = () => {
     setIsContentValid(true);
     setIsTitleValid(true);
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+
+    if (autoCompleteRef.current && post.location) {
+      autoCompleteRef.current.setAddressText(location);
+    } else {
+      autoCompleteRef.current.setAddressText("");
+    }
+
     navigation.goBack();
   };
 
@@ -260,6 +290,9 @@ const EditPost = () => {
     // Reset title, content, categories, allergens, and best before date
     setTitle(post.title);
     setContent(post.content);
+    setLocation(post.location);
+    setLatitude(post.latitude);
+    setLongitude(post.longitude);
     setSelectedCategories(
       post.categories
         ? post.categories.split(",").map((category) => category.trim())
@@ -287,7 +320,30 @@ const EditPost = () => {
 
     setIsContentValid(true);
     setIsTitleValid(true);
+    if (autoCompleteRef.current && post.location) {
+      autoCompleteRef.current.setAddressText(location);
+    } else {
+      autoCompleteRef.current.setAddressText("");
+    }
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  };
+
+  const handleAddressSelection = (data, details = null) => {
+    if (details) {
+      const { formatted_address } = details;
+      const { geometry } = details;
+      const { location } = geometry;
+      const { lat, lng } = location;
+      setLatitude(lat);
+      setLongitude(lng);
+      setLocation(formatted_address);
+      console.log("formatted address: ", formatted_address);
+      console.log("Latitude:", lat);
+      console.log("Longitude:", lng);
+      console.log("DETAILS", details);
+
+      // You can store lat and lng in state variables or pass them to your form submission function
+    }
   };
 
   if (isLoading) {
@@ -317,53 +373,91 @@ const EditPost = () => {
           isValid={isContentValid}
           setIsValid={setIsContentValid}
         />
+        <View>
+          <Text style={styles.header}>Pick Up Location</Text>
+          <GooglePlacesAutocomplete
+            ref={autoCompleteRef}
+            defaultValue={location} // Set the defaultValue to the current location
+            // placeholder={post.location}
+            placeholder="Enter your address"
+            // onPress={handleAddressSelection2}
+            // this is for Google Places API endpoint. Both versions work, not sure what is more efficient?
+            onPress={handleAddressSelection}
+            fetchDetails
+            query={{
+              key: GOOGLE_API_KEY, //THIS API COSTS MONEY SO DON'T LEAK IT
+              language: "en",
+              components: "country:ca", // Restrict to Canada
+            }}
+            styles={{
+              textInputContainer: {
+                width: "100%",
+                backgroundColor: "rgba(0,0,0,0)",
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+              },
+              textInput: {
+                marginLeft: 0,
+                marginRight: 0,
+                height: 38,
+                color: "#5d5d5d",
+                fontSize: 16,
+              },
+              predefinedPlacesDescription: {
+                color: "#1faadb",
+              },
+            }}
+            listViewDisplayed="auto"
+            disableScroll={true} // Uncomment this line if necessary
+          />
 
-        {/* Categories */}
-        <CategoriesSelector
-          availableCategories={availableCategories}
-          selectedCategories={selectedCategories}
-          toggleCategory={toggleCategory}
-        />
+          {/* Categories */}
+          <CategoriesSelector
+            availableCategories={availableCategories}
+            selectedCategories={selectedCategories}
+            toggleCategory={toggleCategory}
+          />
 
-        {/*Allergens*/}
-        <AllergensSelector
-          availableAllergens={availableAllergens}
-          selectedAllergens={selectedAllergens}
-          toggleAllergen={toggleAllergen}
-        />
+          {/*Allergens*/}
+          <AllergensSelector
+            availableAllergens={availableAllergens}
+            selectedAllergens={selectedAllergens}
+            toggleAllergen={toggleAllergen}
+          />
 
-        {/*Date*/}
-        <DatePicker
-          bestBefore={bestBefore}
-          setBestBefore={setBestBefore}
-          selectedDate={selectedDate}
-          handleDateChange={handleDateChange}
-          showDatePicker={showDatePicker}
-          isDatePickerVisible={isDatePickerVisible}
-          minimumDate={tomorrow}
-        />
+          {/*Date*/}
+          <DatePicker
+            bestBefore={bestBefore}
+            setBestBefore={setBestBefore}
+            selectedDate={selectedDate}
+            handleDateChange={handleDateChange}
+            showDatePicker={showDatePicker}
+            isDatePickerVisible={isDatePickerVisible}
+            minimumDate={tomorrow}
+          />
 
-        {/*Images*/}
-        <ImagePickerComponent
-          images={images}
-          onImagesUpdated={(newImages) => setImages(newImages)}
-        />
+          {/*Images*/}
+          <ImagePickerComponent
+            images={images}
+            onImagesUpdated={(newImages) => setImages(newImages)}
+          />
 
-        {/*Submit*/}
-        <SubmitButton
-          handleUpdatePost={handleUpdatePost}
-          title={"UPDATE POST"}
-        />
+          {/*Submit*/}
+          <SubmitButton
+            handleUpdatePost={handleUpdatePost}
+            title={"UPDATE POST"}
+          />
 
-        {/*Cancel*/}
-        <CancelButton handleCancel={handleReset} />
+          {/*Cancel*/}
+          <CancelButton handleCancel={handleReset} />
 
-        {/* Custom Alert Modal */}
-        <CustomAlertModal
-          isVisible={isAlertVisible}
-          message={alertMessage}
-          onClose={() => setIsAlertVisible(false)}
-        />
+          {/* Custom Alert Modal */}
+          <CustomAlertModal
+            isVisible={isAlertVisible}
+            message={alertMessage}
+            onClose={() => setIsAlertVisible(false)}
+          />
+        </View>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
