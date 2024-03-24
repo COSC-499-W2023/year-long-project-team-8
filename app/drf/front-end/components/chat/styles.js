@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   modalCloseButton: {
     alignSelf: "flex-end",
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingTop: 10,
   },
   modalTitle: {

@@ -127,10 +127,10 @@ const UserMessages = ({ route }) => {
   }, [authTokens, chatId, sender, receiver, product]);
 
   useEffect(() => {
-    if (productDetails.PickedUp) {
+    if (productDetails.pickedUp && productDetails.id === product) {
       setModalVisible(true);
     }
-  }, [isPostReceived]);
+  }, [productDetails, product]);
 
   const fetchProductDetailsEnriched = async () => {
     try {
