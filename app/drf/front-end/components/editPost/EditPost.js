@@ -91,6 +91,11 @@ const EditPost = () => {
       autoCompleteRef.current.setAddressText(post.location);
     }
   }, [post]);
+  useEffect(() => {
+    if (autoCompleteRef.current && post.location) {
+      autoCompleteRef.current.setAddressText(post.location);
+    }
+  }, []);
 
   useEffect(() => {
     setTitle(post.title);
@@ -213,16 +218,27 @@ const EditPost = () => {
       return;
     }
 
-    const newPost = {
-      title: title,
-      content: content,
-      categories: selectedCategories.join(", "),
-      allergens: selectedAllergens.join(", "),
-      best_before: selectedDate.toISOString().split("T")[0],
-      latitude: latitude,
-      longitude: longitude,
-      location: location,
-    };
+    let newPost;
+    if (latitude && longitude) {
+      newPost = {
+        title: title,
+        content: content,
+        categories: selectedCategories.join(", "),
+        allergens: selectedAllergens.join(", "),
+        best_before: selectedDate.toISOString().split("T")[0],
+        latitude: latitude,
+        longitude: longitude,
+        location: location,
+      };
+    } else {
+      newPost = {
+        title: title,
+        content: content,
+        categories: selectedCategories.join(", "),
+        allergens: selectedAllergens.join(", "),
+        best_before: selectedDate.toISOString().split("T")[0],
+      };
+    }
 
     console.log("new images", images);
     console.log(post.id);
@@ -321,7 +337,7 @@ const EditPost = () => {
     setIsContentValid(true);
     setIsTitleValid(true);
     if (autoCompleteRef.current && post.location) {
-      autoCompleteRef.current.setAddressText(location);
+      autoCompleteRef.current.setAddressText(post.location);
     } else {
       autoCompleteRef.current.setAddressText("");
     }
@@ -379,7 +395,6 @@ const EditPost = () => {
             ref={autoCompleteRef}
             // defaultValue={location}
             placeholder="Enter your address"
-            // onPress={handleAddressSelection2}
             onPress={handleAddressSelection}
             fetchDetails
             query={{

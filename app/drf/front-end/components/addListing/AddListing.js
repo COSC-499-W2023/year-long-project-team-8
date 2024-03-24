@@ -170,6 +170,9 @@ const AddListing = ({ navigation, onPostCreation }) => {
     setContent("");
     setSelectedCategories([]);
     setSelectedAllergens([]);
+    setLocation("");
+    setLatitude("");
+    setLongitude("");
 
     // Reset best before date to tomorrow
     setSelectedDate(tomorrow);
