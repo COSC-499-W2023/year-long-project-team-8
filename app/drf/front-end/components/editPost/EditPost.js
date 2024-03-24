@@ -345,6 +345,7 @@ const EditPost = () => {
   };
 
   const handleAddressSelection = (data, details = null) => {
+    console.log("onpress clicked");
     if (details) {
       const { formatted_address } = details;
       const { geometry } = details;
@@ -373,7 +374,11 @@ const EditPost = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
+      <ScrollView
+        style={styles.scrollContainer}
+        ref={scrollViewRef}
+        keyboardShouldPersistTaps="handled"
+      >
         {/*Title*/}
         <TitleInput
           title={title}
