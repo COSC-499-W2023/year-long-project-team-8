@@ -41,6 +41,7 @@ const UserMessages = ({ route }) => {
   const [isPostReceived, setIsPostReceived] = useState(false);
   const [rating, setRating] = useState(3);
   const [reviewText, setReviewText] = useState("");
+  const [reviewError, setReviewError] = useState("");
 
   const flatListRef = useRef(null);
 
@@ -79,9 +80,9 @@ const UserMessages = ({ route }) => {
         setIsLoading(true);
         const chatData = await getChatMessages(authTokens, chatId);
         setMessages(chatData.messages);
-        console.log("Message objects fetched from getChatMessages");
-        console.log("Sender:", chatData.sender);
-        console.log("Receiver:", chatData.receiver);
+        // console.log("Message objects fetched from getChatMessages");
+        // console.log("Sender:", chatData.sender);
+        // console.log("Receiver:", chatData.receiver);
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
@@ -108,7 +109,7 @@ const UserMessages = ({ route }) => {
           // Combine the product with its additional data
           const enrichedProductDetails = { ...productData, ownerDetails };
           setProductDetails(enrichedProductDetails);
-          console.log("Is post recieved?", productData.PickedUp);
+          // console.log("Is post recieved?", productData.PickedUp);
           if (productData.pickedUp) {
             setModalVisible(true);
           }
@@ -130,13 +131,31 @@ const UserMessages = ({ route }) => {
     }
   }, [isPostReceived]);
 
+  const fetchProductDetailsEnriched = async () => {
+    try {
+      setIsLoading(true);
+      const productData = await getProductById(authTokens, product);
+      if (productData) {
+        const ownerDetails = await getUserData(productData.owner, authTokens);
+        const enrichedProductDetails = { ...productData, ownerDetails };
+        setProductDetails(enrichedProductDetails);
+        if (productData.pickedUp) {
+          setModalVisible(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+    setIsLoading(false);
+  };
+
   const isSender = (message) => message.sender === userId;
   const receiverInitial = receiverDetails.firstname
     ? receiverDetails.firstname.charAt(0).toUpperCase()
     : receiverDetails.email
       ? receiverDetails.email.charAt(0).toUpperCase()
       : "?";
-  console.log("reciever details", receiverDetails);
+  // console.log("reciever details", receiverDetails);
   const renderMessageBubble = ({ item }) => (
     <View
       style={{
@@ -195,9 +214,9 @@ const UserMessages = ({ route }) => {
         // If the message is empty, set a default message
         messageToSend = "Hi! Can I get this plate?";
       }
-      console.log("In rec details userId", userId);
+      // console.log("In rec details userId", userId);
       const userDetailsId = sender !== userId ? sender : receiver;
-      console.log("In send message id", userDetailsId);
+      // console.log("In send message id", userDetailsId);
       const data = await sendChatMessage(
         userId,
         authTokens,
@@ -213,10 +232,10 @@ const UserMessages = ({ route }) => {
     }
   };
 
-  console.log("Rec details", receiverDetails);
-  console.log("Receiver route params", receiver);
-  console.log("Receiver.id", receiverDetails.id);
-  console.log("Prod details chat", productDetails);
+  // console.log("Rec details", receiverDetails);
+  // console.log("Receiver route params", receiver);
+  // console.log("Receiver.id", receiverDetails.id);
+  // console.log("Prod details chat", productDetails);
   const onRefresh = async () => {
     setRefreshing(true); // Set refreshing state to true
     try {
@@ -252,11 +271,17 @@ const UserMessages = ({ route }) => {
   };
 
   const submitReview = async () => {
+    if (reviewText.trim() === "") {
+      setReviewError("Review text cannot be empty.");
+      return;
+    }
+
     try {
       await createReview(giverId, receiverId, reviewText, rating, authTokens);
       console.log("Review submitted successfully");
       setModalVisible(false);
       resetReview();
+      setReviewError("");
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -291,6 +316,7 @@ const UserMessages = ({ route }) => {
             onGivenConfirm={onGivenConfirm}
             pickedUp={productDetails.pickedUp}
             setModalVisible={setModalVisible}
+            onPostReceived={fetchProductDetailsEnriched}
           />
           <FlatList
             ref={flatListRef}
@@ -388,6 +414,9 @@ const UserMessages = ({ route }) => {
                 onChangeText={setReviewText}
               />
             </View>
+            {reviewError ? (
+              <CustomText style={styles.errorText}>{reviewError}</CustomText>
+            ) : null}
             <TouchableOpacity
               style={styles.submitReviewButton}
               onPress={submitReview}

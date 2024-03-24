@@ -26,6 +26,7 @@ const ChatHeader = ({
   onGivenConfirm,
   pickedUp,
   setModalVisible,
+  onPostReceived,
 }) => {
   const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(
     productDetails.pickedUp
@@ -85,6 +86,14 @@ const ChatHeader = ({
   };
 
   const handlePickedUp = async () => {
+    if (pickedUp) {
+      Alert.alert(
+        "Already Marked",
+        "This post has already been marked as received."
+      );
+      return;
+    }
+
     const formData = {
       pickedUp: true,
     };
@@ -92,10 +101,7 @@ const ChatHeader = ({
     try {
       await updateProduct(formData, null, authTokens, productDetails.id);
       await updatePostCreated();
-
-      Alert.alert("Success", "The post has been marked as picked up!", [
-        { text: "OK", onPress: () => setModalVisible(true) },
-      ]);
+      onPostReceived();
     } catch (error) {
       console.error("Error marking post as picked up:", error);
       Alert.alert(

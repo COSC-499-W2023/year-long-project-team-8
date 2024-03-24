@@ -35,13 +35,13 @@ const ChatComponent = ({
   const chatListing = listing;
   const prodOwner = listing.owner;
   const product_id = listing.id;
-  console.log("Chat listing", chatListing);
-  console.log("Product owner (receiver)", prodOwner);
+  // console.log("Chat listing", chatListing);
+  // console.log("Product owner (receiver)", prodOwner);
 
   const chat = require("../../assets/icons/speech-bubble.png");
   const share = require("../../assets/icons/share-arrow.png");
   const user = require("../../assets/icons/user-profile.png");
-  console.log("Navigation prop in ChatComponent:", navigation);
+  // console.log("Navigation prop in ChatComponent:", navigation);
 
   useEffect(() => {
     const fetchChatId = async () => {
@@ -55,12 +55,12 @@ const ChatComponent = ({
           return;
         }
         const chats = await getChatList(authTokens);
-        console.log("CHats obtained from getChatList", chats);
-        console.log("Prod owner", prodOwner);
-        console.log("product id", product_id);
+        // console.log("CHats obtained from getChatList", chats);
+        // console.log("Prod owner", prodOwner);
+        // console.log("product id", product_id);
         // Find the chat with the matching userId and listing owner
         const chat = chats.find((chat) => chat.receiver === prodOwner);
-        console.log("chat from product owner in prod details:", chat);
+        // console.log("chat from product owner in prod details:", chat);
         if (chat) {
           // Setting parameters for sendChat call
           setChatId(chat.id);
@@ -113,7 +113,7 @@ const ChatComponent = ({
   // }, [userId, authTokens]);
 
   const handleSend = async () => {
-    console.log("Message to send:", messages);
+    // console.log("Message to send:", messages);
 
     try {
       // Send the chat message
@@ -154,7 +154,7 @@ const ChatComponent = ({
   };
 
   const handleSavePress = async () => {
-    console.log(`Save button pressed`);
+    // console.log(`Save button pressed`);
 
     try {
       const data = await toggleSavePost(authTokens, userId, product_id);

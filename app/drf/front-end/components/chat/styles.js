@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: "80%",
+    width: "90%",
   },
   modalHeader: {
     flexDirection: "row",
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 8,
+    marginTop: 10,
     marginBottom: 5,
   },
   reviewInput: {
@@ -212,8 +213,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    minHeight: 100,
-    maxHeight: 200,
+    minHeight: 200,
+    maxHeight: 300,
     fontSize: 16,
     color: "#333333",
     elevation: 2,
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
   },
   submitReviewButton: {
     backgroundColor: "#FFA500",
-    paddingVertical: 10,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 10,
@@ -238,6 +239,12 @@ const styles = StyleSheet.create({
   },
   submitReviewText: {
     color: "white",
+    fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginVertical: 5,
   },
 });
 
