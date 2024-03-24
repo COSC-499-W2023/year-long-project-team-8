@@ -17,7 +17,8 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
 import styles from "./styles";
 import CustomText from "../CustomText";
-import { Rating } from "@rneui/themed";
+import { Rating } from "react-native-ratings";
+import Toast from "react-native-root-toast";
 
 import {
   getChatMessages,
@@ -270,6 +271,10 @@ const UserMessages = ({ route }) => {
     console.log("Updated Rating:", newRating);
   };
 
+  useEffect(() => {
+    console.log("Updated Rating State:", rating);
+  }, [rating]);
+
   const submitReview = async () => {
     if (reviewText.trim() === "") {
       setReviewError("Review text cannot be empty.");
@@ -282,6 +287,21 @@ const UserMessages = ({ route }) => {
       setModalVisible(false);
       resetReview();
       setReviewError("");
+
+      // Show success toast message
+      Toast.show("Review submitted successfully", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        backgroundColor: "#D5FDCE",
+        textColor: "black",
+        opacity: 1,
+      });
+
+      // Navigate back to the chat list
+      navigation.navigate("Tabs", { screen: "Chat" });
     } catch (error) {
       console.error("Error submitting review:", error);
     }
