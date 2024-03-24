@@ -257,7 +257,7 @@ const UserMessages = ({ route }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (productDetails.pickedUp) {
+      if (productDetails.pickedUp && productDetails.id === product) {
         setModalVisible(true);
       }
     }, [productDetails.pickedUp])
