@@ -115,7 +115,7 @@ function renderProducts(data) {
   // Example function to render the products
   // You can customize this based on your needs
   data.forEach((product) => {
-    // Add your rendering logic here (e.g., append to a list or update the DOM)
+    // Add your rendering c here (e.g., append to a list or update the DOM)
   });
 }
 
@@ -146,25 +146,59 @@ async function updateUserData(userId, authTokens, updatedData) {
 }
 
 // Helper function for password reset
-async function changePassword(email, current_password, new_password, authTokens){
+async function changePassword(
+  email,
+  current_password,
+  new_password,
+  authTokens
+) {
   try {
     const response = await fetch(`${baseEndpoint}/auth/change-password/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: "Bearer " + String(authTokens.access),
       },
       body: JSON.stringify({ email, current_password, new_password }),
     });
 
     if (response.ok) {
-      console.log('Password changed successful api help');
-    } else if(response.status === 401) {
+      console.log("Password changed successful api help");
+    } else if (response.status === 401) {
       throw new Error("Current password is incorrect");
     } else {
-      console.error('Error in change password API helper:', response);
+      console.error("Error in change password API helper:", response);
     }
   } catch (error) {
+    throw error;
+  }
+}
+//Create review function, giver of review has to be logged in user (userId)
+async function createReview(receiver, giver, content, rating, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/reviews/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+      body: JSON.stringify({ receiver, giver, content, rating }),
+    });
+
+    if (response.ok) {
+      console.log("Review sent successfully in API helper");
+    } else {
+      const responseData = await response.json();
+      if (response.status === 400) {
+        throw new Error(
+          "Error sending review: " + JSON.stringify(responseData)
+        );
+      } else {
+        throw new Error("Error sending review: " + response.statusText);
+      }
+    }
+  } catch (error) {
+    console.error("Error in sending review API helper:", error);
     throw error;
   }
 }
@@ -291,17 +325,17 @@ async function createProductImages(productData, imageFiles, authTokens) {
   }
 }
 
-async function toggleSavePost(authTokens, userId, product_id){
-  try{
-    const response = await fetch(`${baseEndpoint}/save_posts/`,
-    {
-      method: 'PATCH',
+async function toggleSavePost(authTokens, userId, product_id) {
+  try {
+    const response = await fetch(`${baseEndpoint}/save_posts/`, {
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`,
-      }, body: JSON.stringify({
-        userId : userId,
-        product_id : product_id,
+      },
+      body: JSON.stringify({
+        userId: userId,
+        product_id: product_id,
       }),
     });
 
@@ -311,25 +345,25 @@ async function toggleSavePost(authTokens, userId, product_id){
     } else {
       throw new Error("Error toggling save post API");
     }
-    } catch (error) {
-      console.error("Error in toggling save post API:", error);
-      throw error;
+  } catch (error) {
+    console.error("Error in toggling save post API:", error);
+    throw error;
   }
 }
 
 async function getChatList(authTokens) {
   try {
     const response = await fetch(`${baseEndpoint}/chat/list/`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + String(authTokens.access),
-      }
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
     });
 
     if (!response.ok) {
-      console.log('Access token for chat list', authTokens.access);
-      throw new Error('Failed to fetch chat list');
+      console.log("Access token for chat list", authTokens.access);
+      throw new Error("Failed to fetch chat list");
     }
 
     const data = await response.json();
@@ -353,7 +387,7 @@ async function getChatMessages(authTokens, chatId) {
     if (response.ok) {
       const data = await response.json();
       // Map the chat data to a more suitable format
-      const messages = data.map(message => ({
+      const messages = data.map((message) => ({
         id: message.id,
         sender: message.sender,
         receiver: message.receiver,
@@ -362,9 +396,9 @@ async function getChatMessages(authTokens, chatId) {
       }));
       return {
         messages: messages,
-        sender: data[0].sender, 
-        receiver: data[0].receiver, 
-      };   
+        sender: data[0].sender,
+        receiver: data[0].receiver,
+      };
     } else {
       throw new Error("Error fetching chat messages");
     }
@@ -375,19 +409,26 @@ async function getChatMessages(authTokens, chatId) {
 }
 
 // Helper function to send a chat message
-async function sendChatMessage(userId, authTokens, newMessage, receiver, product) {
+async function sendChatMessage(
+  userId,
+  authTokens,
+  newMessage,
+  receiver,
+  product
+) {
   try {
     const response = await fetch(`${baseEndpoint}/chat/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`,
       },
-      body: JSON.stringify({ 
-      sender: userId, 
-      receiver: receiver, 
-      product: product,           
-      message: newMessage, }),
+      body: JSON.stringify({
+        sender: userId,
+        receiver: receiver,
+        product: product,
+        message: newMessage,
+      }),
     });
 
     if (response.ok) {
@@ -396,9 +437,9 @@ async function sendChatMessage(userId, authTokens, newMessage, receiver, product
     } else {
       throw new Error("Error sending chat message API");
     }
-    } catch (error) {
-      console.error("Error:", error);
-      throw error;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
   }
 }
 async function getProductById(authTokens, productId) {
@@ -518,16 +559,16 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
       await Promise.all(
         imageFiles.map(async (fileUri, index) => {
           // Check if the URI is a local file URI
-          if (fileUri.startsWith('file://')) {
+          if (fileUri.startsWith("file://")) {
             const uniqueFilename = `image_${index}_${Math.random().toString(36).substring(7)}.jpg`;
             const fileContent = await FileSystem.readAsStringAsync(fileUri, {
               encoding: FileSystem.EncodingType.Base64,
             });
-            formData.append('images', {
+            formData.append("images", {
               uri: fileUri,
-              type: 'image/jpeg', 
+              type: "image/jpeg",
               name: uniqueFilename,
-              data: fileContent, 
+              data: fileContent,
             });
           } else {
             // Download the image and get the local URI
@@ -536,11 +577,11 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
             const fileContent = await FileSystem.readAsStringAsync(localUri, {
               encoding: FileSystem.EncodingType.Base64,
             });
-            formData.append('images', {
+            formData.append("images", {
               uri: localUri,
-              type: 'image/jpeg', 
+              type: "image/jpeg",
               name: uniqueFilename,
-              data: fileContent, 
+              data: fileContent,
             });
           }
         })
@@ -572,17 +613,18 @@ async function updateProduct(productData, imageFiles, authTokens, productId) {
   }
 }
 
-
 async function downloadImage(url) {
   try {
-    const { uri } = await FileSystem.downloadAsync(url, FileSystem.documentDirectory + 'downloadedImage.jpg');
+    const { uri } = await FileSystem.downloadAsync(
+      url,
+      FileSystem.documentDirectory + "downloadedImage.jpg"
+    );
     return uri;
   } catch (error) {
-    console.error('Error downloading image:', error);
+    console.error("Error downloading image:", error);
     throw error;
   }
 }
-
 
 async function deleteProduct(authTokens, productId) {
   try {
@@ -607,7 +649,6 @@ async function deleteProduct(authTokens, productId) {
   }
 }
 
-
 // Export all the functions
 export {
   filterCategory,
@@ -627,4 +668,5 @@ export {
   getProductById,
   changePassword,
   toggleSavePost,
+  createReview,
 };

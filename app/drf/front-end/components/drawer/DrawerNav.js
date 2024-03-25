@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { useNavigationState } from "@react-navigation/native";
 import Tabs from "../tabs/BottomTabs";
 import DrawerProps from "./DrawerProps";
 import SettingsPage from "../settingsPage/Settings";
@@ -13,6 +14,8 @@ import EditProfilePage from "../editProfile/editProfileMain";
 import ChangeEmail from "../settingsPage/ChangeEmail";
 import ChangePassword from "../settingsPage/ChangePassword";
 import SavedPosts from "../savedPosts/SavedPosts";
+import UserMessages from "../chat/UserMessages";
+import Landing from "../landing/Landing";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -33,8 +36,8 @@ const DrawerNav = ({ navigation }) => {
     }
     return route.name;
   };
-
-  const activeRouteName = getActiveRouteName(navigation.getState());
+  const navigationState = useNavigationState((state) => state);
+  const activeRouteName = getActiveRouteName(navigationState);
 
   return (
     <Drawer.Navigator
@@ -270,6 +273,22 @@ const DrawerNav = ({ navigation }) => {
             <Image source={logo} style={{ width: 200, height: 40 }} />
           ),
         })}
+      />
+      <Drawer.Screen
+        name="UserMessages"
+        component={UserMessages}
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Landing"
+        component={Landing}
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerShown: false,
+        }}
       />
     </Drawer.Navigator>
   );

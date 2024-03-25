@@ -838,3 +838,47 @@
 |   5   |    ✓       |           |
 |   6 |      ✓      |          |
 
+### Work Period
+ - Mar 18 - Mar 24, 2024
+
+### Individual Peer Evaluation
+![Alt text](img/t2week_8_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- Create and configure .env files
+- deletion of chat if picked up and chatlist refinemets with alex
+- check if email in use
+- API helper for creating reviews
+  
+
+### Current Student Tasks on Project Board in progress
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #235 Deletion of chat if product is marked as picked up or deleted
+- #213 Correct error message if email is in use
+- #328 .env file configuration
+- #327 API helper for creating review
+
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1   |           |    ✓       |
+|   2  |             |    ✓     |
+|   3  |     ✓      |          |
+|   4 |      ✓      |         |
+
+

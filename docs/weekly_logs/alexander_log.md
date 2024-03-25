@@ -502,6 +502,30 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 
 -   Front end has been released for testing in google play with unfinished code. Will be updated once finished.
 
+### Work Period
+
+-   March 18 - March 24, 2024
+
+### Task Types
+
+![ar_w23](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/cb00f87b-8442-4fe4-8e88-75839a588b05)
+
+
+### Recap of Students Goals
+
+-   Reviews #321
+
+### Student Tasks on Project Board
+
+-   #1 Reviews
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+| --- | --- | --- |
+| 1 | ✓ |  |
+
+
 
 
 

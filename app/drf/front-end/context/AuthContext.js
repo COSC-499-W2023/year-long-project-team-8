@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { jwtDecode } from "jwt-decode";
@@ -15,6 +15,8 @@ if (!global.atob) {
 
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 // Define parameters for context to hold - also need to add to context data below to persist the data
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -23,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [access, setAccessToken] = useState(null);
   const [refresh, setRefreshToken] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isNavigatingFromSignup, setIsNavigatingFromSignup] = useState(false);
 
   // Persists auth data wherever it is imported and in scope
   const loadAuthData = async () => {
@@ -135,6 +138,8 @@ export const AuthProvider = ({ children }) => {
     authTokens: authTokens,
     loginUser: loginUser,
     logoutUser: logoutUser,
+    isNavigatingFromSignup: isNavigatingFromSignup,
+    setIsNavigatingFromSignup: setIsNavigatingFromSignup,
   };
 
   // Update token on a time interval - call to refresh token endpoint and reset access token

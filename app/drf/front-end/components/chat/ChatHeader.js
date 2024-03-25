@@ -1,26 +1,38 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
-  PanResponder,
   Animated,
+  Alert,
 } from "react-native";
+import AuthContext from "../../context/AuthContext";
+
 import CustomText from "../CustomText";
-import CarouselComponent from "../posts/CarouselComponent";
+import {
+  getUserData,
+  updateProduct,
+  deleteProduct,
+} from "../helperFunctions/apiHelpers";
+import { useAppState } from "../../context/AppStateContext";
+import PostDetails from "../posts/PostDetails";
+
 const ChatHeader = ({
   receiverDetails,
   productDetails,
   navigation,
   isGiver,
+  onGivenConfirm,
+  pickedUp,
+  setModalVisible,
+  onPostReceived,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const animatedHeight = useRef(new Animated.Value(150)).current;
-  const contentOpacity = useRef(new Animated.Value(1)).current;
-  const carouselOpacity = useRef(new Animated.Value(0)).current;
-
-  const startY = useRef(0);
+  const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(
+    productDetails.pickedUp
+  );
+  const { authTokens, userId } = useContext(AuthContext);
+  const { updatePostCreated } = useAppState();
 
   const imageUrl =
     productDetails?.images?.length > 0 ? productDetails.images[0].image : null;
@@ -32,8 +44,6 @@ const ChatHeader = ({
       : "Unknown User";
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
-  const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(false);
-  const images = productDetails?.images;
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -75,14 +85,30 @@ const ChatHeader = ({
     }).start();
   };
 
-  const handleOnGiven = () => {
-    console.log("Food Given");
-    setIsDoneButtonPressed(!isDoneButtonPressed);
-  };
+  const handlePickedUp = async () => {
+    if (pickedUp) {
+      Alert.alert(
+        "Already Marked",
+        "This post has already been marked as received."
+      );
+      return;
+    }
 
-  const handleOnReceived = () => {
-    console.log("Food Received");
-    setIsDoneButtonPressed(!isDoneButtonPressed);
+    const formData = {
+      pickedUp: true,
+    };
+
+    try {
+      await updateProduct(formData, null, authTokens, productDetails.id);
+      await updatePostCreated();
+      onPostReceived();
+    } catch (error) {
+      console.error("Error marking post as picked up:", error);
+      Alert.alert(
+        "Error",
+        "An error occurred while marking the post as picked up."
+      );
+    }
   };
 
   return (
@@ -133,27 +159,29 @@ const ChatHeader = ({
             <CustomText style={styles.productExpireDate}>
               Expires: {formatDate(productDetails.best_before)}
             </CustomText>
-            <TouchableOpacity
-              onPressIn={pressInDoneButton}
-              onPressOut={pressOutDoneButton}
-              onPress={isGiver ? handleOnGiven : handleOnReceived}
-              activeOpacity={1}
-            >
-              <Animated.View
-                style={{ transform: [{ scale: scaleDoneButton }] }}
+            {!isGiver && ( // Conditionally render the button if isGiver is false
+              <TouchableOpacity
+                onPressIn={pressInDoneButton}
+                onPressOut={pressOutDoneButton}
+                onPress={handlePickedUp}
+                activeOpacity={1}
               >
-                <View
-                  style={[
-                    styles.doneButton,
-                    isDoneButtonPressed && { backgroundColor: "#6fc276" },
-                  ]}
+                <Animated.View
+                  style={{ transform: [{ scale: scaleDoneButton }] }}
                 >
-                  <CustomText style={styles.doneButtonText}>
-                    {isGiver ? "Food Given" : "Food Received"}
-                  </CustomText>
-                </View>
-              </Animated.View>
-            </TouchableOpacity>
+                  <View
+                    style={[
+                      styles.doneButton,
+                      pickedUp && { backgroundColor: "#6fc276" },
+                    ]}
+                  >
+                    <CustomText style={styles.doneButtonText}>
+                      Food Received
+                    </CustomText>
+                  </View>
+                </Animated.View>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
