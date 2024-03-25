@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -7,14 +7,33 @@ import {
   Animated,
   Alert,
 } from "react-native";
+import AuthContext from "../../context/AuthContext";
+
 import CustomText from "../CustomText";
+import {
+  getUserData,
+  updateProduct,
+  deleteProduct,
+} from "../helperFunctions/apiHelpers";
+import { useAppState } from "../../context/AppStateContext";
+import PostDetails from "../posts/PostDetails";
+
 const ChatHeader = ({
   receiverDetails,
   productDetails,
   navigation,
   isGiver,
   onGivenConfirm,
+  pickedUp,
+  setModalVisible,
+  onPostReceived,
 }) => {
+  const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(
+    productDetails.pickedUp
+  );
+  const { authTokens, userId } = useContext(AuthContext);
+  const { updatePostCreated } = useAppState();
+
   const imageUrl =
     productDetails?.images?.length > 0 ? productDetails.images[0].image : null;
 
@@ -25,7 +44,6 @@ const ChatHeader = ({
       : "Unknown User";
 
   const backArrowIcon = require("../../assets/icons/back-arrow.png");
-  const [isDoneButtonPressed, setIsDoneButtonPressed] = useState(false);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -67,30 +85,28 @@ const ChatHeader = ({
     }).start();
   };
 
-  const handleOnGiven = () => {
-    if (isDoneButtonPressed) {
+  const handlePickedUp = async () => {
+    if (pickedUp) {
       Alert.alert(
-        "Action Not Allowed",
-        "You cannot unconfirm once the food has been marked as given."
+        "Already Marked",
+        "This post has already been marked as received."
       );
-    } else {
+      return;
+    }
+
+    const formData = {
+      pickedUp: true,
+    };
+
+    try {
+      await updateProduct(formData, null, authTokens, productDetails.id);
+      await updatePostCreated();
+      onPostReceived();
+    } catch (error) {
+      console.error("Error marking post as picked up:", error);
       Alert.alert(
-        "Confirm",
-        "Are you sure you want to mark this listing as given?",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          {
-            text: "Yes",
-            onPress: () => {
-              setIsDoneButtonPressed(!isDoneButtonPressed);
-              onGivenConfirm();
-            },
-          },
-        ]
+        "Error",
+        "An error occurred while marking the post as picked up."
       );
     }
   };
@@ -143,11 +159,11 @@ const ChatHeader = ({
             <CustomText style={styles.productExpireDate}>
               Expires: {formatDate(productDetails.best_before)}
             </CustomText>
-            {isGiver && ( // Conditionally render the button if isGiver is true
+            {!isGiver && ( // Conditionally render the button if isGiver is false
               <TouchableOpacity
                 onPressIn={pressInDoneButton}
                 onPressOut={pressOutDoneButton}
-                onPress={handleOnGiven}
+                onPress={handlePickedUp}
                 activeOpacity={1}
               >
                 <Animated.View
@@ -156,11 +172,11 @@ const ChatHeader = ({
                   <View
                     style={[
                       styles.doneButton,
-                      isDoneButtonPressed && { backgroundColor: "#6fc276" },
+                      pickedUp && { backgroundColor: "#6fc276" },
                     ]}
                   >
                     <CustomText style={styles.doneButtonText}>
-                      Food Given
+                      Food Received
                     </CustomText>
                   </View>
                 </Animated.View>
