@@ -1598,6 +1598,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] display post image on modal
 - [x] protect API key in .env file
 - [x] clean up the post visibility - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
+- [x] Reviews creation API call 
 
 ### Completed Tasks
 
@@ -1610,6 +1611,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
 - [x] #268
 - [x] #326
+- [ ] #327 Api helper for leaving review
+- [ ] #328 .env configuration
 - [ ] #287 save posts
 - [ ] #299 Save email
 
@@ -1618,6 +1621,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 <!--
 - tasks that are currently in progress
 -->
+#235 deletion of chat if product is marked as picked up or deleted
 
 ### Burnup Chart
 
