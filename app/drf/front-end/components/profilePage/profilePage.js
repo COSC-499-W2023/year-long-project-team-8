@@ -33,12 +33,11 @@ const ProfilePage = ({ navigation, route }) => {
   const [selectedTab, setSelectedTab] = useState("posts");
   const [userData, setUserData] = useState(null); // State to store user data.
   const [userPosts, setUserPosts] = useState([]); // State to store user's posts.
-  const [location, setLocation] = useState(null); //State to manage Location
-  const [errorMsg, setErrorMsg] = useState(null); //state to manage Error messages
   const scrollViewRef = useRef(null); // Reference to the ScrollView for programmatically controlling scroll behavior.
   const { profilePicUpdated, updateProfilePic } = useAppState();
   const [activeCard, setActiveCard] = useState(null); // To select card that will have the dropdown open
   const [refreshing, setRefreshing] = useState(false);
+  const [locationName, setLocationName] = useState("Location Not Available");
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -55,18 +54,26 @@ const ProfilePage = ({ navigation, route }) => {
         console.error("Error refreshing data:", error);
       }
     }
+    // Re-fetch location
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    const name = await reverseGeocode(
+      currentLocation.coords.latitude,
+      currentLocation.coords.longitude
+    );
+    setLocationName(name || "Location Not Available");
     setRefreshing(false);
   };
 
-  const [locationName, setLocationName] = useState("Location Not Available");
-
-   useEffect(() => {
-       (async () => {
-         let currentLocation = await Location.getCurrentPositionAsync({});
-         const name = await reverseGeocode(currentLocation.coords.latitude, currentLocation.coords.longitude);
-         setLocationName(name || "Location Not Available");
-       })();
-     }, []);
+  useEffect(() => {
+    (async () => {
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      const name = await reverseGeocode(
+        currentLocation.coords.latitude,
+        currentLocation.coords.longitude
+      );
+      setLocationName(name || "Location Not Available");
+    })();
+  }, []);
 
   useEffect(() => {
     if (profilePicUpdated) {
