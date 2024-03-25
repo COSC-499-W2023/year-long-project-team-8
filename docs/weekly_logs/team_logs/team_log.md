@@ -1561,7 +1561,7 @@ https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3
 - start/end dates of the week
 -->
 
-March 10 - March 17, 2024
+March 18 - March 24, 2024
 
 ### Project Board
 
@@ -1598,7 +1598,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] display post image on modal
 - [x] protect API key in .env file
 - [x] clean up the post visibility - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
-- [x] Reviews creation API call 
+- [x] Reviews creation API call
+- [x] Reviews Front end 
 
 ### Completed Tasks
 
@@ -1611,6 +1612,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
 - [x] #268
 - [x] #326
+- [ ] [#321](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/321)
 - [ ] #327 Api helper for leaving review
 - [ ] #328 .env configuration
 - [ ] #287 save posts
