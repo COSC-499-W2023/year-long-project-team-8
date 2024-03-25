@@ -249,12 +249,12 @@ const ChatComponent = ({
         </TouchableOpacity>
 
         {/* Share button */}
-        <TouchableOpacity style={styles.chatButton} onPress={handleSharePress}>
+        {/* <TouchableOpacity style={styles.chatButton} onPress={handleSharePress}>
           <Image source={share} style={styles.chatButtonIcon} />
           <CustomText style={styles.chatButtonText} fontType={"subHeader"}>
             Share
           </CustomText>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Save button */}
         <TouchableOpacity style={styles.chatButton} onPress={handleSavePress}>

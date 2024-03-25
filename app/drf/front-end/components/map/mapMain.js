@@ -151,8 +151,8 @@ const MapScreen = ({ navigation }) => {
           onValueChange={(value) => {
             setSliderValue(value);
             if (location) {
-              const newLatitudeDelta = value / 40000;
-              const newLongitudeDelta = value / 40000;
+              const newLatitudeDelta = value / 35000;
+              const newLongitudeDelta = value / 35000;
               mapRef.current.animateToRegion({
                 ...location,
                 latitudeDelta: newLatitudeDelta,
