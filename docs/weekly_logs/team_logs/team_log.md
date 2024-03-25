@@ -1590,7 +1590,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - goals that are to be done
 -->
 
-- [ ]find a way to ensure that the user can re-enable the location services if declined at first #281
+- [x]find a way to ensure that the user can re-enable the location services if declined at first #281
 - [x] create modal to preview post details on map pin
 - [x] link modal to post details
 - [x] link modal to generate directions to post
@@ -1600,6 +1600,8 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] clean up the post visibility - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
 - [x] Reviews creation API call
 - [x] Reviews Front end 
+- [x] Automatic testing for multiple features
+- [x] Manual testing for multiple features
 
 ### Completed Tasks
 
@@ -1624,8 +1626,11 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - tasks that are currently in progress
 -->
 #235 deletion of chat if product is marked as picked up or deleted
+- Automatic testing for multiple features
+- Manual testing for multiple features
 
 ### Burnup Chart
+![alt-text](../img/t2_w11_burnup.png)
 
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
@@ -1640,6 +1645,5 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 -->
 
 ![alt text](../img/t2-w6-backend-test.png)
-![Alt text](../img/fe_tests_w13.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
