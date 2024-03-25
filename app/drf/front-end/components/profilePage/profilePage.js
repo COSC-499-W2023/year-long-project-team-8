@@ -54,13 +54,6 @@ const ProfilePage = ({ navigation, route }) => {
         console.error("Error refreshing data:", error);
       }
     }
-    // Re-fetch location
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    const name = await reverseGeocode(
-      currentLocation.coords.latitude,
-      currentLocation.coords.longitude
-    );
-    setLocationName(name || "Location Not Available");
     setRefreshing(false);
   };
 
