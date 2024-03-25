@@ -18,16 +18,31 @@ const styles = StyleSheet.create({
     left: 15,
     top: 15,
   },
-  slider: {
+  sliderContainer: {
     position: "absolute",
     alignSelf: "center",
     width: "80%",
     bottom: 35,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  slider: {
+    width: "100%",
   },
   sliderText: {
-    position: "absolute",
-    bottom: 20,
-    alignSelf: "center",
+    textAlign: "center",
+    marginTop: 10,
+    fontWeight: "bold",
+    color: "black",
   },
   directionsLink: {
     color: "blue", // Change color as desired

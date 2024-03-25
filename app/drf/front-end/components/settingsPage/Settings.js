@@ -20,6 +20,10 @@ const SettingsPage = () => {
     navigation.navigate("ChangePassword");
   };
 
+  const goToLocationServices = () => {
+    navigation.navigate("LocationServices")
+  }
+
   return (
     <View style={styles.container}>
       <ImageBackground
