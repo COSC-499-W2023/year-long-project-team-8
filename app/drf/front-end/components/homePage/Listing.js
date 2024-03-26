@@ -3,24 +3,9 @@ import { View, TouchableOpacity, StyleSheet, Animated } from "react-native";
 import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { calculateDistance } from "../locationServices/calculateDistance";
 const Listing = ({ listing, navigation, userLocation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
-
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Earth's radius in km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return distance; // Return distance with two decimal points
-  };
 
   // Get the distance between the user and the post
   const postDistance = userLocation
@@ -30,7 +15,7 @@ const Listing = ({ listing, navigation, userLocation }) => {
         listing.latitude,
         listing.longitude
       )
-    : "N/A";
+    : "";
   const zoomIn = () => {
     Animated.spring(scaleValue, {
       toValue: 1.05, // Zoom in to 105%
@@ -163,8 +148,8 @@ const Listing = ({ listing, navigation, userLocation }) => {
               {postDistance !== null
                 ? postDistance < 1
                   ? "Less than 1 km"
-                  : `${postDistance.toFixed(0)} km`
-                : "N/A"}
+                  : `${postDistance} km`
+                : ""}
             </CustomText>
           </View>
         </Card>
