@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Dimensions, SafeAreaView, View, Linking, Modal } from "react-native";
+import { SafeAreaView, View, Modal, Image } from "react-native";
 import MapView, { Marker, Circle } from "react-native-maps";
 import * as Location from "expo-location";
 import CustomText from "../CustomText";
@@ -139,7 +139,16 @@ const MapScreen = ({ navigation }) => {
                   longitude: post.longitude,
                 }}
                 onPress={() => handleMarkerPress(post)}
-              />
+                style={styles.marker}
+              >
+                <View style={styles.customMarker}>
+                  <Image
+                    source={{ uri: post.images[0].image }}
+                    style={styles.markerImage}
+                  />
+                  <View style={styles.markerBase} />
+                </View>
+              </Marker>
             ))}
       </MapView>
       <View style={styles.sliderContainer}>

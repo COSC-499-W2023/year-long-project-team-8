@@ -45,9 +45,36 @@ const styles = StyleSheet.create({
     color: "black",
   },
   directionsLink: {
-    color: "blue", // Change color as desired
-    textDecorationLine: "underline", // Add underline to simulate link
-    marginTop: 5, // Adjust spacing if needed
+    color: "blue",
+    textDecorationLine: "underline",
+    marginTop: 5,
+  },
+  marker: {
+    width: 50,
+    height: 50,
+  },
+  customMarker: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  markerImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 3,
+    borderColor: "white",
+  },
+  markerBase: {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderStyle: "solid",
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderBottomWidth: 20,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "white",
   },
 });
 

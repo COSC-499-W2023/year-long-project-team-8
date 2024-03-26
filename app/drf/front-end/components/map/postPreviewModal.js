@@ -2,59 +2,78 @@ import React from "react";
 import {
   Modal,
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
+import CustomText from "../CustomText";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"; // Add this line
 
 const PostPreviewModal = ({ visible, post, onClose, navigation }) => {
   const handleNavigateToDetails = () => {
-    onClose(); // Close the modal
-    navigation.navigate("PostDetails", { listing: post }); // Navigate to post details
+    onClose();
+    navigation.navigate("PostDetails", { listing: post });
   };
 
   const handleNavigateToDirections = () => {
-    onClose(); // Close the modal
+    onClose();
     const latitude = post.latitude;
     const longitude = post.longitude;
     const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
-    Linking.openURL(url); // Open Google Maps directions
+    Linking.openURL(url);
   };
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.postTitle}>{post.title}</Text>
-          <Image source={{ uri: post.images[0].image }} style={styles.image} />
-          <Text style={styles.postDescription}>{post.description}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleNavigateToDetails}
-          >
-            <Text style={styles.buttonText}>View Details</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleNavigateToDirections}
-          >
-            <Text style={styles.buttonText}>Get Directions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.closeButton]}
-            onPress={onClose}
-          >
-            <Text style={styles.buttonText}>Close</Text>
-          </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={onClose}>
+        <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContent}>
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                <MaterialIcons name="close" size={24} color="grey" />
+              </TouchableOpacity>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: post.images[0].image }}
+                  style={styles.image}
+                />
+              </View>
+              <CustomText style={styles.postTitle}>{post.title}</CustomText>
+              <CustomText style={styles.postDescription}>
+                {post.content.length > 200
+                  ? post.content.substring(0, 200) + "..."
+                  : post.content}
+              </CustomText>
+
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.buttonDirect}
+                  onPress={handleNavigateToDirections}
+                >
+                  <CustomText style={styles.buttonDirectText}>
+                    Get Directions
+                  </CustomText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonView}
+                  onPress={handleNavigateToDetails}
+                >
+                  <CustomText style={styles.buttonViewText}>
+                    View Details
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -68,38 +87,84 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: "white",
-    padding: 20,
+    paddingBottom: 10,
     borderRadius: 10,
-    width: "80%",
+    width: "90%",
     alignItems: "center",
+    position: "relative",
+  },
+  closeButton: {
+    position: "absolute",
+    padding: 7,
+    top: 5,
+    right: 5,
+    backgroundColor: "white",
+    borderRadius: 25,
+    zIndex: 100,
   },
   postTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginTop: 10,
+  },
+  postDescription: {
+    marginTop: 10,
+    fontSize: 14,
+  },
+  imageContainer: {
+    width: "100%",
+    borderRadius: 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: 200,
     marginBottom: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   postDescription: {
     marginBottom: 20,
   },
-  button: {
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    paddingHorizontal: 10,
+    marginTop: 5,
+  },
+  buttonView: {
     backgroundColor: "#007BFF",
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
-    width: "100%",
+    marginHorizontal: 5,
+    width: "40%",
     alignItems: "center",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
-  buttonText: {
+  buttonDirect: {
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    width: "40%",
+    alignItems: "center",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  buttonViewText: {
     color: "white",
     fontWeight: "bold",
   },
-  closeButton: {
-    backgroundColor: "#DC3545",
+  buttonDirectText: {
+    color: "#007BFF",
+    fontWeight: "bold",
   },
 });
 
