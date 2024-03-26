@@ -28,7 +28,7 @@ import {
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
 import QuickFilterChip from "./QuickFilterChip";
-
+import * as Location from "expo-location";
 const ClearAllIcon = require("../../assets/icons/cancel.png");
 
 const HomePage = ({ navigation }) => {
@@ -59,6 +59,7 @@ const HomePage = ({ navigation }) => {
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   //Quick filterieng options
   const quickFilters = [
@@ -84,6 +85,28 @@ const HomePage = ({ navigation }) => {
   const updateSortOption = (newSortOption) => {
     setSelectedSortOption(newSortOption);
   };
+
+  useEffect(() => {
+    // Function to get the user's location
+    const getLocation = async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Permission to access location was denied");
+          return;
+        }
+        const location = await Location.getCurrentPositionAsync({});
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    };
+
+    getLocation();
+  }, []);
 
   const fetchFoodListings = async () => {
     try {
@@ -437,7 +460,12 @@ const HomePage = ({ navigation }) => {
               />
             ) : filteredAndSortedListings.length > 0 ? (
               filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={idx} listing={listing} navigation={navigation} />
+                <Listing
+                  key={idx}
+                  listing={listing}
+                  navigation={navigation}
+                  userLocation={userLocation}
+                />
               ))
             ) : (
               <CustomText style={styles.noMatchesText}>

@@ -4,9 +4,33 @@ import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Listing = ({ listing, navigation }) => {
+const Listing = ({ listing, navigation, userLocation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
 
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance; // Return distance with two decimal points
+  };
+
+  // Get the distance between the user and the post
+  const postDistance = userLocation
+    ? calculateDistance(
+        userLocation.latitude,
+        userLocation.longitude,
+        listing.latitude,
+        listing.longitude
+      )
+    : "N/A";
   const zoomIn = () => {
     Animated.spring(scaleValue, {
       toValue: 1.05, // Zoom in to 105%
@@ -134,6 +158,15 @@ const Listing = ({ listing, navigation }) => {
               </View>
             )} */}
           </View>
+          <View style={styles.distanceContainer}>
+            <CustomText style={styles.distanceText}>
+              {postDistance !== null
+                ? postDistance < 1
+                  ? "Less than 1 km"
+                  : `${postDistance.toFixed(0)} km`
+                : "N/A"}
+            </CustomText>
+          </View>
         </Card>
       </Animated.View>
     </TouchableOpacity>
@@ -225,5 +258,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 4,
+  },
+  distanceContainer: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 5,
+    borderRadius: 5,
+  },
+  distanceText: {
+    fontSize: 14,
+    color: "grey",
   },
 });
