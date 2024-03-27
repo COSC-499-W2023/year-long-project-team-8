@@ -202,33 +202,6 @@ async function createReview(receiver, giver, content, rating, authTokens) {
     throw error;
   }
 }
-async function deleteChat(chatId, authTokens) {
-  try {
-    const response = await fetch(`${baseEndpoint}/chat/delete/${chatId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + String(authTokens.access),
-      },
-    });
-
-    if (response.ok) {
-      console.log("Chat deleted successfully in API helper");
-    } else {
-      const responseData = await response.json();
-      if (response.status === 400) {
-        throw new Error(
-          "Error deleting chat: " + JSON.stringify(responseData)
-        );
-      } else {
-        throw new Error("Error deleting chat: " + response.statusText);
-      }
-    }
-  } catch (error) {
-    console.error("Error in deleting chat API helper:", error);
-    throw error;
-  }
-}
 // Helper function to return products based on a keyword search query
 async function productSearch(query, authTokens) {
   try {
@@ -695,5 +668,4 @@ export {
   changePassword,
   toggleSavePost,
   createReview,
-  deleteChat,
 };

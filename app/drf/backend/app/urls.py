@@ -42,7 +42,6 @@ urlpatterns = [
     path('api/chat/', ChatList.as_view(), name='chat_list'),
     path('api/chat/list/', get_chat_list, name='get_chat_list'),
     path('api/chat/<int:chatId>/', get_chat_messages, name='get_chat_messages'),
-    path('api/chat/delete/<int:chatId>/', delete_chat, name='delete_chat'),
     path('api/save_posts/', SavedPostsViewSet.as_view(), name='save_posts')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

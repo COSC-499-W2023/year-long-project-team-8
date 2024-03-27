@@ -82,16 +82,4 @@ def get_chat_messages(request, chatId):
     except Chat.DoesNotExist:
         return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
     
-@api_view(['DELETE'])
-@permission_classes([AllowAny,])
-def delete_chat(request, chatId):
-    try:
-        user = request.user
-        print("user in delete chat", user)
-        chat = Chat.objects.get(pk=chatId)
-        print("chat in delete chat", chat)
-        chat.delete()
-        return Response({'message': 'Chat deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-    except Chat.DoesNotExist:
-        return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
 

@@ -28,7 +28,7 @@ import {
   getUserData,
   getProductById,
   createReview,
-  deleteChat,
+  deleteProduct,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -294,7 +294,7 @@ const UserMessages = ({ route }) => {
       resetReview();
       setReviewError("");
 
-      await deleteChat(chatId, authTokens);
+      await deleteProduct(authTokens, product);
       console.log("Chat deleted successfully after review submisson");
 
       // Show success toast message
@@ -310,7 +310,7 @@ const UserMessages = ({ route }) => {
       });
 
       // Navigate back to the chat list
-      navigation.navigate("Tabs", { screen: "HomePage" });
+      navigation.navigate("Tabs", { screen: "ChatList" });
     } catch (error) {
       console.error("Error submitting review:", error);
     }
