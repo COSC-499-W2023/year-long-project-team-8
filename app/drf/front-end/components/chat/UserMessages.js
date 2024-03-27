@@ -12,6 +12,8 @@ import {
   Image,
   Platform,
   Modal,
+  TouchableWithoutFeedback,
+  Keyboard, 
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
@@ -26,6 +28,7 @@ import {
   getUserData,
   getProductById,
   createReview,
+  deleteChat,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -277,7 +280,7 @@ const UserMessages = ({ route }) => {
 
   const submitReview = async () => {
     if (reviewText.trim() === "") {
-      setReviewError("Review text cannot be empty.");
+      //setReviewError("Review text cannot be empty.");
       return;
     }
 
@@ -287,6 +290,9 @@ const UserMessages = ({ route }) => {
       setModalVisible(false);
       resetReview();
       setReviewError("");
+
+      await deleteChat(chatId, authTokens);
+      console.log("Chat deleted successfully after review submission");
 
       // Show success toast message
       Toast.show("Review submitted successfully", {
@@ -385,6 +391,7 @@ const UserMessages = ({ route }) => {
           </View>
         </KeyboardAvoidingView>
       )}
+      <KeyboardAvoidingView>
       <Modal
         animationType="fade"
         transparent={true}
@@ -394,6 +401,7 @@ const UserMessages = ({ route }) => {
           resetReview();
         }}
       >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
@@ -447,7 +455,9 @@ const UserMessages = ({ route }) => {
             </TouchableOpacity>
           </View>
         </View>
+        </TouchableWithoutFeedback>
       </Modal>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

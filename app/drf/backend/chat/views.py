@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
 from .models import Chat, Message
 from users.models import User
@@ -82,3 +82,13 @@ def get_chat_messages(request, chatId):
     except Chat.DoesNotExist:
         return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
     
+@api_view(['DELETE'])
+@permission_classes([AllowAny,])
+def delete_chat(request, chatId):
+    try:
+        chat = Chat.objects.get(pk=chatId)
+        chat.delete()
+        return Response({'message': 'Chat deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    except Chat.DoesNotExist:
+        return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
+
