@@ -1,6 +1,5 @@
-# PassThePlate (Team 8)- Joss White, Alexander Roizman, Mackenzie Kudrenecky, Brandon Mack
+## PassThePlate (Team 8)- Joss White, Alexander Roizman, Mackenzie Kudrenecky, Brandon Mack
 
-## How to run
 ### Local Development Backend Start-Up
 
 - Clone repo
