@@ -52,6 +52,7 @@ const ChatComponent = ({
           setProduct("");
           return;
         }
+        console.log("Product id in chatcomp", product_id);
         const chats = await getChatList(authTokens);
         const chat = chats.find(
           (chat) => chat.receiver === prodOwner && chat.product === product_id
@@ -71,7 +72,7 @@ const ChatComponent = ({
     };
 
     fetchChatId();
-  }, [authTokens, userId, prodOwner]);
+  }, [authTokens, userId, product_id, prodOwner]);
 
   useEffect(() => {
     checkIsSaved();
