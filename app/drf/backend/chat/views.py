@@ -71,7 +71,7 @@ def get_chat_messages(request, chatId):
     try:
         user = request.user
         chat = Chat.objects.get(pk=chatId)
-
+        print("User in get chat messages", user)
         # Check if the user is a participant in the chat
         if user == chat.sender or user == chat.receiver:
             messages = Message.objects.filter(chat=chat)
@@ -86,7 +86,10 @@ def get_chat_messages(request, chatId):
 @permission_classes([AllowAny,])
 def delete_chat(request, chatId):
     try:
+        user = request.user
+        print("user in delete chat", user)
         chat = Chat.objects.get(pk=chatId)
+        print("chat in delete chat", chat)
         chat.delete()
         return Response({'message': 'Chat deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     except Chat.DoesNotExist:

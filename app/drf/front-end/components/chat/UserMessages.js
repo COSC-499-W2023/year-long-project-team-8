@@ -82,11 +82,14 @@ const UserMessages = ({ route }) => {
     const fetchChatMessages = async () => {
       try {
         setIsLoading(true);
-        const chatData = await getChatMessages(authTokens, chatId);
-        setMessages(chatData.messages);
-        // console.log("Message objects fetched from getChatMessages");
-        // console.log("Sender:", chatData.sender);
-        // console.log("Receiver:", chatData.receiver);
+        // Check if chatId exists before making the API call
+        if (chatId) {
+          const chatData = await getChatMessages(authTokens, chatId);
+          setMessages(chatData.messages);
+        } else {
+          // Reset messages state if chatId is not available
+          setMessages([]);
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
@@ -113,7 +116,7 @@ const UserMessages = ({ route }) => {
           // Combine the product with its additional data
           const enrichedProductDetails = { ...productData, ownerDetails };
           setProductDetails(enrichedProductDetails);
-          // console.log("Is post recieved?", productData.PickedUp);
+          // console.log("Is post recieved?", productData.PickeUp);
           if (productData.pickedUp) {
             setModalVisible(true);
           }
@@ -280,7 +283,7 @@ const UserMessages = ({ route }) => {
 
   const submitReview = async () => {
     if (reviewText.trim() === "") {
-      //setReviewError("Review text cannot be empty.");
+      setReviewError("Review text cannot be empty.");
       return;
     }
 
@@ -292,7 +295,7 @@ const UserMessages = ({ route }) => {
       setReviewError("");
 
       await deleteChat(chatId, authTokens);
-      console.log("Chat deleted successfully after review submission");
+      console.log("Chat deleted successfully after review submisson");
 
       // Show success toast message
       Toast.show("Review submitted successfully", {
@@ -307,7 +310,7 @@ const UserMessages = ({ route }) => {
       });
 
       // Navigate back to the chat list
-      navigation.navigate("Tabs", { screen: "Chat" });
+      navigation.navigate("Tabs", { screen: "HomePage" });
     } catch (error) {
       console.error("Error submitting review:", error);
     }
