@@ -1523,7 +1523,6 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
 - [ ] #287 save posts
 - [ ] #299 Save email
-      
 
 ### In Progress Tasks
 
@@ -1553,5 +1552,98 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 
 ![alt text](../img/t2-w6-backend-test.png)
 ![Alt text](../img/fe_tests_w13.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 18 - March 24, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+https://github.com/orgs/COSC-499-W2023/projects/39/views/1
+<br>
+![alt-text](../img/t2_w10_projboard.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- [x]find a way to ensure that the user can re-enable the location services if declined at first #281
+- [x] create modal to preview post details on map pin
+- [x] link modal to post details
+- [x] link modal to generate directions to post
+- [x] display post details on modal
+- [x] display post image on modal
+- [x] protect API key in .env file
+- [x] clean up the post visibility - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
+- [x] Reviews creation API call
+- [x] Reviews Front end 
+- [x] Automatic testing for multiple features
+- [x] Manual testing for multiple features
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [x] #268
+- [x] #326
+- [ ] [#321](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/321)
+- [ ] #327 Api helper for leaving review
+- [ ] #328 .env configuration
+- [ ] #287 save posts
+- [ ] #299 Save email
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+#235 deletion of chat if product is marked as picked up or deleted
+- Automatic testing for multiple features
+- Manual testing for multiple features
+
+### Burnup Chart
+![alt-text](../img/t2_w11_burnup.png)
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
 
 https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing

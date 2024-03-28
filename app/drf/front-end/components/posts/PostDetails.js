@@ -204,7 +204,7 @@ const PostDetails = ({ route, navigation }) => {
               listing={listing}
             />
           )}
-          {myPost && !pickedUp && (
+          {/* {myPost && !pickedUp && (
             <View style={styles.buttonContainer}>
               <DeleteButton
                 title="REMOVE POST"
@@ -231,7 +231,7 @@ const PostDetails = ({ route, navigation }) => {
                 style={styles.buttonStyle}
               />
             </View>
-          )}
+          )} */}
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />

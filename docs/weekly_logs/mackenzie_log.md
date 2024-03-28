@@ -868,3 +868,46 @@ March 11, 2024 - March 17, 2024
 - [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
 - [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
 - [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 17, 2024 - March 24, 2024
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk_t2_w11.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] create modal to preview post details on map pin
+- [x] link modal to post details
+- [x] link modal to generate directions to post
+- [x] display post details on modal
+- [x] display post image on modal
+- [x] protect API key in .env file
+- [x] clean up the post visiblity - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] [#301](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/301)
+- [x] [#318](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/318)
+- [x] [#68](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/68)
+- [x] #268
+- [x] #326
+- filter posts throughout app

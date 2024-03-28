@@ -35,12 +35,13 @@ const ChatList = () => {
         if (authTokens) {
           let chats = await getChatList(authTokens);
           for (let chat of chats) {
-            const chatData = await getChatMessages(authTokens, chat.id);
-            const lastMessage = chatData.messages[chatData.messages.length - 1];
-            chat.lastMessage = lastMessage ? lastMessage.message : "";
-            chat.timestamp = lastMessage
-              ? lastMessage.timestamp
-              : chat.timestamp;
+            // Check if chat ID exists before fetching messages
+            if (chat.id) {
+              const chatData = await getChatMessages(authTokens, chat.id);
+              const lastMessage = chatData.messages[chatData.messages.length - 1];
+              chat.lastMessage = lastMessage ? lastMessage.message : "";
+              chat.timestamp = lastMessage ? lastMessage.timestamp : chat.timestamp;
+            }
           }
           chats.sort((a, b) => b.timestamp - a.timestamp);
           setChatList(chats);
@@ -62,7 +63,7 @@ const ChatList = () => {
         const data = await getUserData(id, authTokens);
         return data;
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error fetching user detils:", error);
         return null;
       }
     };

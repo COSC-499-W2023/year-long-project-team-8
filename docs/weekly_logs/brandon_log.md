@@ -740,6 +740,56 @@ March 10 - March 17, 2024
 |  281   |            |      ✓        |
 
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+March 17 - 24 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/t2_bm_w11.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Automatic testing for multiple features
+- Manual testing for multiple features
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- finish the location services
+- finish the map feature
+- finish the icon for macs posts
+- Automatic testing for multiple features
+- Manual testing for multiple features
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done  |
+|:------:|:----------:|:-----------:|
+|   1    |     ✓       |             |
+|   2    |     ✓       |             |
+|   3    |     ✓       |             |
+|   4    |            |      ✓       |
+|   5    |            |      ✓       |
+
+
+
+
+
+
+
 
 
 
