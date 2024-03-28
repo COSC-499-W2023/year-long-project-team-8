@@ -20,8 +20,7 @@ from rest_framework import routers
 
 from api.views import ForgotPasswordView, ResetPasswordView, ChangePasswordView
 from users.views import UserViewSet, ReviewViewSet, SavedPostsViewSet
-from chat.views import get_chat_list,get_chat_messages
-from chat.views import ChatList
+from chat.views import get_chat_list,get_chat_messages, ChatList
 from products.views import ProductViewSet, ImageViewSet
 from django.conf import settings
 from django.conf.urls.static import static

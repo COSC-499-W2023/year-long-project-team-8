@@ -202,7 +202,6 @@ async function createReview(receiver, giver, content, rating, authTokens) {
     throw error;
   }
 }
-
 // Helper function to return products based on a keyword search query
 async function productSearch(query, authTokens) {
   try {
