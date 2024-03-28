@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
 from .models import Chat, Message
 from users.models import User
@@ -71,7 +71,7 @@ def get_chat_messages(request, chatId):
     try:
         user = request.user
         chat = Chat.objects.get(pk=chatId)
-
+        print("User in get chat messages", user)
         # Check if the user is a participant in the chat
         if user == chat.sender or user == chat.receiver:
             messages = Message.objects.filter(chat=chat)
@@ -82,3 +82,4 @@ def get_chat_messages(request, chatId):
     except Chat.DoesNotExist:
         return Response({'error': 'Chat not found'}, status=status.HTTP_404_NOT_FOUND)
     
+

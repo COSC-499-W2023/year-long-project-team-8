@@ -12,6 +12,8 @@ import {
   Image,
   Platform,
   Modal,
+  TouchableWithoutFeedback,
+  Keyboard, 
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../context/AuthContext";
@@ -26,6 +28,7 @@ import {
   getUserData,
   getProductById,
   createReview,
+  deleteProduct,
 } from "../helperFunctions/apiHelpers";
 import ChatHeader from "./ChatHeader";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -79,11 +82,14 @@ const UserMessages = ({ route }) => {
     const fetchChatMessages = async () => {
       try {
         setIsLoading(true);
-        const chatData = await getChatMessages(authTokens, chatId);
-        setMessages(chatData.messages);
-        // console.log("Message objects fetched from getChatMessages");
-        // console.log("Sender:", chatData.sender);
-        // console.log("Receiver:", chatData.receiver);
+        // Check if chatId exists before making the API call
+        if (chatId) {
+          const chatData = await getChatMessages(authTokens, chatId);
+          setMessages(chatData.messages);
+        } else {
+          // Reset messages state if chatId is not available
+          setMessages([]);
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
@@ -110,7 +116,7 @@ const UserMessages = ({ route }) => {
           // Combine the product with its additional data
           const enrichedProductDetails = { ...productData, ownerDetails };
           setProductDetails(enrichedProductDetails);
-          // console.log("Is post recieved?", productData.PickedUp);
+          // console.log("Is post recieved?", productData.PickeUp);
           if (productData.pickedUp) {
             setModalVisible(true);
           }
@@ -288,6 +294,9 @@ const UserMessages = ({ route }) => {
       resetReview();
       setReviewError("");
 
+      await deleteProduct(authTokens, product);
+      console.log("Chat deleted successfully after review submisson");
+
       // Show success toast message
       Toast.show("Review submitted successfully", {
         duration: Toast.durations.SHORT,
@@ -301,7 +310,7 @@ const UserMessages = ({ route }) => {
       });
 
       // Navigate back to the chat list
-      navigation.navigate("Tabs", { screen: "Chat" });
+      navigation.navigate("Tabs", { screen: "ChatList" });
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -385,6 +394,7 @@ const UserMessages = ({ route }) => {
           </View>
         </KeyboardAvoidingView>
       )}
+      <KeyboardAvoidingView>
       <Modal
         animationType="fade"
         transparent={true}
@@ -394,6 +404,7 @@ const UserMessages = ({ route }) => {
           resetReview();
         }}
       >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
@@ -447,7 +458,9 @@ const UserMessages = ({ route }) => {
             </TouchableOpacity>
           </View>
         </View>
+        </TouchableWithoutFeedback>
       </Modal>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
