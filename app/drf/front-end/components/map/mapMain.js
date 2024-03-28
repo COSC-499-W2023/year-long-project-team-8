@@ -9,7 +9,7 @@ import styles from "./mapStyles";
 import { getProductList, getUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
-import PostPreviewModal from "./postPreviewModal"; // Import the PostModal component
+import PostPreviewModal from "./postPreviewModal";
 
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -123,7 +123,7 @@ const MapScreen = ({ navigation }) => {
         {location && (
           <Circle
             center={location}
-            radius={sliderValue}
+            radius={sliderValue * 1000}
             strokeColor="rgba(248, 185, 81, 0.7)"
             fillColor="rgba(248, 185, 81, 0.3)"
           />
@@ -146,7 +146,6 @@ const MapScreen = ({ navigation }) => {
                     source={{ uri: post.images[0].image }}
                     style={styles.markerImage}
                   />
-                  <View style={styles.markerBase} />
                 </View>
               </Marker>
             ))}
@@ -154,14 +153,14 @@ const MapScreen = ({ navigation }) => {
       <View style={styles.sliderContainer}>
         <Slider
           style={styles.slider}
-          minimumValue={1000}
-          maximumValue={25000}
+          minimumValue={1}
+          maximumValue={25}
           value={sliderValue}
           onValueChange={(value) => {
             setSliderValue(value);
             if (location) {
-              const newLatitudeDelta = value / 35000;
-              const newLongitudeDelta = value / 35000;
+              const newLatitudeDelta = value / 35;
+              const newLongitudeDelta = value / 35;
               mapRef.current.animateToRegion({
                 ...location,
                 latitudeDelta: newLatitudeDelta,
@@ -175,7 +174,7 @@ const MapScreen = ({ navigation }) => {
         />
 
         <CustomText style={styles.sliderText} fontType="text">
-          {Math.floor(sliderValue / 1000)} KM
+          {Math.floor(sliderValue)} KM
         </CustomText>
       </View>
 

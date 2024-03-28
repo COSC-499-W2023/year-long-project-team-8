@@ -100,9 +100,20 @@ const Listing = ({ listing, navigation, userLocation }) => {
               style={styles.cardImage}
             />
           )}
-          <CustomText fontType={"title"} style={styles.cardTitle}>
-            {listing.title}
-          </CustomText>
+          <View style={styles.titleDistance}>
+            <CustomText fontType={"title"} style={styles.cardTitle}>
+              {listing.title}
+            </CustomText>
+            <View style={styles.distanceContainer}>
+              <CustomText style={styles.distanceText}>
+                {postDistance !== null
+                  ? postDistance < 1
+                    ? "Less than 1 km"
+                    : `${postDistance} km`
+                  : ""}
+              </CustomText>
+            </View>
+          </View>
           <View style={styles.nameAndRatingContainer}>
             <CustomText fontType={"text"} style={styles.byName}>
               By {getDisplayName()}
@@ -143,15 +154,6 @@ const Listing = ({ listing, navigation, userLocation }) => {
               </View>
             )} */}
           </View>
-          <View style={styles.distanceContainer}>
-            <CustomText style={styles.distanceText}>
-              {postDistance !== null
-                ? postDistance < 1
-                  ? "Less than 1 km"
-                  : `${postDistance} km`
-                : ""}
-            </CustomText>
-          </View>
         </Card>
       </Animated.View>
     </TouchableOpacity>
@@ -185,6 +187,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: "black",
   },
+  titleDistance: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   nameAndRatingContainer: {
     flexDirection: "row",
     alignItems: "baseline",
@@ -216,11 +223,8 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   distanceText: {
-    position: "absolute",
     fontSize: 14,
     color: "grey",
-    right: 2,
-    paddingRight: 10,
   },
   expiredBox: {
     backgroundColor: "#FF5733",
@@ -245,9 +249,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   distanceContainer: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: 5,
     borderRadius: 5,

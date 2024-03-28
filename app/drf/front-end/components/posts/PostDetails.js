@@ -161,11 +161,17 @@ const PostDetails = ({ route, navigation }) => {
     // Function to get the user's location and calculate the distance
     const getLocationAndDistance = async () => {
       try {
+        if (listing.latitude == null || listing.longitude == null) {
+          console.error("Latitude or longitude not set for the listing");
+          return;
+        }
+
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
           console.error("Permission to access location was denied");
           return;
         }
+
         const location = await Location.getCurrentPositionAsync({});
         const userLocation = {
           latitude: location.coords.latitude,

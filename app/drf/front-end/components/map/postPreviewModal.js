@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import CustomText from "../CustomText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"; // Add this line
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const PostPreviewModal = ({ visible, post, onClose, navigation }) => {
   const handleNavigateToDetails = () => {
@@ -46,11 +46,6 @@ const PostPreviewModal = ({ visible, post, onClose, navigation }) => {
                 />
               </View>
               <CustomText style={styles.postTitle}>{post.title}</CustomText>
-              <CustomText style={styles.postDescription}>
-                {post.content.length > 200
-                  ? post.content.substring(0, 200) + "..."
-                  : post.content}
-              </CustomText>
 
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
@@ -106,14 +101,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 10,
-  },
-  postDescription: {
-    marginTop: 10,
-    fontSize: 14,
+    marginBottom: 5,
   },
   imageContainer: {
     width: "100%",
     borderRadius: 10,
+    padding: 10,
   },
   image: {
     width: "100%",
