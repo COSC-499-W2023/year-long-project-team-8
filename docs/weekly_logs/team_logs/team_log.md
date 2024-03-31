@@ -1599,7 +1599,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 - [x] protect API key in .env file
 - [x] clean up the post visibility - no longer show expired or picked up posts. Don't how users their own posts (extends to map, profiles, all of app logic)
 - [x] Reviews creation API call
-- [x] Reviews Front end 
+- [x] Reviews Front end
 - [x] Automatic testing for multiple features
 - [x] Manual testing for multiple features
 
@@ -1625,12 +1625,87 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 <!--
 - tasks that are currently in progress
 -->
+
 #235 deletion of chat if product is marked as picked up or deleted
+
 - Automatic testing for multiple features
 - Manual testing for multiple features
 
 ### Burnup Chart
+
 ![alt-text](../img/t2_w11_burnup.png)
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 25 - March 31, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- [x] update ReadMe with development instructions
+- [x] API documentation
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] #340
+- [x] #341
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- [#335](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/335)
+- [#337](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/337)
+- [#213](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/213)
+- [#342]
+
+### Burnup Chart
 
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
