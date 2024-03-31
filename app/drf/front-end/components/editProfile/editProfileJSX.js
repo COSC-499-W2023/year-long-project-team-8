@@ -93,3 +93,19 @@ const EditProfileForm = ({
 };
 
 export default EditProfileForm;
+
+/*
+//testing
+export const isPhoneValid = (cleanedPhone) => {
+    return cleanedPhone.length === 10 || cleanedPhone.length === 0;
+  };
+
+export const isNameValid = (name) => {
+    return /^[A-Za-z\s]*$/.test(name);
+  };
+
+export const phoneFormatted = (phone) => {
+    return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2 - $3");
+  };
+  */
+
