@@ -97,11 +97,23 @@ pull), you will need to authenticate your GitHub account with email and token be
 - Install Node.js
 - Download the Expo Go app on your smartphone and/or set up an emulator on your computer (e.g., Android Studio for Android or Xcode for iOS).
 - Clone Repository
-- Navigate to project directory `cd app/drf/front-end`
-- Run `npm install`
+  ```
+    git clone git@github.com:COSC-499-W2023/year-long-project-team-8.git
+  ```
+- Navigate to project directory
+  ```
+  cd year-long-project-team-8/app/drf/front-end
+  ```
+- Run
+  ```
+  npm install
+  ```
 - Create a `.env` file at the root of the project directory and add your `GOOGLE_API_KEY`
 - Make sure your computer and smartphone are connected to the same Wi-Fi
-- Run `npx expo start` in `front-end`
+- Run in `front-end`
+  ```
+  npx expo start
+  ```
 - Setup Config
     - Retrieve the IP address from the terminal after starting `npx expo start` where it says `exp://<your-ip>:8000`
     - Go to `app/drf/front-end/config.js`
