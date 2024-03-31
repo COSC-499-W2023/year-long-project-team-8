@@ -1684,6 +1684,8 @@ March 25 - March 31, 2024
 
 - [x] update ReadMe with development instructions
 - [x] API documentation
+- [x] Complete app wide testing
+- [ ] Bug fixes
 
 ### Completed Tasks
 
@@ -1704,6 +1706,9 @@ March 25 - March 31, 2024
 - [#337](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/337)
 - [#213](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/213)
 - [#342]
+- App Testing
+- Bug Fixes
+- Final Report
 
 ### Burnup Chart
 
