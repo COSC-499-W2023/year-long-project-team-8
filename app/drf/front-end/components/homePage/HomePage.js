@@ -28,7 +28,8 @@ import {
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
 import QuickFilterChip from "./QuickFilterChip";
-
+import * as Location from "expo-location";
+import { calculateDistance } from "../locationServices/calculateDistance";
 const ClearAllIcon = require("../../assets/icons/cancel.png");
 
 const HomePage = ({ navigation }) => {
@@ -51,7 +52,6 @@ const HomePage = ({ navigation }) => {
   const [distanceFilter, setDistanceFilter] = useState(10); // in kilometers
   const [ratingFilter, setRatingFilter] = useState(0); // rating out of 5
   const [allergensFilter, setAllergensFilter] = useState([]); // list of allergens to filter out
-
   // Add state to manage the selected sort option
   const [selectedSortOption, setSelectedSortOption] = useState("Date");
 
@@ -59,6 +59,7 @@ const HomePage = ({ navigation }) => {
   const [foodListing, setFoodListing] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   //Quick filterieng options
   const quickFilters = [
@@ -84,6 +85,28 @@ const HomePage = ({ navigation }) => {
   const updateSortOption = (newSortOption) => {
     setSelectedSortOption(newSortOption);
   };
+
+  useEffect(() => {
+    // Function to get the user's location
+    const getLocation = async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Permission to access location was denied");
+          return;
+        }
+        const location = await Location.getCurrentPositionAsync({});
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    };
+
+    getLocation();
+  }, []);
 
   const fetchFoodListings = async () => {
     try {
@@ -228,17 +251,40 @@ const HomePage = ({ navigation }) => {
       const doesNotContainAllergens = !allergensFilter.some((allergen) =>
         listing.allergens?.includes(allergen)
       );
+
+      let isWithinDistance = true;
+      if (userLocation && listing.latitude && listing.longitude) {
+        const distance = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          listing.latitude,
+          listing.longitude
+        );
+        isWithinDistance = distance <= distanceFilter;
+      }
+
       return (
         isDishMatching &&
         isCategoryMatch &&
         meetsRating &&
-        doesNotContainAllergens
+        doesNotContainAllergens &&
+        isWithinDistance
       );
     });
 
     switch (selectedQuickFilter) {
       case "Near Me":
-        console.log("Filtering listings near the user...");
+        if (userLocation) {
+          filteredListings = filteredListings.filter((listing) => {
+            const distance = calculateDistance(
+              userLocation.latitude,
+              userLocation.longitude,
+              listing.latitude,
+              listing.longitude
+            );
+            return distance <= 8; // Keep only listings within 8 km
+          });
+        }
         break;
       case "About to Expire":
         const today = new Date();
@@ -288,8 +334,19 @@ const HomePage = ({ navigation }) => {
 
     switch (selectedSortOption) {
       case "Distance":
-        console.log("Missing distance sorting option");
+        if (userLocation) {
+          filteredListings.forEach((listing) => {
+            listing.distance = calculateDistance(
+              userLocation.latitude,
+              userLocation.longitude,
+              listing.latitude,
+              listing.longitude
+            );
+          });
+          filteredListings.sort((a, b) => a.distance - b.distance);
+        }
         break;
+
       case "Rating":
         filteredListings.sort(
           (a, b) => b.ownerDetails.rating - a.ownerDetails.rating
@@ -437,7 +494,12 @@ const HomePage = ({ navigation }) => {
               />
             ) : filteredAndSortedListings.length > 0 ? (
               filteredAndSortedListings.map((listing, idx) => (
-                <Listing key={idx} listing={listing} navigation={navigation} />
+                <Listing
+                  key={idx}
+                  listing={listing}
+                  navigation={navigation}
+                  userLocation={userLocation}
+                />
               ))
             ) : (
               <CustomText style={styles.noMatchesText}>

@@ -3,10 +3,19 @@ import { View, TouchableOpacity, StyleSheet, Animated } from "react-native";
 import { Card } from "react-native-paper";
 import CustomText from "../CustomText";
 import { MaterialIcons } from "@expo/vector-icons";
-
-const Listing = ({ listing, navigation }) => {
+import { calculateDistance } from "../locationServices/calculateDistance";
+const Listing = ({ listing, navigation, userLocation }) => {
   const scaleValue = useRef(new Animated.Value(1)).current; // Initial scale is 1
 
+  // Get the distance between the user and the post
+  const postDistance = userLocation
+    ? calculateDistance(
+        userLocation.latitude,
+        userLocation.longitude,
+        listing.latitude,
+        listing.longitude
+      )
+    : "";
   const zoomIn = () => {
     Animated.spring(scaleValue, {
       toValue: 1.05, // Zoom in to 105%
@@ -91,9 +100,20 @@ const Listing = ({ listing, navigation }) => {
               style={styles.cardImage}
             />
           )}
-          <CustomText fontType={"title"} style={styles.cardTitle}>
-            {listing.title}
-          </CustomText>
+          <View style={styles.titleDistance}>
+            <CustomText fontType={"title"} style={styles.cardTitle}>
+              {listing.title}
+            </CustomText>
+            <View style={styles.distanceContainer}>
+              <CustomText style={styles.distanceText}>
+                {postDistance !== null
+                  ? postDistance < 1
+                    ? "Less than 1 km"
+                    : `${postDistance} km`
+                  : ""}
+              </CustomText>
+            </View>
+          </View>
           <View style={styles.nameAndRatingContainer}>
             <CustomText fontType={"text"} style={styles.byName}>
               By {getDisplayName()}
@@ -167,6 +187,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: "black",
   },
+  titleDistance: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   nameAndRatingContainer: {
     flexDirection: "row",
     alignItems: "baseline",
@@ -198,11 +223,8 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   distanceText: {
-    position: "absolute",
     fontSize: 14,
     color: "grey",
-    right: 2,
-    paddingRight: 10,
   },
   expiredBox: {
     backgroundColor: "#FF5733",
@@ -225,5 +247,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 4,
+  },
+  distanceContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 5,
+    borderRadius: 5,
+  },
+  distanceText: {
+    fontSize: 14,
+    color: "grey",
   },
 });

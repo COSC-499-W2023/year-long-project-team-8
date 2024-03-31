@@ -121,10 +121,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   bestBefore: {
     fontSize: 14,
+    marginBottom: 10,
+    marginLeft: 10,
+    color: "grey",
+    fontWeight: "bold",
+  },
+  distanceText: {
+    color: "grey",
+    fontWeight: "bold",
+    fontSize: 18,
     marginBottom: 10,
     marginLeft: 10,
   },
