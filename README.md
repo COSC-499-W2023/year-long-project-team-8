@@ -138,4 +138,32 @@ pull), you will need to authenticate your GitHub account with email and token be
 - Click on the link and download the app
 - Use as any other app on your phone
 
+## API Usage
+| HTTP | Endpoints | Action |
+| --- | --- | --- |
+| POST | /api/products | Create a new product |
+| GET | /api/products | Retrieve a list of all products |
+| GET | /api/products/?search=${query} | Search for products with a query |
+| GET | /api/products/?categories=${categories} | Filter products by category |
+| GET | /api/product/${productId} | Get product details |
+| PATCH | /api/product/${productId} | Update product details |
+| DELETE | /api/product/${productId} | Delete a product |
+| GET | /api/products/?owner=${userId} | Receive products linked to the owner |
+| GET | /api/users | Get user list |
+| POST | /api/users | Create a new user |
+| GET | /api/users/${userId} | Get user details |
+| PATCH | /api/users/${userId} | Update user details |
+| DELETE | /api/users/${userId} | Delete a user |
+| GET | /api/my-products | Get user-owned products |
+| GET | /api/images | Get images associated with a product |
+| POST | /api/reviews | Submit a review |
+| POST | /api/token | Validate login credentials and receive tokens |
+| POST | /api/token/verify | Verify current tokens |
+| POST | /api/token/refresh | Refresh access token |
+| POST | /api/auth/change-password | Send password reset code |
+| PATCH | /api/save_posts | Toggle saved post for user |
+| GET | /api/chat/list | Get list of chat instances |
+| GET | /api/chat/${chatId} | Get chat messages for chat instance |
+| POST | /api/chat/${chatId} | Send chat messages for chat instance |
+
 
