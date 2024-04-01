@@ -1664,6 +1664,7 @@ March 25 - March 31, 2024
 <!--
 - screenshot of the projects board
 -->
+![alt-text](../img/t2_w11_projboard.png)
 
 ### Username Map
 
@@ -1684,8 +1685,9 @@ March 25 - March 31, 2024
 
 - [x] update ReadMe with development instructions
 - [x] API documentation
+- [x] Proper deletion and clean up of chats and products, cascading deletes 
 - [x] Complete app wide testing
-- [ ] Bug fixes
+- [x] Bug fixes
 
 ### Completed Tasks
 
@@ -1695,7 +1697,7 @@ March 25 - March 31, 2024
 
 - [x] #340
 - [x] #341
-
+- [x] #235
 ### In Progress Tasks
 
 <!--
@@ -1715,6 +1717,7 @@ March 25 - March 31, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+![alt-text](../img/t2_w11_burnup.png)
 
 ### Test Report
 
