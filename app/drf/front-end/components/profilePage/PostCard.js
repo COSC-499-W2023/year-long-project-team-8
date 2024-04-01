@@ -120,7 +120,7 @@ const PostCard = ({
           style={styles.editButton}
           activeOpacity={1}
         >
-          <CustomText style={styles.editButtonText}>Options</CustomText>
+          <CustomText style={styles.editButtonText}>More</CustomText>
           <Animated.View style={{ transform: [{ rotate: rotationDegree }] }}>
             <MaterialIcons name="expand-more" size={24} color="#595959" />
           </Animated.View>

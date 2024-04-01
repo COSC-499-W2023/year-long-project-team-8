@@ -16,7 +16,7 @@ class UserPermission(permissions.BasePermission):
             return True # anyone can create user, no additional checks needed.
         if view.action == "list":
             return request.user.is_authenticated
-        elif view.action in ["retrieve", "update", "partial_update", "destroy", "details"]:
+        elif view.action in ["retrieve", "update", "partial_update", "destroy", "details", "delete"]:
             return True  # defer to has_object_permission
         else:
             return False
@@ -31,7 +31,7 @@ class UserPermission(permissions.BasePermission):
         # if view.action in ["retrieve", "update", "partial_update"]:
         if view.action in ["retrieve", "list", "details"]:
             return True  # Allow users to retrieve other users' data
-        elif view.action in ["update", "partial_update", "destroy"]:
+        elif view.action in ["update", "partial_update", "destroy", "delete"]:
             return obj == request.user or request.user.is_staff  # Users can update their own data
         # elif view.action in ["destroy"]:
         #     return False  # Users cannot delete other users' data
@@ -46,7 +46,7 @@ class IsSelfOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, and OPTIONS requests.
-        if request.method in ["GET", "HEAD", "OPTIONS", "PATCH"]:
+        if request.method in ["GET", "HEAD", "OPTIONS", "PATCH", "DELETE"]:
             return True
 
         # Check if the user making the request is the same as the user being updated.

@@ -784,6 +784,50 @@ March 17 - 24 2024
 |   4    |            |      ✓       |
 |   5    |            |      ✓       |
 
+### Work Period
+<!-- 
+- start/end dates of the week
+-->
+March 24-31 2024
+
+### Individual Peer Evaluation
+<!-- 
+- screenshot of the weekly peer evaluation
+-->
+![alt-text](./img/bm_t2_w11.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+- Complete app wide testing
+- Bug fixes
+
+### Student Tasks on Project Board
+<!-- 
+- Tasks undertaken on the project board
+-->
+- 1. App wide testing
+- 2. Bug fixes
+- 3. Final Report
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed  | To Be Done  |
+|:------:|:----------:|:-----------:|
+|   1    |      ✓      |             |
+|   2    |            |      ✓       |
+|   3    |            |       ✓      |
+
+
+
+
+
 
 
 

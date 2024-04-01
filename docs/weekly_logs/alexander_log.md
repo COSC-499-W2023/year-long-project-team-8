@@ -525,6 +525,33 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 | --- | --- | --- |
 | 1 | ✓ |  |
 
+### Work Period
+
+-   March 25 - March 31, 2024
+
+### Task Types
+
+![ar_w24](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/3516ab39-ce79-43bb-932f-bf475980ba70)
+
+
+### Recap of Students Goals
+
+-   Fixes related to maps and distance #339
+
+### Student Tasks on Project Board
+
+-   #1 Distance and near me filtering logic missing
+-   #2 Style preview map modal 
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+| --- | --- | --- |
+| 1 | ✓ |  |
+| 2 | ✓ |  |
+
+
+
 
 
 

@@ -52,6 +52,7 @@ const ChatComponent = ({
           setProduct("");
           return;
         }
+        console.log("Product id in chatcomp", product_id);
         const chats = await getChatList(authTokens);
         const chat = chats.find(
           (chat) => chat.receiver === prodOwner && chat.product === product_id
@@ -71,7 +72,7 @@ const ChatComponent = ({
     };
 
     fetchChatId();
-  }, [authTokens, userId, prodOwner]);
+  }, [authTokens, userId, product_id, prodOwner]);
 
   useEffect(() => {
     checkIsSaved();
@@ -184,21 +185,7 @@ const ChatComponent = ({
     }
   };
 
-  //Still need to implement opening the app and listing from link sent. Having trouble with expo link to display as link in apps
-  const handleSharePress = async () => {
-    try {
-      const listingDeepLink = `http://tinyurl.com/mr39a6wr`; // Create your own in the browser with the format exp://ip-address/passtheplate/posts/${listing.id}
-      const shareMessage = `Check out this${listing.title} from Pass The O \n\n${listingDeepLink}`;
-
-      await Share.share({
-        title: listing.title,
-        message: shareMessage,
-        url: listingDeepLink,
-      });
-    } catch (error) {
-      console.error("Error sharing:", error);
-    }
-  };
+  // const handleDirectionPress = async () => {};
 
   const handleUserPress = () => {
     if (listing.owner === userId) {
@@ -249,12 +236,15 @@ const ChatComponent = ({
         </TouchableOpacity>
 
         {/* Share button */}
-        <TouchableOpacity style={styles.chatButton} onPress={handleSharePress}>
+        {/* <TouchableOpacity
+          style={styles.chatButton}
+          onPress={handleDirectionPress}
+        >
           <Image source={share} style={styles.chatButtonIcon} />
           <CustomText style={styles.chatButtonText} fontType={"subHeader"}>
-            Share
+            Directions
           </CustomText>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Save button */}
         <TouchableOpacity style={styles.chatButton} onPress={handleSavePress}>

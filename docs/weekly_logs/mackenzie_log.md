@@ -911,3 +911,40 @@ March 17, 2024 - March 24, 2024
 - [x] #268
 - [x] #326
 - filter posts throughout app
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+March 25, 2024 - March 31, 2024
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk-t2-w12.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] document API
+- [x] establish feature list for report
+- [x] round off App and decide on where to end implementation
+- [x] update ReadMe for launching backend
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] #340
+- [x] #341
+- [ ] #342

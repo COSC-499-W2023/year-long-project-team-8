@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Dimensions, SafeAreaView, View, Linking, Modal } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
+import { SafeAreaView, View, Modal, Image } from "react-native";
+import MapView, { Marker, Circle } from "react-native-maps";
 import * as Location from "expo-location";
 import CustomText from "../CustomText";
 import Slider from "@react-native-community/slider";
@@ -9,7 +9,7 @@ import styles from "./mapStyles";
 import { getProductList, getUserData } from "../helperFunctions/apiHelpers";
 import AuthContext from "../../context/AuthContext";
 import { useAppState } from "../../context/AppStateContext";
-import PostPreviewModal from "./postPreviewModal"; // Import the PostModal component
+import PostPreviewModal from "./postPreviewModal";
 
 const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -93,11 +93,12 @@ const MapScreen = ({ navigation }) => {
           return;
         }
         const currentLocation = await Location.getCurrentPositionAsync({});
+        const defaultDelta = 5000 / 40000;
         setLocation({
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
+          latitudeDelta: defaultDelta,
+          longitudeDelta: defaultDelta,
         });
         setErrorMsg("Location Permission Allowed");
       } catch (error) {
@@ -119,39 +120,63 @@ const MapScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <MapView ref={mapRef} style={styles.map} region={location}>
-        {location && posts && (
-          <>
-            {posts
-              .filter((post) => post.latitude && post.longitude)
-              .map((post) => (
-                <Marker
-                  key={post.id}
-                  coordinate={{
-                    latitude: post.latitude,
-                    longitude: post.longitude,
-                  }}
-                  onPress={() => handleMarkerPress(post)}
-                />
-              ))}
-          </>
+        {location && (
+          <Circle
+            center={location}
+            radius={sliderValue * 1000}
+            strokeColor="rgba(248, 185, 81, 0.7)"
+            fillColor="rgba(248, 185, 81, 0.3)"
+          />
         )}
+        {posts &&
+          posts
+            .filter((post) => post.latitude && post.longitude)
+            .map((post) => (
+              <Marker
+                key={post.id}
+                coordinate={{
+                  latitude: post.latitude,
+                  longitude: post.longitude,
+                }}
+                onPress={() => handleMarkerPress(post)}
+                style={styles.marker}
+              >
+                <View style={styles.customMarker}>
+                  <Image
+                    source={{ uri: post.images[0].image }}
+                    style={styles.markerImage}
+                  />
+                </View>
+              </Marker>
+            ))}
       </MapView>
-      <Slider
-        style={styles.slider}
-        minimumValue={1000}
-        maximumValue={25000}
-        value={sliderValue}
-        onValueChange={(value) => {
-          setSliderValue(value);
-          // Zoom logic here
-        }}
-        thumbTintColor="#F8B951"
-        minimumTrackTintColor="#F8B951"
-        maximumTrackTintColor="#000000"
-      />
-      <CustomText style={styles.sliderText} fontType="text">
-        {Math.floor(sliderValue / 1000)} KM
-      </CustomText>
+      <View style={styles.sliderContainer}>
+        <Slider
+          style={styles.slider}
+          minimumValue={1}
+          maximumValue={25}
+          value={sliderValue}
+          onValueChange={(value) => {
+            setSliderValue(value);
+            if (location) {
+              const newLatitudeDelta = value / 35;
+              const newLongitudeDelta = value / 35;
+              mapRef.current.animateToRegion({
+                ...location,
+                latitudeDelta: newLatitudeDelta,
+                longitudeDelta: newLongitudeDelta,
+              });
+            }
+          }}
+          thumbTintColor="#F8B951"
+          minimumTrackTintColor="#F8B951"
+          maximumTrackTintColor="#000000"
+        />
+
+        <CustomText style={styles.sliderText} fontType="text">
+          {Math.floor(sliderValue)} KM
+        </CustomText>
+      </View>
 
       {/* Post modal */}
       <Modal
