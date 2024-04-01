@@ -1633,7 +1633,7 @@ https://github.com/orgs/COSC-499-W2023/projects/39/views/1
 
 ### Burnup Chart
 
-![alt-text](../img/t2_w11_burnup.png)
+![alt-text](../img/t2_w10_burnup.png)
 
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
