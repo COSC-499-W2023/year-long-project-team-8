@@ -54,22 +54,10 @@ const AddListing = ({ navigation, onPostCreation }) => {
   const { authTokens, userId } = useContext(AuthContext);
   const { updatePostCreated } = useAppState();
   const [location, setLocation] = useState("");
+  const [isLocationValid, setIsLocationValid] = useState(false);
   const autoCompleteRef = useRef();
   const [userLocation, setUserLocation] = useState(null);
-
-  useEffect(() => {
-    const getLocation = async () => {
-      try {
-        const location = await Location.getCurrentPositionAsync({});
-        setLatitude(location.coords.latitude);
-        setLongitude(location.coords.longitude);
-      } catch (error) {
-        console.error("Error getting location and distance:", error);
-      }
-    };
-
-    getLocation();
-  }, []);
+  const [isLocationSelected, setIsLocationSelected] = useState(false);
 
   // Set tomorrow's date as the default selected date
   useEffect(() => {
@@ -92,6 +80,18 @@ const AddListing = ({ navigation, onPostCreation }) => {
         return [...prevCategories, category];
       }
     });
+  };
+
+  const handleLocationChange = (text) => {
+    if (text.trim() !== "") {
+      setIsLocationValid(true);
+    } else {
+      setIsLocationValid(false);
+    }
+  };
+
+  const handleLocationSelection = () => {
+    setIsLocationSelected(true);
   };
 
   const toggleAllergen = (allergen) => {
@@ -146,6 +146,11 @@ const AddListing = ({ navigation, onPostCreation }) => {
 
     if (images.length === 0) {
       setAlertMessage("Please upload at least one image");
+      setIsAlertVisible(true);
+      isValid = false;
+    }
+    if (!isLocationValid || !isLocationSelected) {
+      setAlertMessage("Please enter a valid pickup location");
       setIsAlertVisible(true);
       isValid = false;
     }
@@ -298,9 +303,15 @@ const AddListing = ({ navigation, onPostCreation }) => {
           <GooglePlacesAutocomplete
             ref={autoCompleteRef}
             placeholder="Enter Address"
+            textInputProps={{
+              onChangeText: handleLocationChange,
+            }}
             // onPress={handleAddressSelection2}
             // this is for Google Places API endpoint. Both versions work, not sure what is more efficient?
-            onPress={handleAddressSelection}
+            onPress={(data, details = null) => {
+              handleAddressSelection(data, details); // Call handleAddressSelection with the data and details
+              handleLocationSelection(); // Call handleLocationSelection
+            }}
             fetchDetails
             query={{
               key: GOOGLE_API_KEY, //THIS API COSTS MONEY SO DON'T LEAK IT
