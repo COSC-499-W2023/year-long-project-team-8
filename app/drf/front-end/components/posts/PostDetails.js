@@ -161,8 +161,8 @@ const PostDetails = ({ route, navigation }) => {
     // Function to get the user's location and calculate the distance
     const getLocationAndDistance = async () => {
       try {
-        if (listing.latitude == null || listing.longitude == null) {
-          console.error("Latitude or longitude not set for the listing");
+        if (!listing.latitude || !listing.longitude) {
+          console.warn("Latitude or longitude not set for the listing");
           return;
         }
 
@@ -277,15 +277,16 @@ const PostDetails = ({ route, navigation }) => {
               />
             </View>
           )} */}
-
-          <MapComponent
-            userLocation={userLocation}
-            postLocation={{
-              latitude: listing.latitude,
-              longitude: listing.longitude,
-            }}
-            postTitle={listing.title}
-          />
+          {listing.latitude && listing.longitude && (
+            <MapComponent
+              userLocation={userLocation}
+              postLocation={{
+                latitude: listing.latitude,
+                longitude: listing.longitude,
+              }}
+              postTitle={listing.title}
+            />
+          )}
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />
