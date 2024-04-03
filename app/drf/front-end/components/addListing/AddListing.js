@@ -23,6 +23,7 @@ import AuthContext from "../../context/AuthContext"; // Import AuthContext
 import { useAppState } from "../../context/AppStateContext";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_API_KEY } from "@env";
+import * as Location from "expo-location";
 
 const AddListing = ({ navigation, onPostCreation }) => {
   // state variables for the post attributes
@@ -54,6 +55,21 @@ const AddListing = ({ navigation, onPostCreation }) => {
   const { updatePostCreated } = useAppState();
   const [location, setLocation] = useState("");
   const autoCompleteRef = useRef();
+  const [userLocation, setUserLocation] = useState(null);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        const location = await Location.getCurrentPositionAsync({});
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+      } catch (error) {
+        console.error("Error getting location and distance:", error);
+      }
+    };
+
+    getLocation();
+  }, []);
 
   // Set tomorrow's date as the default selected date
   useEffect(() => {
