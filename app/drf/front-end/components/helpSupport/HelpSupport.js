@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import AuthContext from "../../context/AuthContext";
 import Toast from "react-native-root-toast";
+import { deleteAccount } from "../helperFunctions/apiHelpers";
+import CustomText from "../CustomText";
 
 const HelpSupport = ({ navigation }) => {
-  const { logoutUser } = useContext(AuthContext);
+  const { authTokens, logoutUser, userId } = useContext(AuthContext);
 
   const handleDeleteAccountPress = () => {
     Alert.alert(
@@ -18,10 +20,15 @@ const HelpSupport = ({ navigation }) => {
     );
   };
 
-  const handleDeleteAccount = () => {
-    logoutUser();
-    navigation.navigate("Landing");
-    showToastSuccess("Account deleted successfully");
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount(userId, authTokens); // Call the deleteAccount function with the user ID and auth tokens
+      logoutUser();
+      navigation.navigate("Landing");
+      showToastSuccess("Account deleted successfully");
+    } catch (error) {
+      showToastError("Failed to delete account");
+    }
   };
 
   const showToastSuccess = (message) => {
@@ -37,18 +44,34 @@ const HelpSupport = ({ navigation }) => {
     });
   };
 
+  const showToastError = (message) => {
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.TOP,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      backgroundColor: "#FDCECE",
+      textColor: "black",
+      opacity: 1,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Help and Support</Text>
-      <Text style={styles.text}>
+      <CustomText style={styles.title}>Help and Support</CustomText>
+      <CustomText style={styles.text}>
         If you have any questions or need assistance, please feel free to reach
-        out to us at <Text style={styles.email}>passtheplate9@gmail.com</Text>.
-      </Text>
+        out to us at{" "}
+        <CustomText style={styles.email}>passtheplate9@gmail.com</CustomText>.
+      </CustomText>
       <TouchableOpacity
         style={styles.deleteButton}
         onPress={handleDeleteAccountPress}
       >
-        <Text style={styles.deleteButtonText}>Delete Your Account</Text>
+        <CustomText style={styles.deleteButtonText}>
+          Delete Your Account
+        </CustomText>
       </TouchableOpacity>
     </View>
   );

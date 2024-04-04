@@ -145,6 +145,30 @@ async function updateUserData(userId, authTokens, updatedData) {
   }
 }
 
+// Helper function to delete the user's account
+async function deleteAccount(userId, authTokens) {
+  try {
+    const response = await fetch(`${baseEndpoint}/users/${userId}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(authTokens.access),
+      },
+    });
+
+    if (response.status === 204) {
+      console.log("successful user delete");
+    } else {
+      // Handle errors or provide feedback to the user
+      const responseBody = await response.text();
+      console.error("Error:", responseBody);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong Deleting user!");
+  }
+}
+
 // Helper function for password reset
 async function changePassword(
   email,
@@ -668,4 +692,5 @@ export {
   changePassword,
   toggleSavePost,
   createReview,
+  deleteAccount,
 };
