@@ -15,10 +15,10 @@ import CarouselComponent from "./CarouselComponent";
 import CategoriesComponent from "./CategoriesComponent";
 import DescriptionComponent from "./DescriptionComponent";
 import AllergensComponent from "./AllergensComponent";
-import PickedUpButton from "./PickedUpButton";
-import DeleteButton from "./DeleteButton";
-import NotPickedUpButton from "./NotPickedUpButton";
+import MapComponent from "./MapComponent";
 import { useAppState } from "../../context/AppStateContext";
+import * as Location from "expo-location";
+import { calculateDistance } from "../locationServices/calculateDistance";
 
 const PostDetails = ({ route, navigation }) => {
   const { listing } = route.params;
@@ -27,6 +27,7 @@ const PostDetails = ({ route, navigation }) => {
   const [userDetails, setUserDetails] = useState(null);
   const { authTokens, userId } = useContext(AuthContext);
   const { updatePostCreated } = useAppState();
+  const [distance, setDistance] = useState(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -78,71 +79,71 @@ const PostDetails = ({ route, navigation }) => {
     }, [])
   );
 
-  const handlePickedUp = async () => {
-    const formData = {
-      pickedUp: true,
-    };
+  // const handlePickedUp = async () => {
+  //   const formData = {
+  //     pickedUp: true,
+  //   };
 
-    try {
-      await updateProduct(formData, null, authTokens, listing.id);
-      await updatePostCreated();
+  //   try {
+  //     await updateProduct(formData, null, authTokens, listing.id);
+  //     await updatePostCreated();
 
-      Alert.alert("Success", "The post has been marked as picked up!", [
-        { text: "OK", onPress: () => navigation.navigate("Home") },
-      ]);
-    } catch (error) {
-      console.error("Error marking post as picked up:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred while marking the post as picked up."
-      );
-    }
-  };
+  //     Alert.alert("Success", "The post has been marked as picked up!", [
+  //       { text: "OK", onPress: () => navigation.navigate("Home") },
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Error marking post as picked up:", error);
+  //     Alert.alert(
+  //       "Error",
+  //       "An error occurred while marking the post as picked up."
+  //     );
+  //   }
+  // };
 
-  const handleNotPickedUp = async () => {
-    const formData = {
-      pickedUp: false,
-    };
+  // const handleNotPickedUp = async () => {
+  //   const formData = {
+  //     pickedUp: false,
+  //   };
 
-    try {
-      await updateProduct(formData, null, authTokens, listing.id);
-      await updatePostCreated();
+  //   try {
+  //     await updateProduct(formData, null, authTokens, listing.id);
+  //     await updatePostCreated();
 
-      Alert.alert("Success", "The post has been marked as available!", [
-        { text: "OK", onPress: () => navigation.navigate("Home") },
-      ]);
-    } catch (error) {
-      console.error("Error marking post as available:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred while marking the post as available."
-      );
-    }
-  };
+  //     Alert.alert("Success", "The post has been marked as available!", [
+  //       { text: "OK", onPress: () => navigation.navigate("Home") },
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Error marking post as available:", error);
+  //     Alert.alert(
+  //       "Error",
+  //       "An error occurred while marking the post as available."
+  //     );
+  //   }
+  // };
 
-  const handleDeleteButton = async () => {
-    // Show confirmation dialog
-    Alert.alert(
-      "Delete Post",
-      "Are you sure you want to delete this post?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: async () => {
-            // If user confirms, proceed with deletion
-            await deleteProduct(authTokens, listing.id);
-            await updatePostCreated();
-            navigation.navigate("Home");
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-  };
+  // const handleDeleteButton = async () => {
+  //   // Show confirmation dialog
+  //   Alert.alert(
+  //     "Delete Post",
+  //     "Are you sure you want to delete this post?",
+  //     [
+  //       {
+  //         text: "Cancel",
+  //         style: "cancel",
+  //       },
+  //       {
+  //         text: "Delete",
+  //         onPress: async () => {
+  //           // If user confirms, proceed with deletion
+  //           await deleteProduct(authTokens, listing.id);
+  //           await updatePostCreated();
+  //           navigation.navigate("Home");
+  //         },
+  //       },
+  //     ],
+  //     { cancelable: false }
+  //   );
+  // };
 
   const isExpired = new Date(listing.best_before) < new Date();
   const currentDate = new Date();
@@ -154,6 +155,44 @@ const PostDetails = ({ route, navigation }) => {
 
   const myPost = userId == listing.owner;
   const pickedUp = listing.pickedUp;
+  const [userLocation, setUserLocation] = useState(null);
+
+  useEffect(() => {
+    // Function to get the user's location and calculate the distance
+    const getLocationAndDistance = async () => {
+      try {
+        if (!listing.latitude || !listing.longitude) {
+          console.warn("Latitude or longitude not set for the listing");
+          return;
+        }
+
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Permission to access location was denied");
+          return;
+        }
+
+        const location = await Location.getCurrentPositionAsync({});
+        const userLocation = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        setUserLocation(userLocation);
+
+        const calculatedDistance = calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          listing.latitude,
+          listing.longitude
+        );
+        setDistance(calculatedDistance);
+      } catch (error) {
+        console.error("Error getting location and distance:", error);
+      }
+    };
+
+    getLocationAndDistance();
+  }, [listing.latitude, listing.longitude]);
 
   return (
     <View style={styles.container}>
@@ -191,6 +230,12 @@ const PostDetails = ({ route, navigation }) => {
               </View>
             )}
           </View>
+
+          <CustomText fontType={"text"} style={styles.distanceText}>
+            {distance !== null
+              ? `${distance < 1 ? "Less than 1 km away" : `${distance} km away`}`
+              : ""}
+          </CustomText>
 
           <CustomText fontType={"subHeader"} style={styles.bestBefore}>
             Best Before: {formatDate(listing.best_before)}
@@ -232,6 +277,16 @@ const PostDetails = ({ route, navigation }) => {
               />
             </View>
           )} */}
+          {listing.latitude && listing.longitude && (
+            <MapComponent
+              userLocation={userLocation}
+              postLocation={{
+                latitude: listing.latitude,
+                longitude: listing.longitude,
+              }}
+              postTitle={listing.title}
+            />
+          )}
 
           {/*Category Section*/}
           <CategoriesComponent categories={listing.categories} />

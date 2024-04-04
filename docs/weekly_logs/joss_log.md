@@ -881,4 +881,40 @@
 |   3  |     ✓      |          |
 |   4 |      ✓      |         |
 
+### Work Period
+ - Mar 24 - Mar 31, 2024
+
+### Individual Peer Evaluation
+![Alt text](img/t2week_8_eval_joss.png)
+
+### Recap of Students Goals
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- Documentation and report
+- Delete chats after product picked up
+- bug fixes and further enhancements
+- further edge case testing
+  
+
+### Current Student Tasks on Project Board in progress
+<!-- 
+- Tasks undertaken on the project board
+-->
+- #342 Final Report
+
+
+
+
+### Which Tasks Are Completed vs. In Progress
+<!--
+- list of completed tasks
+- list of tasks to be done
+✓ x
+-->
+
+| Item # | Completed | To Be Done |
+|:------:|:----------|:-----------|
+|   1   |           |    ✓       |
 

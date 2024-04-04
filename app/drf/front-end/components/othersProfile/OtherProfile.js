@@ -18,8 +18,6 @@ import CustomText from "../CustomText";
 import { HeaderBackButton } from "@react-navigation/elements";
 import PostReview from "../profilePage/PostReview";
 
-//TODO: Location, fetch posts for specific user, dummy pfp icon resolution increase, loader
-
 const OtherProfile = ({ route, navigation }) => {
   const { userId } = route.params;
   const isFocused = useIsFocused();
@@ -30,6 +28,7 @@ const OtherProfile = ({ route, navigation }) => {
   const [selectedTab, setSelectedTab] = useState("posts");
   const scrollViewRef = useRef(null);
   const [currentListing, setCurrentListing] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     if (!isFocused) {
@@ -39,6 +38,28 @@ const OtherProfile = ({ route, navigation }) => {
       scrollViewRef.current?.scrollTo({ y: 0, animated: false });
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    // Function to get the user's location
+    const getLocation = async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Permission to access location was denied");
+          return;
+        }
+        const location = await Location.getCurrentPositionAsync({});
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    };
+
+    getLocation();
+  }, []);
 
   useEffect(() => {
     const listingParam = route.params?.listing;
@@ -204,6 +225,7 @@ const OtherProfile = ({ route, navigation }) => {
               onPress={() =>
                 navigation.navigate("PostDetails", { listing: post })
               }
+              userLocation={userLocation}
             />
           </View>
         ))}
