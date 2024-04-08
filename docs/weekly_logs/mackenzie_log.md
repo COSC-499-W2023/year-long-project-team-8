@@ -948,3 +948,31 @@ March 25, 2024 - March 31, 2024
 - [x] #340
 - [x] #341
 - [ ] #342
+
+April 1, 2024 - April 7, 2024
+
+### Individual Peer Evaluation
+
+<!--
+- screenshot of the weekly peer evaluation
+-->
+
+![alt text](img/mk-t2-w13.png)
+
+### Recap of Students Goals
+
+<!--
+- what tasks are you aiming to have completed by the end of the week
+-->
+
+- [x] Final Report
+- [x] Diagram
+- [x] Video Demo
+
+### Student Tasks on Project Board
+
+<!--
+- Tasks undertaken on the project board
+-->
+
+- [x] #342
