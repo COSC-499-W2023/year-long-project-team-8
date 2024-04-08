@@ -16,6 +16,7 @@ import ChangePassword from "../settingsPage/ChangePassword";
 import SavedPosts from "../savedPosts/SavedPosts";
 import UserMessages from "../chat/UserMessages";
 import Landing from "../landing/Landing";
+import HelpSupport from "../helpSupport/HelpSupport";
 const customHamburgerIcon = require("../../assets/hamburger.png");
 const logo = require("../../assets/logo.png");
 const notificationIcon = require("../../assets/notification.png");
@@ -186,6 +187,24 @@ const DrawerNav = ({ navigation }) => {
           ),
         })}
       />
+      <Drawer.Screen
+        name="HelpSupport"
+        component={HelpSupport}
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Image source={logo} style={{ width: 200, height: 40 }} />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Image
+                source={customHamburgerIcon}
+                style={{ width: 22, height: 22, marginLeft: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
       {/* PostDetails screen hidden from the drawer but accessible via navigation */}
       <Drawer.Screen
         name="PostDetails"
@@ -282,6 +301,7 @@ const DrawerNav = ({ navigation }) => {
           headerShown: false,
         }}
       />
+
       <Drawer.Screen
         name="Landing"
         component={Landing}

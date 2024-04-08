@@ -550,6 +550,39 @@ https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/64e6a
 | 1 | ✓ |  |
 | 2 | ✓ |  |
 
+### Work Period
+
+-   April 1 - April 7, 2024
+
+### Task Types
+
+![w25](https://github.com/COSC-499-W2023/year-long-project-team-8/assets/97238610/226941c5-4c1a-4258-96e6-6fa35e9105d2)
+
+
+### Recap of Students Goals
+
+-   Help and support screen
+
+### Student Tasks on Project Board
+
+-   #1 Help and support
+-   #2 Delete Account
+
+### Which Tasks Are Completed vs. In Progress
+
+| Item # | Completed | To Be Done |
+| --- | --- | --- |
+| 1 | ✓ |  |
+| 2 | ✓ |  |
+
+
+
+
+
+
+
+
+
 
 
 

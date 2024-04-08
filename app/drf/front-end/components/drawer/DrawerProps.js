@@ -57,7 +57,7 @@ const DrawerProps = ({ navigation, activeRouteName }) => {
       <DrawerItem
         iconName="help-circle"
         label="Help & Support"
-        onPress={() => console.log("HelpSupport")} // Implement actual navigation or action
+        onPress={() => navigation.navigate("HelpSupport")}
         isActive={activeRouteName === "HelpSupport"}
       />
       <TouchableOpacity

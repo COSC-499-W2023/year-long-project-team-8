@@ -1664,6 +1664,7 @@ March 25 - March 31, 2024
 <!--
 - screenshot of the projects board
 -->
+
 ![alt-text](../img/t2_w11_projboard.png)
 
 ### Username Map
@@ -1685,7 +1686,7 @@ March 25 - March 31, 2024
 
 - [x] update ReadMe with development instructions
 - [x] API documentation
-- [x] Proper deletion and clean up of chats and products, cascading deletes 
+- [x] Proper deletion and clean up of chats and products, cascading deletes
 - [x] Complete app wide testing
 - [x] Bug fixes
 
@@ -1698,6 +1699,7 @@ March 25 - March 31, 2024
 - [x] #340
 - [x] #341
 - [x] #235
+
 ### In Progress Tasks
 
 <!--
@@ -1717,6 +1719,85 @@ March 25 - March 31, 2024
 <!--
 - graph showcasing the view of tasks done, tasks in progress and tasks left to do
 -->
+
+![alt-text](../img/t2_w11_burnup.png)
+
+### Test Report
+
+<!--
+- put all tests in the tests/ directory in your repo
+
+- add screenshot(s) of test run summary
+-->
+
+![alt text](../img/t2-w6-backend-test.png)
+
+https://docs.google.com/spreadsheets/d/1FBrUeVV5Cd8wz9DuIdbsoAJ5li21dVPH2hWoPFV3x38/edit?usp=sharing
+
+### Work Period
+
+<!--
+- start/end dates of the week
+-->
+
+April 1 - April 7, 2024
+
+### Project Board
+
+<!--
+- screenshot of the projects board
+-->
+
+![alt-text]![alt text](../img/t2-w13-projboard.png)
+
+### Username Map
+
+<!--
+- team members usernames
+-->
+
+- Joss White: jossw24
+- Alexander Roizman: aroizmand
+- Mackenzie Kudrenecky: mkudrenecky
+- Brandon Mack: brandonjmack
+
+### Milestone Goals
+
+<!--
+- goals that are to be done
+-->
+
+- [x] Finish Reports!
+- [x] Tie Up Loose Ends!
+
+### Completed Tasks
+
+<!--
+- tasks that are completed
+-->
+
+- [x] #340
+- [x] #341
+- [x] #235
+- [#335](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/335)
+- [#337](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/337)
+- [#213](https://github.com/COSC-499-W2023/year-long-project-team-8/issues/213)
+- [#342]
+
+### In Progress Tasks
+
+<!--
+- tasks that are currently in progress
+-->
+
+- NONE!
+
+### Burnup Chart
+
+<!--
+- graph showcasing the view of tasks done, tasks in progress and tasks left to do
+-->
+
 ![alt-text](../img/t2_w11_burnup.png)
 
 ### Test Report
