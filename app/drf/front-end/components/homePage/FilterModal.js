@@ -15,24 +15,25 @@ import ButtonLanding from "../loginSignup/ButtonLanding";
 import { SliderContext } from "../../context/MapContext";
 
 const AllergenChip = React.memo(
-  ({ allergen, isSelected, onSelect, onDeselect }) => {
+    ({ allergen, isSelected, onSelect, onDeselect, testID }) => {
     return (
-      <TouchableOpacity
-        onPress={() => (isSelected ? onDeselect(allergen) : onSelect(allergen))}
-        style={[
-          styles.allergenChip,
-          isSelected ? styles.allergenChipSelected : null,
-        ]}
-      >
-        <CustomText
-          style={[
-            styles.allergenChipText,
-            isSelected ? styles.allergenChipTextSelected : null,
-          ]}
+        <TouchableOpacity
+            onPress={() => (isSelected ? onDeselect(allergen) : onSelect(allergen))}
+            style={[
+                styles.allergenChip,
+                isSelected ? styles.allergenChipSelected : null,
+            ]}
+            testID={testID}
         >
-          {allergen}
-        </CustomText>
-      </TouchableOpacity>
+            <CustomText
+                style={[
+                    styles.allergenChipText,
+                    isSelected ? styles.allergenChipTextSelected : null,
+                ]}
+            >
+                {allergen}
+            </CustomText>
+        </TouchableOpacity>
     );
   }
 );
@@ -167,6 +168,7 @@ const FilterModal = ({
                   Max Distance
                 </CustomText>
                 <Slider
+                    testID="distanceSlider"
                   style={styles.slider}
                   minimumValue={1}
                   maximumValue={25}
@@ -187,6 +189,7 @@ const FilterModal = ({
                   Minimum Rating
                 </CustomText>
                 <Slider
+                    testID="ratingSlider"
                   style={styles.slider}
                   minimumValue={0}
                   maximumValue={5}
@@ -215,6 +218,7 @@ const FilterModal = ({
                       isSelected={allergens.includes(allergen)}
                       onSelect={selectAllergen}
                       onDeselect={deselectAllergen}
+                      testID={`allergen-${allergen.replace(/\s+/g, '-')}`}
                     />
                   ))}
                 </View>
@@ -413,3 +417,5 @@ const styles = StyleSheet.create({
 });
 
 export default FilterModal;
+
+

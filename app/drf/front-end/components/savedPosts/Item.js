@@ -128,3 +128,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+/*
+ //needs to be exported to test
+export const calculateTimeRemaining = (expiryDate) => {
+    const now = new Date();
+    const expiry = new Date(expiryDate);
+    const diff = expiry - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days > 1) {
+      return `${days} days remaining`;
+    } else if (days === 1) {
+      return `1 day remaining`;
+    } else if (hours > 1) {
+      return `${hours} hours remaining`;
+    } else if (hours === 1) {
+      return `1 hour remaining`;
+    } else if (minutes > 1) {
+      return `${minutes} minutes remaining`;
+    } else if (minutes === 1) {
+      return `1 minute remaining`;
+    } else {
+      return "Expired";
+    }
+  };
+  */
+

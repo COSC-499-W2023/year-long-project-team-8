@@ -93,6 +93,7 @@ const handlePress = () => {
           onPressIn={animatePressIn}
           onPressOut={animatePressOut}
           style={[styles.buttonContent, style]}
+          testID="applyButton"
         >
           <Text
             style={[
